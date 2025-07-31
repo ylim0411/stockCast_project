@@ -81,9 +81,9 @@
   <body>
     <div class="container">
       <h2>로그인</h2>
-      <form action="/member/login" method="post">
-        <input type="text" name="memberEmail" placeholder="이메일" />
-        <input type="text" name="memberPassword" placeholder="비밀번호" />
+      <form action="/admin/login" method="post">
+        <input type="text" name="loginId" placeholder="아이디" />
+        <input type="text" name="loginPw" placeholder="비밀번호" />
 
         <input type="submit" value="로그인" class="btn" />
       </form>

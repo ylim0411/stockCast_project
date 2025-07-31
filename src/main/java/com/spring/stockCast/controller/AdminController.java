@@ -1,11 +1,10 @@
 package com.spring.stockCast.controller;
 
 import com.spring.stockCast.dto.AdminDTO;
+import com.spring.stockCast.service.AdminService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -13,7 +12,10 @@ import java.io.IOException;
 import java.util.UUID;
 
 @Controller
+@RequiredArgsConstructor
+@RequestMapping("/admin")
 public class AdminController {
+    private final AdminService adminService;
     @GetMapping("login")
     public String loginForm() {
         return "login";
@@ -34,6 +36,11 @@ public class AdminController {
     @PostMapping("/join")
     public String join(@ModelAttribute AdminDTO adminDTO) {
         System.out.println(adminDTO);
+        int joinResult = adminService.join(adminDTO);
+        if (joinResult > 0)
+        {
+            return "redirect:/join";
+        }
         return "login";
     }
 }
