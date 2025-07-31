@@ -1,62 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ include file="/WEB-INF/views/header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Chart.js Example</title>
     <script src="${pageContext.request.contextPath}/webjars/chartjs/2.9.4/Chart.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f7f6;
-        }
-        .sale-Wrapper {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-        h1 {
-            color: #333;
-            margin-bottom: 30px;
-            font-size: 2.5em;
-            text-align: center;
-        }
-        .chart-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 40px;
-            width: 100%;
-            max-width: 1000px;
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .doughnut-chart, .line-chart {
-            position: relative;
-            width: 450px;
-            height: 450px;
-            max-width: 100%;
-            padding: 15px;
-            border: 1px solid #eee;
-            border-radius: 8px;
-            box-sizing: border-box;
-        }
-        .line-chart {
-            width: 600px;
-            height: 400px;
-        }
-    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/chart.js"></script>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/chart.css"/>
 </head>
 <body>
-    <div class="sale-Wrapper">
+    <div class="container">
         <div class="sale-header"></div>
             <h1>판매실적</h1>
         <div class="sale-header"></div>
@@ -165,6 +121,49 @@
                 }
             }
         });
+          $(function () {
+              // 메인 메뉴 클릭 시
+              $("li.main-menu > a").on("click", function (e) {
+                e.preventDefault();
+
+                const $clickedMenu = $(this).parent(); // li.main-menu
+                const $subMenu = $clickedMenu.find(".sub-menu");
+
+                // 현재 열려있는 다른 메뉴 닫기
+                $("li.main-menu")
+                  .not($clickedMenu)
+                  .removeClass("on")
+                  .find(".sub-menu")
+                  .slideUp()
+                  .find("li")
+                  .removeClass("on");
+
+                // 현재 클릭한 메뉴 toggle
+                const isOpen = $clickedMenu.hasClass("on");
+                if (isOpen) {
+                  // 열려 있으면 닫기
+                  $clickedMenu.removeClass("on");
+                  $subMenu.slideUp();
+                } else {
+                  // 닫혀 있으면 열기
+                  $clickedMenu.addClass("on");
+                  $subMenu.slideDown();
+
+                  // 하위 첫 번째 서브 메뉴 항목을 활성화
+                  const $firstSubItem = $subMenu.find("li").first();
+                  $(".sub-menu li").removeClass("on"); // 전체 초기화
+                  $firstSubItem.addClass("on");
+                }
+              });
+
+              // 서브 메뉴 클릭 시 활성화
+              $(".sub-menu li a").on("click", function (e) {
+                e.preventDefault();
+
+                $(".sub-menu li").removeClass("on"); // 전체 비활성화
+                $(this).parent().addClass("on"); // 클릭된 항목 활성화
+              });
+            });
     </script>
 </body>
 </html>

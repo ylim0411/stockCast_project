@@ -7,6 +7,7 @@
  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+
    <header>
         <div class="logo">
           <img
@@ -72,10 +73,10 @@
               </a>
               <ul class="sub-menu">
                 <li>
-                  <a href="#" class="on"> 판매 실적 </a>
+                  <a href="#" onclick="onSale()" class="on"> 판매 실적 </a>
                 </li>
                 <li>
-                  <a href="#"> 회계 관리 </a>
+                  <a href="#" onclick="onAccounting()"> 회계 관리 </a>
                 </li>
               </ul>
             </li>
@@ -137,6 +138,49 @@
        $firstSubItem.addClass("on");
      });
 
+      // 서브 메뉴 클릭 시 활성화
+      $(".sub-menu li a").on("click", function (e) {
+        e.preventDefault();
+
+        $(".sub-menu li").removeClass("on"); // 전체 비활성화
+        $(this).parent().addClass("on"); // 클릭된 항목 활성화
+      });
+    });
+    const onSale = () => {
+          const mainDiv = $("#main");
+          $.ajax({
+              type: "get",
+              url: "/sale/hello",
+              // 요청이 성공했을 때 실행되는 부분
+              success: function (res) {
+
+                  console.log("성공", res);
+                  mainDiv.html(res);
+
+              },
+              // 요청이 실패했을 때 실행되는 부분
+              error: function (err) {
+                  console.log("실패", err);
+              },
+          })
+      };
+        const onAccounting = () => {
+            const mainDiv = $("#main");
+            $.ajax({
+                type: "get",
+                url: "/accounting/hello",
+                // 요청이 성공했을 때 실행되는 부분
+                success: function (res) {
+                    console.log("성공", res);
+                    mainDiv.html(res);
+
+                },
+                // 요청이 실패했을 때 실행되는 부분
+                error: function (err) {
+                    console.log("실패", err);
+                },
+            })
+        };
      // 서브 메뉴 클릭 시 활성화
      $(".sub-menu li a").on("click", function () {
        $(".sub-menu li").removeClass("on");
@@ -145,4 +189,4 @@
    });
 
   </script>
-</html>
+
