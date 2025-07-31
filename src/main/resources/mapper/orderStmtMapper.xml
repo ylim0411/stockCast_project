@@ -7,4 +7,12 @@
         SELECT * FROM orderStmt ORDER BY orderId DESC
     </select>
 
+    <select id="findByDateBetween" resultType="OrderStmt">
+        SELECT * FROM orderStmt WHERE orderDate BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <select id="findByNo" resultType="OrderStmt">
+        SELECT * FROM orderStmt WHERE orderStmtId LIKE CONCAT('%', #{orderStmtId}, '%')
+    </select>
+
 </mapper>
