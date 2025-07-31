@@ -147,6 +147,7 @@
   /* container : 헤더 오른쪽 화면 */
   .container {
     width: calc(100% - 220px);
+    padding: 50px;
   }
 
   /* button */
@@ -155,6 +156,7 @@
     font-size: var(--font-size-base);
     background-color: transparent;
     border-radius: var(--border-radius-base5);
+    cursor: pointer;
   }
 
   .container .btn-blue {
@@ -165,4 +167,35 @@
   .container .btn-red {
     border: 1px solid var(--color-red);
     color: var(--color-red);
+  }
+
+  .title{
+   padding: 20px;
+   border: 1px solid var(--color-primary);
+  }
+
+/* 테이블 */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    border: 1px solid #000;
+  }
+
+  th,
+  td {
+    padding: 14px;
+    border-bottom: 1px solid var(--color-border);
+    font-size: var(--font-size-md);
+  }
+
+  th {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    font-weight: bold;
+  }
+
+  tr:hover {
+    // background-color: var(--color-white);
+    cursor: pointer;
   }
