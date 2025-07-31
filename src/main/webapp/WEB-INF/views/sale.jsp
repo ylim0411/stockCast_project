@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +12,7 @@
             padding: 0;
             background-color: #f4f7f6;
         }
-        .saleWrapper {
+        .sale-Wrapper {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -56,8 +56,10 @@
     </style>
 </head>
 <body>
-    <div class="saleWrapper">
-        <h1>판매실적</h1>
+    <div class="sale-Wrapper">
+        <div class="sale-header"></div>
+            <h1>판매실적</h1>
+        <div class="sale-header"></div>
         <div class="chart-container">
             <div class="doughnut-chart">
                 <canvas id="itemsChart"></canvas>

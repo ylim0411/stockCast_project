@@ -8,6 +8,7 @@
 </head>
 <body>
     <h2>Hello Spring Framework</h2>
-    <a href="/sale/">그래프</a>
+    <a href="/sale/">판매실적 이동</a>
+    <a href="/accounting/">회계 이동</a>
 </body>
 </html>
