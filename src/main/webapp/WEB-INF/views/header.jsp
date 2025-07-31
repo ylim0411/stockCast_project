@@ -72,10 +72,10 @@
               </a>
               <ul class="sub-menu">
                 <li>
-                  <a href="#" class="on"> 판매 실적 </a>
+                  <a href="#" onclick="onSale()" class="on"> 판매 실적 </a>
                 </li>
                 <li>
-                  <a href="#"> 회계 관리 </a>
+                  <a href="#" onclick="onAccounting()"> 회계 관리 </a>
                 </li>
               </ul>
             </li>
@@ -149,5 +149,40 @@
         $(this).parent().addClass("on"); // 클릭된 항목 활성화
       });
     });
+    const onSale = () => {
+          const mainDiv = $("#main");
+          $.ajax({
+              type: "get",
+              url: "/sale/hello",
+              // 요청이 성공했을 때 실행되는 부분
+              success: function (res) {
+
+                  console.log("성공", res);
+                  mainDiv.html(res);
+
+              },
+              // 요청이 실패했을 때 실행되는 부분
+              error: function (err) {
+                  console.log("실패", err);
+              },
+          })
+      };
+        const onAccounting = () => {
+            const mainDiv = $("#main");
+            $.ajax({
+                type: "get",
+                url: "/accounting/hello",
+                // 요청이 성공했을 때 실행되는 부분
+                success: function (res) {
+                    console.log("성공", res);
+                    mainDiv.html(res);
+
+                },
+                // 요청이 실패했을 때 실행되는 부분
+                error: function (err) {
+                    console.log("실패", err);
+                },
+            })
+        };
   </script>
-</html>
+

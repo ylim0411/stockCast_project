@@ -13,6 +13,6 @@ public class AccountingRepository {
     private final SqlSessionTemplate sql;
 
     public List<AccountingDTO> findAll() {
-        return sql.selectList("findAll");
+        return sql.selectList("Accounting.findAll");
     }
 }

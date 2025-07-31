@@ -13,11 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class SaleController {
     private final SaleService service;
 
-    // 임시라 나중에 지워야함
-    @GetMapping("/main")
-    private String mainForm(){
-        return "main";
-    }
     // 판매실적 화면 이동
     @GetMapping("/")
     public String chartForm(){
@@ -26,13 +21,13 @@ public class SaleController {
 }
 @RestController
 @RequestMapping("/sale")
-class test{
+class SaleAjax{
     @GetMapping("/hello")
-    public String test(){
+    public String Ajax(){
         System.out.println("Wlrg");
         return "<div class=\"container\">\n" +
                 "        <div class=\"sale-header\"></div>\n" +
-                "            <h1>판매실적</h1>\n" +
+                "            <h1>xstese</h1>\n" +
                 "        <div class=\"sale-header\"></div>\n" +
                 "        <div class=\"chart-container\">\n" +
                 "            <div class=\"doughnut-chart\">\n" +

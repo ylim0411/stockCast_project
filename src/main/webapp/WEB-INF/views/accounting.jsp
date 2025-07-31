@@ -7,111 +7,12 @@
     <title>index</title>
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+     <%@ include file="/WEB-INF/views/header.jsp" %>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
         <!-- Bootstrap CSS -->
 
 </head>
 <body>
- <header>
-      <div class="logo">
-        <img
-          src="${pageContext.request.contextPath}/static/images/logo.png"
-          alt="logo"
-        />
-      </div>
-      <div class="admin">
-        <p>홍길동 님</p> <!-- 아이디 or 이름 넣어야 함 -->
-      </div>
-      <nav>
-        <ul>
-          <li class="main-menu on">
-            <a href="#">
-              <img
-                src="${pageContext.request.contextPath}/static/images/home.png"
-                alt="homeIcon"
-              />
-              <span>대시보드</span>
-            </a>
-          </li>
-          <li class="main-menu">
-            <a href="#">
-              <img
-                src="${pageContext.request.contextPath}/static/images/product.png"
-                alt="productIcon"
-              />
-              <span>상품관리</span>
-            </a>
-            <ul class="sub-menu">
-              <li class="on">
-                <a href="#"> 상품 카테고리 </a>
-              </li>
-              <li>
-                <a href="#"> 전체 상품 목록 </a>
-              </li>
-              <li>
-                <a href="#"> 재고 현황 </a>
-              </li>
-            </ul>
-          </li>
-          <li class="main-menu">
-            <a href="#">
-              <img
-                src="${pageContext.request.contextPath}/static/images/order.png"
-                alt="orderIcon"
-              />
-              <span>발주관리</span>
-            </a>
-            <ul class="sub-menu">
-              <li>
-                <a href="#" class="on"> 발주 현황 </a>
-              </li>
-              <li>
-                <a href="#"> 발주서 작성 </a>
-              </li>
-            </ul>
-          </li>
-          <li class="main-menu">
-            <a href="#">
-              <img
-                src="${pageContext.request.contextPath}/static/images/sale.png"
-                alt="saleIcon"
-              />
-              <span>매출관리</span>
-            </a>
-            <ul class="sub-menu">
-              <li>
-                <a href="#" class="on"> 판매 실적 </a>
-              </li>
-              <li>
-                <a href="#"> 회계 관리 </a>
-              </li>
-            </ul>
-          </li>
-          <li class="main-menu">
-            <a href="#">
-              <img
-                src="${pageContext.request.contextPath}/static/images/customer.png"
-                alt="customerIcon"
-              />
-              <span>고객분석</span>
-            </a>
-          </li>
-          <li class="main-menu">
-            <a href="#">
-              <img
-                src="${pageContext.request.contextPath}/static/images/client.png"
-                alt="clientIcon"
-              />
-              <span>거래처관리</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="userContext">
-        <a href="#" class="on">마이페이지</a>
-        <a href="#">로그아웃</a>
-      </div>
-    </header>
     <div class="container">
         <div class="accounting-header">
           <h1>회계 관리</h1>
@@ -138,10 +39,10 @@
                         <td>
                             <a href="/account?id=${account.orderId}"> ${account.transactionDate}</a>
                         </td>
-                        <td>${account.boardWriter}</td>
-                        <td>${account.boardContent}</td>
-                        <td>${account.boardCreatedTime}</td>
-                        <td><button onclick="#">${account.boardHits}</button></td>
+                        <td>${account.salesAmount}</td>
+                        <td>${account.netProfit}</td>
+                        <td>${account.cost}</td>
+                        <td><button onclick="#">거래명세서</td>
                     </tr>
                 </c:forEach>
             </table>
