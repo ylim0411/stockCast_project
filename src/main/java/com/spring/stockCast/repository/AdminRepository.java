@@ -1,5 +1,6 @@
 package com.spring.stockCast.repository;
 
+import com.spring.stockCast.dto.AdminDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -8,4 +9,8 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class AdminRepository {
     private final SqlSessionTemplate sql;
+
+    public int join(AdminDTO adminDTO) {
+        return sql.insert("Admin.join", adminDTO);
+    }
 }
