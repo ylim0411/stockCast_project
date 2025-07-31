@@ -1,6 +1,9 @@
 package com.spring.stockCast.service;
 
 
+
+import com.spring.stockCast.dto.AdminDTO;
+
 import com.spring.stockCast.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,4 +13,7 @@ import org.springframework.stereotype.Service;
 public class AdminService {
     private final AdminRepository adminRepository;
 
+    public int join(AdminDTO adminDTO) {
+        return adminRepository.join(adminDTO);
+    }
 }
