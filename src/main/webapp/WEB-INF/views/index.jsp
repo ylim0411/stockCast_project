@@ -8,5 +8,6 @@
 </head>
 <body>
     <h2>Hello Spring Framework</h2>
+    <a href="/sale/">그래프</a>
 </body>
 </html>
