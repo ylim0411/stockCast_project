@@ -6,9 +6,10 @@
     <meta charset="UTF-8">
     <title>index</title>
      <meta name="viewport" content="width=device-width, initial-scale=1">
+     <script src="${pageContext.request.contextPath}/webjars/chartjs/2.9.4/Chart.min.js"></script>
      <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-        <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/chart.css"/>
 
 </head>
 <body>
@@ -80,7 +81,7 @@
             </a>
             <ul class="sub-menu">
               <li>
-                <a href="#" class="on"> 판매 실적 </a>
+                <a href onclick="onSale()" class="on"> 판매 실적 </a>
               </li>
               <li>
                 <a href="#"> 회계 관리 </a>
@@ -112,45 +113,17 @@
         <a href="#">로그아웃</a>
       </div>
     </header>
-    <div class="container">
-        <div class="accounting-header">
-          <h1>회계 관리</h1>
+    <div id="main" class="container">
+        <div>
+          <h1>임시 메인화면</h1>
         </div>
-        <div class="caption">
-          <input type="date" name="startDate"> ~
-          <input type="date" name="endDate">
-          <input type="text" name="orderNumber" placeholder="발주번호">
-          <button onclick="onSearch()">검색</button>
-          <button class="btn btn-primary" type="submit">Button</button></br>
-        </div>
-         <table>
-                <tr>
-                    <th>발주번호</th>
-                    <th>발주일자</th>
-                    <th>거래처명</th>
-                    <th>상품명</th>
-                    <th>총금액</th>
-                    <th>보고서</th>
-                </tr>
-                <c:forEach items="${accountList}" var="account">
-                    <tr>
-                        <td>${account.orderId}</td>
-                        <td>
-                            <a href="/account?id=${account.orderId}"> ${account.transactionDate}</a>
-                        </td>
-                        <td>${account.boardWriter}</td>
-                        <td>${account.boardContent}</td>
-                        <td>${account.boardCreatedTime}</td>
-                        <td><button onclick="#">${account.boardHits}</button></td>
-                    </tr>
-                </c:forEach>
-            </table>
     </div>
 </body>
 <script>
   $(function () {
         // 메인 메뉴 클릭 시
         $("li.main-menu > a").on("click", function (e) {
+			// 페이지이동 방지
           e.preventDefault();
 
           const $clickedMenu = $(this).parent(); // li.main-menu
@@ -191,6 +164,26 @@
           $(this).parent().addClass("on"); // 클릭된 항목 활성화
         });
       });
+
+  const onSale = () => {
+      const mainDiv = $("#main");
+      $.ajax({
+          // 요청방식: get
+          // 요청주소: /ex01
+          type: "get",
+          url: "/sale/hello",
+          // 요청이 성공했을 때 실행되는 부분
+          success: function (res) {
+              console.log("성공", res)
+              mainDiv.html(res);
+
+          },
+          // 요청이 실패했을 때 실행되는 부분
+          error: function (err) {
+              console.log("실패", err);
+          },
+      })
+  };
 
 </script>
 </html>

@@ -78,10 +78,10 @@
             </a>
             <ul class="sub-menu">
               <li>
-                <a href="#" class="on"> 판매 실적 </a>
+                <a href="/sale/" class="on"> 판매 실적 </a>
               </li>
               <li>
-                <a href="#"> 회계 관리 </a>
+                <a href="/accounting/"> 회계 관리 </a>
               </li>
             </ul>
           </li>
