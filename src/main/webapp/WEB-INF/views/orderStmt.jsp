@@ -1,159 +1,43 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="/WEB-INF/views/header.jsp" %>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>index</title>
+    <title>발주 현황</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+
   </head>
   <body>
-    <header>
-      <div class="logo">
-        <img
-          src="${pageContext.request.contextPath}/static/images/logo.png"
-          alt="logo"
-        />
+    <div class="container">
+      <div class="title">
+        <p>발주 관리</p>
+        <h2>발주 현황</h2>
       </div>
-      <div class="admin">
-        <p>홍길동 님</p> <!-- 아이디 or 이름 넣어야 함 -->
-      </div>
-      <nav>
-        <ul>
-          <li class="main-menu on">
-            <a href="#">
-              <img
-                src="${pageContext.request.contextPath}/static/images/home.png"
-                alt="homeIcon"
-              />
-              <span>대시보드</span>
-            </a>
-          </li>
-          <li class="main-menu">
-            <a href="#">
-              <img
-                src="${pageContext.request.contextPath}/static/images/product.png"
-                alt="productIcon"
-              />
-              <span>상품관리</span>
-            </a>
-            <ul class="sub-menu">
-              <li class="on">
-                <a href="#"> 상품 카테고리 </a>
-              </li>
-              <li>
-                <a href="#"> 전체 상품 목록 </a>
-              </li>
-              <li>
-                <a href="#"> 재고 현황 </a>
-              </li>
-            </ul>
-          </li>
-          <li class="main-menu">
-            <a href="#">
-              <img
-                src="${pageContext.request.contextPath}/static/images/order.png"
-                alt="orderIcon"
-              />
-              <span>발주관리</span>
-            </a>
-            <ul class="sub-menu">
-              <li>
-                <a href="#" class="on"> 발주 현황 </a>
-              </li>
-              <li>
-                <a href="#"> 발주서 작성 </a>
-              </li>
-            </ul>
-          </li>
-          <li class="main-menu">
-            <a href="#">
-              <img
-                src="${pageContext.request.contextPath}/static/images/sale.png"
-                alt="saleIcon"
-              />
-              <span>매출관리</span>
-            </a>
-            <ul class="sub-menu">
-              <li>
-                <a href="#" class="on"> 판매 실적 </a>
-              </li>
-              <li>
-                <a href="#"> 회계 관리 </a>
-              </li>
-            </ul>
-          </li>
-          <li class="main-menu">
-            <a href="#">
-              <img
-                src="${pageContext.request.contextPath}/static/images/customer.png"
-                alt="customerIcon"
-              />
-              <span>고객분석</span>
-            </a>
-          </li>
-          <li class="main-menu">
-            <a href="#">
-              <img
-                src="${pageContext.request.contextPath}/static/images/client.png"
-                alt="clientIcon"
-              />
-              <span>거래처관리</span>
-            </a>
-          </li>
-        </ul>
-      </nav>
-      <div class="userContext">
-        <a href="#" class="on">마이페이지</a>
-        <a href="#">로그아웃</a>
-      </div>
-    </header>
-    <div class="container"></div>
+
+    <table>
+       <tr>
+        <th>발주번호</th>
+        <th>발주일자</th>
+        <th>구매단가</th>
+        <th>수량</th>
+        <th>총금액</th>
+        <th>발주서</th>
+    </tr>
+    <c:forEach items="${orderStmt}" var="order">
+        <tr>
+            <td>${order.orderStmtId}</td>
+            <td>${order.orderDate}</td>
+            <td>${order.purchasePrice}</td>
+            <td>${order.purchaseQty}</td>
+            <td>${order.purchasePrice * order.purchaseQty}</td>
+            <td><button class="btn btn-blue">발주서 보기</button></td>
+        </tr>
+    </c:forEach>
+    </table>
+    </div>
   </body>
-  <script>
-    $(function () {
-      // 메인 메뉴 클릭 시
-      $("li.main-menu > a").on("click", function (e) {
-        e.preventDefault();
-
-        const $clickedMenu = $(this).parent(); // li.main-menu
-        const $subMenu = $clickedMenu.find(".sub-menu");
-
-        // 현재 열려있는 다른 메뉴 닫기
-        $("li.main-menu")
-          .not($clickedMenu)
-          .removeClass("on")
-          .find(".sub-menu")
-          .slideUp()
-          .find("li")
-          .removeClass("on");
-
-        // 현재 클릭한 메뉴 toggle
-        const isOpen = $clickedMenu.hasClass("on");
-        if (isOpen) {
-          // 열려 있으면 닫기
-          $clickedMenu.removeClass("on");
-          $subMenu.slideUp();
-        } else {
-          // 닫혀 있으면 열기
-          $clickedMenu.addClass("on");
-          $subMenu.slideDown();
-
-          // 하위 첫 번째 서브 메뉴 항목을 활성화
-          const $firstSubItem = $subMenu.find("li").first();
-          $(".sub-menu li").removeClass("on"); // 전체 초기화
-          $firstSubItem.addClass("on");
-        }
-      });
-
-      // 서브 메뉴 클릭 시 활성화
-      $(".sub-menu li a").on("click", function (e) {
-        e.preventDefault();
-
-        $(".sub-menu li").removeClass("on"); // 전체 비활성화
-        $(this).parent().addClass("on"); // 클릭된 항목 활성화
-      });
-    });
-  </script>
 </html>
