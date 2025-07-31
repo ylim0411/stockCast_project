@@ -6,6 +6,7 @@ import com.spring.stockCast.repository.OrderStmtRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -15,5 +16,13 @@ public class OrderStmtService {
 
     public List<OrderStmtDTO> findAll() {
         return orderStmtRepository.findAll();
+    }
+
+    public List<OrderStmtDTO> findByDate(LocalDate startDate, LocalDate endDate) {
+        return orderStmtRepository.findByDateBetween(startDate,endDate);
+    }
+
+    public List<OrderStmtDTO> findByNo(String orderStmtId) {
+        return orderStmtRepository.findByNo(orderStmtId);
     }
 }
