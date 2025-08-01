@@ -24,7 +24,11 @@ public class AdminController {
     // 실제 게시글을 DB에 저장
     @PostMapping("/login")
     public String login(@ModelAttribute AdminDTO adminDTO) {
-        return "";
+        if (adminService.login(adminDTO))
+        {
+            return "main";
+        }
+        return "redirect:/admin/login";
     }
 
     @GetMapping("join")
@@ -39,7 +43,7 @@ public class AdminController {
         int joinResult = adminService.join(adminDTO);
         if (joinResult > 0)
         {
-            return "redirect:/join";
+            return "redirect:/admin/join";
         }
         return "login";
     }
