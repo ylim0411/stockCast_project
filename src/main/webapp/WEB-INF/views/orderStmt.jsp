@@ -53,7 +53,7 @@
         </tr>
     </c:forEach>
     </table>
-    </div>
+    </div> <!-- container -->
   </body>
 
   <script>
