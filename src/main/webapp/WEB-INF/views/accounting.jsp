@@ -45,15 +45,15 @@
                         <td>${sale.clientName}</td>
                         <td>${sale.productName}</td>
                         <td>${sale.price}</td>
-                        <td><button type="button" class="btn btn-blue" onclick="onSaleStmt()">거래명세서</td>
+                        <td><button type="button" class="btn btn-blue" onclick="onSaleStmt(${sale.orderId})">거래명세서</td>
                     </tr>
                 </c:forEach>
             </table>
     </div>
 </body>
 <script>
-  const onSaleStmt = () => {
-        location.href = "/saleStmt/detail";
+  const onSaleStmt = (id) => {
+        location.href = "/sale/detail?o_id="+id;
     }
 </script>
 </html>

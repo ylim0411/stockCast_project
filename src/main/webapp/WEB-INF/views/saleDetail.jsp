@@ -1,5 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %> <%@ include
-file="/WEB-INF/views/header.jsp" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ include file="/WEB-INF/views/header.jsp" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,9 +34,6 @@ file="/WEB-INF/views/header.jsp" %>
         <body>
           <div>
             <div class="dateil-header">
-              <div>
-                박스
-              </div>
               <table class="deteil-table">
                 <tr>
                   <th colspan="5">거래명세서</th>
@@ -74,53 +73,31 @@ file="/WEB-INF/views/header.jsp" %>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>09/21</td>
-                  <td>전륜에어스트럿壹[EA]</td>
-                  <td>10</td>
-                  <td>10,000</td>
-                  <td>100,000</td>
-                  <td>10,000</td>
-                  <td>9.25 세미테크 제천공장</td>
-                </tr>
-                <tr>
-                  <td>09/21</td>
-                  <td>후륜에어스프링[EA]</td>
-                  <td>20</td>
-                  <td>30,000</td>
-                  <td>600,000</td>
-                  <td>60,000</td>
-                  <td>9.25 세미테크 제천공장</td>
-                </tr>
-                <tr>
-                  <td>09/21</td>
-                  <td>에어탱크 부품[EA]</td>
-                  <td>10</td>
-                  <td>50,000</td>
-                  <td>500,000</td>
-                  <td>50,000</td>
-                  <td>9.25 세미테크 제천공장</td>
-                </tr>
-                <tr>
-                  <td>09/21</td>
-                  <td>에어탱크 부품.J2[EA]</td>
-                  <td>10</td>
-                  <td>55,000</td>
-                  <td>550,000</td>
-                  <td>55,000</td>
-                  <td>9.25 세미테크 제천공장</td>
-                </tr>
+              <c:set var="totalQty" value="0" />
+              <c:set var="totalAmount" value="0" />
+                <c:forEach items="${accoList}" var="acco">
+                  <tr>
+                    <td><fmt:formatDate value = "${acco.orderDate}" pattern="MM/dd"/></td>
+                    <td>${acco.productName}</td>
+                    <td>${acco.purchaseQty}</td>
+                    <td>${acco.purchasePrice}</td>
+                    <td>${acco.purchasePrice*acco.purchaseQty}</td>
+                    <td>${(acco.purchasePrice*acco.purchaseQty)*0.1}</td>
+                  </tr>
+                  <c:set var="totalQty" value="${totalQty+acco.purchaseQty}"/>
+                  <c:set var="totalAmount" value="${totalAmount+(acco.purchasePrice*acco.purchaseQty)}" />
+                </c:forEach>
               </tbody>
               <tfoot>
                 <tr>
                   <td>수량</td>
-                  <td>50</td>
+                  <td>${totalQty}</td>
                   <td>공급가액</td>
-                  <td>1,750,000</td>
+                  <td>${totalAmount}</td>
                   <td>VAT</td>
-                  <td>175,000</td>
+                  <td>${totalAmount*0.1}</td>
                   <td>합계</td>
-                  <td>1,925,000</td>
+                  <td>${totalAmount*1.1}</td>
                   <td>인수</td>
                   <td></td>
                 </tr>

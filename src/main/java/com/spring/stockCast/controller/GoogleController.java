@@ -50,7 +50,7 @@ public class GoogleController {
                 .build();
 
         Userinfo userInfo = oauth2.userinfo().get().execute();
-        System.out.println(userInfo);
+        System.out.println("GoogleController :  "+userInfo);
 
         if (adminService.isJoinedById(userInfo.getEmail()))
         {

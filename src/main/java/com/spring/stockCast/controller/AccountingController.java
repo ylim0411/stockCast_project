@@ -16,12 +16,5 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/accounting")
 public class AccountingController {
-    private final AccountingService accountingService;
 
-    @GetMapping("/")
-    public String salelistForm(Model model){
-        List<SaleListDTO> saleList = accountingService.findAll();
-        model.addAttribute("saleList",saleList);
-        return "accounting";
-    }
 }
