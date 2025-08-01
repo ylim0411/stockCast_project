@@ -16,5 +16,6 @@
         <typeAlias type="com.spring.stockCast.dto.SaleDTO" alias="Sale"></typeAlias>
         <typeAlias type="com.spring.stockCast.dto.SaleStmtDTO" alias="SaleStmt"></typeAlias>
         <typeAlias type="com.spring.stockCast.dto.StoreDTO" alias="Store"></typeAlias>
+        <typeAlias type="com.spring.stockCast.dto.SaleListDTO" alias="SaleList"></typeAlias>
     </typeAliases>
 </configuration>

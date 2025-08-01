@@ -13,12 +13,13 @@
 </head>
 <body>
     <div class="container">
-        <div class="sale-header"></div>
-            <h1>판매실적</h1>
-        <div class="sale-header"></div>
+        <div class="title-box">
+            <p class="sub-title">매출 관리</p>
+            <h2 class="title">판매실적</h2>
+        </div>
         <div class="chart-container">
             <div class="doughnut-chart">
-                <canvas id="itemsChart"></canvas>
+                <canvas id="genderChart"></canvas>
             </div>
             <div class="line-chart">
                 <canvas id="salesChart"></canvas>
@@ -27,30 +28,30 @@
     </div>
 
     <script>
-        // 도넛 차트 (판매 항목별 비율)
-        var itemCtx = document.getElementById('itemsChart').getContext('2d');
+        // 도넛 차트 (성별에 따른 고객분류)
+        var itemCtx = document.getElementById('genderChart').getContext('2d');
         var itemsChart = new Chart(itemCtx, {
             type: 'doughnut',  // 도넛 차트 유형
             data: {
-                labels: ['전자제품', '의류', '식품', '도서', '가구', '기타'], // 라벨 예시
+                labels: ["남자","여자","기타"], // 라벨 예시
                 datasets: [{
-                    label: '판매 항목별 비율', // 데이터셋 라벨
-                    data: [12, 19, 3, 5, 2, 3], // 실제 데이터 값
+                    label: '성별에 따른 고객분류', // 데이터셋 라벨
+                    data: [${customerAge.man}, ${customerAge.woman}, ${customerAge.etc}], // 실제 데이터 값
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.7)', // 색상 투명도 조정
                         'rgba(54, 162, 235, 0.7)',
-                        'rgba(255, 206, 86, 0.7)',
-                        'rgba(75, 192, 192, 0.7)',
-                        'rgba(153, 102, 255, 0.7)',
-                        'rgba(255, 159, 64, 0.7)'
+                        'rgba(255, 206, 86, 0.7)'
+                        //'rgba(75, 192, 192, 0.7)',
+                        //'rgba(153, 102, 255, 0.7)',
+                        //'rgba(255, 159, 64, 0.7)'
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
                         'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(255, 206, 86, 1)'
+                        //'rgba(75, 192, 192, 1)',
+                        //'rgba(153, 102, 255, 1)',
+                        //'rgba(255, 159, 64, 1)'
                     ],
                     borderWidth: 1
                 }]
