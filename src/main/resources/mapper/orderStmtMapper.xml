@@ -2,9 +2,17 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="OrderStmt">
-<!--    <select id="findAll" parameterType="int" resultType="comment">-->
-<!--        SELECT * FROM comment WHERE boardId = #{boardId} ORDER BY id DESC-->
-<!--    </select>-->
+<mapper namespace="Orders">
+    <select id="findAll" parameterType="OrderStmt" resultType="OrderStmt">
+        SELECT * FROM orderStmt ORDER BY orderId DESC
+    </select>
+
+    <select id="findByDateBetween" resultType="OrderStmt">
+        SELECT * FROM orderStmt WHERE orderDate BETWEEN #{startDate} AND #{endDate}
+    </select>
+
+    <select id="findByNo" resultType="OrderStmt">
+        SELECT * FROM orderStmt WHERE orderStmtId LIKE CONCAT('%', #{orderStmtId}, '%')
+    </select>
 
 </mapper>
