@@ -153,8 +153,7 @@
 
   /* button */
   .container .btn {
-
-    padding: 10px 20px;
+    padding: 5px 10px;
     font-size: var(--font-size-base);
     background-color: transparent;
     border-radius: var(--border-radius-base5);
@@ -247,4 +246,10 @@
       color: var(--color-black);
       background-color: var(--color-white);
     }
+
+    /* 거래명세서 css */
+    .detail-header {
+         display: flex;
+         justify-content: flex-end;
+     }
 

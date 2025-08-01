@@ -20,8 +20,10 @@
         </div>
         <nav>
           <ul>
-            <li class="main-menu ${fn:contains(uri, '/dashboard') ? 'on' : ''}">
-              <a href="${pageContext.request.contextPath}/dashboard">
+
+            <li class="main-menu ${fn:contains(uri, '/main') ? 'on' : ''}">
+
+              <a href="${pageContext.request.contextPath}/main">
                 <img
                   src="${pageContext.request.contextPath}/static/images/home.png"
                   alt="homeIcon"
@@ -29,8 +31,8 @@
                 <span>대시보드</span>
               </a>
             </li>
-            <li class="main-menu">
-              <a href="#">
+            <li class="main-menu ${fn:contains(uri, '/product') ? 'on' : ''}">
+              <a href="${pageContext.request.contextPath}/order/orderSave">
                 <img
                   src="${pageContext.request.contextPath}/static/images/product.png"
                   alt="productIcon"
@@ -39,13 +41,13 @@
               </a>
               <ul class="sub-menu">
                 <li class="on">
-                  <a href="#"> 상품 카테고리 </a>
+                  <a href="${pageContext.request.contextPath}/order/orderSave"> 상품 카테고리 </a>
                 </li>
                 <li>
-                  <a href="#"> 전체 상품 목록 </a>
+                  <a href="${pageContext.request.contextPath}/order/orderSave"> 전체 상품 목록 </a>
                 </li>
                 <li>
-                  <a href="#"> 재고 현황 </a>
+                  <a href="${pageContext.request.contextPath}/order/orderSave"> 재고 현황 </a>
                 </li>
               </ul>
             </li>
@@ -63,8 +65,8 @@
                </li>
              </ul>
            </li>
-            <li class="main-menu">
-              <a href="#">
+            <li class="main-menu  ${fn:contains(uri, '/sale') ? 'on' : ''}">
+              <a href="${pageContext.request.contextPath}/order/orderSave">
                 <img
                   src="${pageContext.request.contextPath}/static/images/sale.png"
                   alt="saleIcon"
@@ -72,16 +74,18 @@
                 <span>매출관리</span>
               </a>
               <ul class="sub-menu">
-                <li>
-                  <a href="#" onclick="onSale()" class="on"> 판매 실적 </a>
+
+                <li class="${fn:contains(uri, '/sale') ? 'on' : ''}">
+                  <a href="${pageContext.request.contextPath}/sale/"> 판매 실적 </a>
                 </li>
-                <li>
-                  <a href="#" onclick="onAccounting()"> 회계 관리 </a>
+                <li class="${fn:contains(uri, '/accounting') ? 'on' : ''}">
+                  <a href="${pageContext.request.contextPath}/accounting/" onclick="onAccounting()"> 회계 관리 </a>
+
                 </li>
               </ul>
             </li>
-            <li class="main-menu">
-              <a href="#">
+            <li class="main-menu  ${fn:contains(uri, '/customer') ? 'on' : ''}">
+              <a href="${pageContext.request.contextPath}/order/orderSave"">
                 <img
                   src="${pageContext.request.contextPath}/static/images/customer.png"
                   alt="customerIcon"
@@ -89,8 +93,8 @@
                 <span>고객분석</span>
               </a>
             </li>
-            <li class="main-menu">
-              <a href="#">
+            <li class="main-menu  ${fn:contains(uri, '/client') ? 'on' : ''}">
+              <a href="${pageContext.request.contextPath}/order/orderSave">
                 <img
                   src="${pageContext.request.contextPath}/static/images/client.png"
                   alt="clientIcon"
@@ -102,7 +106,7 @@
         </nav>
         <div class="userContext">
           <a href="#" class="on">마이페이지</a>
-          <a href="#">로그아웃</a>
+          <a href="/">로그아웃</a>
         </div>
       </header>
 
@@ -111,6 +115,7 @@
      // 메인 메뉴 클릭 시
      $("li.main-menu > a").on("click", function (e) {
          const href = $(this).attr("href");
+         console.log("main-menu clicked:", $(this).attr("href"));
 
          // href가 "#"인 경우에만 기본 클릭 막음
          if (href === "#") {
@@ -138,6 +143,7 @@
        $firstSubItem.addClass("on");
      });
 
+
       // 서브 메뉴 클릭 시 활성화
       $(".sub-menu li a").on("click", function (e) {
         e.preventDefault();
@@ -146,47 +152,7 @@
         $(this).parent().addClass("on"); // 클릭된 항목 활성화
       });
     });
-    const onSale = () => {
-          const mainDiv = $("#main");
-          $.ajax({
-              type: "get",
-              url: "/sale/hello",
-              // 요청이 성공했을 때 실행되는 부분
-              success: function (res) {
 
-                  console.log("성공", res);
-                  mainDiv.html(res);
-
-              },
-              // 요청이 실패했을 때 실행되는 부분
-              error: function (err) {
-                  console.log("실패", err);
-              },
-          })
-      };
-        const onAccounting = () => {
-            const mainDiv = $("#main");
-            $.ajax({
-                type: "get",
-                url: "/accounting/hello",
-                // 요청이 성공했을 때 실행되는 부분
-                success: function (res) {
-                    console.log("성공", res);
-                    mainDiv.html(res);
-
-                },
-                // 요청이 실패했을 때 실행되는 부분
-                error: function (err) {
-                    console.log("실패", err);
-                },
-            })
-        };
-     // 서브 메뉴 클릭 시 활성화
-     $(".sub-menu li a").on("click", function () {
-       $(".sub-menu li").removeClass("on");
-       $(this).parent().addClass("on");
-     });
-   });
 
   </script>
 
