@@ -65,7 +65,7 @@
             <th>구매단가</th>
             <th>수량</th>
             <th>총 금액</th>
-            <th>액션</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -75,9 +75,9 @@
             </td>
             <td>
               <select name="item" class="item-select">
-                <option value="${productName}">productName</option>
-                <option value="${productName}">productName</option>
-                <option  value="${productName}">productName</option>
+                <c:forEach var="p" items="${product}">
+                <option value="${p.productId}" data-name="${p.productName}" date-price="${p.price}">${p.name}</option>
+              </c:forEach>
               </select>
             </td>
             <td>
@@ -86,7 +86,7 @@
                 name="price"
                 class="price-input"
                 min="0"
-                value="${price}"
+                value=""
                 aria-label="구매단가"
               />
             </td>
@@ -96,7 +96,6 @@
                 name="count"
                 class="count-input"
                 min="0"
-                value="3"
                 aria-label="수량"
               />
             </td>
@@ -107,7 +106,6 @@
                 class="total-display"
                 readonly
                 aria-label="총 금액"
-                value="4,500"
               />
             </td>
             <td>
