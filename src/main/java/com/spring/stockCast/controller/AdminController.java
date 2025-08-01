@@ -47,5 +47,11 @@ public class AdminController {
         }
         return "login";
     }
+    @GetMapping("googleJoin")
+    public String googleJoinForm() {
+
+
+        return "join";
+    }
 
 }

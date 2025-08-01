@@ -84,9 +84,18 @@
       <form action="/admin/login" method="post">
         <input type="text" name="loginId" placeholder="아이디" />
         <input type="text" name="loginPw" placeholder="비밀번호" />
-
         <input type="submit" value="로그인" class="btn" />
       </form>
+      <button onclick="join()">회원가입</button>
+      <button onclick="googleJoin()">구글 계정으로 회원가입</button>
     </div>
+    <script>
+      const join = () => {
+        location.href = "/admin/join";
+      };
+      const googleJoin = () => {
+        location.href = "/admin/googleJoin";
+      };
+    </script>
   </body>
 </html>
