@@ -10,4 +10,8 @@
     <select id="login" resultType="Admin">
         SELECT * FROM admin WHERE loginId = #{loginId} AND loginPw = #{loginPw}
     </select>
+
+    <select id="isJoinedById" resultType="Admin">
+        SELECT * FROM admin WHERE loginId = #{email}
+    </select>
 </mapper>

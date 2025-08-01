@@ -69,12 +69,12 @@
       }
 
       input[type="submit"] {
-        background-color: #007bff;
+        border-color: #007bff;
         color: white;
       }
 
       input[type="submit"]:hover {
-        background-color: #0056b3;
+        border-color: #007bff;
       }
     </style>
   </head>
@@ -87,14 +87,20 @@
         <input type="submit" value="로그인" class="btn" />
       </form>
       <button onclick="join()">회원가입</button>
-      <button onclick="googleJoin()">구글 계정으로 회원가입</button>
+      <button onclick="googleJoin()">구글 계정으로 연동</button>
     </div>
     <script>
       const join = () => {
         location.href = "/admin/join";
       };
       const googleJoin = () => {
-        location.href = "/admin/googleJoin";
+        location.href =
+          "https://accounts.google.com/o/oauth2/v2/auth?" +
+          "client_id=731793300974-m255ruf4ph38c1j01nqaesitglj2umu3.apps.googleusercontent.com" +
+          "&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Foauth2callback" +
+          "&response_type=code" +
+          "&scope=email%20profile" +
+          "&access_type=offline";
       };
     </script>
   </body>

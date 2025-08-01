@@ -20,4 +20,8 @@ public class AdminService {
     public boolean login(AdminDTO adminDTO) {
         return adminRepository.login(adminDTO);
     }
+
+    public boolean isJoinedById(String email) {
+        return adminRepository.isJoinedById(email);
+    }
 }

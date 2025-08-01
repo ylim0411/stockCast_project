@@ -41,7 +41,7 @@ public class AdminController {
     public String join(@ModelAttribute AdminDTO adminDTO) {
         System.out.println(adminDTO);
         int joinResult = adminService.join(adminDTO);
-        if (joinResult > 0)
+        if (joinResult == 0)
         {
             return "redirect:/admin/join";
         }
