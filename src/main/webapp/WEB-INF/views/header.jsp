@@ -20,9 +20,7 @@
         </div>
         <nav>
           <ul>
-
             <li class="main-menu ${fn:contains(uri, '/main') ? 'on' : ''}">
-
               <a href="${pageContext.request.contextPath}/main">
                 <img
                   src="${pageContext.request.contextPath}/static/images/home.png"
@@ -66,7 +64,7 @@
              </ul>
            </li>
             <li class="main-menu  ${fn:contains(uri, '/sale') ? 'on' : ''}">
-              <a href="${pageContext.request.contextPath}/order/orderSave">
+              <a href="${pageContext.request.contextPath}/sale/">
                 <img
                   src="${pageContext.request.contextPath}/static/images/sale.png"
                   alt="saleIcon"
@@ -74,25 +72,21 @@
                 <span>매출관리</span>
               </a>
               <ul class="sub-menu">
-
                 <li class="${fn:contains(uri, '/sale') ? 'on' : ''}">
                   <a href="${pageContext.request.contextPath}/sale/"> 판매 실적 </a>
                 </li>
                 <li class="${fn:contains(uri, '/accounting') ? 'on' : ''}">
-                  <a href="${pageContext.request.contextPath}/accounting/" onclick="onAccounting()"> 회계 관리 </a>
+                  <a href="${pageContext.request.contextPath}/sale/accounting" onclick="onAccounting()"> 회계 관리 </a>
 
                 </li>
               </ul>
             </li>
-            <li class="main-menu  ${fn:contains(uri, '/customer') ? 'on' : ''}">
-              <a href="${pageContext.request.contextPath}/order/orderSave"">
-                <img
-                  src="${pageContext.request.contextPath}/static/images/customer.png"
-                  alt="customerIcon"
-                />
-                <span>고객분석</span>
-              </a>
-            </li>
+          <li class="main-menu  ${fn:contains(uri, '/customer') ? 'on' : ''}">
+            <a href="${pageContext.request.contextPath}/order/orderSave">
+              <img src="${pageContext.request.contextPath}/static/images/customer.png" alt="customerIcon" />
+              <span>고객분석</span>
+            </a>
+          </li>
             <li class="main-menu  ${fn:contains(uri, '/client') ? 'on' : ''}">
               <a href="${pageContext.request.contextPath}/order/orderSave">
                 <img
@@ -111,48 +105,28 @@
       </header>
 
   <script>
-   $(function () {
-     // 메인 메뉴 클릭 시
-     $("li.main-menu > a").on("click", function (e) {
-         const href = $(this).attr("href");
-         console.log("main-menu clicked:", $(this).attr("href"));
+ $(function () {
+   // 메인 메뉴 클릭 시
+   $("li.main-menu > a").on("click", function (e) {
+     const href = $(this).attr("href");
+     if (href === "#") {
+       e.preventDefault();
+     }
 
-         // href가 "#"인 경우에만 기본 클릭 막음
-         if (href === "#") {
-           e.preventDefault();
-         }
+     const $clickedMenu = $(this).parent();
+     const $subMenu = $clickedMenu.find(".sub-menu");
+     const isAlreadyOpen = $clickedMenu.hasClass("on");
 
-       const $clickedMenu = $(this).parent(); // li.main-menu
-       const $subMenu = $clickedMenu.find(".sub-menu");
+     if (isAlreadyOpen) return; // 열린 상태면 아무것도 안 함
 
-       const isAlreadyOpen = $clickedMenu.hasClass("on");
+     $("li.main-menu").removeClass("on").find(".sub-menu").stop(true, true).slideUp();
 
-       // 이미 열려있다면 아무것도 하지 않음 (닫히지 않도록)
-       if (isAlreadyOpen) return;
+     $clickedMenu.addClass("on");
+     $subMenu.stop(true, true).slideDown();
 
-       // 다른 메뉴 닫기
-       $("li.main-menu").removeClass("on").find(".sub-menu").slideUp();
-
-       // 클릭한 메뉴 열기
-       $clickedMenu.addClass("on");
-       $subMenu.stop(true, true).slideDown();
-
-       // 서브 메뉴 중 첫 번째 항목을 기본 활성화
-       const $firstSubItem = $subMenu.find("li").first();
-       $(".sub-menu li").removeClass("on");
-       $firstSubItem.addClass("on");
-     });
-
-
-      // 서브 메뉴 클릭 시 활성화
-      $(".sub-menu li a").on("click", function (e) {
-        e.preventDefault();
-
-        $(".sub-menu li").removeClass("on"); // 전체 비활성화
-        $(this).parent().addClass("on"); // 클릭된 항목 활성화
-      });
-    });
-
-
+     $(".sub-menu li").removeClass("on");
+     $subMenu.find("li").first().addClass("on");
+   });
+ });
   </script>
 
