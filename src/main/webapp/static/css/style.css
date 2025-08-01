@@ -246,3 +246,8 @@
       color: var(--color-black);
       background-color: var(--color-white);
     }
+    /* 거래명세서 css */
+    .detail-header {
+         display: flex;
+         justify-content: flex-end;
+     }

@@ -20,7 +20,9 @@
         </div>
         <nav>
           <ul>
+
             <li class="main-menu ${fn:contains(uri, '/main') ? 'on' : ''}">
+
               <a href="${pageContext.request.contextPath}/main">
                 <img
                   src="${pageContext.request.contextPath}/static/images/home.png"
@@ -72,11 +74,13 @@
                 <span>매출관리</span>
               </a>
               <ul class="sub-menu">
-                <li>
-                  <a href="${pageContext.request.contextPath}/order/orderSave" onclick="onSale()" class="on"> 판매 실적 </a>
+
+                <li class="${fn:contains(uri, '/sale') ? 'on' : ''}">
+                  <a href="${pageContext.request.contextPath}/sale/"> 판매 실적 </a>
                 </li>
-                <li>
-                  <a href="${pageContext.request.contextPath}/order/orderSave" onclick="onAccounting()"> 회계 관리 </a>
+                <li class="${fn:contains(uri, '/accounting') ? 'on' : ''}">
+                  <a href="${pageContext.request.contextPath}/accounting/" onclick="onAccounting()"> 회계 관리 </a>
+
                 </li>
               </ul>
             </li>
@@ -139,48 +143,16 @@
        $firstSubItem.addClass("on");
      });
 
-const onSale = () => {
-          const mainDiv = $("#main");
-          $.ajax({
-              type: "get",
-              url: "/sale/hello",
-              // 요청이 성공했을 때 실행되는 부분
-              success: function (res) {
 
-                  console.log("성공", res);
-                  mainDiv.html(res);
+      // 서브 메뉴 클릭 시 활성화
+      $(".sub-menu li a").on("click", function (e) {
+        e.preventDefault();
 
-              },
-              // 요청이 실패했을 때 실행되는 부분
-              error: function (err) {
-                  console.log("실패", err);
-              },
-          })
-      };
-        const onAccounting = () => {
-            const mainDiv = $("#main");
-            $.ajax({
-                type: "get",
-                url: "/accounting/hello",
-                // 요청이 성공했을 때 실행되는 부분
-                success: function (res) {
-                    console.log("성공", res);
-                    mainDiv.html(res);
+        $(".sub-menu li").removeClass("on"); // 전체 비활성화
+        $(this).parent().addClass("on"); // 클릭된 항목 활성화
+      });
+    });
 
-                },
-                // 요청이 실패했을 때 실행되는 부분
-                error: function (err) {
-                    console.log("실패", err);
-                },
-            })
-        };
-
-     // 서브 메뉴 클릭 시 활성화
-     $(".sub-menu li a").on("click", function () {
-       $(".sub-menu li").removeClass("on");
-       $(this).parent().addClass("on");
-     });
-   });
 
   </script>
 
