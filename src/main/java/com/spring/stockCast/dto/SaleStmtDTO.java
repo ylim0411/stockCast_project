@@ -5,9 +5,9 @@ import lombok.Data;
 import java.util.Date;
 @Data
 public class SaleStmtDTO {
-    private int saleStmtId;
-    private int clientId;
-    private Date saleDate;
-    private int transactionPrice;
-    private int transactionQty;
+    private int orderId;
+    private Date orderdate;
+    private String clientName;
+    private String productName;
+    private int price;
 }

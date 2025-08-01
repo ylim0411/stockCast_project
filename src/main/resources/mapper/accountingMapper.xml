@@ -3,7 +3,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Accounting">
-    <select id="findAll" resultType="Accounting">
-        SELECT * FROM accounting
+    <select id="findAll" resultType="saleList">
+        SELECT a.orderId, o.orderdate, c.clientName, p.productName, (o.purchasePrice*o.purchaseQty) price FROM accounting a
+        JOIN ordering o ON a.orderId = o.orderId
+        JOIN product p ON p.productId = o.productId
+        JOIN client c ON c.productId = p.productId;
     </select>
 </mapper>
