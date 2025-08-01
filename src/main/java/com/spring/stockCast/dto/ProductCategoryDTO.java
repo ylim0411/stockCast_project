@@ -3,6 +3,7 @@ package com.spring.stockCast.dto;
 import lombok.Data;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Data
 public class ProductCategoryDTO {
@@ -11,4 +12,6 @@ public class ProductCategoryDTO {
     private Long parentId;
     private int categoryLevel;
     private Timestamp createdAt;
+
+    private List<ProductCategoryDTO> selectList;
 }
