@@ -12,5 +12,6 @@
     <a href="/main">메인화면</a>
     <a href="/sale/">판매실적 이동</a>
     <a href="/accounting/">회계 이동</a>
+    <a href="/admin/select">상품카테고리 이동</a>
 </body>
 </html>
