@@ -3,6 +3,7 @@ package com.spring.stockCast.controller;
 
 import com.spring.stockCast.dto.OrderStmtDTO;
 import com.spring.stockCast.service.OrderStmtService;
+import com.spring.stockCast.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -13,12 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/order")
 @RequiredArgsConstructor
 public class OrderStmtController {
     private  final OrderStmtService orderStmtService;
+    private  final ProductService productService;
 
     @GetMapping("/orderStmt")
     public String orderStmt(
@@ -42,7 +45,9 @@ public class OrderStmtController {
     }
 
     @GetMapping("/orderSave")
-    public String orderSave(){
+    public String orderSave(Model model){
+         List<Map<String, Object>> products = productService.getAllProducts();
+         model.addAttribute("product", products);
         return "orderSave";
     }
 
