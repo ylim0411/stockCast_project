@@ -63,30 +63,39 @@
                </li>
              </ul>
            </li>
+
             <li class="main-menu  ${fn:contains(uri, '/sale') ? 'on' : ''}">
-              <a href="${pageContext.request.contextPath}/sale/">
+
+              <a href="${pageContext.request.contextPath}/sale/list">
+
                 <img
                   src="${pageContext.request.contextPath}/static/images/sale.png"
                   alt="saleIcon"
                 />
                 <span>매출관리</span>
               </a>
+
               <ul class="sub-menu">
                 <li class="${fn:contains(uri, '/sale') ? 'on' : ''}">
-                  <a href="${pageContext.request.contextPath}/sale/"> 판매 실적 </a>
+                  <a href="${pageContext.request.contextPath}/sale/list"> 판매 실적 </a>
                 </li>
-                <li class="${fn:contains(uri, '/accounting') ? 'on' : ''}">
-                  <a href="${pageContext.request.contextPath}/sale/accounting" onclick="onAccounting()"> 회계 관리 </a>
 
+                <li class="${fn:contains(uri, '/sale') ? 'on' : ''}">
+                  <a href="${pageContext.request.contextPath}/sale/accounting"> 회계 관리 </a>
                 </li>
               </ul>
             </li>
-          <li class="main-menu  ${fn:contains(uri, '/customer') ? 'on' : ''}">
-            <a href="${pageContext.request.contextPath}/order/orderSave">
-              <img src="${pageContext.request.contextPath}/static/images/customer.png" alt="customerIcon" />
-              <span>고객분석</span>
-            </a>
-          </li>
+
+            <li class="main-menu  ${fn:contains(uri, '/customer') ? 'on' : ''}">
+              <a href="${pageContext.request.contextPath}/order/orderSave"">
+                <img
+                  src="${pageContext.request.contextPath}/static/images/customer.png"
+                  alt="customerIcon"
+                />
+                <span>고객분석</span>
+              </a>
+            </li>
+
             <li class="main-menu  ${fn:contains(uri, '/client') ? 'on' : ''}">
               <a href="${pageContext.request.contextPath}/order/orderSave">
                 <img

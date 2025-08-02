@@ -12,9 +12,4 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class SaleStmtController {
     private final SaleStmtService saleStmtService;
 
-    // 거래명세서 상세화면으로 이동
-    @GetMapping("/detail")
-    public String saleDetail(){
-        return "saleDetail";
-    }
 }

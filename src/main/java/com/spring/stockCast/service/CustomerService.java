@@ -28,6 +28,7 @@ public class CustomerService {
         int man=0,woman =0,etc=0;
         int age_10=0,age_20=0,age_30=0,age_40 = 0,ageEtc=0;
         for (CustomerDTO customer : customers){
+            // 성별 조회
             if(customer.getGender().equals(Gender.남)){
                 man++;
             }else if(customer.getGender().equals(Gender.여)){
@@ -35,6 +36,7 @@ public class CustomerService {
             }else{
                 etc++;
             }
+            // 연령대 조회 추후 연령대 추가시 밑에 늘리면 됨
             if(customer.getAge() >= 10 && customer.getAge() <20){
                 age_10++;
             }else if(customer.getAge() >= 20 && customer.getAge() <30){
@@ -55,7 +57,6 @@ public class CustomerService {
         result.put("age_30",age_30);
         result.put("age_40",age_40);
         result.put("ageEtc",ageEtc);
-        System.out.println(result);
         return result;
     }
 }
