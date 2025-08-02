@@ -92,8 +92,8 @@
     <div class="container">
       <h2>회원가입</h2>
       <form action="/admin/join" method="post">
-        <input type="text" required name="adminName" placeholder="이름" />
-        <input type="text" required name="loginId" placeholder="아이디" />
+        <input type="text" required name="adminName" placeholder="이름" value="${name}"/>
+        <input type="text" required name="loginId" placeholder="아이디" value="${email}"/>
         <input type="text" required name="loginPw" placeholder="비밀번호" />
         <input
           type="text"

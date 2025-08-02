@@ -7,4 +7,9 @@
 <!--        SELECT * FROM comment WHERE boardId = #{boardId} ORDER BY id DESC-->
 <!--    </select>-->
 
+    <select id="categorySelect" resultType="ProductCategory">
+        SELECT * FROM productcategory;
+    </select>
+
+
 </mapper>

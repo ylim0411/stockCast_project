@@ -51,6 +51,7 @@
     width: 100%;
     height: 100vh;
     display: flex;
+    color: var(--color-black);
     background-color: var(--color-bg);
   }
 
@@ -157,6 +158,7 @@
     background-color: transparent;
     border-radius: var(--border-radius-base5);
     cursor: pointer;
+    transition: 0.2s;
   }
 
   .container .btn-blue {
@@ -164,38 +166,90 @@
     color: var(--color-primary);
   }
 
+  .container .btn-blue:hover {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+  }
+
   .container .btn-red {
     border: 1px solid var(--color-red);
     color: var(--color-red);
   }
 
-  .title{
-   padding: 20px;
-   border: 1px solid var(--color-primary);
+.container .btn-red:hover {
+  background-color: var(--color-red);
+  color: var(--color-white);
+}
+
+  .title-box{
+   margin-bottom:30px;
+   display: flex;
+   flex-direction: column;
+   gap: 10px;
   }
+
+   .title-box .title{
+   font-size: var(--font-size-xl);
+   }
+
+   .title-box .sub-title{
+   font-size: var(--font-size-md);
+   color: var(--color-gray);
+   }
 
 /* 테이블 */
   table {
     width: 100%;
     border-collapse: collapse;
     text-align: center;
-    border: 1px solid #000;
+    background-color: var(--color-white);
   }
 
   th,
   td {
-    padding: 14px;
+    height: 60px;
     border-bottom: 1px solid var(--color-border);
     font-size: var(--font-size-md);
   }
 
   th {
-    background-color: var(--color-primary);
+    background-color: var(--color-secondary);
     color: var(--color-white);
     font-weight: bold;
   }
 
-  tr:hover {
-    // background-color: var(--color-white);
-    cursor: pointer;
-  }
+   //  tr{
+  //  transition: background-color 0.2s ease-in-out;
+  //  }
+
+  // tr:hover {
+  //   background-color: #F9FAFB;
+  //   cursor: pointer;
+ //  }
+
+  /* form 태그 */
+    .form-container {
+      display: flex;
+      align-items: center;
+       justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    /* 달력 인풋 & 텍스트 인풋 */
+    .form-container input[type='date'],
+    .form-container input[type='text'] {
+      padding: 10px 12px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--border-radius-base5);
+      font-size: var(--font-size-base);
+      color: var(--color-black);
+      background-color: var(--color-white);
+    }
+
+    /* 거래명세서 css */
+    .detail-header {
+         display: flex;
+         justify-content: flex-end;
+     }
+
