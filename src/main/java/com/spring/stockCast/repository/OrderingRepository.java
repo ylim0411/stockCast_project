@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderingRepository {
     private final SqlSessionTemplate sql;
-
+    // 거래명세서 내용 불러오기
     public List<AccoListDTO> findById(int id) {
         return sql.selectList("Ordering.findById",id);
     }

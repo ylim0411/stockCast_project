@@ -56,10 +56,10 @@
                   <td colspan="3">서울시 관악구</td>
                 </tr>
               </table>
-            </div>
+            </div></br>
             <div>
               입금 계좌번호 : 933502 - 00 - 541827 (국민-예금주 : 이카플레이스)
-            </div>
+            </div></br>
             <table>
               <thead>
                 <tr>
@@ -81,25 +81,27 @@
                     <td>${acco.productName}</td>
                     <td>${acco.purchaseQty}</td>
                     <td>${acco.purchasePrice}</td>
-                    <td>${acco.purchasePrice*acco.purchaseQty}</td>
-                    <td>${(acco.purchasePrice*acco.purchaseQty)*0.1}</td>
+                    <td><fmt:formatNumber value="${acco.purchasePrice*acco.purchaseQty}" pattern="#,###"/></td>
+                    <td><fmt:formatNumber value="${(acco.purchasePrice*acco.purchaseQty)*0.1}" pattern="#,###"/></td>
                   </tr>
                   <c:set var="totalQty" value="${totalQty+acco.purchaseQty}"/>
                   <c:set var="totalAmount" value="${totalAmount+(acco.purchasePrice*acco.purchaseQty)}" />
                 </c:forEach>
               </tbody>
+            </table></br>
+            <table>
               <tfoot>
                 <tr>
-                  <td>수량</td>
+                  <th>수량</th>
                   <td>${totalQty}</td>
-                  <td>공급가액</td>
-                  <td>${totalAmount}</td>
-                  <td>VAT</td>
-                  <td>${totalAmount*0.1}</td>
-                  <td>합계</td>
-                  <td>${totalAmount*1.1}</td>
-                  <td>인수</td>
-                  <td></td>
+                  <th>공급가액</th>
+                  <td><fmt:formatNumber value="${totalAmount}" pattern="#,###"/></td>
+                  <th>VAT</th>
+                  <td><fmt:formatNumber value="${totalAmount * 0.1}" pattern="#,###"/></td>
+                  <th>합계</th>
+                  <td><fmt:formatNumber value="${totalAmount * 1.1}" pattern="#,###"/></td>
+                  <th>인수</th>
+                  <td>회사명</td>
                 </tr>
               </tfoot>
             </table>

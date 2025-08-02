@@ -18,7 +18,7 @@
             <p class="sub-title">매출 관리</p>
             <h2 class="title">회계 관리</h2>
         </div>
-             <form action="/order/orderStmt" method="get" class="form-container">
+             <form action="/sale/find" method="post" class="form-container">
                   <div class="dateForm">
                       <input type="date" name="startDate" id="startDate">
                       <input type="date" name="endDate" id="endDate">
