@@ -25,6 +25,7 @@
     --color-primary: #1976d2; /* 포인트 컬러 */
     --color-secondary: #287ed8; /* 서브 컬러 */
     --color-red: #d82828;
+    --color-orange: #f5b041;
     --color-black: #333333; /* 기본 텍스트 */
     --color-white: #ffffff; /* 반전 텍스트(화이트) */
     --color-gray: #aaaaaa; /* 연한 회색 텍스트 */
@@ -152,7 +153,7 @@
   }
 
   /* button */
-  .container .btn {
+  .btn {
     padding: 5px 10px;
     font-size: var(--font-size-base);
     background-color: transparent;
@@ -161,26 +162,52 @@
     transition: 0.2s;
   }
 
-  .container .btn-blue {
+  .btn-blue {
     border: 1px solid var(--color-primary);
     color: var(--color-primary);
   }
 
-  .container .btn-blue:hover {
+  .btn-blue:hover {
     background-color: var(--color-primary);
     color: var(--color-white);
   }
 
-  .container .btn-red {
+  /* 발주서 진행상황 button */
+  .statusBtn {
+    display:inline-block;
+    width:56px;
+    padding: 5px;
+    font-size: var(--font-size-base);
+    background-color: transparent;
+    border-radius: var(--border-radius-base5);
+  }
+
+  .btn-red {
     border: 1px solid var(--color-red);
     color: var(--color-red);
   }
 
-.container .btn-red:hover {
-  background-color: var(--color-red);
-  color: var(--color-white);
-}
+    .btn-red:hover {
+      background-color: var(--color-red);
+      color: var(--color-white);
+    }
 
+ .btn-blue-b {
+   background-color: var(--color-primary);
+   color: var(--color-white);
+ }
+
+ .btn-red-b {
+   background-color: var(--color-red);
+   color: var(--color-white);
+ }
+
+ .btn-orange-b {
+   background-color: var(--color-orange);
+   color: var(--color-white);
+ }
+
+ /* title */
   .title-box{
    margin-bottom:30px;
    display: flex;
@@ -207,7 +234,7 @@
 
   th,
   td {
-    height: 60px;
+    height: 50px;
     border-bottom: 1px solid var(--color-border);
     font-size: var(--font-size-md);
   }
@@ -218,22 +245,28 @@
     font-weight: bold;
   }
 
-   //  tr{
-  //  transition: background-color 0.2s ease-in-out;
-  //  }
-
-  // tr:hover {
-  //   background-color: #F9FAFB;
-  //   cursor: pointer;
- //  }
-
   /* form 태그 */
     .form-container {
       display: flex;
       align-items: center;
-       justify-content: space-between;
+      justify-content: space-between;
       gap: 10px;
       margin-bottom: 10px;
+    }
+
+    input[type='date'],
+    input[type='text'],
+    input[type="number"],
+    input[readonly],
+    select{
+        font-size: var(--font-size-md);
+        text-align: center;
+        border: none;
+        outline: none;
+        background-color: transparent;
+        padding: 4px;
+        color: var(--color-black);
+        background-color: var(--color-white);
     }
 
     /* 달력 인풋 & 텍스트 인풋 */
@@ -243,8 +276,6 @@
       border: 1px solid var(--color-border);
       border-radius: var(--border-radius-base5);
       font-size: var(--font-size-base);
-      color: var(--color-black);
-      background-color: var(--color-white);
     }
 
     /* 거래명세서 css */
@@ -253,3 +284,100 @@
          justify-content: flex-end;
      }
 
+    .clientsName{
+    width:50%;
+    }
+
+    .clientsName th{
+     width:25%;
+    }
+
+    /* 발주서 css */
+     .orderSummary {
+    margin-top: 20px;
+    border: 1px solid var(--color-border);
+    }
+
+     .orderSummary th{
+      width:12.5%;
+     }
+
+   .orderItems tr {
+       border: 1px solid var(--color-border);
+   }
+
+   .orderItems {
+       width: 100%;
+       table-layout: fixed !important; /* 셀 폭 고정 */
+       border: 1px solid var(--color-border);
+       border-collapse: collapse;
+   }
+
+   .orderItems th,
+   .orderItems td {
+       border: 1px solid var(--color-border);
+       text-align: center;
+       vertical-align: middle;
+       padding: 4px;
+       overflow: hidden;        /* 내용이 넘칠 때 숨김 */
+       text-overflow: ellipsis; /* 넘친 텍스트 '...' 표시 */
+       white-space: nowrap;     /* 줄바꿈 방지 */
+   }
+
+   /* orderItems 고정 폭 설정 */
+   .orderItems th:nth-child(1),
+   .orderItems td:nth-child(1) {
+       width: 50px;  /* 체크박스 */
+   }
+
+   .orderItems th:nth-child(2),
+   .orderItems td:nth-child(2) {
+       width: 200px; /* 상품명 */
+   }
+
+   .orderItems th:nth-child(3),
+   .orderItems td:nth-child(3) {
+       width: 120px; /* 구매단가 */
+   }
+
+   .orderItems th:nth-child(4),
+   .orderItems td:nth-child(4) {
+       width: 80px;  /* 수량 */
+   }
+
+   .orderItems th:nth-child(5),
+   .orderItems td:nth-child(5) {
+       width: 150px; /* 총 금액 */
+   }
+
+   /* select, input 폭 고정 */
+   .orderItems select,
+   .orderItems input {
+       width: 100% !important; /* 셀 폭에 맞춤 */
+       box-sizing: border-box;
+   }
+
+
+    table.orderSummary td,
+    table.orderItems td {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    .item-select,
+    .count-input {
+        cursor: pointer;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .btn-box{
+        display: flex;
+        justify-content: flex-end;
+        gap:10px;
+        margin: 20px 0;
+    }

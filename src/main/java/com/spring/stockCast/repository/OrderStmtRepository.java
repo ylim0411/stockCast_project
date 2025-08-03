@@ -15,19 +15,26 @@ import java.util.Map;
 public class OrderStmtRepository {
     private final SqlSessionTemplate sql;
 
+    // 전체 발주 조회
     public List<OrderStmtDTO> findAll() {
         return sql.selectList("Orders.findAll");
     }
 
+    // 날짜 범위로 발주 조회
     public List<OrderStmtDTO> findByDateBetween(LocalDate startDate, LocalDate endDate) {
         Map<String, Object> param = new HashMap<>();
-        param.put("startDate", startDate);
-        param.put("endDate", endDate);
+        param.put("startDate", java.sql.Date.valueOf(startDate));
+        param.put("endDate", java.sql.Date.valueOf(endDate.plusDays(1)));
         return sql.selectList("Orders.findByDateBetween", param);
     }
 
+    // 발주번호로 발주 조회
     public List<OrderStmtDTO> findByNo(String orderStmtId) {
-        return sql.selectList("Orders.findByNo",orderStmtId);
+        return sql.selectList("Orders.findByNo", orderStmtId);
     }
 
+    // 마지막 발주 ID 조회
+    public int getLastOrderId() {
+        return sql.selectOne("Orders.getLastOrderId");
+    }
 }

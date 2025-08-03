@@ -12,11 +12,8 @@ import java.util.Map;
 public class ProductRepository {
     private final SqlSessionTemplate sql;
 
-    public List<Map<String, Object>> findAll() {
-        return sql.selectList("Product.selectAllProducts");
-    }
-
-    public Map<String, Object> findById(int id) {
-        return sql.selectOne("Product.selectProductById",id);
+    // 거래처 ID로 상품 목록 조회
+    public List<Map<String, Object>> findProductsByClientId(int clientId) {
+        return sql.selectList("Product.findByClientId", clientId);
     }
 }

@@ -13,11 +13,8 @@ import java.util.Map;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public List<Map<String, Object>> getAllProducts() {
-        return productRepository.findAll();
-    }
-
-    public Map<String, Object> getProductById(int id) {
-        return productRepository.findById(id);
+    // 거래처 ID로 상품 목록 조회
+    public List<Map<String, Object>> getProductsByClientId(int clientId) {
+        return productRepository.findProductsByClientId(clientId);
     }
 }

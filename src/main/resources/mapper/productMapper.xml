@@ -5,25 +5,27 @@
 <mapper namespace="Product">
 
     <resultMap id="productMap" type="map">
-        <result property="id" column="productId"/>
-        <result property="name" column="productName"/>
+        <result property="productId" column="productId"/>
+        <result property="productName" column="productName"/>
         <result property="price" column="price"/>
     </resultMap>
 
-    <select id="selectAllProducts" resultMap="productMap">
-        SELECT productId, productName, price
-        FROM product
-        ORDER BY productName
+    <!-- clientId로 상품 조회 -->
+    <select id="findByClientId" parameterType="int" resultType="map">
+        SELECT
+        p.productId AS "productId",
+        p.price AS "price",
+        p.description AS "productName"
+        FROM client_product cp
+        JOIN product p ON cp.productId = p.productId
+        WHERE cp.clientId = #{clientId}
+        ORDER BY p.description
     </select>
 
-    <select id="selectProductById" parameterType="int" resultMap="productMap">
-        SELECT productId, productName, price
-        FROM product
-        WHERE productId = #{id}
-    </select>
-
+    <!-- 상품 삭제 -->
     <delete id="deleteProduct" parameterType="int">
-        DELETE FROM product WHERE productId = #{id}
+        DELETE FROM product
+        WHERE productId = #{id}
     </delete>
 
 </mapper>
