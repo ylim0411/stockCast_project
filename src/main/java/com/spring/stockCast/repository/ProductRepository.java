@@ -19,4 +19,16 @@ public class ProductRepository {
     public Map<String, Object> findById(int id) {
         return sql.selectOne("Product.selectProductById",id);
     }
+
+    public List<Map<String, Object>> findByClientId(int clientId) {
+        return sql.selectList("Product.findByClientId", clientId);
+    }
+
+    public List<Map<String, Object>> findByCategoryId(int categoryId) {
+        return sql.selectList("Product.findByCategoryId", categoryId);
+    }
+
+    public List<Map<String, Object>> findProductsByClientId(int clientId) {
+        return sql.selectList("Product.findByClientId", clientId);
+    }
 }

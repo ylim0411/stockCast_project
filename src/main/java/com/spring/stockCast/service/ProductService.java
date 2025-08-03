@@ -20,4 +20,12 @@ public class ProductService {
     public Map<String, Object> getProductById(int id) {
         return productRepository.findById(id);
     }
+
+    public List<Map<String, Object>> getProductsByCategoryId(int categoryId) {
+        return productRepository.findByCategoryId(categoryId);
+    }
+
+    public List<Map<String, Object>> getProductsByClientId(int clientId) {
+        return productRepository.findProductsByClientId(clientId);
+    }
 }

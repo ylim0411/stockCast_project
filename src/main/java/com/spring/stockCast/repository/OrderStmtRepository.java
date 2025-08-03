@@ -21,8 +21,8 @@ public class OrderStmtRepository {
 
     public List<OrderStmtDTO> findByDateBetween(LocalDate startDate, LocalDate endDate) {
         Map<String, Object> param = new HashMap<>();
-        param.put("startDate", startDate);
-        param.put("endDate", endDate);
+        param.put("startDate", java.sql.Date.valueOf(startDate));
+        param.put("endDate", java.sql.Date.valueOf(endDate.plusDays(1))); // 하루 뒤로 늘림
         return sql.selectList("Orders.findByDateBetween", param);
     }
 

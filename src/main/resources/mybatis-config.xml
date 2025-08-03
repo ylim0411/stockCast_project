@@ -5,19 +5,19 @@
 
 <configuration>
     <typeAliases>
-        <typeAlias type="com.spring.stockCast.dto.AccountingDTO" alias="Accounting"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.AdminDTO" alias="Admin"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.ClientDTO" alias="Client"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.CustomerDTO" alias="Customer"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.OrderingDTO" alias="Ordering"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.OrderStmtDTO" alias="OrderStmt"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.ProductCategoryDTO" alias="ProductCategory"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.ProductDTO" alias="Product"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.SaleDTO" alias="Sale"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.SaleStmtDTO" alias="SaleStmt"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.StoreDTO" alias="Store"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.SaleListDTO" alias="SaleList"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.AccoListDTO" alias="AccoList"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.OrderListDTO" alias="OrderList"></typeAlias>
+        <typeAlias type="com.spring.stockCast.dto.AccountingDTO" alias="Accounting"/>
+        <typeAlias type="com.spring.stockCast.dto.AdminDTO" alias="Admin"/>
+        <typeAlias type="com.spring.stockCast.dto.ClientDTO" alias="Client"/>
+        <typeAlias type="com.spring.stockCast.dto.ClientProductDTO" alias="ClientProduct"/> <!-- 추가 -->
+        <typeAlias type="com.spring.stockCast.dto.CustomerDTO" alias="Customer"/>
+        <typeAlias type="com.spring.stockCast.dto.PurchaseOrderDTO" alias="PurchaseOrder"/>
+        <typeAlias type="com.spring.stockCast.dto.OrderStmtDTO" alias="OrderStmt"/>
+        <typeAlias type="com.spring.stockCast.dto.ProductCategoryDTO" alias="ProductCategory"/>
+        <typeAlias type="com.spring.stockCast.dto.ProductDTO" alias="Product"/>
+        <typeAlias type="com.spring.stockCast.dto.SaleDTO" alias="Sale"/>
+        <typeAlias type="com.spring.stockCast.dto.SaleStmtDTO" alias="SaleStmt"/>
+        <typeAlias type="com.spring.stockCast.dto.StoreDTO" alias="Store"/>
+        <typeAlias type="com.spring.stockCast.dto.SaleListDTO" alias="SaleList"/>
+        <typeAlias type="com.spring.stockCast.dto.AccoListDTO" alias="AccoList"/>
     </typeAliases>
 </configuration>
