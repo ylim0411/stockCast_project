@@ -5,25 +5,57 @@
 <mapper namespace="Product">
 
     <resultMap id="productMap" type="map">
-        <result property="id" column="productId"/>
-        <result property="name" column="productName"/>
+        <result property="productId" column="productId"/>
+        <result property="productName" column="productName"/>
         <result property="price" column="price"/>
     </resultMap>
 
+    <!-- categoryId = 3인 상품 전체 조회 -->
     <select id="selectAllProducts" resultMap="productMap">
-        SELECT productId, productName, price
+        SELECT productId, description AS productName, price
         FROM product
-        ORDER BY productName
+        WHERE categoryId = 3
+        ORDER BY description
     </select>
 
+    <!-- categoryId로 상품 조회 -->
+    <select id="findByCategoryId" parameterType="int" resultMap="productMap">
+        SELECT
+        productId,
+        description AS productName,
+        price
+        FROM product
+        WHERE categoryId = #{categoryId}
+        ORDER BY description
+    </select>
+
+    <!-- 특정 ID 상품 조회 (categoryId = 3 제한) -->
     <select id="selectProductById" parameterType="int" resultMap="productMap">
-        SELECT productId, productName, price
+        SELECT
+        productId,
+        description AS productName,
+        IFNULL(price, 0) AS price
         FROM product
         WHERE productId = #{id}
+        AND categoryId = 3
     </select>
 
+    <!-- clientId로 상품 조회 -->
+    <select id="findByClientId" parameterType="int" resultType="map">
+        SELECT
+        p.productId AS "productId",
+        p.price AS "price",
+        p.description AS "productName"
+        FROM client_product cp
+        JOIN product p ON cp.productId = p.productId
+        WHERE cp.clientId = #{clientId}
+        ORDER BY p.description
+    </select>
+
+    <!-- 상품 삭제 -->
     <delete id="deleteProduct" parameterType="int">
-        DELETE FROM product WHERE productId = #{id}
+        DELETE FROM product
+        WHERE productId = #{id}
     </delete>
 
 </mapper>

@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CustomerRepository {
     private final SqlSessionTemplate sql;
-
+    // 구매자 전부를 가져오기
     public List<CustomerDTO> findAll() {
         return sql.selectList("Customer.findAll");
     }

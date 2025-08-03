@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AccountingRepository {
     private final SqlSessionTemplate sql;
-
+    // 리스트 불러오기(발주번호, 발주일자, 거래처명, 상품명, 총금액)
     public List<SaleListDTO> findAll() {
         return sql.selectList("Accounting.findAll");
     }

@@ -10,7 +10,6 @@
     <title>발주 현황</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-
   </head>
   <body>
     <div class="container">
@@ -33,26 +32,45 @@
           </div>
       </form>
 
-    <table>
-       <tr>
-        <th>발주번호</th>
-        <th>발주일자</th>
-        <th>구매단가</th>
-        <th>수량</th>
-        <th>총금액</th>
-        <th>발주서</th>
-    </tr>
-    <c:forEach items="${orderStmt}" var="order">
-        <tr>
-            <td>${order.orderStmtId}</td>
-            <td><fmt:formatDate value = "${order.orderDate}" pattern="yyyy-MM-dd"/></td>
-            <td>${order.purchasePrice}</td>
-            <td>${order.purchaseQty}</td>
-            <td>${order.purchasePrice * order.purchaseQty}</td>
-            <td><button type="button" class="btn btn-blue" onclick="goOrderDetail(${order.orderStmtId})" >발주서 보기</button></td>
-        </tr>
-    </c:forEach>
-    </table>
+   <table>
+      <tr>
+         <th>발주번호</th>
+         <th>발주일자</th>
+         <th>거래처명</th>
+         <th>수량</th>
+         <th>총금액</th>
+         <th>상태</th>
+         <th>발주서</th>
+      </tr>
+
+      <c:forEach items="${orderStmt}" var="order">
+         <tr>
+            <td>${order.orderId}</td>
+            <td><fmt:formatDate value="${order.orderDate}" pattern="yy/MM/dd"/></td>
+            <td>${order.clientName}</td>
+            <td>${order.totalCount}</td>
+            <td><fmt:formatNumber value="${order.totalPrice}" pattern="#,###"/></td>
+            <td>
+               <c:choose>
+                  <c:when test="${order.status.name() == '진행중'}">
+                      <span class="status btn-orange-b statusBtn">진행중</span>
+                  </c:when>
+                  <c:when test="${order.status.name() == '완료'}">
+                     <span class="status btn-blue-b statusBtn">완료</span>
+                  </c:when>
+                  <c:when test="${order.status.name() == '취소'}">
+                     <span class="status btn-red-b statusBtn">취소</span>
+                  </c:when>
+               </c:choose>
+            </td>
+            <td>
+               <button type="button" class="btn btn-blue"
+                  onclick="goOrderDetail(${order.orderId})">발주서 보기</button>
+            </td>
+         </tr>
+      </c:forEach>
+   </table>
+
     </div> <!-- container -->
   </body>
 
