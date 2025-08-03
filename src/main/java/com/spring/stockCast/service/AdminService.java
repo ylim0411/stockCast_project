@@ -16,4 +16,12 @@ public class AdminService {
     public int join(AdminDTO adminDTO) {
         return adminRepository.join(adminDTO);
     }
+
+    public boolean login(AdminDTO adminDTO) {
+        return adminRepository.login(adminDTO);
+    }
+
+    public boolean isJoinedById(String email) {
+        return adminRepository.isJoinedById(email);
+    }
 }

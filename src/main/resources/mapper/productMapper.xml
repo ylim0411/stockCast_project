@@ -3,6 +3,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Product">
+<<<<<<< HEAD
 <!--    <select id="findAll" parameterType="int" resultType="comment">-->
 <!--        SELECT * FROM comment WHERE boardId = #{boardId} ORDER BY id DESC-->
 <!--    </select>-->
@@ -18,3 +19,31 @@
         DELETE FROM product WHERE productId =#{productId}
     </delete>
 </mapper>
+=======
+
+    <resultMap id="productMap" type="map">
+        <result property="productId" column="productId"/>
+        <result property="productName" column="productName"/>
+        <result property="price" column="price"/>
+    </resultMap>
+
+    <!-- clientId로 상품 조회 -->
+    <select id="findByClientId" parameterType="int" resultType="map">
+        SELECT
+        p.productId AS "productId",
+        p.price AS "price",
+        p.description AS "productName"
+        FROM client_product cp
+        JOIN product p ON cp.productId = p.productId
+        WHERE cp.clientId = #{clientId}
+        ORDER BY p.description
+    </select>
+
+    <!-- 상품 삭제 -->
+    <delete id="deleteProduct" parameterType="int">
+        DELETE FROM product
+        WHERE productId = #{id}
+    </delete>
+
+</mapper>
+>>>>>>> e43a20ddd810cdea45e5ece2709ee52845370d3f

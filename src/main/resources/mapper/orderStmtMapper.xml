@@ -3,16 +3,94 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Orders">
-    <select id="findAll" parameterType="OrderStmt" resultType="OrderStmt">
-        SELECT * FROM orderStmt ORDER BY orderId DESC
+
+    <!-- 전체 조회 -->
+    <select id="findAll" resultType="OrderStmt">
+        <![CDATA[ SELECT
+        os.orderId AS orderId,
+        os.orderDate AS orderDate,
+        c.clientName AS clientName,
+        SUM(po.purchaseQty) AS totalCount,
+        SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
+        CASE
+            WHEN DATE_ADD(os.orderDate, INTERVAL 3 DAY) < CURDATE() THEN '완료'
+            ELSE '진행중'
+        END AS status
+    FROM orderStmt os
+    JOIN client c ON os.clientId = c.clientId
+    JOIN purchaseOrder po ON os.orderId = po.orderId
+    GROUP BY os.orderId, os.orderDate, c.clientName
+    ORDER BY os.orderId DESC
+    ]]>
     </select>
 
+    <!-- 날짜 범위로 발주서 조회 -->
     <select id="findByDateBetween" resultType="OrderStmt">
-        SELECT * FROM orderStmt WHERE orderDate BETWEEN #{startDate} AND #{endDate}
+        SELECT
+        os.orderId AS orderId,
+        os.orderDate AS orderDate,
+        c.clientName AS clientName,
+        SUM(po.purchaseQty) AS totalCount,
+        SUM(po.purchaseQty * po.purchasePrice) AS totalPrice
+        FROM orderStmt os
+        JOIN client c ON os.clientId = c.clientId
+        JOIN purchaseOrder po ON os.orderId = po.orderId
+        WHERE os.orderDate &gt;= #{startDate}
+        AND os.orderDate &lt; #{endDate}
+        GROUP BY os.orderId, os.orderDate, c.clientName
+        ORDER BY os.orderId DESC
     </select>
 
-    <select id="findByNo" resultType="OrderStmt">
-        SELECT * FROM orderStmt WHERE orderStmtId LIKE CONCAT('%', #{orderStmtId}, '%')
+    <!-- 발주번호로 조회 -->
+    <select id="findByNo" parameterType="string" resultType="OrderStmt">
+        SELECT
+        os.orderId AS orderId,
+        os.orderDate AS orderDate,
+        c.clientName AS clientName,
+        SUM(po.purchaseQty) AS totalCount,
+        SUM(po.totalPrice) AS totalPrice
+        FROM orderStmt os
+        JOIN client c ON os.clientId = c.clientId
+        JOIN purchaseOrder po ON os.orderId = po.orderId
+        WHERE os.orderId LIKE CONCAT('%', #{orderStmtId}, '%')
+        GROUP BY os.orderId, os.orderDate, c.clientName
+        ORDER BY os.orderId DESC
+    </select>
+
+    <!-- 마지막 발주 ID 조회 -->
+    <select id="getLastOrderId" resultType="int">
+        SELECT IFNULL(MAX(orderId), 0)
+        FROM orderStmt
+    </select>
+
+    <!-- 발주서 저장 -->
+    <insert id="insertOrder" parameterType="map">
+        INSERT INTO orderStmt (
+        orderId, clientId, orderDate
+        )
+        VALUES (
+        #{orderId}, #{clientId}, #{orderDate}
+        )
+    </insert>
+
+    <!-- 발주서 조회 -->
+    <select id="findById" parameterType="int" resultType="OrderStmt">
+        <![CDATA[ SELECT
+        os.orderId,
+        os.orderDate,
+        c.clientName,
+        SUM(po.purchaseQty) AS totalCount,
+        SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
+        CASE
+        WHEN DATE_ADD(os.orderDate, INTERVAL 3 DAY) < CURDATE() THEN '완료'
+        ELSE '진행중'
+        END AS status
+        FROM orderStmt os
+        JOIN client c ON os.clientId = c.clientId
+        JOIN purchaseOrder po ON os.orderId = po.orderId
+        WHERE os.orderId = #{orderId}
+        GROUP BY os.orderId, os.orderDate, c.clientName
+         ]]>
     </select>
 
 </mapper>

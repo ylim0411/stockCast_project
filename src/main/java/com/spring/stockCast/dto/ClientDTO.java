@@ -3,6 +3,7 @@ package com.spring.stockCast.dto;
 import com.spring.stockCast.enums.ClientStatus;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 public class ClientDTO {
     private int clientId;
@@ -22,4 +23,7 @@ public class ClientDTO {
     private Timestamp createdAt;
     private Timestamp updatedAt;
     private Timestamp deletedAt;
+
+    private List<Integer> productIds;    // productId 리스트
+    private List<String> productNames;   // productName 리스트
 }

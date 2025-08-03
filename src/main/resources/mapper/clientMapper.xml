@@ -3,8 +3,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Client">
-<!--    <select id="findAll" parameterType="int" resultType="comment">-->
-<!--        SELECT * FROM comment WHERE boardId = #{boardId} ORDER BY id DESC-->
-<!--    </select>-->
+
+    <resultMap id="clientProductMap" type="map">
+        <result property="clientId" column="clientId"/>
+        <result property="clientName" column="clientName"/>
+        <result property="productId" column="productId"/>
+        <result property="productName" column="productName"/>
+        <result property="price" column="price"/>
+    </resultMap>
+
+    <!-- 모든 거래처 조회 -->
+    <select id="selectAllClients" resultType="map">
+        SELECT clientId, clientName
+        FROM client
+        ORDER BY clientName
+    </select>
 
 </mapper>
