@@ -4,7 +4,6 @@ package com.spring.stockCast.controller;
 import com.spring.stockCast.dto.OrderStmtDTO;
 import com.spring.stockCast.service.ClientService;
 import com.spring.stockCast.service.OrderStmtService;
-import com.spring.stockCast.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -15,20 +14,19 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/order")
 @RequiredArgsConstructor
 public class OrderStmtController {
-    public final OrderStmtService orderStmtService;
-    public final ClientService clientService;
-    public final ProductService productService;
+    private final OrderStmtService orderStmtService;
+    private final ClientService clientService;
 
+    // 발주 목록 조회
     @GetMapping("/orderStmt")
     public String orderStmt(
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
@@ -50,33 +48,30 @@ public class OrderStmtController {
         return "orderStmt";
     }
 
+    // 발주 작성 페이지
     @GetMapping("/orderSave")
     public String orderSave(Model model) {
-        // 거래처만 조회
         List<Map<String, Object>> clients = clientService.getAllClients();
         model.addAttribute("clients", clients);
-
-        // 전체 상품 조회
-        List<Map<String, Object>> products = productService.getProductsByCategoryId(3);
-        model.addAttribute("products", products);
-
         return "orderSave";
     }
 
+
+    // 발주 상세 페이지
     @GetMapping("/orderDetail")
-    public String orderDetail(){
+    public String orderDetail() {
         return "orderDetail";
     }
 
+    // 새로운 발주번호, 등록일 생성
     @GetMapping("/new-info")
     @ResponseBody
     public Map<String, Object> getNewOrderInfo() {
         Map<String, Object> result = new HashMap<>();
-        // 예시 - 실제로는 DB나 서비스에서 생성
-        result.put("orderNumber", "ORD-20250803-001");
-        result.put("orderDate", new Date());
+        int nextId = orderStmtService.getLastOrderId() + 1;
+
+        result.put("orderNumber", nextId);
+        result.put("orderDate", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         return result;
     }
 }
-
-

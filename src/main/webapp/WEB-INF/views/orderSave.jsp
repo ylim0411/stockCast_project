@@ -29,7 +29,6 @@
                 <tr>
                     <th class="vertical-label"><div>거래처명</div></th>
                     <td>
-                        <!-- 거래처 선택 -->
                         <select id="clientSelect" name="clientId" class="client-select">
                             <option value="">거래처를 선택하세요</option>
                             <c:forEach var="c" items="${clients}">
@@ -79,7 +78,6 @@
                <tr class="item-row template" style="display:none;">
                    <td class="checkbox-center"><input type="checkbox" class="row-select" /></td>
                    <td>
-                      <!-- 상품 선택 -->
                       <select name="productId" class="item-select">
                           <option value="">상품을 선택하세요</option>
                       </select>
@@ -109,15 +107,31 @@
 
 <script>
 $(document).ready(function(){
-    // 가격 초기화
-    $('.price-input').val(0);
-    $('.total-display').val(0);
+    // 페이지 로드 시 발주번호 / 등록일 불러오기
+    $.ajax({
+            url: '/order/new-info',
+            type: 'GET',
+            success: function(data) {
+                $('#order-number').text(data.orderNumber);
+                $('#order-date').text(data.orderDate);
+            },
+            error: function() {
+                console.error("발주번호/등록일 불러오기 실패");
+            }
+        });
+
+    // 초기 가격/금액 0 세팅
+    resetAllPrices();
 
     // 거래처 선택 시 상품 목록 불러오기
     $(document).on('change', '#clientSelect', function() {
         let clientId = $(this).val();
+
         if (!clientId) {
+            // 거래처 미선택 → 상품 목록 초기화 + 가격/금액 0
             $('.item-select').empty().append('<option value="">상품을 선택하세요</option>');
+            resetAllPrices();
+            calcSummary();
             return;
         }
         loadProductsByClient(clientId);
@@ -145,18 +159,41 @@ $(document).ready(function(){
         if (window.currentProducts) {
             populateProducts($newRow.find('.item-select'), window.currentProducts);
         }
+        updateSelectAllState();
     });
 
-    // 전체 선택 체크박스
-    $('#select-all').on('change', function(){
-        $('.row-select').prop('checked', $(this).prop('checked'));
-    });
+// 전체 선택 체크박스 클릭
+$(document).on('change', '#select-all', function(){
+    let checked = $(this).prop('checked');
+    $('.row-select').not(':hidden').prop('checked', checked); // 템플릿 제외
+    updateSelectAllState();
+});
 
-    // 선택 삭제
-    $('#delete-selected').on('click', function(){
-        $('.row-select:checked').closest('tr').not('.template').remove();
-        calcSummary();
-    });
+// 개별 체크박스 클릭 시 전체선택 상태 반영
+$(document).on('change', '.row-select', function(){
+    updateSelectAllState();
+});
+
+// 전체 선택 상태 갱신 함수
+function updateSelectAllState() {
+    let total = $('.row-select').not(':hidden').length; // 템플릿 제외
+    let checked = $('.row-select:checked').not(':hidden').length;
+    $('#select-all').prop('checked', total > 0 && total === checked);
+}
+
+// 선택 삭제 버튼
+$(document).on('click', '#delete-selected', function(){
+    $('.row-select:checked').closest('tr').not('.template').remove();
+    calcSummary();
+    updateSelectAllState(); // 삭제 후 전체선택 상태 갱신
+});
+
+    // 가격/수량/금액 전체 리셋 함수
+    function resetAllPrices() {
+        $('.price-input').val(0);
+        $('.count-input').val('');
+        $('.total-display').val(0);
+    }
 });
 
 // Ajax로 상품 목록 가져오기
@@ -169,6 +206,8 @@ function loadProductsByClient(clientId) {
         success: function(products) {
             if (!Array.isArray(products) || products.length === 0) {
                 $('.item-select').empty().append('<option value="">상품을 선택하세요</option>');
+                resetAllPrices();
+                calcSummary();
                 return;
             }
             window.currentProducts = products;
@@ -187,35 +226,28 @@ function populateProducts($select, products) {
     $select.empty().append('<option value="">상품을 선택하세요</option>');
     products.forEach(function(p) {
         let name = p.productName || p.description || '(이름 없음)';
-        $select.append(
-            '<option value="' + p.productId + '" data-price="' + p.price + '">' + name + '</option>'
-        );
+        $select.append('<option value="' + p.productId + '" data-price="' + p.price + '">' + name + '</option>');
     });
-
-    if (products.length > 0) {
-        $select.find('option:eq(1)').prop('selected', true);
-        setPriceBySelected($select);
-    }
+    // 기본 선택 없음 → 가격 0
+    $select.val('');
+    setPriceBySelected($select);
 }
 
-// 가격 반영
+// 선택한 상품 가격 반영
 function setPriceBySelected($select){
     let $row = $select.closest('tr');
     let selectedValue = $select.val();
-
-    // 거래처 미선택이거나 "상품을 선택하세요" 선택 시
     if (!selectedValue) {
         $row.find('.price-input').val(0);
         calcRowTotal($row);
         return;
     }
-
     let price = $select.find(':selected').data('price') || 0;
     $row.find('.price-input').val(price);
     calcRowTotal($row);
 }
 
-// 행별 합계
+// 행별 합계 계산
 function calcRowTotal($row){
     let price = parseFloat($row.find('.price-input').val()) || 0;
     let count = parseInt($row.find('.count-input').val()) || 0;
@@ -223,13 +255,13 @@ function calcRowTotal($row){
     $row.find('.total-display').val(total.toLocaleString());
 }
 
-// 전체 합계
+// 전체 합계 계산
 function calcSummary(){
     let totalQuantity = 0;
     let totalAmount = 0;
     $('.item-row').each(function(){
         let count = parseInt($(this).find('.count-input').val()) || 0;
-        let rowTotal = parseFloat($(this).find('.total-display').val().replace(/,/g,'')) || 0;
+        let rowTotal = parseFloat(($(this).find('.total-display').val() || '0').replace(/,/g,'')) || 0;
         totalQuantity += count;
         totalAmount += rowTotal;
     });
@@ -237,7 +269,6 @@ function calcSummary(){
     $('#sum-total').val(totalAmount.toLocaleString());
 }
 </script>
-
 
 </body>
 </html>

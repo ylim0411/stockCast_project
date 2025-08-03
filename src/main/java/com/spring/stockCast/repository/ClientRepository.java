@@ -12,16 +12,6 @@ import java.util.Map;
 public class ClientRepository {
     private final SqlSessionTemplate sql;
 
-    // 특정 거래처의 상품 목록 조회
-    public List<Map<String, Object>> findProductsByClientId(int clientId) {
-        return sql.selectList("Product.findByClientId", clientId);
-    }
-
-    // 거래처 + 상품명 같이 조회
-    public List<Map<String, Object>> findClientsWithProducts() {
-        return sql.selectList("Client.findClientsWithProducts");
-    }
-
     // 거래처만 전체 조회
     public List<Map<String, Object>> findAll() {
         return sql.selectList("Client.selectAllClients");

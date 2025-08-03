@@ -14,11 +14,6 @@ import java.util.Map;
 public class ClientService {
     private final ClientRepository clientRepository;
 
-    // 거래처 + 상품 같이 조회
-    public List<Map<String, Object>> getClientsWithProducts() {
-        return clientRepository.findClientsWithProducts();
-    }
-
     // 거래처만 전체 조회
     public List<Map<String, Object>> getAllClients() {
         return clientRepository.findAll();
