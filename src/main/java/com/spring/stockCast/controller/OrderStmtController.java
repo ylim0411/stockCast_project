@@ -2,6 +2,7 @@ package com.spring.stockCast.controller;
 
 
 import com.spring.stockCast.dto.OrderStmtDTO;
+import com.spring.stockCast.dto.PurchaseOrderDTO;
 import com.spring.stockCast.service.ClientService;
 import com.spring.stockCast.service.OrderStmtService;
 import com.spring.stockCast.service.PurchaseOrderService;
@@ -79,7 +80,16 @@ public class OrderStmtController {
 
     // 발주 상세 페이지
     @GetMapping("/orderDetail")
-    public String orderDetail() {
+    public String orderDetail(@RequestParam int id, Model model) {
+        // 발주 기본 정보
+        OrderStmtDTO orderInfo = orderStmtService.findById(id);
+
+        // 발주 품목 목록
+        List<PurchaseOrderDTO> orderItems = purchaseOrderService.findByOrderId(id);
+
+        model.addAttribute("orderInfo", orderInfo);
+        model.addAttribute("orderItems", orderItems);
+
         return "orderDetail";
     }
 
