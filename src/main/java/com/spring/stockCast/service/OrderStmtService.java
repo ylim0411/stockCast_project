@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -24,9 +26,7 @@ public class OrderStmtService {
 
     // 날짜 범위로 발주 조회
     public List<OrderStmtDTO> findByDate(LocalDate startDate, LocalDate endDate) {
-        List<OrderStmtDTO> list = orderStmtRepository.findByDateBetween(startDate, endDate);
-        setOrderStatus(list);
-        return list;
+        return null;
     }
 
     // 발주번호로 발주 조회
@@ -56,5 +56,15 @@ public class OrderStmtService {
     public int getLastOrderId() {
         Integer lastId = orderStmtRepository.getLastOrderId();
         return (lastId != null) ? lastId : 0;
+    }
+
+    // 발주서 저장
+    public void saveOrder(int clientId, int orderId, String orderDate) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("orderId", orderId);
+        param.put("clientId", clientId);
+        param.put("orderDate", orderDate);
+
+        orderStmtRepository.insertOrder(param);
     }
 }
