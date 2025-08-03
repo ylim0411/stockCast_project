@@ -4,14 +4,12 @@ package com.spring.stockCast.controller;
 import com.spring.stockCast.dto.OrderStmtDTO;
 import com.spring.stockCast.service.ClientService;
 import com.spring.stockCast.service.OrderStmtService;
+import com.spring.stockCast.service.PurchaseOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,6 +23,7 @@ import java.util.Map;
 public class OrderStmtController {
     private final OrderStmtService orderStmtService;
     private final ClientService clientService;
+    private final PurchaseOrderService purchaseOrderService;
 
     // 발주 목록 조회
     @GetMapping("/orderStmt")
@@ -56,6 +55,27 @@ public class OrderStmtController {
         return "orderSave";
     }
 
+    // 발주 저장 (orderStmt + purchaseOrder)
+    @PostMapping("/orderSave")
+    public String saveOrder(
+            @RequestParam int clientId,
+            @RequestParam int orderId,
+            @RequestParam String orderDate,
+            @RequestParam("productId[]") List<Integer> productId,
+            @RequestParam("purchasePrice[]") List<Integer> purchasePrice,
+            @RequestParam("purchaseQty[]") List<Integer> purchaseQty
+    ) {
+        // orderStmt 저장
+        orderStmtService.saveOrder(clientId, orderId, orderDate);
+
+        // purchaseOrder 저장
+        for (int i = 0; i < productId.size(); i++) {
+            System.out.println("▶ Saving orderDetail: " + productId.get(i) + ", " + purchasePrice.get(i) + ", " + purchaseQty.get(i));
+            purchaseOrderService.saveOrderDetail(orderId, productId.get(i), purchasePrice.get(i), purchaseQty.get(i));
+        }
+
+        return "redirect:/order/orderStmt";
+    }
 
     // 발주 상세 페이지
     @GetMapping("/orderDetail")
