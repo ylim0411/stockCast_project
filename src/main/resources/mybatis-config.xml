@@ -5,7 +5,6 @@
 
 <configuration>
     <typeAliases>
-        <typeAlias type="com.spring.stockCast.dto.OrderListDTO" alias="OrderList"/>
         <typeAlias type="com.spring.stockCast.dto.AccountingDTO" alias="Accounting"/>
         <typeAlias type="com.spring.stockCast.dto.AdminDTO" alias="Admin"/>
         <typeAlias type="com.spring.stockCast.dto.ClientDTO" alias="Client"/>

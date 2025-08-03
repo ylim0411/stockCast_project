@@ -110,6 +110,7 @@
 
   <script>
 $(function () {
+  // 기존의 메인 메뉴 클릭 이벤트
   $("li.main-menu > a").on("click", function (e) {
     const href = $(this).attr("href");
     if (href === "#") {
@@ -118,19 +119,33 @@ $(function () {
 
     const $clickedMenu = $(this).parent();
     const $subMenu = $clickedMenu.find(".sub-menu");
-    const isAlreadyOpen = $clickedMenu.hasClass("on");
 
-    if (isAlreadyOpen) return;
+    // if (isAlreadyOpen) return;을 주석 해제하여 기존 기능 활성화
+    // const isAlreadyOpen = $clickedMenu.hasClass("on");
+    // if (isAlreadyOpen) return;
 
-    // 모든 메뉴를 닫는 애니메이션이 완료된 후에 현재 메뉴를 엽니다.
     $("li.main-menu").removeClass("on").find(".sub-menu").stop(true, true).slideUp(400, function() {
-        // 모든 메뉴가 닫힌 후 실행될 콜백 함수
         $clickedMenu.addClass("on");
         $subMenu.stop(true, true).slideDown();
 
         $(".sub-menu li").removeClass("on");
         $subMenu.find("li").first().addClass("on");
     });
+  });
+
+  // 새로 추가할 서브 메뉴 클릭 이벤트
+  // 서브 메뉴 안의 <a> 태그에 대한 이벤트를 별도로 정의
+  $("li.sub-menu a").on("click", function(e) {
+      // 상위 요소로의 이벤트 전파를 막습니다.
+      // 이렇게 하면 메인 메뉴의 클릭 이벤트가 실행되지 않습니다.
+      e.stopPropagation();
+
+      // 현재 클릭된 서브 메뉴 항목에만 'on' 클래스 추가
+      $(".sub-menu li").removeClass("on");
+      $(this).parent().addClass("on");
+
+      // 페이지 이동이 정상적으로 이루어지도록 합니다.
+      // 여기서 e.preventDefault()를 사용하지 않으면 링크로 이동합니다.
   });
 });
   </script>
