@@ -1,10 +1,12 @@
 package com.spring.stockCast.repository;
 
+import com.spring.stockCast.dto.PurchaseOrderDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -24,4 +26,8 @@ public class PurchaseOrderRepository {
         sql.insert("PurchaseOrder.insertOrderDetail", param);
     }
 
+    // 발주 상세 목록 조회
+    public List<PurchaseOrderDTO> findByOrderId(int orderId) {
+        return sql.selectList("PurchaseOrder.findByOrderId", orderId);
+    }
 }

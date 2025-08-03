@@ -14,4 +14,17 @@
         )
     </insert>
 
+    <!-- 발주 상세 목록 -->
+    <select id="findByOrderId" parameterType="int" resultType="PurchaseOrder">
+        SELECT
+        po.productId,
+        p.productName,
+        po.purchasePrice,
+        po.purchaseQty,
+        (po.purchasePrice * po.purchaseQty) AS totalPrice
+        FROM purchaseOrder po
+        JOIN product p ON po.productId = p.productId
+        WHERE po.orderId = #{orderId}
+    </select>
+
 </mapper>

@@ -43,4 +43,8 @@ public class OrderStmtRepository {
         sql.insert("Orders.insertOrder", param);
     }
 
+    // 발주 상세 조회
+    public OrderStmtDTO findById(int orderId) {
+        return sql.selectOne("Orders.findById", orderId);
+    }
 }
