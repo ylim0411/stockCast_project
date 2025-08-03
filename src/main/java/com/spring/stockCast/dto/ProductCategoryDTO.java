@@ -13,5 +13,6 @@ public class ProductCategoryDTO {
     private int categoryLevel;
     private Timestamp createdAt;
 
-    private List<ProductCategoryDTO> selectList;
+    private List<ProductCategoryDTO> categoryList;
+    private List<ProductDTO> productList;
 }

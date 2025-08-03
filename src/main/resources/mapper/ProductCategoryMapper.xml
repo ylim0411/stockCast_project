@@ -8,7 +8,7 @@
 <!--    </select>-->
 
     <select id="categorySelect" resultType="ProductCategory">
-        SELECT * FROM productcategory;
+        SELECT * FROM productCategory;
     </select>
 
 
