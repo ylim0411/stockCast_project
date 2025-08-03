@@ -41,24 +41,24 @@
                 <tr>
                   <th rowspan="3">공급자용</th>
                   <td>사업자등록번호</td>
-                  <td>00-000-0000</td>
+                  <td>${client.businessNumber}</td>
                   <td>TEL</td>
-                  <td>000-0000-0000</td>
+                  <td>${client.contact}</td>
                 </tr>
                 <tr>
                   <td>상호</td>
-                  <td>나뚜루</td>
+                  <td>${client.clientName}</td>
                   <td>성명</td>
-                  <td>홍길동</td>
+                  <td>${client.ceoName}</td>
                 </tr>
                 <tr>
                   <td>주소</td>
-                  <td colspan="3">서울시 관악구</td>
+                  <td colspan="3">${client.address}</td>
                 </tr>
               </table>
             </div></br>
             <div>
-              입금 계좌번호 : 933502 - 00 - 541827 (국민-예금주 : 이카플레이스)
+              입금 계좌번호 : 933502 - 00 - 541827 (국민-예금주 : ${client.ceoName})
             </div></br>
             <table>
               <thead>
@@ -69,7 +69,6 @@
                   <th>단가</th>
                   <th>공급가액</th>
                   <th>부가세</th>
-                  <th>적요</th>
                 </tr>
               </thead>
               <tbody>
@@ -101,7 +100,7 @@
                   <th>합계</th>
                   <td><fmt:formatNumber value="${totalAmount * 1.1}" pattern="#,###"/></td>
                   <th>인수</th>
-                  <td>회사명</td>
+                  <td>${client.clientName}</td>
                 </tr>
               </tfoot>
             </table>

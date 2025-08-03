@@ -14,5 +14,4 @@
     <select id="findByNo" resultType="OrderStmt">
         SELECT * FROM orderStmt WHERE orderStmtId LIKE CONCAT('%', #{orderStmtId}, '%')
     </select>
-
 </mapper>

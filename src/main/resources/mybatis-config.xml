@@ -9,7 +9,7 @@
         <typeAlias type="com.spring.stockCast.dto.AdminDTO" alias="Admin"></typeAlias>
         <typeAlias type="com.spring.stockCast.dto.ClientDTO" alias="Client"></typeAlias>
         <typeAlias type="com.spring.stockCast.dto.CustomerDTO" alias="Customer"></typeAlias>
-        <typeAlias type="com.spring.stockCast.dto.OrderingDTO" alias="Ordering"></typeAlias>
+        <typeAlias type="com.spring.stockCast.dto.PurchaseOrderDTO" alias="PurchaseOrder"></typeAlias>
         <typeAlias type="com.spring.stockCast.dto.OrderStmtDTO" alias="OrderStmt"></typeAlias>
         <typeAlias type="com.spring.stockCast.dto.ProductCategoryDTO" alias="ProductCategory"></typeAlias>
         <typeAlias type="com.spring.stockCast.dto.ProductDTO" alias="Product"></typeAlias>

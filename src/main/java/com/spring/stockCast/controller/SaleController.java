@@ -1,12 +1,11 @@
 package com.spring.stockCast.controller;
 
 import com.spring.stockCast.dto.AccoListDTO;
+import com.spring.stockCast.dto.ClientDTO;
 import com.spring.stockCast.dto.SaleListDTO;
-import com.spring.stockCast.service.AccountingService;
-import com.spring.stockCast.service.CustomerService;
-import com.spring.stockCast.service.OrderingService;
-import com.spring.stockCast.service.SaleService;
+import com.spring.stockCast.service.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -27,8 +23,8 @@ public class SaleController {
     private final SaleService saleService;
     private final CustomerService customerService;
     private final AccountingService accountingService;
-    private final OrderingService orderingService;
-
+    private final PurchaseOrderService purchaseOrderService;
+    private final ClientService clientService;
     // 판매실적 화면 이동
     @GetMapping("/list")
     public String chartForm(Model model){
@@ -45,26 +41,29 @@ public class SaleController {
     // 거래명세서 상세화면으로 이동
     @GetMapping("/detail")
     public String saleDetail(Model model, @RequestParam("o_id") int id){
-        List<AccoListDTO> accoList = orderingService.findById(id);
+        List<AccoListDTO> accoList = purchaseOrderService.findById(id); // 발주번호와 일치하는 거래명세서 불러오기
+        ClientDTO client = clientService.findBySaleId(id); // 발주번호와 일치하는 거래처 불러오기
         model.addAttribute("accoList",accoList);
+        model.addAttribute("client",client);
         return "saleDetail";
     }
     // 날짜와 발주번호로 목록 조회하기
     @PostMapping("/find")
-    public String find(HttpServletRequest request){
-        String sDate = request.getParameter("startDate");
-        String eDate = request.getParameter("endDate");
-        String orderId = request.getParameter("orderNumber");
-        if((sDate != null && !sDate.trim().isEmpty())&&(eDate != null && !eDate.trim().isEmpty())){
-
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate startDate = LocalDate.parse(sDate,formatter);
-            LocalDate endDate = LocalDate.parse(eDate,formatter);
-
-            return "accounting";
+    public String find(@RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate startDate,
+                       @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate endDate,
+                       @RequestParam(required = false) String orderNumber,
+                       Model model){
+        List<SaleListDTO> sales;
+        // 날짜 필터가 있을 때만 검색
+        if (startDate != null && endDate != null) {
+            sales = accountingService.findByDate(startDate, endDate);
+        } else if (orderNumber != null && !orderNumber.isEmpty()) {
+            sales = accountingService.findByNo(orderNumber);
+        } else {
+            sales = accountingService.findAll();
         }
-        System.out.println(sDate);
-        System.out.println("e"+sDate);
+
+        model.addAttribute("saleList", sales);
         return "accounting";
     }
 }

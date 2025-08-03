@@ -65,22 +65,17 @@
            </li>
 
             <li class="main-menu  ${fn:contains(uri, '/sale') ? 'on' : ''}">
-
               <a href="${pageContext.request.contextPath}/sale/list">
-
-                <img
-                  src="${pageContext.request.contextPath}/static/images/sale.png"
-                  alt="saleIcon"
-                />
+                <img src="${pageContext.request.contextPath}/static/images/sale.png" alt="saleIcon" />
                 <span>매출관리</span>
               </a>
 
-              <ul class="sub-menu">
-                <li class="${fn:contains(uri, '/sale') ? 'on' : ''}">
+              <ul class="sub-menu" style="${fn:contains(uri, '/sale') ? 'display:block;' : ''}">
+                <li class="${fn:contains(uri, '/sale/list') ? 'on' : ''}">
                   <a href="${pageContext.request.contextPath}/sale/list"> 판매 실적 </a>
                 </li>
 
-                <li class="${fn:contains(uri, '/sale') ? 'on' : ''}">
+                <li class="${fn:contains(uri, '/sale/accounting') ? 'on' : ''}">
                   <a href="${pageContext.request.contextPath}/sale/accounting"> 회계 관리 </a>
                 </li>
               </ul>
@@ -114,28 +109,29 @@
       </header>
 
   <script>
- $(function () {
-   // 메인 메뉴 클릭 시
-   $("li.main-menu > a").on("click", function (e) {
-     const href = $(this).attr("href");
-     if (href === "#") {
-       e.preventDefault();
-     }
+$(function () {
+  $("li.main-menu > a").on("click", function (e) {
+    const href = $(this).attr("href");
+    if (href === "#") {
+      e.preventDefault();
+    }
 
-     const $clickedMenu = $(this).parent();
-     const $subMenu = $clickedMenu.find(".sub-menu");
-     const isAlreadyOpen = $clickedMenu.hasClass("on");
+    const $clickedMenu = $(this).parent();
+    const $subMenu = $clickedMenu.find(".sub-menu");
+    const isAlreadyOpen = $clickedMenu.hasClass("on");
 
-     if (isAlreadyOpen) return; // 열린 상태면 아무것도 안 함
+    if (isAlreadyOpen) return;
 
-     $("li.main-menu").removeClass("on").find(".sub-menu").stop(true, true).slideUp();
+    // 모든 메뉴를 닫는 애니메이션이 완료된 후에 현재 메뉴를 엽니다.
+    $("li.main-menu").removeClass("on").find(".sub-menu").stop(true, true).slideUp(400, function() {
+        // 모든 메뉴가 닫힌 후 실행될 콜백 함수
+        $clickedMenu.addClass("on");
+        $subMenu.stop(true, true).slideDown();
 
-     $clickedMenu.addClass("on");
-     $subMenu.stop(true, true).slideDown();
-
-     $(".sub-menu li").removeClass("on");
-     $subMenu.find("li").first().addClass("on");
-   });
- });
+        $(".sub-menu li").removeClass("on");
+        $subMenu.find("li").first().addClass("on");
+    });
+  });
+});
   </script>
 
