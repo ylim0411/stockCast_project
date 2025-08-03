@@ -12,22 +12,7 @@ import java.util.Map;
 public class ProductRepository {
     private final SqlSessionTemplate sql;
 
-    public List<Map<String, Object>> findAll() {
-        return sql.selectList("Product.selectAllProducts");
-    }
-
-    public Map<String, Object> findById(int id) {
-        return sql.selectOne("Product.selectProductById",id);
-    }
-
-    public List<Map<String, Object>> findByClientId(int clientId) {
-        return sql.selectList("Product.findByClientId", clientId);
-    }
-
-    public List<Map<String, Object>> findByCategoryId(int categoryId) {
-        return sql.selectList("Product.findByCategoryId", categoryId);
-    }
-
+    // 거래처 ID로 상품 목록 조회
     public List<Map<String, Object>> findProductsByClientId(int clientId) {
         return sql.selectList("Product.findByClientId", clientId);
     }

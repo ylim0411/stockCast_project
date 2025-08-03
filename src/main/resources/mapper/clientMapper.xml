@@ -12,22 +12,7 @@
         <result property="price" column="price"/>
     </resultMap>
 
-    <!-- 거래처별 상품 조회 -->
-    <select id="findClientsWithProducts" resultMap="clientProductMap">
-        SELECT
-        c.clientId,
-        c.clientName,
-        p.productId,
-        p.description AS productName,
-        p.price
-        FROM client c
-        JOIN client_product cp ON c.clientId = cp.clientId
-        JOIN product p ON cp.productId = p.productId
-        WHERE p.categoryId = 3
-        ORDER BY c.clientName, p.description
-    </select>
-
-    <!-- 모든 거래처 조회 (기존 기능 유지) -->
+    <!-- 모든 거래처 조회 -->
     <select id="selectAllClients" resultType="map">
         SELECT clientId, clientName
         FROM client

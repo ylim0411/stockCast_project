@@ -6,8 +6,7 @@
 
     <!-- 전체 조회 -->
     <select id="findAll" resultType="OrderStmt">
-        <![CDATA[
-    SELECT
+        <![CDATA[ SELECT
         os.orderId AS orderId,
         os.orderDate AS orderDate,
         c.clientName AS clientName,
@@ -25,8 +24,7 @@
     ]]>
     </select>
 
-
-    <!-- 날짜 검색 -->
+    <!-- 날짜 범위로 발주서 조회 -->
     <select id="findByDateBetween" resultType="OrderStmt">
         SELECT
         os.orderId AS orderId,
@@ -43,7 +41,7 @@
         ORDER BY os.orderId DESC
     </select>
 
-    <!-- 발주번호 검색 -->
+    <!-- 발주번호로 조회 -->
     <select id="findByNo" parameterType="string" resultType="OrderStmt">
         SELECT
         os.orderId AS orderId,
@@ -57,6 +55,12 @@
         WHERE os.orderId LIKE CONCAT('%', #{orderStmtId}, '%')
         GROUP BY os.orderId, os.orderDate, c.clientName
         ORDER BY os.orderId DESC
+    </select>
+
+    <!-- 마지막 발주 ID 조회 -->
+    <select id="getLastOrderId" resultType="int">
+        SELECT IFNULL(MAX(orderId), 0)
+        FROM orderStmt
     </select>
 
 </mapper>
