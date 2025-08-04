@@ -1,10 +1,12 @@
 package com.spring.stockCast.dto;
 
 import com.spring.stockCast.enums.ClientStatus;
+import lombok.Data;
 
 import java.sql.Timestamp;
 import java.util.List;
 
+@Data
 public class ClientDTO {
     private int clientId;
     private int productId;

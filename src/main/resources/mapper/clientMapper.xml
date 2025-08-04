@@ -19,4 +19,9 @@
         ORDER BY clientName
     </select>
 
+<!-- 발주번호에 맞는 거래처 조회 ho -->
+<select id="findBySaleId" parameterType="int" resultType="Client">
+    SELECT * FROM client
+    WHERE clientId = (SELECT clientId FROM orderStmt WHERE orderId = #{id})
+</select>
 </mapper>

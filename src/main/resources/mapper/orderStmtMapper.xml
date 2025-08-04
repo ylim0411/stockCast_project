@@ -63,6 +63,7 @@
         FROM orderStmt
     </select>
 
+
     <!-- 발주서 저장 -->
     <insert id="insertOrder" parameterType="map">
         INSERT INTO orderStmt (
@@ -94,3 +95,4 @@
     </select>
 
 </mapper>
+

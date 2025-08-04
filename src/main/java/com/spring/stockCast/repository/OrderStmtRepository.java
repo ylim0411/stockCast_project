@@ -38,6 +38,7 @@ public class OrderStmtRepository {
         return sql.selectOne("Orders.getLastOrderId");
     }
 
+
     // 발주서 저장
     public void insertOrder(Map<String, Object> param) {
         sql.insert("Orders.insertOrder", param);
@@ -48,3 +49,4 @@ public class OrderStmtRepository {
         return sql.selectOne("Orders.findById", orderId);
     }
 }
+
