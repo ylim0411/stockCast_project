@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="PurchaseOrder">
 
-    <!-- 발주 상세 저장 -->
-    <insert id="insertOrderDetail" parameterType="map">
-        INSERT INTO purchaseOrder (
-        orderId, productId, purchasePrice, purchaseQty
-        )
-        VALUES (
-        #{orderId}, #{productId}, #{purchasePrice}, #{purchaseQty}
-        )
-    </insert>
-
-    <!-- 발주 상세 목록 -->
+    <!-- 발주 상세 조회 -->
     <select id="findByOrderId" parameterType="int" resultType="PurchaseOrder">
         SELECT
         po.productId,
-        p.description AS productName,
+        p.productName,
         po.purchasePrice,
         po.purchaseQty,
         (po.purchasePrice * po.purchaseQty) AS totalPrice
