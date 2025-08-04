@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 </head>
 <body>
-<div class="container">
+<div class="containerAuto">
     <div class="title-box">
         <p class="sub-title">발주 관리</p>
         <h2 class="title">발주서 작성</h2>
