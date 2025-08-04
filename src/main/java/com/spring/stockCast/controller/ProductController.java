@@ -53,11 +53,27 @@ public class ProductController {
         return "redirect:/product/";
     }
 
-    @GetMapping("/delete")
-    public String productDelete(@RequestParam("id") int productId) {
-        System.out.println("delete?" + productId);
-        productService.delete(productId);
+    @PostMapping("/add")
+    public String addProduct(@RequestParam("productName") String productName,
+                             @RequestParam("price") int price,
+                             @RequestParam("stockQuantity") int stockQuantity,
+                             @RequestParam("middleCategoryId") int middleCategoryId) {
+
+        ProductDTO product = new ProductDTO();
+        product.setProductName(productName);
+        product.setPrice(price);
+        product.setStockQuantity(stockQuantity);
+        product.setCategoryId(middleCategoryId); // ← 여기에 중분류 ID 넣는 게 핵심
+
+        productService.addProduct(product);
         return "redirect:/product/";
     }
+
+//    @GetMapping("/delete")
+//    public String productDelete(@RequestParam("id") int productId) {
+//        System.out.println("delete?" + productId);
+//        productService.delete(productId);
+//        return "redirect:/product/";
+//    }
 
 }

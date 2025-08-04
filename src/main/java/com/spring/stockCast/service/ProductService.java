@@ -27,11 +27,15 @@ public class ProductService {
         return productRepository.findProductList();
     }
 
-    public void delete(int productId) {
-        productRepository.delete(productId);
-    }
+//    public void delete(int productId) {
+//        productRepository.delete(productId);
+//    }
 
     public void updateProduct(ProductDTO product) {
         productRepository.updateProduct(product);
+    }
+
+    public void addProduct(ProductDTO product) {
+        productRepository.addProduct(product);
     }
 }
