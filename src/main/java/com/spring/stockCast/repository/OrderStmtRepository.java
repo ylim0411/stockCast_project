@@ -47,4 +47,13 @@ public class OrderStmtRepository {
     public OrderStmtDTO findById(int orderId) {
         return sql.selectOne("Orders.findById", orderId);
     }
+
+    // 발주 수정
+    public void updateOrder(Map<String, Object> param) {
+        sql.update("Orders.updateOrder", param);
+    }
+
+    public void deleteOrder(int orderId) {
+        sql.delete("Orders.deleteOrder", orderId);
+    }
 }

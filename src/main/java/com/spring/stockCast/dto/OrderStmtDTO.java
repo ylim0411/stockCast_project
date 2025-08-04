@@ -8,6 +8,7 @@ import java.util.Date;
 public class OrderStmtDTO {
     private int orderId;
     private Date orderDate;
+    private int clientId;
     private String clientName;
     private int  totalCount;
     private int totalPrice;

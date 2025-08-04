@@ -40,7 +40,7 @@
                <!-- 오른쪽: 버튼 -->
                <div>
                    <button type="button" class="btn btn-blue"
-                       onclick="location.href='/order/orderEdit?id=${orderInfo.orderId}'">수정</button>
+                       onclick="location.href='/order/orderUpdate?id=${orderInfo.orderId}'">수정</button>
                    <button type="button" class="btn btn-red"
                        onclick="deleteOrder(${orderInfo.orderId})">삭제</button>
                </div>
