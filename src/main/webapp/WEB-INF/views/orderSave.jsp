@@ -264,8 +264,29 @@ $(document).ready(function(){
         loadProductsByClient(clientId);
     });
 
-    // 상품 선택 시 가격 반영
+    // 상품 선택 시 가격 반영 + 중복 검사
     $(document).on('change', '.item-select', function(){
+        let selectedVal = $(this).val();
+        if (!selectedVal) return;
+
+        // 현재 선택된 상품이 다른 행 있는지 확인
+        let isDuplicate = false;
+        $('.item-select').not(this).each(function(){
+            if ($(this).val() === selectedVal) {
+                isDuplicate = true;
+                return false; // 반복문 종료
+            }
+        });
+
+        if (isDuplicate) {
+            alert('이미 선택한 상품입니다. 다른 상품을 선택하세요.');
+            $(this).val(''); // 선택 해제
+            setPriceBySelected($(this)); // 가격 0으로 리셋
+            calcSummary(); // 합계 갱신
+            return;
+        }
+
+        // 중복이 아니면 정상 처리
         setPriceBySelected($(this));
         calcSummary();
     });
