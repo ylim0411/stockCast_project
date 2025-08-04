@@ -14,6 +14,7 @@
     <a href="/sale/list">판매실적 이동</a>
     <a href="/sale/accounting/">회계 이동</a>
     <a href="/admin/select">상품카테고리 이동</a>
+    <a href="/product/">상품카테고리 이동</a>
 
 </body>
 </html>

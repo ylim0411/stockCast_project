@@ -3,12 +3,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="ProductCategory">
-<!--    <select id="findAll" parameterType="int" resultType="comment">-->
-<!--        SELECT * FROM comment WHERE boardId = #{boardId} ORDER BY id DESC-->
-<!--    </select>-->
 
     <select id="categorySelect" resultType="ProductCategory">
-        SELECT * FROM productcategory;
+        SELECT * FROM productCategory;
     </select>
 
 

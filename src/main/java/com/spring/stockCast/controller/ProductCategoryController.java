@@ -18,16 +18,6 @@ import java.util.List;
 public class ProductCategoryController {
     private final ProductCategoryService productCategoryService;
 
-//    @GetMapping("/addCategory")
-//    public String addCategory(){
-//        return "addCategory";
-//    }
-
-//    @PostMapping("/addCategory")
-//    public String addCategory(@RequestParam("select")) {
-//        return "addCategory";
-//    }
-
     @GetMapping("/select")
     public String categoryList(Model model) {
         List<ProductCategoryDTO> categoryList = productCategoryService.categorySelect();

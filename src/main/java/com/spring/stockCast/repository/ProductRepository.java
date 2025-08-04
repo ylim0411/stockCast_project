@@ -1,5 +1,6 @@
 package com.spring.stockCast.repository;
 
+import com.spring.stockCast.dto.ProductDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -20,4 +21,17 @@ public class ProductRepository {
     public List<Map<String, Object>> getAllProducts() {
         return sql.selectList("Product.getAllProducts");
     }
+
+    public List<ProductDTO> selectProductsByCategoryId(int categoryId) {
+        return sql.selectList("Product.selectProductsByCategoryId", categoryId);
+    }
+
+    public List<ProductDTO> findProductList() {
+        return sql.selectList("Product.findProductList");
+    }
+
+    public void delete(int productId) {
+        sql.delete("Product.delete", productId);
+    }
+
 }

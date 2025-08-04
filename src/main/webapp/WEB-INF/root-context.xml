@@ -17,7 +17,7 @@
         <property name="url" value="jdbc:mysql://localhost:3306/erp_db?useSSL=false&amp;serverTimezone=Asia/Seoul"/>
         <!-- DB 접속 계정 정보 -->
         <property name="username" value="root"/>
-        <property name="password" value=""/>
+        <property name="password" value="0000"/>
         <!--  맥북 에서 하느라 잠시 바꿈  -->
     </bean>
 

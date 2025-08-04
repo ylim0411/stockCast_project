@@ -1,7 +1,9 @@
 package com.spring.stockCast.service;
 
 import com.spring.stockCast.dto.ProductCategoryDTO;
+import com.spring.stockCast.dto.ProductDTO;
 import com.spring.stockCast.repository.ProductCategoryRepository;
+import com.spring.stockCast.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,25 +16,43 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProductCategoryService {
     private final ProductCategoryRepository productCategoryRepository;
+    private final ProductRepository productRepository;
 
     public List<ProductCategoryDTO> categorySelect() {
-        List<ProductCategoryDTO> categoryDTOList = productCategoryRepository.categorySelect();
+        List<ProductCategoryDTO> categoryAll = productCategoryRepository.categorySelect();
 
-        Map<Integer, ProductCategoryDTO> categoryDTOMap = new HashMap<>();
-        for (ProductCategoryDTO productCategory : categoryDTOList) {
-            categoryDTOMap.put(productCategory.getCategoryId(), productCategory);
+        Map<Integer, ProductCategoryDTO> categoryMap = new HashMap<>();
+        for (ProductCategoryDTO productCategory : categoryAll) {
+            categoryMap.put(productCategory.getCategoryId(), productCategory);
         }
 
-        List<ProductCategoryDTO> categoryList = new ArrayList<>();
+        List<ProductCategoryDTO> parentCategory = new ArrayList<>();
 
-        for (ProductCategoryDTO productCategory : categoryDTOList){
+        for (ProductCategoryDTO productCategory : categoryAll){
             if(productCategory.getParentId() == null) {
-                categoryList.add(productCategory);
+                parentCategory.add(productCategory);
             }else {
+                ProductCategoryDTO parent = categoryMap.get(productCategory.getParentId().intValue());
+                if (parent != null){
+                    if (parent.getCategoryList() == null) {
+                        parent.setCategoryList(new ArrayList<>());
+                    }
+                    parent.getCategoryList().add(productCategory);
+                }
+            }
 
+            if (productCategory.getCategoryLevel() == 2) {
+                List<ProductDTO> products = productRepository.selectProductsByCategoryId(productCategory.getCategoryId());
+                if (products != null && !products.isEmpty()) {
+                    productCategory.setProductList(products);
+                }
             }
         }
 
-        return categoryList;
+        return parentCategory;
+    }
+
+    public List<ProductCategoryDTO> findAllCategory() {
+        return productCategoryRepository.categorySelect();
     }
 }

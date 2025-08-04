@@ -38,4 +38,16 @@
         ORDER BY productName ASC
     </select>
 
+    <select id="selectProductsByCategoryId" parameterType="int" resultType="Product">
+        SELECT * FROM product WHERE categoryId = #{categoryId};
+    </select>
+
+    <select id="findProductList" resultType="Product">
+        SELECT * FROM product;
+    </select>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM product WHERE productId =#{productId}
+    </delete>
+
 </mapper>

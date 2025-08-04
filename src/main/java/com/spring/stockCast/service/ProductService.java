@@ -1,6 +1,7 @@
 package com.spring.stockCast.service;
 
 
+import com.spring.stockCast.dto.ProductDTO;
 import com.spring.stockCast.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,5 +21,13 @@ public class ProductService {
 
     public List<Map<String, Object>> getAllProducts() {
         return productRepository.getAllProducts();
+    }
+
+    public List<ProductDTO> findProductList() {
+        return productRepository.findProductList();
+    }
+
+    public void delete(int productId) {
+        productRepository.delete(productId);
     }
 }
