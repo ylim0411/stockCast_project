@@ -20,9 +20,9 @@ public class PurchaseOrderRepository {
     private final SqlSessionTemplate sql;
     // 거래명세서 내용 불러오기
     public List<AccoListDTO> findById(int id) {
-        return sql.selectList("PurchaseOrder.findById",id);
+        return sql.selectList("PurchaseOrder.findById", id);
 
-
+    }
     // 발주 상세 저장
     public void insertOrderDetail(int orderId, int productId, int purchasePrice, int purchaseQty) {
         Map<String, Object> param = new HashMap<>();
