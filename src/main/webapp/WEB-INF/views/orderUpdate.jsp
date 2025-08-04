@@ -27,7 +27,9 @@
             <input type="hidden" name="clientId" value="${orderInfo.clientId}">
 
             <!-- 저장 -->
-            <input type="submit" id="updateOrder" class="btn btn-blue" value="수정 완료">
+            <div class="btn-box">
+            <input type="submit" id="save-order" class="btn submit-btn" value="수정">
+            </div>
 
             <!-- 거래처 -->
             <table class="clientsName">
@@ -140,13 +142,41 @@
 <script>
 $(document).ready(function(){
 
-    $('#orderUpdate').on('submit', function(){
-        $('.item-row').each(function(){
-            if (!$(this).find('.item-select').val()) {
-                $(this).remove();
-            }
-        });
-    });
+    $('#orderUpdate').on('submit', function(e){
+       let valid = true;
+       let message = '';
+
+       // 모든 발주 항목 검사
+       $('.item-row').not('.template').each(function() {
+           let productId = $(this).find('.item-select').val();
+           let qty = parseInt($(this).find('.count-input').val(), 10);
+
+           if (!productId) {
+               valid = false;
+               message = '상품명을 선택하세요.';
+               return false;
+           }
+           if (!qty || qty <= 0) {
+               valid = false;
+               message = '수량을 입력하세요.';
+               return false;
+           }
+       });
+
+       // 유효성 실패 시
+       if (!valid) {
+           alert(message);
+           e.preventDefault(); // 제출 중단
+           return false;
+       }
+
+       // 빈 상품행 제거
+       $('.item-row').each(function() {
+           if (!$(this).find('.item-select').val()) {
+               $(this).remove();
+           }
+       });
+   });
 
     // 가격 입력값이 변경될 때 hidden 필드에 값 복사
     $(document).on('input change', '.price-input', function() {

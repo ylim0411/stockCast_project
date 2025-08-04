@@ -14,7 +14,7 @@
     <select id="findByOrderId" parameterType="int" resultType="PurchaseOrder">
         SELECT
         po.productId,
-        p.productName,
+        p.productName AS productName,
         po.purchasePrice,
         po.purchaseQty,
         (po.purchasePrice * po.purchaseQty) AS totalPrice
