@@ -16,7 +16,7 @@
           />
         </div>
         <div class="admin">
-          <p>홍길동 님</p> <!-- 아이디 or 이름 넣어야 함 -->
+          <p>${sessionScope.loginedAdminDTO.adminName} 님</p>
         </div>
         <nav>
           <ul>

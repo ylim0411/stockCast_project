@@ -60,7 +60,6 @@ public class GoogleController {
 
         model.addAttribute("email", userInfo.getEmail());
         model.addAttribute("name", userInfo.getName());
-        model.addAttribute("picture", userInfo.getPicture());
 
         return "join";
     }

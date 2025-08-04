@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -23,9 +24,11 @@ public class AdminController {
 
     // 실제 게시글을 DB에 저장
     @PostMapping("/login")
-    public String login(@ModelAttribute AdminDTO adminDTO) {
-        if (adminService.login(adminDTO))
+    public String login(@ModelAttribute AdminDTO adminDTO, HttpSession session) {
+        AdminDTO loginedAdminDTO = adminService.login(adminDTO);
+        if (loginedAdminDTO != null)
         {
+            session.setAttribute("loginedAdminDTO", loginedAdminDTO);
             return "main";
         }
         return "redirect:/admin/login";
@@ -49,9 +52,12 @@ public class AdminController {
     }
     @GetMapping("googleJoin")
     public String googleJoinForm() {
-
-
         return "join";
     }
 
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "index";
+    }
 }
