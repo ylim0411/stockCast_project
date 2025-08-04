@@ -17,11 +17,11 @@ public class SaleStmtService {
     public List<SaleListDTO> findAll() {
         return saleStmtRepository.findAll();
     }
-
+    // 발주번호에 일치하는 리스트 출력
     public List<SaleListDTO> findByNo(String orderNumber) {
         return saleStmtRepository.findByNo(orderNumber);
     }
-
+    // 기간에 있는 리스트 출력
     public List<SaleListDTO> findByDate(LocalDate startDate, LocalDate endDate) {
         return saleStmtRepository.findByDate(startDate,endDate);
     }
