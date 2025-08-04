@@ -28,4 +28,14 @@
         WHERE productId = #{id}
     </delete>
 
+    <!-- 전체 상품 목록 -->
+    <select id="getAllProducts" resultType="map">
+        SELECT
+        productId,
+        productName,
+        price
+        FROM product
+        ORDER BY productName ASC
+    </select>
+
 </mapper>

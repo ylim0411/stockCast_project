@@ -74,4 +74,18 @@ public class OrderStmtService {
         return orderStmtRepository.findById(orderId);
     }
 
+    // 발주 수정
+    public void updateOrder(int clientId, int orderId, String orderDate) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("clientId", clientId);
+        param.put("orderId", orderId);
+        param.put("orderDate", orderDate);
+
+        orderStmtRepository.updateOrder(param);
+    }
+
+    public void deleteOrder(int orderId) {
+        orderStmtRepository.deleteOrder(orderId);
+    }
+
 }

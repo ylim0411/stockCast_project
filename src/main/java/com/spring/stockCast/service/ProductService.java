@@ -17,4 +17,8 @@ public class ProductService {
     public List<Map<String, Object>> getProductsByClientId(int clientId) {
         return productRepository.findProductsByClientId(clientId);
     }
+
+    public List<Map<String, Object>> getAllProducts() {
+        return productRepository.getAllProducts();
+    }
 }

@@ -5,6 +5,7 @@ import com.spring.stockCast.dto.OrderStmtDTO;
 import com.spring.stockCast.dto.PurchaseOrderDTO;
 import com.spring.stockCast.service.ClientService;
 import com.spring.stockCast.service.OrderStmtService;
+import com.spring.stockCast.service.ProductService;
 import com.spring.stockCast.service.PurchaseOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,6 +26,7 @@ public class OrderStmtController {
     private final OrderStmtService orderStmtService;
     private final ClientService clientService;
     private final PurchaseOrderService purchaseOrderService;
+    private final ProductService productService;
 
     // 발주 목록 조회
     @GetMapping("/orderStmt")
@@ -92,6 +94,58 @@ public class OrderStmtController {
 
         return "orderDetail";
     }
+
+    // 발주 수정 페이지 이동
+    @GetMapping("/orderUpdate")
+    public String orderUpdate(@RequestParam int id, Model model) {
+        OrderStmtDTO orderInfo = orderStmtService.findById(id);
+        model.addAttribute("orderInfo", orderInfo);
+
+        List<PurchaseOrderDTO> orderItems = purchaseOrderService.findByOrderId(id);
+        model.addAttribute("orderItems", orderItems);
+
+        List<Map<String, Object>> clients = clientService.getAllClients();
+        model.addAttribute("clients", clients);
+
+        List<Map<String, Object>> products = productService.getProductsByClientId(orderInfo.getClientId());
+        model.addAttribute("products", products);
+
+        return "orderUpdate";
+    }
+
+    // 발주 수정 저장
+    @PostMapping("/orderUpdate")
+    public String updateOrder(
+            @RequestParam int orderId,
+            @RequestParam String orderDate,
+            @RequestParam int clientId,
+            @RequestParam("productId[]") List<Integer> productId,
+            @RequestParam("purchasePrice[]") List<Integer> purchasePrice,
+            @RequestParam("purchaseQty[]") List<Integer> purchaseQty
+    ) {
+        // 발주 기본 정보 수정
+        orderStmtService.updateOrder(clientId, orderId, orderDate);
+
+        // 기존 발주 상세 삭제 후 재등록
+        purchaseOrderService.deleteByOrderId(orderId);
+        for (int i = 0; i < productId.size(); i++) {
+            purchaseOrderService.saveOrderDetail(orderId, productId.get(i), purchasePrice.get(i), purchaseQty.get(i));
+        }
+
+        return "redirect:/order/orderStmt";
+    }
+
+    // 발주 삭제
+    @GetMapping("/orderDelete")
+    public String deleteOrder(@RequestParam int id) {
+        // 1. 발주 상세(구매 상품) 먼저 삭제
+        purchaseOrderService.deleteByOrderId(id);
+        // 2. 발주서 삭제
+        orderStmtService.deleteOrder(id);
+
+        return "redirect:/order/orderStmt";
+    }
+
 
     // 새로운 발주번호, 등록일 생성
     @GetMapping("/new-info")

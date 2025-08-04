@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="PurchaseOrder">
 
@@ -18,7 +18,7 @@
     <select id="findByOrderId" parameterType="int" resultType="PurchaseOrder">
         SELECT
         po.productId,
-        p.productName,
+        p.description AS productName,
         po.purchasePrice,
         po.purchaseQty,
         (po.purchasePrice * po.purchaseQty) AS totalPrice
@@ -26,5 +26,11 @@
         JOIN product p ON po.productId = p.productId
         WHERE po.orderId = #{orderId}
     </select>
+
+    <!-- 발주 상세 삭제 -->
+    <delete id="deleteByOrderId" parameterType="int">
+        DELETE FROM purchaseOrder
+        WHERE orderId = #{orderId}
+    </delete>
 
 </mapper>

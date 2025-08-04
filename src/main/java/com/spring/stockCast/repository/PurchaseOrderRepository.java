@@ -39,4 +39,13 @@ public class PurchaseOrderRepository {
         return sql.selectList("PurchaseOrder.findByOrderId", orderId);
 
     }
+
+    // 발주 상세 삭제
+    public void deleteOrder(int orderId) {
+        sql.delete("Orders.deleteOrder", orderId);
+    }
+
+    public void deleteByOrderId(int orderId) {
+        sql.delete("PurchaseOrder.deleteByOrderId", orderId);
+    }
 }

@@ -29,5 +29,9 @@ public class PurchaseOrderService {
     public List<PurchaseOrderDTO> findByOrderId(int orderId) {
         return purchaseOrderRepository.findByOrderId(orderId);
     }
+
+    public void deleteByOrderId(int orderId) {
+        purchaseOrderRepository.deleteByOrderId(orderId);
+    }
 }
 

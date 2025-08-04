@@ -76,23 +76,38 @@
 
     <!-- 발주서 조회 -->
     <select id="findById" parameterType="int" resultType="OrderStmt">
-        <![CDATA[ SELECT
-        os.orderId,
-        os.orderDate,
-        c.clientName,
-        SUM(po.purchaseQty) AS totalCount,
-        SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
-        CASE
-        WHEN DATE_ADD(os.orderDate, INTERVAL 3 DAY) < CURDATE() THEN '완료'
-        ELSE '진행중'
-        END AS status
+        <![CDATA[
+         SELECT
+            os.orderId,
+            os.orderDate,
+            c.clientId,
+            c.clientName,
+            SUM(po.purchaseQty) AS totalCount,
+            SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
+            CASE
+                WHEN DATE_ADD(os.orderDate, INTERVAL 3 DAY) < CURDATE() THEN '완료'
+                ELSE '진행중'
+            END AS status
         FROM orderStmt os
         JOIN client c ON os.clientId = c.clientId
         JOIN purchaseOrder po ON os.orderId = po.orderId
         WHERE os.orderId = #{orderId}
-        GROUP BY os.orderId, os.orderDate, c.clientName
-         ]]>
+        GROUP BY os.orderId, os.orderDate, c.clientId, c.clientName
+    ]]>
     </select>
+
+    <!-- 발주 수정 -->
+    <update id="updateOrder" parameterType="map">
+        UPDATE orderStmt
+        SET clientId = #{clientId},
+            orderDate = #{orderDate}
+        WHERE orderId = #{orderId}
+    </update>
+
+    <delete id="deleteOrder" parameterType="int">
+        DELETE FROM orderStmt
+        WHERE orderId = #{orderId}
+    </delete>
 
 </mapper>
 
