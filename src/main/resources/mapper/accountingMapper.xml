@@ -8,7 +8,8 @@
         SELECT o.orderId, o.orderdate, c.clientName, p.productName, SUM(s.purchasePrice*s.purchaseQty)*1.1 price FROM orderStmt o
         JOIN purchaseOrder s ON s.orderId = o.orderId
         JOIN client c ON c.clientId = o.clientId
-        JOIN product p ON c.productId = p.productId
+        JOIN client_product cp ON cp.clientId = c.clientId
+        JOIN product p ON cp.productId = p.productId
         GROUP BY o.orderId, o.orderdate, c.clientName, p.productName
         ORDER BY o.orderId;
     </select>

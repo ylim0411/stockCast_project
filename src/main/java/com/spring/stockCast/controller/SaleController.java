@@ -31,17 +31,17 @@ public class SaleController {
         model.addAttribute("customerAge",customerService.findCustomer()); // 고객 성별, 연령대 Map으로 반환
         return "sale";
     }
-    // 회계관리 페이지 이동
-    @GetMapping("/accounting")
+    // 거래현황 페이지 이동
+    @GetMapping("/saleStmt")
     public String salelistForm(Model model){
         List<SaleListDTO> saleList = accountingService.findAll();
         model.addAttribute("saleList",saleList);
-        return "accounting";
+        return "saleStmt";
     }
     // 거래명세서 상세화면으로 이동
     @GetMapping("/detail")
     public String saleDetail(Model model, @RequestParam("o_id") int id){
-        List<AccoListDTO> accoList = purchaseOrderService.findById(id); // 발주번호와 일치하는 거래명세서 불러오기
+        List<AccoListDTO> accoList = purchaseOrderService.findBySaleId(id); // 발주번호와 일치하는 거래명세서 불러오기
         ClientDTO client = clientService.findBySaleId(id); // 발주번호와 일치하는 거래처 불러오기
         model.addAttribute("accoList",accoList);
         model.addAttribute("client",client);

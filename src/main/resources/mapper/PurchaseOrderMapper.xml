@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="PurchaseOrder">
-
+    <!-- 발주번호와 일치하는 거래명세서 내역 가져오기 ho -->
+    <select id="findBySaleId" parameterType="int" resultType="AccoList">
+        SELECT o.orderId, o.orderDate, p.productName, s.purchaseQty, s.purchasePrice FROM  orderStmt o
+        JOIN purchaseOrder s ON s.orderId = o.orderId
+        JOIN product p ON s.productId = p.productId
+        WHERE o.orderId = ${id}
+    </select>
     <!-- 발주 상세 저장 -->
     <insert id="insertOrderDetail" parameterType="map">
         INSERT INTO purchaseOrder (
@@ -13,12 +19,29 @@
         #{orderId}, #{productId}, #{purchasePrice}, #{purchaseQty}
         )
     </insert>
-
+    <select id="findById" parameterType="int" resultType="OrderStmt">
+        <![CDATA[ SELECT
+    os.orderId,
+    os.orderDate,
+    c.clientName,
+    SUM(po.purchaseQty) AS totalCount,
+    SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
+    CASE
+    WHEN DATE_ADD(os.orderDate, INTERVAL 3 DAY) < CURDATE() THEN '완료'
+    ELSE '진행중'
+    END AS status
+    FROM orderStmt os
+    JOIN client c ON os.clientId = c.clientId
+    JOIN purchaseOrder po ON os.orderId = po.orderId
+    WHERE os.orderId = #{orderId}
+    GROUP BY os.orderId, os.orderDate, c.clientName
+     ]]>
+    </select>
     <!-- 발주 상세 목록 -->
     <select id="findByOrderId" parameterType="int" resultType="PurchaseOrder">
         SELECT
         po.productId,
-        p.description AS productName,
+        p.productName,
         po.purchasePrice,
         po.purchaseQty,
         (po.purchasePrice * po.purchaseQty) AS totalPrice
@@ -26,7 +49,6 @@
         JOIN product p ON po.productId = p.productId
         WHERE po.orderId = #{orderId}
     </select>
-
     <!-- 발주 상세 삭제 -->
     <delete id="deleteByOrderId" parameterType="int">
         DELETE FROM purchaseOrder

@@ -16,8 +16,8 @@ public class PurchaseOrderService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
   
-      public List<AccoListDTO> findById(int id) {
-        return purchaseOrderRepository.findById(id);
+      public List<AccoListDTO> findBySaleId(int id) {
+        return purchaseOrderRepository.findBySaleId(id);
     }
 
     // 발주 상세 저장

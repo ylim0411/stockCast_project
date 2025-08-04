@@ -75,6 +75,9 @@
                   <a href="${pageContext.request.contextPath}/sale/list"> 판매 실적 </a>
                 </li>
 
+                <li class="${fn:contains(uri, '/sale/saleStmt') ? 'on' : ''}">
+                  <a href="${pageContext.request.contextPath}/sale/saleStmt"> 거래명세서 </a>
+                </li>
                 <li class="${fn:contains(uri, '/sale/accounting') ? 'on' : ''}">
                   <a href="${pageContext.request.contextPath}/sale/accounting"> 회계 관리 </a>
                 </li>
