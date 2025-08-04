@@ -25,21 +25,79 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       <div class="title-box">
         <div class="title" style="font-size: 18px">관리자 정보</div>
       </div>
-      <table class="orderItems" style="width: 50%; margin-bottom: 40px">
-        <tr>
-          <th>이름</th>
-          <td>홍길동</td>
-        </tr>
-        <tr>
-          <th>아이디</th>
-          <td>**********</td>
-        </tr>
-        <tr>
-          <th>비밀번호</th>
-          <td>**********</td>
-        </tr>
-      </table>
-
+      <form action="/admin/update" method="post">
+        <table class="orderItems" style="width: 60%; margin-bottom: 40px">
+          <tr>
+            <th>이름</th>
+            <td>
+              <input
+                type="text"
+                name="adminName"
+                placeholder="이름"
+                value="${sessionScope.loginedAdminDTO.adminName}"
+                required
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>아이디</th>
+            <td>
+              <input
+                type="text"
+                name="loginId"
+                placeholder="아이디"
+                value="${sessionScope.loginedAdminDTO.loginId}"
+                required
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>비밀번호</th>
+            <td style="position: relative">
+              <input
+                style="border: none; text-align: center"
+                type="password"
+                id="loginPw"
+                name="loginPw"
+                placeholder="비밀번호"
+                value="${sessionScope.loginedAdminDTO.loginPw}"
+                required
+              />
+              <button
+                type="button"
+                onclick="togglePassword()"
+                id="togglePwBtn"
+                style="
+                  position: absolute;
+                  right: 10px;
+                  top: 50%;
+                  transform: translateY(-50%);
+                  background: none;
+                  border: none;
+                  font-size: 16px;
+                  cursor: pointer;
+                "
+              >
+                👁️
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <th>사업자 등록번호</th>
+            <td>
+              <input
+                type="text"
+                name="businessNumber"
+                placeholder="사업자 등록번호"
+                value="${sessionScope.loginedAdminDTO.businessNumber}"
+                required
+              />
+            </td>
+          </tr>
+        </table>
+        <input type="submit" value="수정하기" class="btn btn-blue" />
+      </form>
+      <br /><br /><br />
       <!-- 관리 점포 목록 -->
       <div class="title-box">
         <div class="title" style="font-size: 18px">관리 점포 목록</div>
@@ -47,12 +105,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
       <!-- 검색 바 -->
       <div class="form-container" style="margin-bottom: 10px">
-        <select>
+        <select class="select">
           <option>전체</option>
           <option>서울</option>
           <option>경기</option>
         </select>
-        <input type="text" placeholder="고객명 검색" />
+        <input type="text" class="input" placeholder="고객명 검색" />
         <button class="btn btn-blue">검색</button>
         <button class="btn btn-blue-b">점포 등록</button>
       </div>
@@ -88,6 +146,30 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           </tr>
         </tbody>
       </table>
+
+      <!-- 페이지네이션 -->
+      <div class="pagination" style="margin-top: 20px">
+        <button class="btn">&lt;</button>
+        <button class="btn btn-blue">1</button>
+        <button class="btn">2</button>
+        <button class="btn">3</button>
+        <button class="btn">4</button>
+        <button class="btn">&gt;</button>
+      </div>
     </div>
+    <script>
+      function togglePassword() {
+        const pwField = document.getElementById("loginPw");
+        const toggleBtn = document.getElementById("togglePwBtn");
+
+        if (pwField.type === "password") {
+          pwField.type = "text";
+          toggleBtn.textContent = "🙈"; // 보기 중 → 눈 가린 이모지
+        } else {
+          pwField.type = "password";
+          toggleBtn.textContent = "👁️"; // 보기 전 → 눈 뜬 이모지
+        }
+      }
+    </script>
   </body>
 </html>
