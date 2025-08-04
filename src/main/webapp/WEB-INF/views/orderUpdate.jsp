@@ -59,7 +59,7 @@
                 </tbody>
             </table>
 
-            <div class="btn-box">
+            <div class="btn-box" style="margin:20px;">
                 <button type="button" class="add-row btn btn-blue">행 추가</button>
                 <button type="button" id="delete-selected" class="btn btn-red">선택 삭제</button>
             </div>
@@ -195,7 +195,36 @@ $(document).ready(function(){
 
     // 상품 선택 시 가격 반영
     $(document).on('change', '.item-select', function(){
-        setPriceBySelected($(this));
+        let $this = $(this);
+        let selectedVal = $this.val();
+
+        // 선택 안 했으면 바로 리턴
+        if (!selectedVal) {
+            setPriceBySelected($this);
+            calcSummary();
+            return;
+        }
+
+        // 다른 행에서 이미 선택된 상품인지 검사
+        let isDuplicate = false;
+        $('.item-select').not(this).each(function(){
+            if ($(this).val() === selectedVal) {
+                isDuplicate = true;
+                return false; // break
+            }
+        });
+
+        // 중복이면 경고 후 초기화
+        if (isDuplicate) {
+            alert('이미 선택한 상품입니다. 다른 상품을 선택하세요.');
+            $this.val(''); // 선택 해제
+            setPriceBySelected($this); // 가격/금액 0으로
+            calcSummary();
+            return;
+        }
+
+        // 정상 처리
+        setPriceBySelected($this);
         calcSummary();
     });
 

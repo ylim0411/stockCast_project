@@ -56,15 +56,18 @@
     background-color: var(--color-bg);
   }
 
+/* -header : 헤더 메인 ------------------------------------------------ */
   header {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 220px;
-    height: 100%;
+    height: 100vh;
     background-color: var(--color-primary);
     color: #fff;
     padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
   }
 
   header .logo {
@@ -146,13 +149,16 @@
     color: var(--color-white);
   }
 
-  /* container : 헤더 오른쪽 화면 */
+  /* container : 헤더 오른쪽 화면 ------------------------------------------------- */
   .container {
-    width: calc(100% - 220px);
     padding: 50px;
+    margin-left: 220px;
+    flex: 1;
+    height: 100%;
+    overflow-y: auto;
   }
 
-  /* button */
+  /* button ------------------------------------------------- */
   .btn {
     padding: 5px 10px;
     font-size: var(--font-size-base);
@@ -165,7 +171,7 @@
 
   .submit-btn{
     padding: 10px 20px;
-    background-color: var(--color-primary);
+    background-color: var(--color-secondary);
     color: var(--color-white);
     margin:10px;
   }
@@ -177,16 +183,16 @@
   }
 
   .btn-blue {
-    border: 1px solid var(--color-primary);
-    color: var(--color-primary);
+    border: 1px solid var(--color-secondary);
+    color: var(--color-secondary);
   }
 
   .btn-blue:hover {
-    background-color: var(--color-primary);
+    background-color: var(--color-secondary);
     color: var(--color-white);
   }
 
-  /* 발주서 진행상황 button */
+  /* 발주서 진행상황 button ------------------------------------------------- */
   .statusBtn {
     display:inline-block;
     width:56px;
@@ -208,7 +214,7 @@
     }
 
  .btn-blue-b {
-   background-color: var(--color-primary);
+   background-color: var(--color-secondary);
    color: var(--color-white);
  }
 
@@ -222,7 +228,7 @@
    color: var(--color-white);
  }
 
- /* title */
+ /* title ------------------------------------------------- */
   .title-box{
    margin-bottom:50px;
    display: flex;
@@ -239,7 +245,7 @@
    color: var(--color-gray);
    }
 
-/* 테이블 */
+/* 테이블 ------------------------------------------------- */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -260,13 +266,17 @@
     font-weight: bold;
   }
 
-  /* form 태그 */
+  /* form 태그 ------------------------------------------------- */
     .form-container {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
       margin-bottom: 10px;
+    }
+
+    .dateForm, .searchForm{
+    display: flex;
+    gap: 5px;
     }
 
     input[type='date'],
@@ -279,21 +289,21 @@
         border: none;
         outline: none;
         background-color: transparent;
-        padding: 4px;
         color: var(--color-black);
         background-color: var(--color-white);
+        height: 30px;
     }
 
-    /* 달력 인풋 & 텍스트 인풋 */
+    /* 달력 인풋 & 텍스트 인풋 ------------------------------------------------- */
     .form-container input[type='date'],
     .form-container input[type='text'] {
-      padding: 10px 12px;
+      padding: 5px;
       border: 1px solid var(--color-border);
       border-radius: var(--border-radius-base5);
       font-size: var(--font-size-base);
     }
 
-    /* 거래명세서 css */
+    /* 거래명세서 css ------------------------------------------------- */
     .detail-header {
          display: flex;
          justify-content: flex-end;
@@ -307,7 +317,7 @@
      width:25%;
     }
 
-    /* 발주서 css */
+    /* 발주서 css ------------------------------------------------- */
      .orderSummary {
     margin-top: 20px;
     border: 1px solid var(--color-border);
@@ -323,7 +333,7 @@
 
    .orderItems {
        width: 100%;
-       table-layout: fixed !important; /* 셀 폭 고정 */
+       table-layout: fixed !important;
        border: 1px solid var(--color-border);
        border-collapse: collapse;
    }
@@ -334,9 +344,9 @@
        text-align: center;
        vertical-align: middle;
        padding: 4px;
-       overflow: hidden;        /* 내용이 넘칠 때 숨김 */
-       text-overflow: ellipsis; /* 넘친 텍스트 '...' 표시 */
-       white-space: nowrap;     /* 줄바꿈 방지 */
+       overflow: hidden;
+       text-overflow: ellipsis;
+       white-space: nowrap;
    }
 
    /* orderItems 고정 폭 설정 */
@@ -365,13 +375,11 @@
        width: 150px; /* 총 금액 */
    }
 
-   /* select, input 폭 고정 */
    .orderItems select,
    .orderItems input {
-       width: 100% !important; /* 셀 폭에 맞춤 */
+       width: 100% !important;
        box-sizing: border-box;
    }
-
 
     table.orderSummary td,
     table.orderItems td {
@@ -397,6 +405,7 @@
     .order-items-box{
     height : 500px;
     }
+
      /* 발주 상세페이지 css ------------------------------------------------- */
      .section-actions {
          display: flex;
@@ -455,23 +464,19 @@
          display: flex;
          flex-direction: column;
          padding : 20px;
-         height : 350px;
+         height : 300px;
          overflow-y: auto;
-
      }
 
-     /* 스크롤바 전체 */
      .order-items::-webkit-scrollbar {
          width: 10px;
      }
 
-     /* 스크롤바 트랙(배경) */
      .order-items::-webkit-scrollbar-track {
          background: transparent;
          margin: 30px 0;
      }
 
-     /* 스크롤바 손잡이 */
      .order-items::-webkit-scrollbar-thumb {
          background-color: var(--color-secondary);
          border-radius: 10px;
@@ -479,7 +484,6 @@
           background-clip: padding-box;  /* border 공간 확보 */
           cursor: pointer;
      }
-
 
      .order-item.header {
          font-weight: 500;
