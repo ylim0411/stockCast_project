@@ -18,13 +18,14 @@
         <h2 class="title">발주 현황</h2>
       </div>
 
-    <!-- 날짜 조회 -->
+    <!-- 날짜 + 검색 조회 -->
       <form action="/order/orderStmt" method="get" class="form-container">
         <div class="dateForm">
             <input type="date" name="startDate" id="startDate" value="${param.startDate}">
             <input type="date" name="endDate" id="endDate" value="${param.endDate}">
             <button type="submit" class="btn btn-blue">조회</button>
         </div>
+
         <div class="searchForm">
             <input type="text" name="orderStmtId" placeholder="발주번호 검색" value="${param.orderStmtId}"/>
             <button type="submit" class="btn btn-blue">검색</button>
@@ -53,13 +54,13 @@
             <td>
                <c:choose>
                   <c:when test="${order.status.name() == '진행중'}">
-                      <span class="status btn-orange-b statusBtn">진행중</span>
+                      <span class=" btn-orange-b statusBtn">진행중</span>
                   </c:when>
                   <c:when test="${order.status.name() == '완료'}">
-                     <span class="status btn-blue-b statusBtn">완료</span>
+                     <span class=" btn-blue-b statusBtn">완료</span>
                   </c:when>
                   <c:when test="${order.status.name() == '취소'}">
-                     <span class="status btn-red-b statusBtn">취소</span>
+                     <span class=" btn-red-b statusBtn">취소</span>
                   </c:when>
                </c:choose>
             </td>
