@@ -64,22 +64,20 @@
              </ul>
            </li>
 
-            <li class="main-menu  ${fn:contains(uri, '/sale') ? 'on' : ''}">
+            <li class="main-menu ${fn:contains(uri, '/sale') || fn:contains(uri, '/accounting') ? 'on' : ''}">
               <a href="${pageContext.request.contextPath}/sale/list">
                 <img src="${pageContext.request.contextPath}/static/images/sale.png" alt="saleIcon" />
                 <span>매출관리</span>
               </a>
-
-              <ul class="sub-menu" style="${fn:contains(uri, '/sale') ? 'display:block;' : ''}">
+              <ul class="sub-menu" style="${fn:contains(uri, '/sale') || fn:contains(uri, '/accounting') ? 'display:block;' : ''}">
                 <li class="${fn:contains(uri, '/sale/list') ? 'on' : ''}">
                   <a href="${pageContext.request.contextPath}/sale/list"> 판매 실적 </a>
                 </li>
-
-                <li class="${fn:contains(uri, '/sale/saleStmt') ? 'on' : ''}">
-                  <a href="${pageContext.request.contextPath}/sale/saleStmt"> 거래명세서 </a>
+                <li class="${fn:contains(uri, '/saleStmt/saleStmt') ? 'on' : ''}">
+                  <a href="${pageContext.request.contextPath}/saleStmt/list"> 거래명세서 </a>
                 </li>
-                <li class="${fn:contains(uri, '/sale/accounting') ? 'on' : ''}">
-                  <a href="${pageContext.request.contextPath}/sale/accounting"> 회계 관리 </a>
+                <li class="${fn:contains(uri, '/accounting/list') ? 'on' : ''}">
+                  <a href="${pageContext.request.contextPath}/accounting/list"> 회계 관리 </a>
                 </li>
               </ul>
             </li>

@@ -12,7 +12,7 @@
     <a href="/main">메인화면</a>
 
     <a href="/sale/list">판매실적 이동</a>
-    <a href="/sale/saleStmt/">거래명세서 이동</a>
+    <a href="/saleStmt/list">거래명세서 이동</a>
     <a href="/admin/select">상품카테고리 이동</a>
     <a href="/product/">상품카테고리 이동</a>
 

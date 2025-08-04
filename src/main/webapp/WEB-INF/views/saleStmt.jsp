@@ -18,7 +18,7 @@
             <p class="sub-title">매출 관리</p>
             <h2 class="title">거래명세서</h2>
         </div>
-             <form action="/sale/find" method="post" class="form-container">
+             <form action="/saleStmt/find" method="post" class="form-container">
                   <div class="dateForm">
                       <input type="date" name="startDate" id="startDate">
                       <input type="date" name="endDate" id="endDate">
@@ -53,7 +53,7 @@
 </body>
 <script>
   const onSaleStmt = (id) => {
-        location.href = "/sale/detail?o_id="+id;
+        location.href = "/saleStmt/detail?o_id="+id;
     }
 </script>
 </html>
