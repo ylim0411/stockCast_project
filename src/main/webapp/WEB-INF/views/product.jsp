@@ -91,7 +91,7 @@
                         <c:forEach items="${parent.categoryList}" var="middle">
                              <c:if test="${middle.categoryLevel == 2}">
                                  <c:forEach items="${middle.productList}" var="product">
-                                 <form method="post" action="${pageContext.request.contextPath}/product/update">
+                                 <form method="post" action="${pageContext.request.contextPath}/update">
                                     <tr data-product-id="${product.productId}">
                                             <td>
                                               <select name="parentCategoryId" disabled>

@@ -25,12 +25,11 @@
 			<h1>상품 카테고리 목록</h1>
 			<button id="middle">중분류 모두 접기</button>
 			<button id="child">소분류 모두 접기</button>
-			<button>카테고리 등록</button>
+			<button type="button" onclick="categorySave()">카테고리 등록</button>
 			<table>
 				<thead>
 					<tr>
 						<th>카테고리 레벨</th>
-						<th>카테고리 이름</th>
 						<th>카테고리 등록일시</th>
 					</tr>
 				</thead>
@@ -106,7 +105,9 @@
         });
     });
 
+    const categorySave = () => {
 
+    }
 
 
 </script>
