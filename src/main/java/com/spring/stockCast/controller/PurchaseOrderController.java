@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping("/purchasOrder")
 public class PurchaseOrderController {
     private final PurchaseOrderService purchaseOrderService;
 

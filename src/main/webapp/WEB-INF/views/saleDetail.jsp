@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/header.jsp" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -9,31 +9,16 @@
     <meta charset="UTF-8" />
     <title>거래명세서</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="${pageContext.request.contextPath}/static/css/style.css"
-    />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
   </head>
   <body>
+  <div class="container">
     <div class="title-box">
       <p class="sub-title">매출 관리</p>
       <h2 class="title">거래명세서</h2>
     </div>
-    <div class="container">
-      <!DOCTYPE html>
-      <html lang="ko">
-        <head>
-          <meta charset="UTF-8" />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
-          />
-          <title>거래명세서</title>
-          <link rel="stylesheet" href="style.css" />
-        </head>
-        <body>
           <div>
-            <div class="dateil-header">
+            <div class="order-detail-box">
               <table class="deteil-table">
                 <tr>
                   <th colspan="5">거래명세서</th>
@@ -107,6 +92,3 @@
           </div>
         </body>
       </html>
-    </div>
-  </body>
-</html>
