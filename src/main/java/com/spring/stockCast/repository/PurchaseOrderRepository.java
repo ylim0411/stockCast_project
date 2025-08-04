@@ -18,9 +18,9 @@ import java.util.Map;
 public class PurchaseOrderRepository {
 
     private final SqlSessionTemplate sql;
-    // 거래명세서 내용 불러오기
-    public List<AccoListDTO> findById(int id) {
-        return sql.selectList("PurchaseOrder.findById", id);
+    // 거래명세서 내용 불러오기 ho
+    public List<AccoListDTO> findBySaleId(int id) {
+        return sql.selectList("PurchaseOrder.findBySaleId", id);
 
     }
     // 발주 상세 저장

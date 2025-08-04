@@ -16,5 +16,8 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/accounting")
 public class AccountingController {
-
+    @GetMapping("/list")
+    public String accountingList(){
+        return "accounting";
+    }
 }

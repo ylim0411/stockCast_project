@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ include file="/WEB-INF/views/header.jsp" %>
 <!DOCTYPE html>
 <html>
@@ -7,9 +9,8 @@
     <title>Chart.js Example</title>
     <script src="${pageContext.request.contextPath}/webjars/chartjs/2.9.4/Chart.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/static/js/chart.js"></script>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-        <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/chart.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/chart.css"/>
 </head>
 <body>
     <div class="container">
@@ -17,9 +18,20 @@
             <p class="sub-title">매출 관리</p>
             <h2 class="title">판매실적</h2>
         </div>
+        <form action="/sale/findDate" method="post" class="form-container">
+                        <div class="dateForm">
+                            <input type="date" name="startDate" id="startDate">
+                            <input type="date" name="endDate" id="endDate">
+                            <button type="submit" class="btn btn-blue">조회</button>
+                        </div>
+                        <div class="searchForm">
+                            <input type="text" name="orderNumber" placeholder="발주번호 검색"/>
+                            <button type="submit" class="btn btn-blue">검색</button>
+                        </div>
+                    </form>
         <div class="chart-container">
             <div class="doughnut-chart">
-                <canvas id="genderChart"></canvas>
+                <canvas id="salesCategoryChart"></canvas>
             </div>
             <div class="line-chart">
                 <canvas id="salesChart"></canvas>
@@ -27,67 +39,79 @@
         </div>
     </div>
 
+    <!-- 1. 도넛 차트 (판매 품목에 따른 분류) -->
     <script>
-        // 도넛 차트 (성별에 따른 고객분류)
-        var itemCtx = document.getElementById('genderChart').getContext('2d');
+        var salesLabels = [];
+        var salesData = [];
+
+        <c:forEach items="${saleCategory}" var="entry">
+            salesLabels.push(JSON.stringify('${entry.key}'));
+            salesData.push(${entry.value});
+        </c:forEach>
+
+        var itemCtx = document.getElementById('salesCategoryChart').getContext('2d');
         var itemsChart = new Chart(itemCtx, {
-            type: 'doughnut',  // 도넛 차트 유형
+            type: 'doughnut',
             data: {
-                labels: ["남자","여자","기타"], // 라벨 예시
+                labels: salesLabels,
                 datasets: [{
-                    label: '성별에 따른 고객분류', // 데이터셋 라벨
-                    data: [${customerAge.man}, ${customerAge.woman}, ${customerAge.etc}], // 실제 데이터 값
+                    label: '판매 품목에 따른 분류',
+                    data: salesData,
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.7)', // 색상 투명도 조정
+                        'rgba(255, 99, 132, 0.7)',
                         'rgba(54, 162, 235, 0.7)',
-                        'rgba(255, 206, 86, 0.7)'
-                        //'rgba(75, 192, 192, 0.7)',
-                        //'rgba(153, 102, 255, 0.7)',
-                        //'rgba(255, 159, 64, 0.7)'
+                        'rgba(255, 206, 86, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(153, 102, 255, 0.7)',
+                        'rgba(255, 159, 64, 0.7)',
+                        'rgba(201, 203, 207, 0.7)'
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
                         'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)'
-                        //'rgba(75, 192, 192, 1)',
-                        //'rgba(153, 102, 255, 1)',
-                        //'rgba(255, 159, 64, 1)'
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(201, 203, 207, 1)'
                     ],
                     borderWidth: 1
                 }]
             },
-            options: { // options 객체가 data 객체와 같은 레벨에 있어야 합니다.
-                responsive: true, // 컨테이너 크기에 맞춰 캔버스 크기 조절
-                maintainAspectRatio: false, // 컨테이너 크기에 맞춰 종횡비 유지 안함
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                     legend: {
                         display: true,
-                        position: 'right' // 범례 위치
+                        position: 'right'
                     },
                     title: {
                         display: true,
-                        text: '판매 항목별 비율' // 차트 제목
+                        text: '판매 항목별 비율'
                     }
                 }
             }
         });
+    </script>
 
-        // 꺾은선 차트 (월별 판매 추이)
+    <!-- 2. 꺾은선 차트 (월별 판매 추이) -->
+    <script>
         var salesCtx = document.getElementById('salesChart').getContext('2d');
         var salesChart = new Chart(salesCtx, {
-            type: 'line',  // 꺾은선 차트 유형
+            type: 'line',
             data: {
-                labels: ['1월', '2월', '3월', '4월', '5월', '6월'], // 월별 라벨
+                labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
                 datasets: [{
-                    label: '월별 판매량', // 데이터셋 라벨
-                    data: [120, 190, 300, 250, 400, 350], // 실제 데이터 값
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)', // 선 아래 영역 배경색
-                    borderColor: 'rgba(54, 162, 235, 1)', // 선 색상
-                    borderWidth: 2, // 선 두께
-                    fill: true, // 선 아래 영역 채우기
-                    tension: 0.3, // 선의 부드러움 정도
-                    pointBackgroundColor: 'rgba(54, 162, 235, 1)', // 데이터 포인트 배경색
-                    pointBorderColor: '#fff', // 데이터 포인트 테두리 색상
+                    label: '월별 판매량',
+                    data: [120, 190, 300, 250, 400, 350],
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.3,
+                    pointBackgroundColor: 'rgba(54, 162, 235, 1)',
+                    pointBorderColor: '#fff',
                     pointHoverBackgroundColor: '#fff',
                     pointHoverBorderColor: 'rgba(54, 162, 235, 1)'
                 }]
@@ -96,17 +120,17 @@
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
-                    y: { // y축 설정
-                        beginAtZero: true, // 0부터 시작
+                    y: {
+                        beginAtZero: true,
                         title: {
                             display: true,
-                            text: '판매량' // y축 제목
+                            text: '판매량'
                         }
                     },
-                    x: { // x축 설정
+                    x: {
                         title: {
                             display: true,
-                            text: '월' // x축 제목
+                            text: '월'
                         }
                     }
                 },
@@ -117,54 +141,11 @@
                     },
                     title: {
                         display: true,
-                        text: '월별 판매 추이' // 차트 제목
+                        text: '월별 판매 추이'
                     }
                 }
             }
         });
-          $(function () {
-              // 메인 메뉴 클릭 시
-              $("li.main-menu > a").on("click", function (e) {
-                e.preventDefault();
-
-                const $clickedMenu = $(this).parent(); // li.main-menu
-                const $subMenu = $clickedMenu.find(".sub-menu");
-
-                // 현재 열려있는 다른 메뉴 닫기
-                $("li.main-menu")
-                  .not($clickedMenu)
-                  .removeClass("on")
-                  .find(".sub-menu")
-                  .slideUp()
-                  .find("li")
-                  .removeClass("on");
-
-                // 현재 클릭한 메뉴 toggle
-                const isOpen = $clickedMenu.hasClass("on");
-                if (isOpen) {
-                  // 열려 있으면 닫기
-                  $clickedMenu.removeClass("on");
-                  $subMenu.slideUp();
-                } else {
-                  // 닫혀 있으면 열기
-                  $clickedMenu.addClass("on");
-                  $subMenu.slideDown();
-
-                  // 하위 첫 번째 서브 메뉴 항목을 활성화
-                  const $firstSubItem = $subMenu.find("li").first();
-                  $(".sub-menu li").removeClass("on"); // 전체 초기화
-                  $firstSubItem.addClass("on");
-                }
-              });
-
-              // 서브 메뉴 클릭 시 활성화
-              $(".sub-menu li a").on("click", function (e) {
-                e.preventDefault();
-
-                $(".sub-menu li").removeClass("on"); // 전체 비활성화
-                $(this).parent().addClass("on"); // 클릭된 항목 활성화
-              });
-            });
     </script>
 </body>
 </html>
