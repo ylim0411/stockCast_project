@@ -303,8 +303,11 @@
 
     /* 달력 인풋 & 텍스트 인풋 ------------------------------------------------- */
     .form-container input[type='date'],
-    .form-container input[type='text'] {
+
+    .form-container input[type='text'],
+    .form-container input[type="number"]{
       padding: 5px;
+
       border: 1px solid var(--color-border);
       border-radius: var(--border-radius-base5);
       font-size: var(--font-size-base);

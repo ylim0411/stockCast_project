@@ -25,7 +25,7 @@
                             <button type="submit" class="btn btn-blue">조회</button>
                         </div>
                         <div class="searchForm">
-                            <input type="text" name="orderNumber" placeholder="발주번호 검색"/>
+                            <input type="number" name="year" min="1900" max="2100" placeholder="2025" />
                             <button type="submit" class="btn btn-blue">검색</button>
                         </div>
                     </form>
@@ -45,7 +45,7 @@
         var salesData = [];
 
         <c:forEach items="${saleCategory}" var="entry">
-            salesLabels.push(JSON.stringify('${entry.key}'));
+            salesLabels.push('${entry.key}');
             salesData.push(${entry.value});
         </c:forEach>
 
@@ -97,14 +97,20 @@
 
     <!-- 2. 꺾은선 차트 (월별 판매 추이) -->
     <script>
+         var salesLabels = [];
+         var salesData = [];
+                <c:forEach items="${monthPrice}" var="entry">
+                    salesLabels.push('${entry.key}');
+                    salesData.push(${entry.value});
+                </c:forEach>
         var salesCtx = document.getElementById('salesChart').getContext('2d');
         var salesChart = new Chart(salesCtx, {
             type: 'line',
             data: {
-                labels: ['1월', '2월', '3월', '4월', '5월', '6월'],
+                labels: salesLabels,
                 datasets: [{
-                    label: '월별 판매량',
-                    data: [120, 190, 300, 250, 400, 350],
+                    label: '월별 판매 금액',
+                    data: salesData,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgba(54, 162, 235, 1)',
                     borderWidth: 2,
@@ -124,7 +130,7 @@
                         beginAtZero: true,
                         title: {
                             display: true,
-                            text: '판매량'
+                            text: '판매금액'
                         }
                     },
                     x: {

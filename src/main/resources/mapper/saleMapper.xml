@@ -5,9 +5,25 @@
 <mapper namespace="Sale">
     <!-- 전체 판매내역 조회 ho -->
     <select id="findAll" resultType="Sale">
-        SELECT s.*, sp.salePrice, sp.saleQty, pc.categoryName FROM erp_db.sale s
+        SELECT s.*, sp.salePrice, sp.saleQty, pc.categoryName FROM sale s
         JOIN sale_product sp ON s.saleId = sp.saleId
         JOIN product p ON p.productId = sp.productId
         JOIN productcategory pc ON pc.categoryId = p.categoryId;
+    </select>
+    <!-- 날짜 범위안에 있는 판매 목록 표시 ho -->
+    <select id="findByDateBetween" resultType="Sale">
+        SELECT s.*, sp.salePrice, sp.saleQty, pc.categoryName FROM sale s
+        JOIN sale_product sp ON s.saleId = sp.saleId
+        JOIN product p ON p.productId = sp.productId
+        JOIN productcategory pc ON pc.categoryId = p.categoryId
+        WHERE s.saleDate BETWEEN #{startDate} AND #{endDate};
+    </select>
+    <select id="findByYear" parameterType="String" resultType="Sale">
+        SELECT s.*, sp.salePrice, sp.saleQty, pc.categoryName FROM sale s
+        JOIN sale_product sp ON s.saleId = sp.saleId
+        JOIN product p ON p.productId = sp.productId
+        JOIN productcategory pc ON pc.categoryId = p.categoryId
+        WHERE SUBSTR(s.saleDate,1,4) = #{year}
+        ORDER BY s.saleDate;
     </select>
 </mapper>
