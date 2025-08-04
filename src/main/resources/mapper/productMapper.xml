@@ -50,4 +50,9 @@
         DELETE FROM product WHERE productId =#{productId}
     </delete>
 
+    <update id="update" parameterType="Product">
+        UPDATE product SET productName = #{productName}, price = #{price}, stockQuantity = #{stockQuantity}, categoryId = #{categoryId}
+        WHERE productId = #{productId}
+    </update>
+
 </mapper>
