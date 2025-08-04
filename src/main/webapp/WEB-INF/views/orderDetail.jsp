@@ -5,100 +5,110 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <title>발주서 작성</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-  </head>
-  <body>
-    <div class="container">
-        <div class="title-box">
-            <p class="sub-title">발주 관리</p>
-            <h2 class="title">발주 상세 페이지</h2>
+</head>
+<body>
+<div class="container">
+    <div class="title-box">
+        <p class="sub-title">발주 관리</p>
+        <h2 class="title">발주 상세 페이지</h2>
+    </div>
+
+    <!-- 상태 + 버튼 -->
+    <div class="section-actions">
+        <div>
+            <strong>현재 발주 상태 :</strong>
+            <c:choose>
+                <c:when test="${orderInfo.status == '진행중'}">
+                    <span class="btn-orange-b statusBtn">진행중</span>
+                </c:when>
+                <c:when test="${orderInfo.status == '완료'}">
+                    <span class="btn-blue-b statusBtn">완료</span>
+                </c:when>
+                <c:when test="${orderInfo.status == '취소'}">
+                    <span class="btn-red-b statusBtn">취소</span>
+                </c:when>
+            </c:choose>
         </div>
-
-       <!-- 주문상세 -->
-       <div class="order-detail-box">
-           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-               <!-- 왼쪽: 발주 상태 -->
-               <div>
-                   <strong>현재 발주 상태 :</strong>
-                   <c:choose>
-                       <c:when test="${orderInfo.status == '진행중'}">
-                           <span style="color: orange; font-weight: bold;">진행중</span>
-                       </c:when>
-                       <c:when test="${orderInfo.status == '완료'}">
-                           <span style="color: blue; font-weight: bold;">완료</span>
-                       </c:when>
-                       <c:when test="${orderInfo.status == '취소'}">
-                           <span style="color: red; font-weight: bold;">취소</span>
-                       </c:when>
-                   </c:choose>
-               </div>
-
-               <!-- 오른쪽: 버튼 -->
-               <div>
-                   <button type="button" class="btn btn-blue"
-                       onclick="location.href='/order/orderUpdate?id=${orderInfo.orderId}'">수정</button>
-                   <button type="button" class="btn btn-red"
-                       onclick="deleteOrder(${orderInfo.orderId})">삭제</button>
-               </div>
-           </div>
-
-           <!-- 기존 상세 테이블 -->
-           <table class="detail-table">
-               <tr>
-                   <th>발주번호</th>
-                   <td>${orderInfo.orderId}</td>
-                   <th>발주 등록일</th>
-                   <td><fmt:formatDate value="${orderInfo.orderDate}" pattern="yyyy-MM-dd"/></td>
-                   <th>거래처명</th>
-                   <td>${orderInfo.clientName}</td>
-               </tr>
-               <tr>
-                   <th>총 수량</th>
-                   <td>${orderInfo.totalCount}</td>
-                   <th>총 금액</th>
-                   <td><fmt:formatNumber value="${orderInfo.totalPrice}" pattern="#,###"/></td>
-               </tr>
-           </table>
-       </div>
-
-        <!-- 발주 품목 테이블 -->
-        <div class="order-items-box">
-            <table class="list-table">
-                <thead>
-                    <tr>
-                        <th>상품번호</th>
-                        <th>상품명</th>
-                        <th>구매단가</th>
-                        <th>수량</th>
-                        <th>청구비용</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <c:forEach items="${orderItems}" var="item">
-                        <tr>
-                            <td>${item.productId}</td>
-                            <td>${item.productName}</td>
-                            <td><fmt:formatNumber value="${item.purchasePrice}" pattern="#,###"/></td>
-                            <td>${item.purchaseQty}</td>
-                            <td><fmt:formatNumber value="${item.purchasePrice * item.purchaseQty}" pattern="#,###"/></td>
-                        </tr>
-                    </c:forEach>
-                </tbody>
-            </table>
+        <div class="btn-box">
+            <button type="button" class="btn btn-blue"
+                    onclick="location.href='/order/orderUpdate?id=${orderInfo.orderId}'">수정</button>
+            <button type="button" class="btn btn-red"
+                    onclick="deleteOrder(${orderInfo.orderId})">삭제</button>
         </div>
-    </div>  <!-- container -->
+    </div>
 
-    <script>
+    <!-- 주문 상세 -->
+    <div class="section-box">
+        <div class="section-header">주문 상세</div>
+        <div class="section-body">
+            <div class="row">
+                <div class="col">
+                    <p class="label">발주번호</p>
+                    <p class="value">${orderInfo.orderId}</p>
+                </div>
+                <div class="col">
+                    <p class="label">발주 등록일</p>
+                    <p class="value"><fmt:formatDate value="${orderInfo.orderDate}" pattern="yyyy-MM-dd"/></p>
+                </div>
+                <div class="col">
+                    <p class="label">거래처명</p>
+                    <p class="value">${orderInfo.clientName}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <p class="label">총 수량</p>
+                    <p class="value">${orderInfo.totalCount}</p>
+                </div>
+                <div class="col">
+                    <p class="label">총 금액</p>
+                    <p class="value"><fmt:formatNumber value="${orderInfo.totalPrice}" pattern="#,###"/></p>
+                </div>
+                 <div class="col">
+                    <p></p>
+                    <p></p>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 발주 품목 -->
+    <div class="section-box items-section">
+        <div class="section-header">발주 품목</div>
+        <div class="items-scroll">
+            <div class="order-items">
+                <div class="order-item header">
+                    <div>상품번호</div>
+                    <div>상품명</div>
+                    <div>구매단가</div>
+                    <div>수량</div>
+                    <div>청구비용</div>
+                </div>
+                <c:forEach items="${orderItems}" var="item">
+                    <div class="order-item">
+                        <div>${item.productId}</div>
+                        <div>${item.productName}</div>
+                        <div><fmt:formatNumber value="${item.purchasePrice}" pattern="#,###"/></div>
+                        <div>${item.purchaseQty}</div>
+                        <div><fmt:formatNumber value="${item.purchasePrice * item.purchaseQty}" pattern="#,###"/></div>
+                    </div>
+                </c:forEach>
+            </div>
+        </div>
+    </div>
+</div> <!-- container -->
+
+<script>
     function deleteOrder(orderId) {
         if (confirm("정말 삭제하시겠습니까?")) {
             location.href = "/order/orderDelete?id=" + orderId;
         }
     }
-    </script>
-  </body>
-
+</script>
+</body>
 </html>

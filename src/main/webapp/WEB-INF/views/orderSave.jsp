@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 </head>
 <body>
-<div class="container">
+<div class="containerAuto">
     <div class="title-box">
         <p class="sub-title">발주 관리</p>
         <h2 class="title">발주서 작성</h2>
@@ -26,7 +26,9 @@
             <input type="hidden" name="orderDate" id="orderDateHidden">
 
             <!-- 저장 -->
-            <input type="submit" id="save-order" class="btn btn-blue" value="저장">
+            <div class="btn-box">
+            <input type="submit" id="save-order" class="btn submit-btn" value="작성">
+            </div>
 
             <!-- 거래처 -->
             <table class="clientsName">
@@ -61,7 +63,7 @@
                 </tbody>
             </table>
 
-            <div class="btn-box">
+            <div class="btn-box" style="margin:20px;">
                 <button type="button" class="add-row btn btn-blue">행 추가</button>
                 <button type="button" id="delete-selected" class="btn btn-red">선택 삭제</button>
             </div>
@@ -185,7 +187,44 @@ $(document).ready(function(){
 
     // 폼 전송 시
     $('#orderSave').on('submit', function(e) {
-        // 빈 상품 행 제거
+
+        let valid = true;
+        let message = '';
+
+        // 거래처 선택 확인
+        if (!$('#clientSelect').val()) {
+             alert('거래처를 선택하세요.');
+             e.preventDefault();
+             return false; // 여기서 바로 종료
+         }
+
+        // 상품명, 수량 확인
+        $('.item-row').each(function(){
+           // 숨겨진 템플릿 행 제외
+           if ($(this).hasClass('template')) return;
+
+           let productId = $(this).find('.item-select').val();
+           let qty = parseInt($(this).find('.count-input').val(), 10);
+
+           if (!productId) {
+               valid = false;
+               message = '상품명을 선택하세요.';
+               return false;
+           }
+           if (!qty || qty <= 0) {
+               valid = false;
+               message = '수량을 입력하세요.';
+               return false;
+           }
+        });
+
+         // 유효성 검사 실패 시 제출 막기
+        if (!valid) {
+            alert(message);
+            e.preventDefault();
+            return false;
+        }
+
         $('.item-row').each(function(){
             if (!$(this).find('.item-select').val()) {
                 $(this).remove();
@@ -225,8 +264,29 @@ $(document).ready(function(){
         loadProductsByClient(clientId);
     });
 
-    // 상품 선택 시 가격 반영
+    // 상품 선택 시 가격 반영 + 중복 검사
     $(document).on('change', '.item-select', function(){
+        let selectedVal = $(this).val();
+        if (!selectedVal) return;
+
+        // 현재 선택된 상품이 다른 행 있는지 확인
+        let isDuplicate = false;
+        $('.item-select').not(this).each(function(){
+            if ($(this).val() === selectedVal) {
+                isDuplicate = true;
+                return false; // 반복문 종료
+            }
+        });
+
+        if (isDuplicate) {
+            alert('이미 선택한 상품입니다. 다른 상품을 선택하세요.');
+            $(this).val(''); // 선택 해제
+            setPriceBySelected($(this)); // 가격 0으로 리셋
+            calcSummary(); // 합계 갱신
+            return;
+        }
+
+        // 중복이 아니면 정상 처리
         setPriceBySelected($(this));
         calcSummary();
     });
@@ -305,7 +365,7 @@ $(document).ready(function(){
     function populateProducts($select, products) {
         $select.empty().append('<option value="">상품을 선택하세요</option>');
         products.forEach(function(p) {
-            let name = p.productName || p.description || '(이름 없음)';
+            let name = p.productName || '(이름 없음)';
             $select.append('<option value="' + p.productId + '" data-price="' + p.price + '">' + name + '</option>');
         });
         $select.val('');

@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 </head>
 <body>
-<div class="container">
+<div class="containerAuto">
     <div class="title-box">
         <p class="sub-title">발주 관리</p>
         <h2 class="title">발주서 수정</h2>
@@ -27,7 +27,9 @@
             <input type="hidden" name="clientId" value="${orderInfo.clientId}">
 
             <!-- 저장 -->
-            <input type="submit" id="updateOrder" class="btn btn-blue" value="수정 완료">
+            <div class="btn-box">
+            <input type="submit" id="save-order" class="btn submit-btn" value="수정">
+            </div>
 
             <!-- 거래처 -->
             <table class="clientsName">
@@ -57,7 +59,7 @@
                 </tbody>
             </table>
 
-            <div class="btn-box">
+            <div class="btn-box" style="margin:20px;">
                 <button type="button" class="add-row btn btn-blue">행 추가</button>
                 <button type="button" id="delete-selected" class="btn btn-red">선택 삭제</button>
             </div>
@@ -140,13 +142,41 @@
 <script>
 $(document).ready(function(){
 
-    $('#orderUpdate').on('submit', function(){
-        $('.item-row').each(function(){
-            if (!$(this).find('.item-select').val()) {
-                $(this).remove();
-            }
-        });
-    });
+    $('#orderUpdate').on('submit', function(e){
+       let valid = true;
+       let message = '';
+
+       // 모든 발주 항목 검사
+       $('.item-row').not('.template').each(function() {
+           let productId = $(this).find('.item-select').val();
+           let qty = parseInt($(this).find('.count-input').val(), 10);
+
+           if (!productId) {
+               valid = false;
+               message = '상품명을 선택하세요.';
+               return false;
+           }
+           if (!qty || qty <= 0) {
+               valid = false;
+               message = '수량을 입력하세요.';
+               return false;
+           }
+       });
+
+       // 유효성 실패 시
+       if (!valid) {
+           alert(message);
+           e.preventDefault(); // 제출 중단
+           return false;
+       }
+
+       // 빈 상품행 제거
+       $('.item-row').each(function() {
+           if (!$(this).find('.item-select').val()) {
+               $(this).remove();
+           }
+       });
+   });
 
     // 가격 입력값이 변경될 때 hidden 필드에 값 복사
     $(document).on('input change', '.price-input', function() {
@@ -165,7 +195,36 @@ $(document).ready(function(){
 
     // 상품 선택 시 가격 반영
     $(document).on('change', '.item-select', function(){
-        setPriceBySelected($(this));
+        let $this = $(this);
+        let selectedVal = $this.val();
+
+        // 선택 안 했으면 바로 리턴
+        if (!selectedVal) {
+            setPriceBySelected($this);
+            calcSummary();
+            return;
+        }
+
+        // 다른 행에서 이미 선택된 상품인지 검사
+        let isDuplicate = false;
+        $('.item-select').not(this).each(function(){
+            if ($(this).val() === selectedVal) {
+                isDuplicate = true;
+                return false; // break
+            }
+        });
+
+        // 중복이면 경고 후 초기화
+        if (isDuplicate) {
+            alert('이미 선택한 상품입니다. 다른 상품을 선택하세요.');
+            $this.val(''); // 선택 해제
+            setPriceBySelected($this); // 가격/금액 0으로
+            calcSummary();
+            return;
+        }
+
+        // 정상 처리
+        setPriceBySelected($this);
         calcSummary();
     });
 
