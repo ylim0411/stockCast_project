@@ -100,10 +100,11 @@
     <update id="updateOrder" parameterType="map">
         UPDATE orderStmt
         SET clientId = #{clientId},
-            orderDate = #{orderDate}
+        orderDate = #{orderDate}
         WHERE orderId = #{orderId}
     </update>
 
+    <!--  발주 삭제  -->
     <delete id="deleteOrder" parameterType="int">
         DELETE FROM orderStmt
         WHERE orderId = #{orderId}

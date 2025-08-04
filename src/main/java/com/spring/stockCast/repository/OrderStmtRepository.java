@@ -55,6 +55,7 @@ public class OrderStmtRepository {
         sql.update("Orders.updateOrder", param);
     }
 
+    // 발주 삭제
     public void deleteOrder(int orderId) {
         sql.delete("Orders.deleteOrder", orderId);
     }

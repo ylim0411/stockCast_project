@@ -32,7 +32,7 @@ public class ProductCategoryService {
             if(productCategory.getParentId() == null) {
                 parentCategory.add(productCategory);
             }else {
-                ProductCategoryDTO parent = categoryMap.get(productCategory.getParentId().intValue());
+                ProductCategoryDTO parent   = categoryMap.get(productCategory.getParentId().intValue());
                 if (parent != null){
                     if (parent.getCategoryList() == null) {
                         parent.setCategoryList(new ArrayList<>());
@@ -55,4 +55,5 @@ public class ProductCategoryService {
     public List<ProductCategoryDTO> findAllCategory() {
         return productCategoryRepository.categorySelect();
     }
+
 }

@@ -13,9 +13,60 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/chart.css"/>
 
+	<script>
+       const deleteFn = (productId) => {
+        console.log("productId: " + productId);
+        const confirmed = confirm("상품을 삭제하시겠습니까?");
+        if(confirmed) {
+         location.href = "/product/delete?id=" + productId;
+        }
+       }
+
+          const updateFn = (btn) => {
+            const row = btn.closest("tr");
+            const inputs = row.querySelectorAll("input, select");
+
+            let isReadOnly = row.classList.contains("editing");
+
+            inputs.forEach(input => {
+              if (!input.name.includes("productId") && !input.name.includes("createdAt")) {
+                if (isReadOnly) {
+                  input.setAttribute("readonly", true);
+                  input.setAttribute("disabled", true);
+                } else {
+                  input.removeAttribute("readonly");
+                  input.removeAttribute("disabled");
+                }
+              }
+            });
+
+            row.classList.toggle("editing");
+          };
+
+        const categoryList = [
+            <c:forEach var="parent" items="${categoryList}" varStatus="i">
+                {
+                    categoryId: ${parent.categoryId},
+                    categoryName: "${parent.categoryName}",
+                    categoryLevel: ${parent.categoryLevel},
+                    parentId: ${parent.parentId},
+                    categoryList: [
+                        <c:forEach var="middle" items="${parent.categoryList}" varStatus="j">
+                            {
+                                categoryId: ${middle.categoryId},
+                                categoryName: "${middle.categoryName}",
+                                categoryLevel: ${middle.categoryLevel},
+                                parentId: ${middle.parentId}
+                            }<c:if test="${!j.last}">,</c:if>
+                        </c:forEach>
+                    ]
+                }<c:if test="${!i.last}">,</c:if>
+            </c:forEach>
+        ];
+
+    </script>
 </head>
 <style>
-
 </style>
 <body>
 	<div id="product" class="container">
@@ -40,17 +91,42 @@
                         <c:forEach items="${parent.categoryList}" var="middle">
                              <c:if test="${middle.categoryLevel == 2}">
                                  <c:forEach items="${middle.productList}" var="product">
-                                    <tr>
-                                        <td>${parent.categoryName }</td>
-                                        <td>${middle.categoryName }</td>
-                                        <td>${product.productId }</td>
-                                        <td>${product.productName }</td>
-                                        <td>${product.price}</td>
-                                        <td>${product.stockQuantity}</td>
-                                        <td>${product.createdAt }</td>
-                                        <td><button>수정</button></td>
-                                        <td><button onclick="deleteFn(${product.productId})">삭제</button></td>
-                                    </tr>
+                                 <form method="post" action="${pageContext.request.contextPath}/product/update">
+                                    <tr data-product-id="${product.productId}">
+                                            <td>
+                                              <select name="parentCategoryId" disabled>
+                                                <c:forEach items="${categoryList}" var="parentOption">
+                                                  <option value="${parentOption.categoryId}"
+                                                    <c:if test="${parentOption.categoryId == middle.parentId}">selected</c:if>>
+                                                    ${parentOption.categoryName}
+                                                  </option>
+                                                </c:forEach>
+                                              </select>
+                                            </td>
+
+                                            <td>
+                                              <select name="middleCategoryId" disabled>
+                                                <c:forEach items="${parent.categoryList}" var="middleOption">
+                                                  <option value="${middleOption.categoryId}"
+                                                    <c:if test="${middleOption.categoryId == middle.categoryId}">selected</c:if>>
+                                                    ${middleOption.categoryName}
+                                                  </option>
+                                                </c:forEach>
+                                              </select>
+                                            </td>
+
+                                            <td><input type="text" name="productId" value="${product.productId}" readonly /></td>
+                                            <td><input type="text" name="productName" value="${product.productName}" readonly /></td>
+                                            <td><input type="text" name="price" value="${product.price}" readonly /></td>
+                                            <td><input type="text" name="stockQuantity" value="${product.stockQuantity}" readonly /></td>
+                                            <td><input type="text" value="${product.createdAt}" readonly /></td>
+
+                                            <td><button type="button" onclick="updateFn(this)">수정</button></td>
+                                            <td><button type="submit">저장</button></td>
+                                            <td><button onclick="deleteFn(${product.productId})">삭제</button></td>
+
+                                      </tr>
+                                      </form>
                                  </c:forEach>
                              </c:if>
                           </c:forEach>
@@ -60,20 +136,7 @@
           </table>
         </div>
 	</div>
-</body>
-<script>
-   const deleteFn = (productId) => {
-    console.log("productId: " + productId);
-    const confirmed = confirm("상품을 삭제하시겠습니까?");
-    if(confirmed) {
-     location.href = "/product/delete?id=" + productId;
-    }
-   }
 
-  //const updateFn = (productId) => {
-   //if(confirm("상품을 수정하시겠습니까?")) {
-    //location.href = "/product/update?id=" + productId;
-   //}
-  //}
-</script>
+</body>
+
 </html>
