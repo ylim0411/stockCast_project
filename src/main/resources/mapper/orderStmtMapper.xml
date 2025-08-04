@@ -104,6 +104,7 @@
         WHERE orderId = #{orderId}
     </update>
 
+    <!--  발주 삭제  -->
     <delete id="deleteOrder" parameterType="int">
         DELETE FROM orderStmt
         WHERE orderId = #{orderId}

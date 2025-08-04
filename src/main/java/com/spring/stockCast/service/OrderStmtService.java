@@ -84,6 +84,7 @@ public class OrderStmtService {
         orderStmtRepository.updateOrder(param);
     }
 
+    // 발주 삭제
     public void deleteOrder(int orderId) {
         orderStmtRepository.deleteOrder(orderId);
     }
