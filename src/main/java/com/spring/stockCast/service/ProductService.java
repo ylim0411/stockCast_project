@@ -30,4 +30,8 @@ public class ProductService {
     public void delete(int productId) {
         productRepository.delete(productId);
     }
+
+    public void updateProduct(ProductDTO product) {
+        productRepository.updateProduct(product);
+    }
 }
