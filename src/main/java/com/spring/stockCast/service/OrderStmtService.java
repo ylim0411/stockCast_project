@@ -58,6 +58,7 @@ public class OrderStmtService {
         return (lastId != null) ? lastId : 0;
     }
 
+
     // 발주서 저장
     public void saveOrder(int clientId, int orderId, String orderDate) {
         Map<String, Object> param = new HashMap<>();
@@ -86,4 +87,5 @@ public class OrderStmtService {
     public void deleteOrder(int orderId) {
         orderStmtRepository.deleteOrder(orderId);
     }
+
 }
