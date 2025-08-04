@@ -14,13 +14,9 @@ public class AdminRepository {
         return sql.insert("Admin.join", adminDTO);
     }
 
-    public boolean login(AdminDTO adminDTO) {
+    public AdminDTO login(AdminDTO adminDTO) {
         AdminDTO result = sql.selectOne("Admin.login", adminDTO);
-        if (result != null)
-        {
-            return true;
-        }
-        return false;
+        return result;
     }
 
     public boolean isJoinedById(String email) {

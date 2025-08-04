@@ -17,7 +17,7 @@ public class AdminService {
         return adminRepository.join(adminDTO);
     }
 
-    public boolean login(AdminDTO adminDTO) {
+    public AdminDTO login(AdminDTO adminDTO) {
         return adminRepository.login(adminDTO);
     }
 
