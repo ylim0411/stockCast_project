@@ -30,11 +30,15 @@ public class ProductRepository {
         return sql.selectList("Product.findProductList");
     }
 
-    public void delete(int productId) {
-        sql.delete("Product.delete", productId);
-    }
+//    public void delete(int productId) {
+//        sql.delete("Product.delete", productId);
+//    }
 
     public void updateProduct(ProductDTO product) {
         sql.update("Product.update", product);
+    }
+
+    public void addProduct(ProductDTO product) {
+        sql.update("Product.add", product);
     }
 }

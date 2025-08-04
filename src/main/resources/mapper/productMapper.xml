@@ -46,13 +46,18 @@
         SELECT * FROM product;
     </select>
 
-    <delete id="delete" parameterType="int">
-        DELETE FROM product WHERE productId =#{productId}
-    </delete>
+<!--    <delete id="delete" parameterType="int">-->
+<!--        DELETE FROM product WHERE productId =#{productId}-->
+<!--    </delete>-->
 
     <update id="update" parameterType="Product">
         UPDATE product SET productName = #{productName}, price = #{price}, stockQuantity = #{stockQuantity}, categoryId = #{categoryId}
-        WHERE productId = #{productId}
+        WHERE productId = #{productId};
     </update>
+
+    <insert id="add" parameterType="Product">
+        INSERT INTO product (categoryId, productName, price, stockQuantity)
+        VALUES (#{categoryId}, #{productName}, #{price}, #{stockQuantity});
+    </insert>
 
 </mapper>

@@ -15,15 +15,29 @@
   <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
   <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/chart.css"/>
 
-  <script>
-    const deleteFn = (productId) => {
-      const confirmed = confirm("상품을 삭제하시겠습니까?");
-      if (confirmed) {
-        location.href = "/product/delete?id=" + productId;
-      }
-    };
+<script>
+  const categoryList = [
+    <c:forEach items="${categoryList}" var="parent" varStatus="i">
+      {
+        categoryId: ${parent.categoryId},
+        categoryName: "${parent.categoryName}",
+        categoryLevel: ${parent.categoryLevel},
+        childCategories: [
+          <c:forEach items="${parent.categoryList}" var="middle" varStatus="j">
+            {
+              categoryId: ${middle.categoryId},
+              categoryName: "${middle.categoryName}",
+              categoryLevel: ${middle.categoryLevel}
+            }<c:if test="${!j.last}">,</c:if>
+          </c:forEach>
+        ]
+      }<c:if test="${!i.last}">,</c:if>
+    </c:forEach>
+  ];
 
-    const updateFn = (btn) => {
+  $(document).ready(function () {
+
+    window.updateFn = (btn) => {
       const row = btn.closest("tr");
       const inputs = row.querySelectorAll("input, select");
       const saveBtn = row.querySelector(".saveBtn");
@@ -42,16 +56,47 @@
 
       btn.textContent = isEditing ? "취소" : "수정";
     };
-  </script>
+
+    $(".addRow").click(function () {
+        let $newForm = $('.productAdd').closest('form').clone();
+        $newForm.find('.productAdd').removeClass('productAdd').show();
+        $newForm.find('input').val('');
+        $newForm.find('.addBtn').show();
+
+        $('table tbody').append($newForm);
+    });
+
+    $(document).on("change", "select[name='addParentCategoryId']", function () {
+      const selectParentId = parseInt($(this).val());
+      const $middleSelect = $(this).closest("tr").find("select[name='addMiddleCategoryId']");
+      $middleSelect.empty();
+
+      const selectParent = categoryList.find(cat => cat.categoryId === selectParentId);
+         if (selectParent && selectParent.childCategories) {
+           selectParent.childCategories.forEach(child => {
+          $middleSelect.append(
+            $("<option>").val(child.categoryId).text(child.categoryName)
+          );
+        });
+      } else {
+        $middleSelect.append($("<option>").val("").text("중분류 없음"));
+      }
+    });
+
+
+  });
+</script>
 </head>
 <body>
   <div id="product" class="container">
     <div>
+      <button class="addRow" type="button">상품 등록</button>
       <table>
         <thead>
           <tr>
             <th>대분류</th>
             <th>중분류</th>
+            <th></th>
             <th>상품코드</th>
             <th>상품명</th>
             <th>상품가격</th>
@@ -73,7 +118,7 @@
                           <select name="parentCategoryId" disabled>
                             <c:forEach items="${categoryList}" var="parentOption">
                               <option value="${parentOption.categoryId}"
-                                      <c:if test="${parentOption.categoryId == middle.parentId}">selected</c:if>>
+                                 <c:if test="${parentOption.categoryId == middle.parentId}">selected</c:if>>
                                 ${parentOption.categoryName}
                               </option>
                             </c:forEach>
@@ -83,12 +128,13 @@
                           <select name="middleCategoryId" disabled>
                             <c:forEach items="${parent.categoryList}" var="middleOption">
                               <option value="${middleOption.categoryId}"
-                                      <c:if test="${middleOption.categoryId == middle.categoryId}">selected</c:if>>
+                                 <c:if test="${middleOption.categoryId == middle.categoryId}">selected</c:if>>
                                 ${middleOption.categoryName}
                               </option>
                             </c:forEach>
                           </select>
                         </td>
+                        <td><input type="hidden" name="storeId" value="${product.storeId}" readonly /></td>
                         <td><input type="text" name="productId" value="${product.productId}" readonly /></td>
                         <td><input type="text" name="productName" value="${product.productName}" readonly /></td>
                         <td><input type="number" name="price" value="${product.price}" readonly /></td>
@@ -103,6 +149,32 @@
               </c:forEach>
             </c:if>
           </c:forEach>
+          <form method="post" action="${pageContext.request.contextPath}/product/add">
+              <tr class="productAdd" style="display: none;">
+                <td>
+                    <select name="addParentCategoryId">
+                      <option>대분류를 선택하세요.</option>
+                      <c:forEach items="${categoryList}" var="parent">
+                        <c:if test="${parent.categoryLevel == 1}">
+                          <option value="${parent.categoryId}">${parent.categoryName}</option>
+                        </c:if>
+                      </c:forEach>
+                    </select>
+                </td>
+                <td>
+                  <select name="addMiddleCategoryId">
+                    <option value="">중분류를 선택하세요.</option>
+                  </select>
+                </td>
+                <td><input type="hidden" name="addStoreId" readonly /></td>
+                <td><input type="text" name="addProductId" readonly /></td>
+                <td><input type="text" name="addProductName" /></td>
+                <td><input type="number" name="addPrice" /></td>
+                <td><input type="number" name="addStockQuantity" /></td>
+                <td><input type="text" name="addCreatedAt" readonly /></td>
+                <td><button type="submit" class="addBtn" style="display:none;">등록</button></td>
+              </tr>
+          </form>
         </tbody>
       </table>
     </div>
