@@ -12,12 +12,8 @@
     </select>
     <!-- 발주 상세 저장 -->
     <insert id="insertOrderDetail" parameterType="map">
-        INSERT INTO purchaseOrder (
-        orderId, productId, purchasePrice, purchaseQty
-        )
-        VALUES (
-        #{orderId}, #{productId}, #{purchasePrice}, #{purchaseQty}
-        )
+        INSERT INTO purchaseOrder (orderId, productId, purchasePrice, purchaseQty)
+        VALUES (#{orderId}, #{productId}, #{purchasePrice}, #{purchaseQty})
     </insert>
     <select id="findById" parameterType="int" resultType="OrderStmt">
         <![CDATA[ SELECT
