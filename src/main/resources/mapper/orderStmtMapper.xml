@@ -100,7 +100,7 @@
     <update id="updateOrder" parameterType="map">
         UPDATE orderStmt
         SET clientId = #{clientId},
-            orderDate = #{orderDate}
+        orderDate = #{orderDate}
         WHERE orderId = #{orderId}
     </update>
 

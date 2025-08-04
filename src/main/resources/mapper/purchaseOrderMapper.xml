@@ -17,10 +17,15 @@
         WHERE po.orderId = #{orderId}
     </select>
 
+    <!-- 발주 상세 등록 -->
+    <insert id="insertOrderDetail" parameterType="map">
+        INSERT INTO purchaseOrder (orderId, productId, purchasePrice, purchaseQty)
+        VALUES (#{orderId}, #{productId}, #{purchasePrice}, #{purchaseQty})
+    </insert>
+
     <!-- 발주 상세 삭제 -->
     <delete id="deleteByOrderId" parameterType="int">
-        DELETE FROM purchaseOrder
-        WHERE orderId = #{orderId}
+        DELETE FROM purchaseOrder WHERE orderId = #{orderId}
     </delete>
 
 </mapper>
