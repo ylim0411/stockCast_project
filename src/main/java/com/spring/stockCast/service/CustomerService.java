@@ -16,12 +16,12 @@ import java.util.Map;
 public class CustomerService {
     private final CustomerRepository customerRepository;
 
-    // 고객정보 조회
+    // 고객정보 조회 ho
     public List<CustomerDTO> findAll() {
         return customerRepository.findAll();
     }
 
-    // 고객 성별 및 연령대 반환
+    // 고객 성별 및 연령대 반환 ho
     public Map<String,Integer> findCustomer(){
         Map<String,Integer> result = new HashMap<>();
         List<CustomerDTO> customers = findAll();
