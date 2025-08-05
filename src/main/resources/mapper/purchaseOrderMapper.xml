@@ -10,18 +10,21 @@
         JOIN product p ON s.productId = p.productId
         WHERE o.orderId = ${id}
     </select>
+
     <!-- 발주 상세 조회 -->
     <select id="findByOrderId" parameterType="int" resultType="PurchaseOrder">
         SELECT
-        po.productId,
-        p.productName AS productName,
-        po.purchasePrice,
-        po.purchaseQty,
-        (po.purchasePrice * po.purchaseQty) AS totalPrice
+        po.*,
+        p.productName,  <!-- 상품명 꼭 포함 -->
+        top.categoryId AS topCategoryId,
+        sub.categoryId AS subCategoryId
         FROM purchaseOrder po
-        JOIN product p ON po.productId = p.productId
+        LEFT JOIN product p ON po.productId = p.productId
+        LEFT JOIN productCategory sub ON p.categoryId = sub.categoryId
+        LEFT JOIN productCategory top ON sub.parentId = top.categoryId
         WHERE po.orderId = #{orderId}
     </select>
+
 
     <!-- 발주 상세 등록 -->
     <insert id="insertOrderDetail" parameterType="map">

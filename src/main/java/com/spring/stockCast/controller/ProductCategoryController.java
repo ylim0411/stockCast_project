@@ -5,16 +5,13 @@ import com.spring.stockCast.service.ProductCategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping("/productCategory")
 public class ProductCategoryController {
     private final ProductCategoryService productCategoryService;
 
@@ -23,6 +20,23 @@ public class ProductCategoryController {
         List<ProductCategoryDTO> categoryList = productCategoryService.categorySelect();
         model.addAttribute("categoryList", categoryList);
         return "productCategory";
+    }
+
+    // 발주 대분류 (거래처별) young
+    @GetMapping("/top")
+    @ResponseBody
+    public List<ProductCategoryDTO> getTopCategories(@RequestParam int clientId) {
+        System.out.println(" 대분류 요청 clientId: " + clientId);
+        List<ProductCategoryDTO> result = productCategoryService.findTopCategoriesByClient(clientId);
+        System.out.println(" 대분류 결과: " + result);
+        return result;
+    }
+
+    // 발주 중분류 (대분류 + 거래처별) young
+    @GetMapping("/sub")
+    @ResponseBody
+    public List<ProductCategoryDTO> getSubCategories(@RequestParam int parentId, @RequestParam int clientId) {
+        return productCategoryService.findSubCategoriesByParentIdAndClientId(parentId, clientId);
     }
 
 }

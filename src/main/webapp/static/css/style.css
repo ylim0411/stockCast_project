@@ -113,7 +113,8 @@
     border-radius: var(--border-radius-base10);
   }
 
-  header nav ul li.main-menu > a {
+  header nav ul li.main-menu > a,
+    header nav ul li.main-menu > div{
     display: flex;
     gap: 10px;
     align-items: center;
@@ -550,6 +551,7 @@
          margin-bottom: 20px;
          overflow: hidden;
          font-size: var(--font-size-base);
+         padding-bottom: 10px;
      }
 
      .section-header {

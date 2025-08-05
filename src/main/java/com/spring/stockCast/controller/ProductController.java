@@ -79,6 +79,13 @@ public class ProductController {
         return "product";
     }
 
+    // 발주 카테고리별 상품 조회 young
+    @GetMapping("/byCategory/{categoryId}")
+    @ResponseBody
+    public List<ProductDTO> getProductsByCategory(@PathVariable int categoryId) {
+        return productService.findByCategoryId(categoryId);
+    }
+
 
 //    @GetMapping("/delete")
 //    public String productDelete(@RequestParam("id") int productId) {

@@ -56,4 +56,14 @@ public class ProductCategoryService {
         return productCategoryRepository.categorySelect();
     }
 
+    // 발주 대분류 (거래처별) young
+    public List<ProductCategoryDTO> findTopCategoriesByClient(int clientId) {
+        return productCategoryRepository.findTopCategoriesByClient(clientId);
+    }
+
+    // 발주 중분류 (대분류 + 거래처별) young
+    public List<ProductCategoryDTO> findSubCategoriesByParentIdAndClientId(int parentId, int clientId) {
+        return productCategoryRepository.findSubCategoriesByParentIdAndClientId(parentId, clientId);
+    }
+
 }

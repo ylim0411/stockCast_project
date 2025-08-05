@@ -64,4 +64,45 @@
         SELECT * FROM product WHERE productName = #{productName};
     </select>
 
+    <!-- 발주 카테고리별 상품 조회 young -->
+    <select id="findTopCategoriesByClient" resultType="ProductCategory">
+        SELECT DISTINCT pc.categoryId,
+        pc.categoryName,
+        pc.parentId,
+        pc.categoryLevel
+        FROM productCategory pc
+        INNER JOIN product p ON p.categoryId = pc.categoryId
+        INNER JOIN client c ON c.clientId = p.clientId
+        WHERE pc.categoryLevel = 1
+        AND c.clientId = #{clientId}
+        ORDER BY pc.categoryName ASC
+    </select>
+
+    <select id="findSubCategoriesByParent" resultType="ProductCategory">
+        SELECT DISTINCT pc.categoryId,
+        pc.categoryName,
+        pc.parentId,
+        pc.categoryLevel
+        FROM productCategory pc
+        INNER JOIN product p ON p.categoryId = pc.categoryId
+        INNER JOIN client c ON c.clientId = p.clientId
+        WHERE pc.parentId = #{parentId}
+        AND c.clientId = #{clientId}
+        ORDER BY pc.categoryName ASC
+    </select>
+
+    <!-- 카테고리별 상품 조회 young -->
+    <select id="findByCategoryId" parameterType="int" resultType="Product">
+        SELECT
+        p.productId AS productId,
+        p.productName AS productName,
+        p.price,
+        p.stockQuantity AS stockQuantity,
+        p.categoryId AS categoryId
+        FROM product p
+        WHERE p.categoryId = #{categoryId}
+        ORDER BY p.productName
+    </select>
+
+
 </mapper>
