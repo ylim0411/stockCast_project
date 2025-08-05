@@ -21,4 +21,8 @@ public class ClientRepository {
     public List<Map<String, Object>> findAll() {
         return sql.selectList("Client.selectAllClients");
     }
+
+    public List<ClientDTO> selectByAdminId(int adminId) {
+        return sql.selectList("Client.selectByAdminId",adminId);
+    }
 }
