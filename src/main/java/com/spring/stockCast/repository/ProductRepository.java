@@ -1,6 +1,7 @@
 package com.spring.stockCast.repository;
 
 import com.spring.stockCast.dto.ProductDTO;
+import com.spring.stockCast.dto.StockQuantityDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -44,5 +45,9 @@ public class ProductRepository {
 
     public List<ProductDTO> findProductByName(String productName) {
         return sql.selectList("Product.findProductByName", productName);
+    }
+
+    public List<StockQuantityDTO> stockQuantityList() {
+        return sql.selectList("Product.stockQuantityList");
     }
 }

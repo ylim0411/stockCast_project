@@ -2,6 +2,7 @@ package com.spring.stockCast.controller;
 
 import com.spring.stockCast.dto.ProductCategoryDTO;
 import com.spring.stockCast.dto.ProductDTO;
+import com.spring.stockCast.dto.StockQuantityDTO;
 import com.spring.stockCast.service.ProductCategoryService;
 import com.spring.stockCast.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -77,6 +78,14 @@ public class ProductController {
         model.addAttribute("searchResult", searchResult);
         model.addAttribute("categoryList", productCategory);
         return "product";
+    }
+
+    @GetMapping("/stockQuantity")
+    public String stockQuantity(Model model) {
+        List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList();
+        model.addAttribute("stockQuantityList", stockQuantityList);
+
+        return "stockQuantity";
     }
 
 

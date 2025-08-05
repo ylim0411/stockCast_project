@@ -30,7 +30,7 @@
               </a>
             </li>
             <li class="main-menu ${fn:contains(uri, '/product') ? 'on' : ''}">
-              <a href="${pageContext.request.contextPath}/order/orderSave">
+              <a href="${pageContext.request.contextPath}/productCategory/select">
                 <img
                   src="${pageContext.request.contextPath}/static/images/product.png"
                   alt="productIcon"
@@ -38,14 +38,14 @@
                 <span>상품관리</span>
               </a>
               <ul class="sub-menu">
-                <li class="on">
-                  <a href="${pageContext.request.contextPath}/order/orderSave"> 상품 카테고리 </a>
+                <li class="main-menu ${fn:contains(uri, '/product') ? 'on' : ''}">
+                  <a href="${pageContext.request.contextPath}/productCategory/select"> 상품 카테고리 </a>
                 </li>
                 <li>
-                  <a href="${pageContext.request.contextPath}/order/orderSave"> 전체 상품 목록 </a>
+                  <a href="${pageContext.request.contextPath}/product/"> 전체 상품 목록 </a>
                 </li>
                 <li>
-                  <a href="${pageContext.request.contextPath}/order/orderSave"> 재고 현황 </a>
+                  <a href="${pageContext.request.contextPath}/product/stockQuantity/"> 재고 현황 </a>
                 </li>
               </ul>
             </li>
