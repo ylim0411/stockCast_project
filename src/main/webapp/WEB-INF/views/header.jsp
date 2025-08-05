@@ -160,16 +160,12 @@ $(function () {
           const month = ('0' + (today.getMonth() + 1)).slice(-2);
           const day = ('0' + today.getDate()).slice(-2);
           const formattedDate = year + '-' + month + '-' + day;
-          console.log("DEBUG - formattedDate:", formattedDate);
           return formattedDate;
         };
 
         if (endDateInput) {
           const maxDate = getFormattedDate();
           endDateInput.setAttribute('max', maxDate);
-          console.log('Max date set to:', maxDate);
-        } else {
-          console.warn('endDate input not found!');
         }
       });
   </script>
