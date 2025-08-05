@@ -29,6 +29,7 @@ public class AdminController {
         if (loginedAdminDTO != null)
         {
             session.setAttribute("loginedAdminDTO", loginedAdminDTO);
+            session.setAttribute("selectedStoredId", 1);
             return "main";
         }
         return "redirect:/admin/login";

@@ -19,12 +19,7 @@ public class AdminRepository {
         return result;
     }
 
-    public boolean isJoinedById(String email) {
-        AdminDTO result = sql.selectOne("Admin.isJoinedById", email);
-        if (result != null)
-        {
-            return true;
-        }
-        return false;
+    public AdminDTO isJoinedById(String email) {
+        return sql.selectOne("Admin.isJoinedById", email);
     }
 }
