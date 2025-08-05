@@ -57,7 +57,6 @@
     }
 }
 
-
 /* 화면 너비가 768px 이하일 때 (모바일) */
 @media (max-width: 768px) {
     .chart-container {
@@ -76,3 +75,4 @@
         height: 300px; /* 작은 화면에서 높이 줄이기 */
     }
 }
+

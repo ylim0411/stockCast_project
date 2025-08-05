@@ -26,7 +26,7 @@ public class CustomerService {
         Map<String,Integer> result = new HashMap<>();
         List<CustomerDTO> customers = findAll();
         int man=0,woman =0,etc=0;
-        int age_10=0,age_20=0,age_30=0,age_40 = 0,ageEtc=0;
+        int age_10=0,age_20=0,age_30=0,age_40=0,ageEtc=0;
         for (CustomerDTO customer : customers){
             // 성별 조회
             if(customer.getGender().equals(Gender.남)){
@@ -43,7 +43,7 @@ public class CustomerService {
                 age_20++;
             }else if(customer.getAge() >= 30 && customer.getAge() <40){
                 age_30++;
-            }else if(customer.getAge() >= 40 && customer.getAge() <50){
+            }else if(customer.getAge() >= 40 && customer.getAge() <120){
                 age_40++;
             }else{
                 ageEtc++;
