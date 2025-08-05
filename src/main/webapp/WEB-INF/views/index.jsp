@@ -13,8 +13,9 @@
 
     <a href="/sale/list">판매실적 이동</a>
     <a href="/saleStmt/list">거래명세서 이동</a>
-    <a href="/admin/select">상품카테고리 이동</a>
-    <a href="/product/">상품카테고리 이동</a>
+    <a href="/productCategory/select">상품카테고리 이동</a>
+    <a href="/product/">상품 이동</a>
+    <a href="/product/stockQuantity/">재고 이동</a>
 
 </body>
 </html>

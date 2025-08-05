@@ -2,6 +2,7 @@ package com.spring.stockCast.service;
 
 
 import com.spring.stockCast.dto.ProductDTO;
+import com.spring.stockCast.dto.StockQuantityDTO;
 import com.spring.stockCast.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -44,5 +45,9 @@ public class ProductService {
             return productRepository.findProductList(); // 전체 조회
         }
         return productRepository.findProductByName(productName);
+    }
+
+    public List<StockQuantityDTO> stockQuantityList() {
+        return productRepository.stockQuantityList();
     }
 }
