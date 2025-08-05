@@ -18,7 +18,7 @@
         <h2 class="title">발주서 작성</h2>
     </div>
 
-    <div>
+ <div class="section-wrap">
         <form id="orderSave" action="/order/orderSave" method="post">
 
             <!-- 숨겨진 필드 -->
@@ -121,8 +121,8 @@
                 </tbody>
             </table>
         </form>
-    </div>
-</div>
+      </div> <!-- section-wrap -->
+</div> <!-- containerAuto -->
 
 <script>
 $(document).ready(function(){

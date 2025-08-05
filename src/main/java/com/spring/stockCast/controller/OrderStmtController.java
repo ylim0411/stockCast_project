@@ -1,7 +1,7 @@
 package com.spring.stockCast.controller;
 
-
 import com.spring.stockCast.dto.OrderStmtDTO;
+import com.spring.stockCast.dto.PageDTO;
 import com.spring.stockCast.dto.PurchaseOrderDTO;
 import com.spring.stockCast.service.ClientService;
 import com.spring.stockCast.service.OrderStmtService;
@@ -28,37 +28,51 @@ public class OrderStmtController {
     private final PurchaseOrderService purchaseOrderService;
     private final ProductService productService;
 
-    // 발주 목록 조회
+    // 발주 목록 조회 (검색 + 페이징)
     @GetMapping("/orderStmt")
     public String orderStmt(
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate startDate,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate endDate,
             @RequestParam(required = false) String orderStmtId,
+            @RequestParam(value = "page", defaultValue = "1") int page,
             Model model) {
 
         List<OrderStmtDTO> orders;
+        int totalCount;
 
-        if (startDate != null && endDate != null) {
-            orders = orderStmtService.findByDate(startDate, endDate);
-        } else if (orderStmtId != null && !orderStmtId.isEmpty()) {
-            orders = orderStmtService.findByNo(orderStmtId);
-        } else {
-            orders = orderStmtService.findAll();
+        if (startDate != null && endDate != null) { // 날짜 검색
+            orders = orderStmtService.findByDatePaging(startDate, endDate, page);
+            totalCount = orderStmtService.countByDate(startDate, endDate);
+        } else if (orderStmtId != null && !orderStmtId.isEmpty()) { // 발주번호 검색
+            orders = orderStmtService.findByNoPaging(orderStmtId, page);
+            totalCount = orderStmtService.countByNo(orderStmtId);
+        } else { // 전체 조회
+            orders = orderStmtService.pagingList(page);
+            totalCount = orderStmtService.countAll();
         }
 
+        // 페이징 정보
+        PageDTO pageDTO = orderStmtService.pagingParamWithSearch(page, totalCount);
+
         model.addAttribute("orderStmt", orders);
+        model.addAttribute("paging", pageDTO);
+
+        // 검색 조건 유지
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+        model.addAttribute("orderStmtId", orderStmtId);
+
         return "orderStmt";
     }
 
     // 발주 작성 페이지
     @GetMapping("/orderSave")
     public String orderSave(Model model) {
-        List<Map<String, Object>> clients = clientService.getAllClients();
-        model.addAttribute("clients", clients);
+        model.addAttribute("clients", clientService.getAllClients());
         return "orderSave";
     }
 
-    // 발주 저장 (orderStmt + purchaseOrder)
+    // 발주 저장
     @PostMapping("/orderSave")
     public String saveOrder(
             @RequestParam int clientId,
@@ -68,48 +82,30 @@ public class OrderStmtController {
             @RequestParam("purchasePrice[]") List<Integer> purchasePrice,
             @RequestParam("purchaseQty[]") List<Integer> purchaseQty
     ) {
-        // orderStmt 저장
         orderStmtService.saveOrder(clientId, orderId, orderDate);
 
-        // purchaseOrder 저장
         for (int i = 0; i < productId.size(); i++) {
-            System.out.println("▶ Saving orderDetail: " + productId.get(i) + ", " + purchasePrice.get(i) + ", " + purchaseQty.get(i));
             purchaseOrderService.saveOrderDetail(orderId, productId.get(i), purchasePrice.get(i), purchaseQty.get(i));
         }
-
         return "redirect:/order/orderStmt";
     }
 
     // 발주 상세 페이지
     @GetMapping("/orderDetail")
     public String orderDetail(@RequestParam int id, Model model) {
-        // 발주 기본 정보
-        OrderStmtDTO orderInfo = orderStmtService.findById(id);
-
-        // 발주 품목 목록
-        List<PurchaseOrderDTO> orderItems = purchaseOrderService.findByOrderId(id);
-
-        model.addAttribute("orderInfo", orderInfo);
-        model.addAttribute("orderItems", orderItems);
-
+        model.addAttribute("orderInfo", orderStmtService.findById(id));
+        model.addAttribute("orderItems", purchaseOrderService.findByOrderId(id));
         return "orderDetail";
     }
 
-    // 발주 수정 페이지 이동
+    // 발주 수정 페이지
     @GetMapping("/orderUpdate")
     public String orderUpdate(@RequestParam int id, Model model) {
-        OrderStmtDTO orderInfo = orderStmtService.findById(id);
+        var orderInfo = orderStmtService.findById(id);
         model.addAttribute("orderInfo", orderInfo);
-
-        List<PurchaseOrderDTO> orderItems = purchaseOrderService.findByOrderId(id);
-        model.addAttribute("orderItems", orderItems);
-
-        List<Map<String, Object>> clients = clientService.getAllClients();
-        model.addAttribute("clients", clients);
-
-        List<Map<String, Object>> products = productService.getProductsByClientId(orderInfo.getClientId());
-        model.addAttribute("products", products);
-
+        model.addAttribute("orderItems", purchaseOrderService.findByOrderId(id));
+        model.addAttribute("clients", clientService.getAllClients());
+        model.addAttribute("products", productService.getProductsByClientId(orderInfo.getClientId()));
         return "orderUpdate";
     }
 
@@ -123,38 +119,29 @@ public class OrderStmtController {
             @RequestParam("purchasePrice[]") List<Integer> purchasePrice,
             @RequestParam("purchaseQty[]") List<Integer> purchaseQty
     ) {
-        // 발주 기본 정보 수정
         orderStmtService.updateOrder(clientId, orderId, orderDate);
 
-        // 기존 발주 상세 삭제 후 재등록
         purchaseOrderService.deleteByOrderId(orderId);
         for (int i = 0; i < productId.size(); i++) {
             purchaseOrderService.saveOrderDetail(orderId, productId.get(i), purchasePrice.get(i), purchaseQty.get(i));
         }
-
         return "redirect:/order/orderStmt";
     }
 
     // 발주 삭제
     @GetMapping("/orderDelete")
     public String deleteOrder(@RequestParam int id) {
-        // 1. 발주 상세(구매 상품) 먼저 삭제
         purchaseOrderService.deleteByOrderId(id);
-        // 2. 발주서 삭제
         orderStmtService.deleteOrder(id);
-
         return "redirect:/order/orderStmt";
     }
-
 
     // 새로운 발주번호, 등록일 생성
     @GetMapping("/new-info")
     @ResponseBody
     public Map<String, Object> getNewOrderInfo() {
         Map<String, Object> result = new HashMap<>();
-        int nextId = orderStmtService.getLastOrderId() + 1;
-
-        result.put("orderNumber", nextId);
+        result.put("orderNumber", orderStmtService.getLastOrderId() + 1);
         result.put("orderDate", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         return result;
     }
