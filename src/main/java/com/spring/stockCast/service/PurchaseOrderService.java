@@ -1,7 +1,7 @@
 package com.spring.stockCast.service;
 
 
- import com.spring.stockCast.dto.AccoListDTO;
+import com.spring.stockCast.dto.AccoListDTO;
 import org.springframework.stereotype.Repository;
 import com.spring.stockCast.dto.PurchaseOrderDTO;
 import com.spring.stockCast.repository.PurchaseOrderRepository;
@@ -15,9 +15,9 @@ import java.util.List;
 public class PurchaseOrderService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
-  
-      public List<AccoListDTO> findById(int id) {
-        return purchaseOrderRepository.findById(id);
+
+    public List<AccoListDTO> findBySaleId(int id) {
+        return purchaseOrderRepository.findBySaleId(id);
     }
 
     // 발주 상세 저장
