@@ -60,4 +60,8 @@
         VALUES (#{categoryId}, #{productName}, #{price}, #{stockQuantity});
     </insert>
 
+    <select id="findProductByName" parameterType="String" resultType="Product">
+        SELECT * FROM product WHERE productName = #{productName};
+    </select>
+
 </mapper>

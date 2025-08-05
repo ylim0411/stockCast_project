@@ -41,4 +41,8 @@ public class ProductRepository {
     public void addProduct(ProductDTO product) {
         sql.update("Product.add", product);
     }
+
+    public List<ProductDTO> findProductByName(String productName) {
+        return sql.selectList("Product.findProductByName", productName);
+    }
 }

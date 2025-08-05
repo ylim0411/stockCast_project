@@ -69,6 +69,17 @@ public class ProductController {
         return "redirect:/product/";
     }
 
+    @GetMapping("/search")
+    public String searchProduct(@RequestParam("productName") String productName, Model model){
+        List<ProductDTO> searchResult = productService.findProductByName(productName);
+        List<ProductCategoryDTO> productCategory = productCategoryService.categorySelect();
+
+        model.addAttribute("searchResult", searchResult);
+        model.addAttribute("categoryList", productCategory);
+        return "product";
+    }
+
+
 //    @GetMapping("/delete")
 //    public String productDelete(@RequestParam("id") int productId) {
 //        System.out.println("delete?" + productId);

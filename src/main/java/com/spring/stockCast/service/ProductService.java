@@ -38,4 +38,11 @@ public class ProductService {
     public void addProduct(ProductDTO product) {
         productRepository.addProduct(product);
     }
+
+    public List<ProductDTO> findProductByName(String productName) {
+        if (productName == null || productName.trim().isEmpty()) {
+            return productRepository.findProductList(); // 전체 조회
+        }
+        return productRepository.findProductByName(productName);
+    }
 }
