@@ -18,7 +18,8 @@
             <p class="sub-title">매출 관리</p>
             <h2 class="title">거래명세서</h2>
         </div>
-             <form action="/saleStmt/find" method="post" class="form-container">
+            <div class="section-wrap">
+             <form action="/saleStmt/list" method="get" class="form-container">
                   <div class="dateForm">
                       <input type="date" name="startDate" id="startDate">
                       <span>~<span>
@@ -30,7 +31,7 @@
                       <button type="submit" class="btn btn-blue">검색</button>
                     </div>
                 </form>
-         <table>
+            <table>
                 <tr>
                     <th>발주번호</th>
                     <th>발주일자</th>
@@ -44,13 +45,45 @@
                         <td>${sale.orderId}</td>
                         <td><fmt:formatDate value = "${sale.orderdate}" pattern="yyyy-MM-dd"/></td>
                         <td>${sale.clientName}</td>
-                        <td>${sale.productName}</td>
-                        <td>${sale.price}</td>
+                        <td>${sale.categoryName}</td>
+                        <td><fmt:formatNumber value="${sale.price}" pattern="#,###"/></td>
                         <td><button type="button" class="btn btn-blue" onclick="onSaleStmt(${sale.orderId})">거래명세서</td>
                     </tr>
                 </c:forEach>
             </table>
-    </div>
+             <!-- 발주 페이징 -->
+               <div class="paging">
+                   <c:choose>
+                       <c:when test="${paging.page <= 1}">
+                           <span>&lt;</span>
+                       </c:when>
+                       <c:otherwise>
+                           <a href="?page=${paging.page - 1}">&lt;</a>
+                       </c:otherwise>
+                   </c:choose>
+
+                   <c:forEach var="i" begin="${paging.startPage}" end="${paging.endPage}">
+                       <c:choose>
+                           <c:when test="${i == paging.page}">
+                               <span class="page">${i}</span>
+                           </c:when>
+                           <c:otherwise>
+                               <a href="?page=${i}">${i}</a>
+                           </c:otherwise>
+                       </c:choose>
+                   </c:forEach>
+
+                   <c:choose>
+                       <c:when test="${paging.page >= paging.maxPage}">
+                           <span>&gt;</span>
+                       </c:when>
+                       <c:otherwise>
+                           <a href="?page=${paging.page + 1}">&gt;</a>
+                       </c:otherwise>
+                   </c:choose>
+                </div> <!-- paging -->
+          </div><!-- section-wrap -->
+    </div><!-- container -->
 </body>
 <script>
   const onSaleStmt = (id) => {

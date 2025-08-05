@@ -18,6 +18,7 @@
         <p class="sub-title">매출 관리</p>
         <h2 class="title">판매실적</h2>
       </div>
+      <div class="section-wrap">
       <div class="search-period-info">
         <c:if test="${not empty findDate}">
           <p>${findDate} 판매 실적입니다.</p>
@@ -49,7 +50,7 @@
         </div>
       </div>
     </div>
-
+    </div>
     <!-- 1. 도넛 차트 (판매 품목에 따른 분류) -->
     <script>
       var salesLabels = [];
