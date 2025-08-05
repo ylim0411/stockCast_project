@@ -93,7 +93,7 @@
             </li>
 
             <li class="main-menu  ${fn:contains(uri, '/client') ? 'on' : ''}">
-              <a href="${pageContext.request.contextPath}/order/orderSave">
+              <a href="${pageContext.request.contextPath}/client/">
                 <img
                   src="${pageContext.request.contextPath}/static/images/client.png"
                   alt="clientIcon"

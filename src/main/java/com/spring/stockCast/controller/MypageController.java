@@ -19,7 +19,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/mypage")
 public class MypageController {
-    private final AdminService adminService;
     private final StoreService storeService;
 
     @GetMapping("/")
