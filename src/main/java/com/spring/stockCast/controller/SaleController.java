@@ -1,9 +1,6 @@
 package com.spring.stockCast.controller;
 
-import com.spring.stockCast.dto.AccoListDTO;
-import com.spring.stockCast.dto.ClientDTO;
 import com.spring.stockCast.dto.SaleDTO;
-import com.spring.stockCast.dto.SaleListDTO;
 import com.spring.stockCast.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -16,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor

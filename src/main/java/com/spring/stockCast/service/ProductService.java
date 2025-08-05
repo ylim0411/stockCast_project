@@ -4,6 +4,7 @@ package com.spring.stockCast.service;
 import com.spring.stockCast.dto.ProductCategoryDTO;
 import com.spring.stockCast.dto.ProductDTO;
 import com.spring.stockCast.repository.ProductCategoryRepository;
+import com.spring.stockCast.dto.StockQuantityDTO;
 import com.spring.stockCast.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -49,6 +50,7 @@ public class ProductService {
         return productRepository.findProductByName(productName);
     }
 
+
     // 발주 카테고리별 상품 조회 young
     public List<ProductCategoryDTO> findTopCategoriesByClientId(int clientId) {
         return productCategoryRepository.findTopCategoriesByClient(clientId);
@@ -62,5 +64,10 @@ public class ProductService {
     // 발주 카테고리별 상품 조회 young
     public List<ProductDTO> findByCategoryId(int categoryId) {
         return productRepository.findByCategoryId(categoryId);
+    }
+  
+    public List<StockQuantityDTO> stockQuantityList() {
+        return productRepository.stockQuantityList();
+
     }
 }

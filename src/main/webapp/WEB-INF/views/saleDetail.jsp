@@ -17,6 +17,7 @@
       <p class="sub-title">매출 관리</p>
       <h2 class="title">거래명세서</h2>
     </div>
+        <div class="section-wrap">
           <div>
             <div class="order-detail-box">
               <table class="deteil-table">
@@ -50,8 +51,8 @@
                 <tr>
                   <th>일자</th>
                   <th>품목명[규격]</th>
-                  <th>수량</th>
                   <th>단가</th>
+                  <th>수량</th>
                   <th>공급가액</th>
                   <th>부가세</th>
                 </tr>
@@ -63,8 +64,8 @@
                   <tr>
                     <td><fmt:formatDate value = "${acco.orderDate}" pattern="MM/dd"/></td>
                     <td>${acco.productName}</td>
+                    <td><fmt:formatNumber value="${acco.purchasePrice}" pattern="#,###"/></td>
                     <td>${acco.purchaseQty}</td>
-                    <td>${acco.purchasePrice}</td>
                     <td><fmt:formatNumber value="${acco.purchasePrice*acco.purchaseQty}" pattern="#,###"/></td>
                     <td><fmt:formatNumber value="${(acco.purchasePrice*acco.purchaseQty)*0.1}" pattern="#,###"/></td>
                   </tr>
@@ -90,5 +91,6 @@
               </tfoot>
             </table>
           </div>
-        </body>
-      </html>
+         </div>
+    </body>
+  </html>

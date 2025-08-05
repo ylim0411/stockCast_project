@@ -1,6 +1,7 @@
 package com.spring.stockCast.repository;
 
 import com.spring.stockCast.dto.ProductDTO;
+import com.spring.stockCast.dto.StockQuantityDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -46,8 +47,14 @@ public class ProductRepository {
         return sql.selectList("Product.findProductByName", productName);
     }
 
+
     // 발주 카테고리별 상품 조회 young
     public List<ProductDTO> findByCategoryId(int categoryId) {
         return sql.selectList("Product.findByCategoryId", categoryId);
+    }
+  
+    public List<StockQuantityDTO> stockQuantityList() {
+        return sql.selectList("Product.stockQuantityList");
+
     }
 }

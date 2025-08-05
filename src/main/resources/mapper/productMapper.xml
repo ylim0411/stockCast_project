@@ -104,5 +104,9 @@
         ORDER BY p.productName
     </select>
 
+    <select id="stockQuantityList" resultType="StockQuantity">
+        SELECT * FROM product_summary_view;
+    </select>
+
 
 </mapper>

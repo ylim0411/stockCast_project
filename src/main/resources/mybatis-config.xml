@@ -19,6 +19,7 @@
         <typeAlias type="com.spring.stockCast.dto.StoreDTO" alias="Store"/>
         <typeAlias type="com.spring.stockCast.dto.SaleListDTO" alias="SaleList"/>
         <typeAlias type="com.spring.stockCast.dto.AccoListDTO" alias="AccoList"/>
+        <typeAlias type="com.spring.stockCast.dto.StockQuantityDTO" alias="StockQuantity"/>
         <typeAlias type="com.spring.stockCast.dto.AccountItemDTO" alias="AccountItem"/>
     </typeAliases>
 </configuration>

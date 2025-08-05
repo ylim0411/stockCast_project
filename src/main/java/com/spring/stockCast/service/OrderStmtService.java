@@ -63,7 +63,7 @@ public class OrderStmtService {
         return list;
     }
 
-    // 전체 수
+    // 전체 수(페이징)
     public int countAll() {
         return orderStmtRepository.orderCount();
     }

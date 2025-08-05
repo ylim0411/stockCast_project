@@ -2,6 +2,7 @@ package com.spring.stockCast.controller;
 
 import com.spring.stockCast.dto.ProductCategoryDTO;
 import com.spring.stockCast.dto.ProductDTO;
+import com.spring.stockCast.dto.StockQuantityDTO;
 import com.spring.stockCast.service.ProductCategoryService;
 import com.spring.stockCast.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -79,11 +80,19 @@ public class ProductController {
         return "product";
     }
 
+
     // 발주 카테고리별 상품 조회 young
     @GetMapping("/byCategory/{categoryId}")
     @ResponseBody
     public List<ProductDTO> getProductsByCategory(@PathVariable int categoryId) {
         return productService.findByCategoryId(categoryId);
+    }
+    @GetMapping("/stockQuantity")
+    public String stockQuantity(Model model) {
+        List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList();
+        model.addAttribute("stockQuantityList", stockQuantityList);
+
+        return "stockQuantity";
     }
 
 

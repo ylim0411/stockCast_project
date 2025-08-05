@@ -11,6 +11,7 @@
         WHERE o.orderId = ${id}
     </select>
 
+
     <!-- 발주 상세 조회 -->
     <select id="findByOrderId" parameterType="int" resultType="PurchaseOrder">
         SELECT
