@@ -9,6 +9,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.oauth2.Oauth2;
 import com.google.api.services.oauth2.model.Userinfo;
 
+import com.spring.stockCast.dto.AdminDTO;
 import com.spring.stockCast.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -52,8 +53,11 @@ public class GoogleController {
         Userinfo userInfo = oauth2.userinfo().get().execute();
         System.out.println("GoogleController :  "+userInfo);
 
-        if (adminService.isJoinedById(userInfo.getEmail()))
+        AdminDTO loginedAdminDTO = adminService.isJoinedById(userInfo.getEmail());
+        if (loginedAdminDTO != null)
         {
+            session.setAttribute("loginedAdminDTO", loginedAdminDTO);
+            session.setAttribute("selectedStoredId", 1);
             return "main";
         }
 

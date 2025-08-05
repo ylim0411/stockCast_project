@@ -8,4 +8,6 @@ public class StoreDTO {
     private int adminId;
     private String storeName;
     private String storeAddress;
+    private String storePhone;
+    private String storeEmail;
 }

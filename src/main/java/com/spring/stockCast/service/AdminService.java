@@ -21,7 +21,7 @@ public class AdminService {
         return adminRepository.login(adminDTO);
     }
 
-    public boolean isJoinedById(String email) {
+    public AdminDTO isJoinedById(String email) {
         return adminRepository.isJoinedById(email);
     }
 }
