@@ -150,4 +150,23 @@ $(function () {
   });
 });
   </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const endDateInput = document.getElementById('endDate');
+
+        const getFormattedDate = function () {
+          const today = new Date();
+          const year = today.getFullYear();
+          const month = ('0' + (today.getMonth() + 1)).slice(-2);
+          const day = ('0' + today.getDate()).slice(-2);
+          const formattedDate = year + '-' + month + '-' + day;
+          return formattedDate;
+        };
+
+        if (endDateInput) {
+          const maxDate = getFormattedDate();
+          endDateInput.setAttribute('max', maxDate);
+        }
+      });
+  </script>
 

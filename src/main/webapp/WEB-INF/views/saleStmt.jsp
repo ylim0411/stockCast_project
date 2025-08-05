@@ -21,6 +21,7 @@
              <form action="/saleStmt/find" method="post" class="form-container">
                   <div class="dateForm">
                       <input type="date" name="startDate" id="startDate">
+                      <span>~<span>
                       <input type="date" name="endDate" id="endDate">
                       <button type="submit" class="btn btn-blue">조회</button>
                   </div>
