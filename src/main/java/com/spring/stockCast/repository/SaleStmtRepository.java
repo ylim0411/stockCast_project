@@ -1,5 +1,6 @@
 package com.spring.stockCast.repository;
 
+import com.spring.stockCast.dto.AccoListDTO;
 import com.spring.stockCast.dto.SaleListDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -20,14 +21,40 @@ public class SaleStmtRepository {
         return sql.selectList("SaleStmt.findAll");
     }
 
+    // 발주번호 일치하는 거래명세서 불러오기
     public List<SaleListDTO> findByNo(String orderNumber) {
         return sql.selectList("SaleStmt.findByNo",orderNumber);
     }
 
+    // 조회 기간에 맞는 거래명세서 불러오기
     public List<SaleListDTO> findByDate(LocalDate startDate, LocalDate endDate) {
         Map<String, Object> param = new HashMap<>();
         param.put("startDate", startDate);
         param.put("endDate", endDate);
         return sql.selectList("SaleStmt.findByDateBetween", param);
+    }
+    // 거래명세서 상세보기
+    public List<AccoListDTO> findBySaleId(int id) {
+        return sql.selectList("SaleStmt.findBySaleId", id);
+    }
+    // 전체 수
+    public int saleCount() {
+        return sql.selectOne("SaleStmt.saleCount");
+    }
+    // 발주번호 검색 + 페이징
+    public List<SaleListDTO> findByNoPaging(Map<String, Object> param) {
+        return sql.selectList("SaleStmt.findByNoPaging", param);
+    }
+    // 날짜 검색 수
+    public int countByDate(Map<String, Object> param) {
+        return sql.selectOne("SaleStmt.countByDate", param);
+    }
+    // 발주 번호 검색
+    public int countByNo(String orderNumber) {
+        return sql.selectOne("SaleStmt.countByNo", orderNumber);
+    }
+    // 날짜 검색 + 페이징
+    public List<SaleListDTO> findByDatePaging(Map<String, Object> param) {
+        return sql.selectList("SaleStmt.findByDatePaging", param);
     }
 }

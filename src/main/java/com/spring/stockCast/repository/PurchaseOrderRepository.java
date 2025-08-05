@@ -18,11 +18,7 @@ import java.util.Map;
 public class PurchaseOrderRepository {
 
     private final SqlSessionTemplate sql;
-    // 거래명세서 내용 불러오기 ho
-    public List<AccoListDTO> findBySaleId(int id) {
-        return sql.selectList("PurchaseOrder.findBySaleId", id);
 
-    }
     // 발주 상세 저장
     public void insertOrderDetail(int orderId, int productId, int purchasePrice, int purchaseQty) {
         Map<String, Object> param = new HashMap<>();

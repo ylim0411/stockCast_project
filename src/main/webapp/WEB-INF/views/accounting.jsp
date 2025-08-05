@@ -15,6 +15,7 @@
             <p class="sub-title">매출 관리</p>
             <h2 class="title">회계 관리</h2>
         </div>
+        <div class="section-wrap">
         <form action="/accounting/list" method="post" class="form-container">
           <div class="dateForm">
             <input type="date" name="startDate" id="startDate" />
@@ -186,6 +187,7 @@
                     </tr>
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 </body>
