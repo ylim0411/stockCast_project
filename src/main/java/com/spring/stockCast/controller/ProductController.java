@@ -54,10 +54,10 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public String addProduct(@RequestParam("productName") String productName,
-                             @RequestParam("price") int price,
-                             @RequestParam("stockQuantity") int stockQuantity,
-                             @RequestParam("middleCategoryId") int middleCategoryId) {
+    public String addProduct(@RequestParam("addProductName") String productName,
+                             @RequestParam("addPrice") int price,
+                             @RequestParam("addStockQuantity") int stockQuantity,
+                             @RequestParam("addMiddleCategoryId") int middleCategoryId) {
 
         ProductDTO product = new ProductDTO();
         product.setProductName(productName);
@@ -68,6 +68,17 @@ public class ProductController {
         productService.addProduct(product);
         return "redirect:/product/";
     }
+
+    @GetMapping("/search")
+    public String searchProduct(@RequestParam("productName") String productName, Model model){
+        List<ProductDTO> searchResult = productService.findProductByName(productName);
+        List<ProductCategoryDTO> productCategory = productCategoryService.categorySelect();
+
+        model.addAttribute("searchResult", searchResult);
+        model.addAttribute("categoryList", productCategory);
+        return "product";
+    }
+
 
 //    @GetMapping("/delete")
 //    public String productDelete(@RequestParam("id") int productId) {

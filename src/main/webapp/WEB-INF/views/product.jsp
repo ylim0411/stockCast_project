@@ -58,12 +58,13 @@
     };
 
     $(".addRow").click(function () {
-        let $newForm = $('.productAdd').closest('form').clone();
-        $newForm.find('.productAdd').removeClass('productAdd').show();
-        $newForm.find('input').val('');
-        $newForm.find('.addBtn').show();
+        let $templateRow = $(".productAdd").first();
+        let $newRow = $templateRow.clone(true);
+        $newRow.removeClass("productAdd");
+        $newRow.removeAttr("style");
+        $newRow.find("input").val("");
 
-        $('table tbody').append($newForm);
+        $("table tbody").append($newRow);
     });
 
     $(document).on("change", "select[name='addParentCategoryId']", function () {
@@ -82,15 +83,20 @@
         $middleSelect.append($("<option>").val("").text("중분류 없음"));
       }
     });
-
-
   });
 </script>
 </head>
 <body>
   <div id="product" class="container">
     <div>
-      <button class="addRow" type="button">상품 등록</button>
+     <h1>전체 상품 목록 목록</h1>
+      <button class="addRow btn btn-blue" type="button">상품 등록</button>
+      <form action="/product/search" method="get" class="form-container">
+        <div class="searchForm">
+          <input type="text" name="productName" placeholder="상품명 검색" value="${param.productName}"/>
+          <button type="submit" class="btn btn-blue">검색</button>
+        </div>
+      </form>
       <table>
         <thead>
           <tr>
@@ -107,59 +113,81 @@
           </tr>
         </thead>
         <tbody>
-          <c:forEach items="${categoryList}" var="parent">
-            <c:if test="${parent.categoryLevel == 1}">
-              <c:forEach items="${parent.categoryList}" var="middle">
-                <c:if test="${middle.categoryLevel == 2}">
-                  <c:forEach items="${middle.productList}" var="product">
-                    <tr data-product-id="${product.productId}">
-                      <form method="post" action="${pageContext.request.contextPath}/product/update">
-                        <td>
-                          <select name="parentCategoryId" disabled>
-                            <c:forEach items="${categoryList}" var="parentOption">
-                              <option value="${parentOption.categoryId}"
-                                 <c:if test="${parentOption.categoryId == middle.parentId}">selected</c:if>>
-                                ${parentOption.categoryName}
-                              </option>
-                            </c:forEach>
-                          </select>
-                        </td>
-                        <td>
-                          <select name="middleCategoryId" disabled>
-                            <c:forEach items="${parent.categoryList}" var="middleOption">
-                              <option value="${middleOption.categoryId}"
-                                 <c:if test="${middleOption.categoryId == middle.categoryId}">selected</c:if>>
-                                ${middleOption.categoryName}
-                              </option>
-                            </c:forEach>
-                          </select>
-                        </td>
-                        <td><input type="hidden" name="storeId" value="${product.storeId}" readonly /></td>
-                        <td><input type="text" name="productId" value="${product.productId}" readonly /></td>
-                        <td><input type="text" name="productName" value="${product.productName}" readonly /></td>
-                        <td><input type="number" name="price" value="${product.price}" readonly /></td>
-                        <td><input type="number" name="stockQuantity" value="${product.stockQuantity}" readonly /></td>
-                        <td><input type="text" name="createdAt" value="${product.createdAt}" readonly /></td>
-                        <td><button type="button" onclick="updateFn(this)">수정</button></td>
-                        <td><button type="submit" class="saveBtn" style="display:none;">저장</button></td>
-                      </form>
-                    </tr>
+          <c:if test="${not empty searchResult}"> <!-- 수정됨 -->
+            <c:forEach items="${searchResult}" var="product"> <!-- 수정됨 -->
+              <tr data-product-id="${product.productId}">
+                <form method="post" action="${pageContext.request.contextPath}/product/update">
+                  <td colspan="2"> <!-- 대분류/중분류 표시 생략 또는 선택 불가능하게 처리 -->
+                    <select name="parentCategoryId" disabled><option>선택 불가</option></select>
+                    <select name="middleCategoryId" disabled><option>선택 불가</option></select>
+                  </td>
+                  <td><input type="hidden" name="storeId" value="${product.storeId}" readonly /></td>
+                  <td><input type="text" name="productId" value="${product.productId}" readonly /></td>
+                  <td><input type="text" name="productName" value="${product.productName}" readonly /></td>
+                  <td><input type="number" name="price" value="${product.price}" readonly /></td>
+                  <td><input type="number" name="stockQuantity" value="${product.stockQuantity}" readonly /></td>
+                  <td><input type="text" name="createdAt" value="${product.createdAt}" readonly /></td>
+                  <td><button type="button" onclick="updateFn(this)">수정</button></td>
+                  <td><button type="submit" class="saveBtn" style="display:none;">저장</button></td>
+                </form>
+              </tr>
+            </c:forEach>
+          </c:if>
+            <c:if test="${empty searchResult}">
+              <c:forEach items="${categoryList}" var="parent">
+                <c:if test="${parent.categoryLevel == 1}">
+                  <c:forEach items="${parent.categoryList}" var="middle">
+                    <c:if test="${middle.categoryLevel == 2}">
+                      <c:forEach items="${middle.productList}" var="product">
+                        <tr data-product-id="${product.productId}">
+                          <form method="post" action="${pageContext.request.contextPath}/product/update">
+                            <td>
+                              <select name="parentCategoryId" disabled>
+                                <c:forEach items="${categoryList}" var="parentOption">
+                                  <option value="${parentOption.categoryId}"
+                                     <c:if test="${parentOption.categoryId == middle.parentId}">selected</c:if>>
+                                    ${parentOption.categoryName}
+                                  </option>
+                                </c:forEach>
+                              </select>
+                            </td>
+                            <td>
+                              <select name="middleCategoryId" disabled>
+                                <c:forEach items="${parent.categoryList}" var="middleOption">
+                                  <option value="${middleOption.categoryId}"
+                                     <c:if test="${middleOption.categoryId == middle.categoryId}">selected</c:if>>
+                                    ${middleOption.categoryName}
+                                  </option>
+                                </c:forEach>
+                              </select>
+                            </td>
+                            <td><input type="hidden" name="storeId" value="${product.storeId}" readonly /></td>
+                            <td><input type="text" name="productId" value="${product.productId}" readonly /></td>
+                            <td><input type="text" name="productName" value="${product.productName}" readonly /></td>
+                            <td><input type="number" name="price" value="${product.price}" readonly /></td>
+                            <td><input type="number" name="stockQuantity" value="${product.stockQuantity}" readonly /></td>
+                            <td><input type="text" name="createdAt" value="${product.createdAt}" readonly /></td>
+                            <td><button type="button" onclick="updateFn(this)">수정</button></td>
+                            <td><button type="submit" class="saveBtn" style="display:none;">저장</button></td>
+                          </form>
+                        </tr>
+                      </c:forEach>
+                    </c:if>
                   </c:forEach>
                 </c:if>
               </c:forEach>
             </c:if>
-          </c:forEach>
-          <form method="post" action="${pageContext.request.contextPath}/product/add">
-              <tr class="productAdd" style="display: none;">
+            <tr class="productAdd" style="display: none;">
+              <form method="post" action="${pageContext.request.contextPath}/product/add">
                 <td>
-                    <select name="addParentCategoryId">
-                      <option>대분류를 선택하세요.</option>
+                  <select name="addParentCategoryId">
+                    <option>대분류를 선택하세요.</option>
                       <c:forEach items="${categoryList}" var="parent">
                         <c:if test="${parent.categoryLevel == 1}">
                           <option value="${parent.categoryId}">${parent.categoryName}</option>
                         </c:if>
                       </c:forEach>
-                    </select>
+                  </select>
                 </td>
                 <td>
                   <select name="addMiddleCategoryId">
@@ -172,9 +200,9 @@
                 <td><input type="number" name="addPrice" /></td>
                 <td><input type="number" name="addStockQuantity" /></td>
                 <td><input type="text" name="addCreatedAt" readonly /></td>
-                <td><button type="submit" class="addBtn" style="display:none;">등록</button></td>
-              </tr>
-          </form>
+                <td><button type="button" class="addBtn">등록</button></td>
+              </form>
+            </tr>
         </tbody>
       </table>
     </div>
