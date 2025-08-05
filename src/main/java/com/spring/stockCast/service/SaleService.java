@@ -18,6 +18,10 @@ public class SaleService {
     public List<SaleDTO> findAll() {
         return saleRepository.findAll();
     }
+    // 판매내역이 있는 년도 불러오기
+    public List<String> findSaleYear(){
+        return saleRepository.findSaleYear();
+    }
     // 해당 년도에 해당하는 판매내역 불러오기
     public List<SaleDTO> findByYear(String year) {
         return saleRepository.findByYear(year);

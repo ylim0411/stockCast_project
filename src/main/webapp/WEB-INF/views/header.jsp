@@ -93,7 +93,7 @@
             </li>
 
             <li class="main-menu  ${fn:contains(uri, '/client') ? 'on' : ''}">
-              <a href="${pageContext.request.contextPath}/order/orderSave">
+              <a href="${pageContext.request.contextPath}/client/">
                 <img
                   src="${pageContext.request.contextPath}/static/images/client.png"
                   alt="clientIcon"
@@ -149,5 +149,24 @@ $(function () {
       // 여기서 e.preventDefault()를 사용하지 않으면 링크로 이동합니다.
   });
 });
+  </script>
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const endDateInput = document.getElementById('endDate');
+
+        const getFormattedDate = function () {
+          const today = new Date();
+          const year = today.getFullYear();
+          const month = ('0' + (today.getMonth() + 1)).slice(-2);
+          const day = ('0' + today.getDate()).slice(-2);
+          const formattedDate = year + '-' + month + '-' + day;
+          return formattedDate;
+        };
+
+        if (endDateInput) {
+          const maxDate = getFormattedDate();
+          endDateInput.setAttribute('max', maxDate);
+        }
+      });
   </script>
 

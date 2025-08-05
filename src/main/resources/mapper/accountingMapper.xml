@@ -3,5 +3,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Accounting">
-
+<select id="findAll" resultType="AccountItem">
+    SELECT a.accountingId, a.transactionDate, i.name, t.value, t.direction FROM erp_db.accounting a
+    JOIN account_transaction t ON a.accountingId = t.accountingId
+    JOIN account_item i ON t.itemId = i.itemId;
+</select>
 </mapper>

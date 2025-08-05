@@ -23,4 +23,8 @@ public class ClientService {
     public List<Map<String, Object>> getAllClients() {
         return clientRepository.findAll();
     }
+
+    public List<ClientDTO> selectByAdminId(int adminId) {
+        return clientRepository.selectByAdminId(adminId);
+    }
 }

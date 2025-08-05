@@ -376,9 +376,7 @@
 
     /* 달력 인풋 & 텍스트 인풋 ------------------------------------------------- */
     .form-container input[type='date'],
-
-    .form-container input[type='text'],
-    .form-container input[type="number"]{
+    .form-container input[type='text']{
       padding: 5px;
 
       border: 1px solid var(--color-border);
@@ -632,6 +630,20 @@
      .order-item:last-child {
          border-bottom: none;
      }
+     /* ho */
+      .saleYear-select{
+          padding: 5px;
+          border: 1px solid var(--color-border);
+          border-radius: var(--border-radius-base5);
+          font-size: var(--font-size-base);
+      }
+      .search-period-info {
+          text-align: right;
+          margin-bottom: 10px;
+          font-size: 14px;
+          color: #6c757d;
+      }
+      /* ho */
 
       /*  customer chart  ------------------------------------------------------------------------------ */
     .chart-box{

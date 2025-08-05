@@ -20,7 +20,10 @@ public class SaleRepository {
     public List<SaleDTO> findAll() {
         return sql.selectList("Sale.findAll");
     }
-
+    // 판매내역이 있는 년도 불러오기
+    public List<String> findSaleYear() {
+        return sql.selectList("Sale.findSaleYear");
+    }
     // 해당 년도에 해당하는 판매내역 불러오기
     public List<SaleDTO> findByYear(String year) {
         return sql.selectList("Sale.findByYear",year);
@@ -32,4 +35,6 @@ public class SaleRepository {
         param.put("endDate", endDate);
         return sql.selectList("Sale.findByDateBetween", param);
     }
+
+
 }

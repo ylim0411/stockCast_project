@@ -18,6 +18,7 @@
         JOIN productcategory pc ON pc.categoryId = p.categoryId
         WHERE s.saleDate BETWEEN #{startDate} AND #{endDate};
     </select>
+    <!-- 선택한 년도에 해당하는 판매목록 표시 ho -->
     <select id="findByYear" parameterType="String" resultType="Sale">
         SELECT s.*, sp.salePrice, sp.saleQty, pc.categoryName FROM sale s
         JOIN sale_product sp ON s.saleId = sp.saleId
@@ -25,5 +26,9 @@
         JOIN productcategory pc ON pc.categoryId = p.categoryId
         WHERE SUBSTR(s.saleDate,1,4) = #{year}
         ORDER BY s.saleDate;
+    </select>
+    <!-- 판매기록이 있는 년도만 조회 ho -->
+    <select id="findSaleYear" resultType="String">
+        SELECT DISTINCT(SUBSTR(saleDate,1,4)) FROM sale
     </select>
 </mapper>
