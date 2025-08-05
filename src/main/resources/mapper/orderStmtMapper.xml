@@ -4,79 +4,115 @@
 
 <mapper namespace="Orders">
 
-    <!-- 전체 조회 -->
-    <select id="findAll" resultType="OrderStmt">
-        <![CDATA[ SELECT
-        os.orderId AS orderId,
-        os.orderDate AS orderDate,
-        c.clientName AS clientName,
-        SUM(po.purchaseQty) AS totalCount,
-        SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
-        CASE
-            WHEN DATE_ADD(os.orderDate, INTERVAL 3 DAY) < CURDATE() THEN '완료'
-            ELSE '진행중'
-        END AS status
-    FROM orderStmt os
-    JOIN client c ON os.clientId = c.clientId
-    JOIN purchaseOrder po ON os.orderId = po.orderId
-    GROUP BY os.orderId, os.orderDate, c.clientName
-    ORDER BY os.orderId DESC
-    ]]>
-    </select>
-
-    <!-- 날짜 범위로 발주서 조회 -->
-    <select id="findByDateBetween" resultType="OrderStmt">
+    <!--  페이징 전체 조회  -->
+    <select id="pagingList" parameterType="map" resultType="OrderStmt">
+        <![CDATA[
         SELECT
-        os.orderId AS orderId,
-        os.orderDate AS orderDate,
-        c.clientName AS clientName,
-        SUM(po.purchaseQty) AS totalCount,
-        SUM(po.purchaseQty * po.purchasePrice) AS totalPrice
+            os.orderId AS orderId,
+            os.orderDate AS orderDate,
+            c.clientName AS clientName,
+            SUM(po.purchaseQty) AS totalCount,
+            SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
+            CASE
+                WHEN DATE_ADD(os.orderDate, INTERVAL 3 DAY) < CURDATE() THEN '완료'
+                ELSE '진행중'
+            END AS status
         FROM orderStmt os
         JOIN client c ON os.clientId = c.clientId
         JOIN purchaseOrder po ON os.orderId = po.orderId
-        WHERE os.orderDate &gt;= #{startDate}
-        AND os.orderDate &lt; #{endDate}
         GROUP BY os.orderId, os.orderDate, c.clientName
         ORDER BY os.orderId DESC
+        LIMIT #{start}, #{limit}
+        ]]>
     </select>
 
-    <!-- 발주번호로 조회 -->
-    <select id="findByNo" parameterType="string" resultType="OrderStmt">
+    <!-- 페이징 수 -->
+    <select id="orderCount" resultType="int">
+        SELECT COUNT(DISTINCT os.orderId)
+        FROM orderStmt os
+        JOIN purchaseOrder po ON os.orderId = po.orderId
+    </select>
+
+    <!-- 달력 검색 + 페이징 -->
+    <select id="findByDatePaging" parameterType="map" resultType="OrderStmt">
+        <![CDATA[
         SELECT
-        os.orderId AS orderId,
-        os.orderDate AS orderDate,
-        c.clientName AS clientName,
-        SUM(po.purchaseQty) AS totalCount,
-        SUM(po.totalPrice) AS totalPrice
+            os.orderId AS orderId,
+            os.orderDate AS orderDate,
+            c.clientName AS clientName,
+            SUM(po.purchaseQty) AS totalCount,
+            SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
+            CASE
+                WHEN DATE_ADD(os.orderDate, INTERVAL 3 DAY) < CURDATE() THEN '완료'
+                ELSE '진행중'
+            END AS status
+        FROM orderStmt os
+        JOIN client c ON os.clientId = c.clientId
+        JOIN purchaseOrder po ON os.orderId = po.orderId
+        WHERE os.orderDate >= #{startDate}
+          AND os.orderDate < #{endDate}
+        GROUP BY os.orderId, os.orderDate, c.clientName
+        ORDER BY os.orderId DESC
+        LIMIT #{start}, #{limit}
+        ]]>
+    </select>
+
+    <!--  총 개수  -->
+    <select id="countByDate" parameterType="map" resultType="int">
+        <![CDATA[
+        SELECT COUNT(DISTINCT os.orderId)
+        FROM orderStmt os
+        WHERE os.orderDate >= #{startDate}
+        AND os.orderDate < #{endDate}
+        ]]>
+    </select>
+
+    <!-- 발주번호 검색 + 페이징 -->
+    <select id="findByNoPaging" parameterType="map" resultType="OrderStmt">
+        <![CDATA[
+        SELECT
+            os.orderId AS orderId,
+            os.orderDate AS orderDate,
+            c.clientName AS clientName,
+            SUM(po.purchaseQty) AS totalCount,
+            SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
+            CASE
+                WHEN DATE_ADD(os.orderDate, INTERVAL 3 DAY) < CURDATE() THEN '완료'
+                ELSE '진행중'
+            END AS status
         FROM orderStmt os
         JOIN client c ON os.clientId = c.clientId
         JOIN purchaseOrder po ON os.orderId = po.orderId
         WHERE os.orderId LIKE CONCAT('%', #{orderStmtId}, '%')
         GROUP BY os.orderId, os.orderDate, c.clientName
         ORDER BY os.orderId DESC
+        LIMIT #{start}, #{limit}
+        ]]>
     </select>
+
+    <!--  총 개수  -->
+    <select id="countByNo" parameterType="string" resultType="int">
+        SELECT COUNT(DISTINCT os.orderId)
+        FROM orderStmt os
+        WHERE os.orderId LIKE CONCAT('%', #{orderStmtId}, '%')
+    </select>
+
 
     <!-- 마지막 발주 ID 조회 -->
     <select id="getLastOrderId" resultType="int">
-        SELECT IFNULL(MAX(orderId), 0)
-        FROM orderStmt
+        SELECT IFNULL(MAX(orderId), 0) FROM orderStmt
     </select>
 
     <!-- 발주서 저장 -->
     <insert id="insertOrder" parameterType="map">
-        INSERT INTO orderStmt (
-        orderId, clientId, orderDate
-        )
-        VALUES (
-        #{orderId}, #{clientId}, #{orderDate}
-        )
+        INSERT INTO orderStmt (orderId, clientId, orderDate)
+        VALUES (#{orderId}, #{clientId}, #{orderDate})
     </insert>
 
-    <!-- 발주서 조회 -->
+    <!-- 발주 상세 조회 -->
     <select id="findById" parameterType="int" resultType="OrderStmt">
         <![CDATA[
-         SELECT
+        SELECT
             os.orderId,
             os.orderDate,
             c.clientId,
@@ -92,7 +128,7 @@
         JOIN purchaseOrder po ON os.orderId = po.orderId
         WHERE os.orderId = #{orderId}
         GROUP BY os.orderId, os.orderDate, c.clientId, c.clientName
-    ]]>
+        ]]>
     </select>
 
     <!-- 발주 수정 -->
@@ -103,11 +139,10 @@
         WHERE orderId = #{orderId}
     </update>
 
-    <!--  발주 삭제  -->
+    <!-- 발주 삭제 -->
     <delete id="deleteOrder" parameterType="int">
         DELETE FROM orderStmt
         WHERE orderId = #{orderId}
     </delete>
 
 </mapper>
-

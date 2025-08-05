@@ -15,29 +15,44 @@ import java.util.Map;
 public class OrderStmtRepository {
     private final SqlSessionTemplate sql;
 
-    // 전체 발주 조회
-    public List<OrderStmtDTO> findAll() {
-        return sql.selectList("Orders.findAll");
+    /* ===== 발주 조회 ===== */
+
+    // 날짜 검색 + 페이징
+    public List<OrderStmtDTO> findByDatePaging(Map<String, Object> param) {
+        return sql.selectList("Orders.findByDatePaging", param);
     }
 
-    // 날짜 범위로 발주 조회
-    public List<OrderStmtDTO> findByDateBetween(LocalDate startDate, LocalDate endDate) {
-        Map<String, Object> param = new HashMap<>();
-        param.put("startDate", java.sql.Date.valueOf(startDate));
-        param.put("endDate", java.sql.Date.valueOf(endDate.plusDays(1)));
-        return sql.selectList("Orders.findByDateBetween", param);
+    // 발주번호 검색 + 페이징
+    public List<OrderStmtDTO> findByNoPaging(Map<String, Object> param) {
+        return sql.selectList("Orders.findByNoPaging", param);
     }
 
-    // 발주번호로 발주 조회
-    public List<OrderStmtDTO> findByNo(String orderStmtId) {
-        return sql.selectList("Orders.findByNo", orderStmtId);
+    // 전체 목록 페이징
+    public List<OrderStmtDTO> pagingList(Map<String, Integer> pagingParams) {
+        return sql.selectList("Orders.pagingList", pagingParams);
     }
 
-    // 마지막 발주 ID 조회
+    // 달력 조회
+    public int countByDate(Map<String, Object> param) {
+        return sql.selectOne("Orders.countByDate", param);
+    }
+
+    // 발주 번호 검색
+    public int countByNo(String orderStmtId) {
+        return sql.selectOne("Orders.countByNo", orderStmtId);
+    }
+
+    // 전체 수
+    public int orderCount() {
+        return sql.selectOne("Orders.orderCount");
+    }
+
+
+    // 마지막 발주 id 조회
     public int getLastOrderId() {
-        return sql.selectOne("Orders.getLastOrderId");
+        Integer id = sql.selectOne("Orders.getLastOrderId");
+        return id != null ? id : 0;
     }
-
 
     // 발주서 저장
     public void insertOrder(Map<String, Object> param) {
@@ -49,7 +64,6 @@ public class OrderStmtRepository {
         return sql.selectOne("Orders.findById", orderId);
     }
 
-
     // 발주 수정
     public void updateOrder(Map<String, Object> param) {
         sql.update("Orders.updateOrder", param);
@@ -59,5 +73,5 @@ public class OrderStmtRepository {
     public void deleteOrder(int orderId) {
         sql.delete("Orders.deleteOrder", orderId);
     }
-}
 
+}

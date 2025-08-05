@@ -18,6 +18,7 @@
         <h2 class="title">발주 상세 페이지</h2>
     </div>
 
+ <div class="section-wrap">
     <!-- 상태 + 버튼 -->
     <div class="section-actions">
         <div>
@@ -77,11 +78,10 @@
         </div>
     </div>
 
-    <!-- 발주 품목 -->
-    <div class="section-box items-section">
-        <div class="section-header">발주 품목</div>
-        <div class="items-scroll">
-            <div class="order-items">
+        <!-- 발주 품목 -->
+        <div class="section-box items-section">
+            <div class="section-header">발주 품목</div>
+             <div class="order-items">
                 <div class="order-item header">
                     <div>상품번호</div>
                     <div>상품명</div>
@@ -98,9 +98,9 @@
                         <div><fmt:formatNumber value="${item.purchasePrice * item.purchaseQty}" pattern="#,###"/></div>
                     </div>
                 </c:forEach>
-            </div>
-        </div>
-    </div>
+            </div> <!-- order-items -->
+        </div> <!-- section-box  -->
+    </div> <!-- section-wrap -->
 </div> <!-- container -->
 
 <script>
