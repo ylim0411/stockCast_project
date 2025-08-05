@@ -19,7 +19,7 @@
             <h2 class="title">거래명세서</h2>
         </div>
             <div class="section-wrap">
-             <form action="/saleStmt/find" method="post" class="form-container">
+             <form action="/saleStmt/list" method="get" class="form-container">
                   <div class="dateForm">
                       <input type="date" name="startDate" id="startDate">
                       <span>~<span>

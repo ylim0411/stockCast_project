@@ -24,24 +24,8 @@ public class SaleStmtController {
     private final ClientService clientService;
     private final SaleStmtService saleStmtService;
     private final OrderStmtService orderStmtService;
-    // 거래현황 페이지 이동
+    // 발주 목록 조회 (검색 + 페이징)
     @GetMapping("/list")
-    public String salelistForm(Model model){
-        List<SaleListDTO> saleList = saleStmtService.findAll();
-        model.addAttribute("saleList",saleList);
-        return "saleStmt";
-    }
-    // 거래명세서 상세화면으로 이동
-    @GetMapping("/detail")
-    public String saleDetail(Model model, @RequestParam("o_id") int id){
-        List<AccoListDTO> accoList = saleStmtService.findBySaleId(id); // 발주번호와 일치하는 거래명세서 불러오기
-        ClientDTO client = clientService.findBySaleId(id); // 발주번호와 일치하는 거래처 불러오기
-        model.addAttribute("accoList",accoList);
-        model.addAttribute("client",client);
-        return "saleDetail";
-    }
-    // 날짜와 발주번호로 목록 조회하기
-    @PostMapping("/find")
     public String find(@RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate startDate,
                        @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate endDate,
                        @RequestParam(required = false) String orderNumber,
@@ -59,15 +43,25 @@ public class SaleStmtController {
             totalCount = saleStmtService.countByNo(orderNumber);
         } else {
             // 전체조회
-            sales = saleStmtService.findAll();
-            totalCount = orderStmtService.countAll();
+            sales = saleStmtService.pagingList(page);
+            totalCount = saleStmtService.countAll();
         }
         // 페이징 정보
         PageDTO pageDTO = orderStmtService.pagingParamWithSearch(page, totalCount);
 
+        // 검색정보 유지
         model.addAttribute("saleList", sales);
         model.addAttribute("paging", pageDTO);
+
         return "saleStmt";
     }
-
+    // 거래명세서 상세화면으로 이동
+    @GetMapping("/detail")
+    public String saleDetail(Model model, @RequestParam("o_id") int id){
+        List<AccoListDTO> accoList = saleStmtService.findBySaleId(id); // 발주번호와 일치하는 거래명세서 불러오기
+        ClientDTO client = clientService.findBySaleId(id); // 발주번호와 일치하는 거래처 불러오기
+        model.addAttribute("accoList",accoList);
+        model.addAttribute("client",client);
+        return "saleDetail";
+    }
 }

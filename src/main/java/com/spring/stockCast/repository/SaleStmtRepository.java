@@ -21,18 +21,6 @@ public class SaleStmtRepository {
         return sql.selectList("SaleStmt.findAll");
     }
 
-    // 발주번호 일치하는 거래명세서 불러오기
-    public List<SaleListDTO> findByNo(String orderNumber) {
-        return sql.selectList("SaleStmt.findByNo",orderNumber);
-    }
-
-    // 조회 기간에 맞는 거래명세서 불러오기
-    public List<SaleListDTO> findByDate(LocalDate startDate, LocalDate endDate) {
-        Map<String, Object> param = new HashMap<>();
-        param.put("startDate", startDate);
-        param.put("endDate", endDate);
-        return sql.selectList("SaleStmt.findByDateBetween", param);
-    }
     // 거래명세서 상세보기
     public List<AccoListDTO> findBySaleId(int id) {
         return sql.selectList("SaleStmt.findBySaleId", id);
@@ -56,5 +44,9 @@ public class SaleStmtRepository {
     // 날짜 검색 + 페이징
     public List<SaleListDTO> findByDatePaging(Map<String, Object> param) {
         return sql.selectList("SaleStmt.findByDatePaging", param);
+    }
+
+    public List<SaleListDTO> pagingList(Map<String, Integer> pagingParams) {
+        return sql.selectList("SaleStmt.pagingList", pagingParams);
     }
 }

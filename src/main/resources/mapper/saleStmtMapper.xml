@@ -8,22 +8,6 @@
         SELECT * FROM erp_db.order_category_view
         WHERE status = "완료";
     </select>
-    <!-- 날짜 범위안에 있는 거래명세서 목록 표시 ho -->
-    <select id="findByDateBetween" resultType="saleList">
-        SELECT * FROM erp_db.order_category_view
-        WHERE orderDate BETWEEN #{startDate} AND #{endDate}
-    </select>
-    <!-- 발주번호 일치하는 거래명세서 조회 ho -->
-    <select id="findByNo" parameterType="String" resultType="saleList">
-        SELECT o.orderId, o.orderdate, c.clientName, p.productName, SUM(s.purchasePrice*s.purchaseQty)*1.1 price FROM orderStmt o
-        JOIN purchaseOrder s ON s.orderId = o.orderId
-        JOIN client c ON c.clientId = o.clientId
-        JOIN client_product cp ON cp.clientId = c.clientId
-        JOIN product p ON cp.productId = p.productId
-        WHERE o.status = "완료" AND o.orderId = #{orderNumber}
-        GROUP BY o.orderId, o.orderdate, c.clientName, p.productName
-        ORDER BY o.orderId;
-    </select>
     <!-- 발주번호와 일치하는 거래명세서 내역 가져오기 ho -->
     <select id="findBySaleId" parameterType="int" resultType="AccoList">
         SELECT o.orderId, o.orderDate, p.productName, s.purchaseQty, s.purchasePrice FROM  orderStmt o
@@ -39,27 +23,13 @@
         WHERE os.status ="완료";
     </select>
     <!-- 발주번호 검색 + 페이징 ho -->
-    <select id="findByNoPaging" parameterType="map" resultType="SaleStmt">
+    <select id="findByNoPaging" parameterType="map" resultType="saleList">
         <![CDATA[
-        SELECT
-            os.orderId AS orderId,
-            os.orderDate AS orderDate,
-            c.clientName AS clientName,
-            SUM(po.purchaseQty) AS totalCount,
-            SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
-            CASE
-                WHEN DATE_ADD(os.orderDate, INTERVAL 3 DAY) < CURDATE() THEN '완료'
-                ELSE '진행중'
-                END AS status
-            FROM erp_db.orderStmt AS os
-            JOIN erp_db.client AS c ON os.clientId = c.clientId
-            JOIN erp_db.purchaseOrder AS po ON os.orderId = po.orderId
-            WHERE
-                os.orderId LIKE CONCAT('%', #{orderNumber}, '%')
-                AND os.status = '완료'
-            GROUP BY os.orderId, os.orderDate, c.clientName, status
-            ORDER BY os.orderId DESC
-            LIMIT #{start}, #{limit}
+        SELECT * FROM erp_db.order_category_view
+        WHERE
+        orderId LIKE CONCAT('%', #{orderNumber}, '%')
+        AND status = '완료'
+        LIMIT #{start}, #{limit};
         ]]>
     </select>
     <!--  총 개수  -->
@@ -80,25 +50,19 @@
         AND os.status = "완료"
     </select>
     <!-- 달력 검색 + 페이징 -->
-    <select id="findByDatePaging" parameterType="map" resultType="OrderStmt">
+    <select id="findByDatePaging" parameterType="map" resultType="saleList">
         <![CDATA[
-        SELECT
-            os.orderId AS orderId,
-            os.orderDate AS orderDate,
-            c.clientName AS clientName,
-            SUM(po.purchaseQty) AS totalCount,
-            SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
-            CASE
-                WHEN DATE_ADD(os.orderDate, INTERVAL 3 DAY) < CURDATE() THEN '완료'
-                ELSE '진행중'
-            END AS status
-        FROM orderStmt os
-        JOIN client c ON os.clientId = c.clientId
-        JOIN purchaseOrder po ON os.orderId = po.orderId
-        WHERE os.orderDate >= #{startDate}
-          AND os.orderDate < #{endDate} AND os.status = '완료'
-        GROUP BY os.orderId, os.orderDate, c.clientName
-        ORDER BY os.orderId DESC
+       SELECT * FROM erp_db.order_category_view
+        WHERE orderDate >= #{startDate}
+          AND orderDate < #{endDate} AND status = '완료'
+        LIMIT #{start}, #{limit}
+        ]]>
+    </select>
+    <!--  페이징 전체 조회  -->
+    <select id="pagingList" parameterType="map" resultType="saleList">
+        <![CDATA[
+        SELECT * FROM erp_db.order_category_view
+        WHERE status = '완료'
         LIMIT #{start}, #{limit}
         ]]>
     </select>
