@@ -1,7 +1,9 @@
 package com.spring.stockCast.service;
 
 
+import com.spring.stockCast.dto.ProductCategoryDTO;
 import com.spring.stockCast.dto.ProductDTO;
+import com.spring.stockCast.repository.ProductCategoryRepository;
 import com.spring.stockCast.dto.StockQuantityDTO;
 import com.spring.stockCast.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +16,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final ProductCategoryRepository productCategoryRepository;
 
     // 거래처 ID로 상품 목록 조회
     public List<Map<String, Object>> getProductsByClientId(int clientId) {
@@ -47,7 +50,24 @@ public class ProductService {
         return productRepository.findProductByName(productName);
     }
 
+
+    // 발주 카테고리별 상품 조회 young
+    public List<ProductCategoryDTO> findTopCategoriesByClientId(int clientId) {
+        return productCategoryRepository.findTopCategoriesByClient(clientId);
+    }
+
+    // 거래처별 대분류 조회 young
+    public List<ProductCategoryDTO> findSubCategoriesByParentIdAndClientId(int parentId, int clientId) {
+        return productCategoryRepository.findSubCategoriesByParentIdAndClientId(parentId, clientId);
+    }
+
+    // 발주 카테고리별 상품 조회 young
+    public List<ProductDTO> findByCategoryId(int categoryId) {
+        return productRepository.findByCategoryId(categoryId);
+    }
+  
     public List<StockQuantityDTO> stockQuantityList() {
         return productRepository.stockQuantityList();
+
     }
 }

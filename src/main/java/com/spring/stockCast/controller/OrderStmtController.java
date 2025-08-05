@@ -2,11 +2,7 @@ package com.spring.stockCast.controller;
 
 import com.spring.stockCast.dto.OrderStmtDTO;
 import com.spring.stockCast.dto.PageDTO;
-import com.spring.stockCast.dto.PurchaseOrderDTO;
-import com.spring.stockCast.service.ClientService;
-import com.spring.stockCast.service.OrderStmtService;
-import com.spring.stockCast.service.ProductService;
-import com.spring.stockCast.service.PurchaseOrderService;
+import com.spring.stockCast.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -27,6 +23,7 @@ public class OrderStmtController {
     private final ClientService clientService;
     private final PurchaseOrderService purchaseOrderService;
     private final ProductService productService;
+    private final ProductCategoryService productCategoryService;
 
     // 발주 목록 조회 (검색 + 페이징)
     @GetMapping("/orderStmt")
@@ -82,13 +79,28 @@ public class OrderStmtController {
             @RequestParam("purchasePrice[]") List<Integer> purchasePrice,
             @RequestParam("purchaseQty[]") List<Integer> purchaseQty
     ) {
+        if (clientId <= 0) {
+            throw new IllegalArgumentException("거래처를 선택하세요.");
+        }
+
+        // 1. 발주서 저장
         orderStmtService.saveOrder(clientId, orderId, orderDate);
 
+        // 2. 상품 데이터 저장 (빈 행은 건너뛰기)
         for (int i = 0; i < productId.size(); i++) {
-            purchaseOrderService.saveOrderDetail(orderId, productId.get(i), purchasePrice.get(i), purchaseQty.get(i));
+            Integer pid = productId.get(i);
+            Integer qty = purchaseQty.get(i);
+            Integer price = purchasePrice.get(i);
+
+            if (pid == null || pid <= 0) continue; // 상품 없으면 건너뜀
+            if (qty == null || qty <= 0) continue; // 수량 없으면 건너뜀
+
+            purchaseOrderService.saveOrderDetail(orderId, pid, price != null ? price : 0, qty);
         }
+
         return "redirect:/order/orderStmt";
     }
+
 
     // 발주 상세 페이지
     @GetMapping("/orderDetail")
@@ -105,10 +117,11 @@ public class OrderStmtController {
         model.addAttribute("orderInfo", orderInfo);
         model.addAttribute("orderItems", purchaseOrderService.findByOrderId(id));
         model.addAttribute("clients", clientService.getAllClients());
-        model.addAttribute("products", productService.getProductsByClientId(orderInfo.getClientId()));
+        // 대분류는 JSP에서 Ajax로 호출 → clientId만 넘겨주기
         return "orderUpdate";
     }
 
+    // 발주 수정 저장
     // 발주 수정 저장
     @PostMapping("/orderUpdate")
     public String updateOrder(
@@ -119,12 +132,33 @@ public class OrderStmtController {
             @RequestParam("purchasePrice[]") List<Integer> purchasePrice,
             @RequestParam("purchaseQty[]") List<Integer> purchaseQty
     ) {
+        // 기본 발주 수정
         orderStmtService.updateOrder(clientId, orderId, orderDate);
 
+        // 기존 상세 삭제
         purchaseOrderService.deleteByOrderId(orderId);
-        for (int i = 0; i < productId.size(); i++) {
-            purchaseOrderService.saveOrderDetail(orderId, productId.get(i), purchasePrice.get(i), purchaseQty.get(i));
+
+        if (productId == null) {
+            return "redirect:/order/orderStmt";
         }
+
+        // 길이 가장 짧은 쪽 기준으로 반복
+        int loopCount = Math.min(productId.size(),
+                Math.min(purchasePrice.size(), purchaseQty.size()));
+
+        for (int i = 0; i < loopCount; i++) {
+            Integer pid = productId.get(i);
+            Integer price = purchasePrice.get(i);
+            Integer qty = purchaseQty.get(i);
+
+            if (pid == null || pid <= 0) continue;
+            if (qty == null || qty <= 0) continue;
+
+            purchaseOrderService.saveOrderDetail(orderId, pid,
+                    price != null ? price : 0,
+                    qty);
+        }
+
         return "redirect:/order/orderStmt";
     }
 

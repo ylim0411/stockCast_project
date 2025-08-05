@@ -13,4 +13,7 @@ public class PurchaseOrderDTO {
     private String orderDate;
     private int purchasePrice;
     private int purchaseQty;
+
+    private Integer topCategoryId;  // 추가 상품 카테고리
+    private Integer subCategoryId;
 }

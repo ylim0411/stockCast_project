@@ -47,7 +47,14 @@ public class ProductRepository {
         return sql.selectList("Product.findProductByName", productName);
     }
 
+
+    // 발주 카테고리별 상품 조회 young
+    public List<ProductDTO> findByCategoryId(int categoryId) {
+        return sql.selectList("Product.findByCategoryId", categoryId);
+    }
+  
     public List<StockQuantityDTO> stockQuantityList() {
         return sql.selectList("Product.stockQuantityList");
+
     }
 }
