@@ -49,3 +49,4 @@ application-local.yml
 .smarttomcat/stockCast_project/conf/tomcat-users.xml
 .smarttomcat/stockCast_project/conf/tomcat-users.xsd
 .smarttomcat/stockCast_project/conf/web.xml
+logs/

@@ -54,10 +54,10 @@ public class ProductController {
     }
 
     @PostMapping("/add")
-    public String addProduct(@RequestParam("productName") String productName,
-                             @RequestParam("price") int price,
-                             @RequestParam("stockQuantity") int stockQuantity,
-                             @RequestParam("middleCategoryId") int middleCategoryId) {
+    public String addProduct(@RequestParam("addProductName") String productName,
+                             @RequestParam("addPrice") int price,
+                             @RequestParam("addStockQuantity") int stockQuantity,
+                             @RequestParam("addMiddleCategoryId") int middleCategoryId) {
 
         ProductDTO product = new ProductDTO();
         product.setProductName(productName);

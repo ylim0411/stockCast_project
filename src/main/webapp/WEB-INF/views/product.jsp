@@ -58,12 +58,13 @@
     };
 
     $(".addRow").click(function () {
-        let $newForm = $('.productAdd').closest('form').clone();
-        $newForm.find('.productAdd').removeClass('productAdd').show();
-        $newForm.find('input').val('');
-        $newForm.find('.addBtn').show();
+        let $templateRow = $(".productAdd").first();
+        let $newRow = $templateRow.clone(true);
+        $newRow.removeClass("productAdd");
+        $newRow.removeAttr("style");
+        $newRow.find("input").val("");
 
-        $('table tbody').append($newForm);
+        $("table tbody").append($newRow);
     });
 
     $(document).on("change", "select[name='addParentCategoryId']", function () {
@@ -82,14 +83,13 @@
         $middleSelect.append($("<option>").val("").text("중분류 없음"));
       }
     });
-
-
   });
 </script>
 </head>
 <body>
   <div id="product" class="container">
     <div>
+     <h1>전체 상품 목록 목록</h1>
       <button class="addRow" type="button">상품 등록</button>
       <table>
         <thead>
@@ -149,17 +149,17 @@
               </c:forEach>
             </c:if>
           </c:forEach>
-          <form method="post" action="${pageContext.request.contextPath}/product/add">
-              <tr class="productAdd" style="display: none;">
+            <tr class="productAdd" style="display: none;">
+              <form method="post" action="${pageContext.request.contextPath}/product/add">
                 <td>
-                    <select name="addParentCategoryId">
-                      <option>대분류를 선택하세요.</option>
+                  <select name="addParentCategoryId">
+                    <option>대분류를 선택하세요.</option>
                       <c:forEach items="${categoryList}" var="parent">
                         <c:if test="${parent.categoryLevel == 1}">
                           <option value="${parent.categoryId}">${parent.categoryName}</option>
                         </c:if>
                       </c:forEach>
-                    </select>
+                  </select>
                 </td>
                 <td>
                   <select name="addMiddleCategoryId">
@@ -172,9 +172,9 @@
                 <td><input type="number" name="addPrice" /></td>
                 <td><input type="number" name="addStockQuantity" /></td>
                 <td><input type="text" name="addCreatedAt" readonly /></td>
-                <td><button type="submit" class="addBtn" style="display:none;">등록</button></td>
-              </tr>
-          </form>
+                <td><button type="button" class="addBtn">등록</button></td>
+              </form>
+            </tr>
         </tbody>
       </table>
     </div>
