@@ -1,9 +1,6 @@
 package com.spring.stockCast.controller;
 
-import com.spring.stockCast.dto.AccoListDTO;
-import com.spring.stockCast.dto.ClientDTO;
-import com.spring.stockCast.dto.PageDTO;
-import com.spring.stockCast.dto.SaleListDTO;
+import com.spring.stockCast.dto.*;
 import com.spring.stockCast.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -58,7 +55,7 @@ public class SaleStmtController {
     // 거래명세서 상세화면으로 이동
     @GetMapping("/detail")
     public String saleDetail(Model model, @RequestParam("o_id") int id){
-        List<AccoListDTO> accoList = saleStmtService.findBySaleId(id); // 발주번호와 일치하는 거래명세서 불러오기
+        List<SaleStmtDTO> accoList = saleStmtService.findBySaleId(id); // 발주번호와 일치하는 거래명세서 불러오기
         ClientDTO client = clientService.findBySaleId(id); // 발주번호와 일치하는 거래처 불러오기
         model.addAttribute("accoList",accoList);
         model.addAttribute("client",client);

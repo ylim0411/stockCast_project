@@ -9,7 +9,7 @@
         WHERE status = "완료";
     </select>
     <!-- 발주번호와 일치하는 거래명세서 내역 가져오기 ho -->
-    <select id="findBySaleId" parameterType="int" resultType="AccoList">
+    <select id="findBySaleId" parameterType="int" resultType="SaleStmt">
         SELECT o.orderId, o.orderDate, p.productName, s.purchaseQty, s.purchasePrice FROM  orderStmt o
         JOIN purchaseOrder s ON s.orderId = o.orderId
         JOIN product p ON s.productId = p.productId
@@ -32,7 +32,7 @@
         LIMIT #{start}, #{limit};
         ]]>
     </select>
-    <!--  총 개수  -->
+    <!--  총 개수 ho -->
     <select id="countByDate" parameterType="map" resultType="int">
         <![CDATA[
         SELECT COUNT(DISTINCT os.orderId)
@@ -42,14 +42,14 @@
         AND os.status = "완료"
         ]]>
     </select>
-    <!--  총 개수  -->
+    <!--  총 개수 ho -->
     <select id="countByNo" parameterType="string" resultType="int">
         SELECT COUNT(DISTINCT os.orderId)
         FROM orderStmt os
         WHERE os.orderId LIKE CONCAT('%', #{orderNumber}, '%')
         AND os.status = "완료"
     </select>
-    <!-- 달력 검색 + 페이징 -->
+    <!-- 달력 검색 + 페이징 ho -->
     <select id="findByDatePaging" parameterType="map" resultType="saleList">
         <![CDATA[
        SELECT * FROM erp_db.order_category_view
@@ -58,7 +58,7 @@
         LIMIT #{start}, #{limit}
         ]]>
     </select>
-    <!--  페이징 전체 조회  -->
+    <!--  페이징 전체 조회 ho -->
     <select id="pagingList" parameterType="map" resultType="saleList">
         <![CDATA[
         SELECT * FROM erp_db.order_category_view
