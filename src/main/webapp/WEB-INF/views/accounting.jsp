@@ -7,7 +7,14 @@
 <head>
     <title>회계 관리</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/accounting.css"/>
+    <style>
+        /* Flexbox 컨테이너 스타일 */
+        .account-tables-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 1px;
+        }
+    </style>
 </head>
 <body>
     <div class="containerAuto">
@@ -16,177 +23,147 @@
             <h2 class="title">회계 관리</h2>
         </div>
         <div class="section-wrap">
-        <form action="/accounting/list" method="post" class="form-container">
-          <div class="dateForm">
-            <input type="date" name="startDate" id="startDate" />
-            <span>~<span>
-            <input type="date" name="endDate" id="endDate" />
-            <button type="submit" class="btn btn-blue">조회</button>
-          </div>
-          <div class="searchForm">
-            <select name="year" class="saleYear-select">
-              <option value="">조회년도</option>
-              <c:forEach var="year" items="${saleYear}">
-                <option value="${year}">${year}</option>
-              </c:forEach>
-            </select>
-            <div>
-                <button class="btn btn-blue">당월</button>
-                <button class="btn btn-blue">1분기</button>
-                <button class="btn btn-blue">2분기</button>
-                <button class="btn btn-blue">3분기</button>
-                <button class="btn btn-blue">4분기</button>
-                <button class="btn btn-blue">상반기</button>
-                <button class="btn btn-blue">하반기</button>
-            </div>
-          </div>
-        </form>
-        <div>
-            <table>
-                <thead>
-                    <tr>
-                        <th style="width: 15%; border-right: 1px solid black;" colspan="2">자산</th>
-                        <th style="width: 15%;" colspan="2">부채</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>계정과목</td>
-                        <td style="border-right: 1px solid black;">잔액</td>
-                        <td>계정과목</td>
-                        <td>잔액</td>
-                    </tr>
-                    <c:set var="maxLength" value="${fn:length(assetList) > fn:length(liabilityList) ? fn:length(assetList) : fn:length(liabilityList)}"/>
-                    <c:if test="${maxLength > 0}">
-                        <c:forEach var="i" begin="0" end="${maxLength - 1}">
-                            <tr>
-                                <td>
-                                    <c:if test="${i < fn:length(assetList)}">
-                                        ${assetList[i].name}
-                                    </c:if>
-                                </td>
-                                <td style="border-right: 1px solid black;">
-                                    <c:if test="${i < fn:length(assetList)}">
-                                        ${assetList[i].value}
-                                    </c:if>
-                                </td>
-                                <td>
-                                    <c:if test="${i < fn:length(liabilityList)}">
-                                        ${liabilityList[i].name}
-                                    </c:if>
-                                </td>
-                                <td>
-                                    <c:if test="${i < fn:length(liabilityList)}">
-                                        ${liabilityList[i].value}
-                                    </c:if>
-                                </td>
-                            </tr>
+        <div class="search-period-info">
+                <c:if test="${not empty findDate}">
+                  <p>${findDate} 회계 내역 입니다.</p>
+                </c:if>
+              </div>
+            <form action="/accounting/accountingList" method="get" class="form-container">
+                <div class="dateForm">
+                    <input type="date" name="startDate" id="startDate"/>
+                    <span>~<span>
+                    <input type="date" name="endDate" id="endDate"/>
+                    <button type="submit" class="btn btn-blue">조회</button>
+                </div>
+                <div class="searchForm">
+                    <select name="year" class="saleYear-select">
+                        <option value="">조회년도</option>
+                        <c:forEach var="year" items="${accountYear}">
+                            <option value="${year}">${year}</option>
                         </c:forEach>
-                    </c:if>
-                    <c:if test="${maxLength == 0}">
+                    </select>
+                    <div>
+                        <button class="btn btn-blue">당월</button>
+                        <button class="btn btn-blue">1분기</button>
+                        <button class="btn btn-blue">2분기</button>
+                        <button class="btn btn-blue">3분기</button>
+                        <button class="btn btn-blue">4분기</button>
+                        <button class="btn btn-blue">상반기</button>
+                        <button class="btn btn-blue">하반기</button>
+                    </div>
+                </div>
+            </form>
+
+            <div class="account-tables-container">
+                <table>
+                    <thead>
                         <tr>
-                            <td colspan="2" style="border-right: 1px solid black;">데이터가 없습니다.</td>
-                            <td colspan="2">데이터가 없습니다.</td>
+                            <th colspan="2">차변 (자산 및 비용)</th>
                         </tr>
-                    </c:if>
-                    <tr>
-                        <td colspan="1" class="total-label">총 자산</td>
-                        <td style="border-right: 1px solid black;">${totalAsset}</td>
-                        <td colspan="1" class="total-label">총 부채</td>
-                        <td>${totalLiability}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="2">자본</th>
-                        <th colspan="2">수익</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>계정과목</td>
-                        <td>잔액</td>
-                        <td>계정과목</td>
-                        <td>잔액</td>
-                    </tr>
-                    <c:set var="maxLength" value="${fn:length(capitalList) > fn:length(revenueList) ? fn:length(capitalList) : fn:length(revenueList)}"/>
-                    <c:if test="${maxLength > 0}">
-                        <c:forEach var="i" begin="0" end="${maxLength - 1}">
-                            <tr>
-                                <td>
-                                    <c:if test="${i < fn:length(capitalList)}">
-                                        ${capitalList[i].name}
-                                    </c:if>
-                                </td>
-                                <td>
-                                    <c:if test="${i < fn:length(capitalList)}">
-                                        ${capitalList[i].totalPrice}
-                                    </c:if>
-                                </td>
-                                <td>
-                                    <c:if test="${i < fn:length(revenueList)}">
-                                        ${revenueList[i].name}
-                                    </c:if>
-                                </td>
-                                <td>
-                                    <c:if test="${i < fn:length(revenueList)}">
-                                        ${revenueList[i].totalPrice}
-                                    </c:if>
-                                </td>
-                            </tr>
-                        </c:forEach>
-                    </c:if>
-                    <c:if test="${maxLength == 0}">
                         <tr>
-                            <td colspan="2">데이터가 없습니다.</td>
-                            <td colspan="2">데이터가 없습니다.</td>
+                            <td>계정과목</td>
+                            <td>금액</td>
                         </tr>
-                    </c:if>
-                    <tr>
-                        <td colspan="1" >총 자본</td>
-                        <td>${totalCapital}</td>
-                        <td colspan="1">총 수익</td>
-                        <td>${totalRevenue}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <table>
-                <thead>
-                    <tr>
-                        <th colspan="2">비용</th>
-                        <th colspan="2"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>계정과목</td>
-                        <td>잔액</td>
-                        <td colspan="2"></td>
-                    </tr>
-                    <c:if test="${not empty expenseList}">
-                        <c:forEach var="account" items="${expenseList}">
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><b>자산</b></td>
+                        </tr>
+                        <c:forEach var="account" items="${pageData.assetsList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>${account.totalPrice}</td>
-                                <td colspan="2"></td>
+                                <td>0</td>
                             </tr>
                         </c:forEach>
-                    </c:if>
-                    <c:if test="${empty expenseList}">
-                         <tr>
-                            <td colspan="2">데이터가 없습니다.</td>
-                            <td colspan="2"></td>
+
+                        <tr>
+                            <th colspan="2"><b>비용</b></td>
                         </tr>
-                    </c:if>
-                    <tr>
-                        <td colspan="1">총 비용</td>
-                        <td>${totalExpense}</td>
-                        <td colspan="2"></td>
-                    </tr>
-                </tbody>
-            </table>
+                        <c:forEach var="account" items="${pageData.expenseList}">
+                            <tr>
+                                <td>${account.name}</td>
+                                <td>0</td>
+                            </tr>
+                        </c:forEach>
+
+                        <c:set var="debitRowCount" value="${fn:length(pageData.assetsList) + fn:length(pageData.expenseList) + 2}"/>
+                        <c:set var="creditRowCount" value="${fn:length(pageData.liabilitiesList) + fn:length(pageData.capitalList) + fn:length(pageData.revenueList) + 3}"/>
+                        <c:if test="${creditRowCount > debitRowCount}">
+                            <c:set var="emptyRowCount" value="${creditRowCount - debitRowCount}"/>
+                            <c:forEach begin="1" end="${emptyRowCount}">
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
+
+                        <tr>
+                            <td>총 차변</td>
+                            <td>${pageData.totalDebit}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th colspan="2">대변 (부채, 자본 및 수익)</th>
+                        </tr>
+                        <tr>
+                            <td>계정과목</td>
+                            <td>금액</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th colspan="2"><b>부채</b></td>
+                        </tr>
+                        <c:forEach var="account" items="${pageData.liabilitiesList}">
+                            <tr>
+                                <td>${account.name}</td>
+                                <td>0</td>
+                            </tr>
+                        </c:forEach>
+
+                        <tr>
+                            <th colspan="2"><b>자본</b></td>
+                        </tr>
+                        <c:forEach var="account" items="${pageData.capitalList}">
+                            <tr>
+                                <td>${account.name}</td>
+                                <td>0</td>
+                            </tr>
+                        </c:forEach>
+
+                        <tr>
+                            <th colspan="2"><b>수익</b></td>
+                        </tr>
+                        <c:forEach var="account" items="${pageData.revenueList}">
+                            <tr>
+                                <td>${account.name}</td>
+                                <td>0</td>
+                            </tr>
+                        </c:forEach>
+
+                        <c:set var="debitRowCount" value="${fn:length(pageData.assetsList) + fn:length(pageData.expenseList) + 2}"/>
+                        <c:set var="creditRowCount" value="${fn:length(pageData.liabilitiesList) + fn:length(pageData.capitalList) + fn:length(pageData.revenueList) + 3}"/>
+                        <c:if test="${debitRowCount > creditRowCount}">
+                            <c:set var="emptyRowCount" value="${debitRowCount - creditRowCount}"/>
+                            <c:forEach begin="1" end="${emptyRowCount}">
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </c:forEach>
+                        </c:if>
+
+                        <tr>
+                            <td>총 대변</td>
+                            <td>${pageData.totalCredit}</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>

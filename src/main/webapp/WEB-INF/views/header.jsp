@@ -10,10 +10,12 @@
 
    <header>
         <div class="logo">
+         <a href="${pageContext.request.contextPath}/main">
           <img
             src="${pageContext.request.contextPath}/static/images/logo.png"
             alt="logo"
           />
+          </a>
         </div>
         <div class="admin">
           <p>${sessionScope.loginedAdminDTO.adminName} 님</p>
@@ -29,28 +31,27 @@
                 <span>대시보드</span>
               </a>
             </li>
-            <li class="main-menu ${fn:contains(uri, '/product') ? 'on' : ''}">
-              <a href="${pageContext.request.contextPath}/productCategory/select">
-                <img
-                  src="${pageContext.request.contextPath}/static/images/product.png"
-                  alt="productIcon"
-                />
-                <span>상품관리</span>
-              </a>
-              <ul class="sub-menu">
-                <li class="main-menu ${fn:contains(uri, '/product') ? 'on' : ''}">
-                  <a href="${pageContext.request.contextPath}/productCategory/list"> 상품 카테고리 </a>
-                </li>
-                <li>
-                  <a href="${pageContext.request.contextPath}/product/"> 전체 상품 목록 </a>
-                </li>
-                <li>
-                  <a href="${pageContext.request.contextPath}/product/stockQuantity/"> 재고 현황 </a>
-                </li>
-              </ul>
-            </li>
+
+           <li class="main-menu ${fn:contains(uri, '/product') || fn:contains(uri, '/productCategory') ? 'on' : ''}">
+               <a href="javascript:void(0);">
+                   <img src="${pageContext.request.contextPath}/static/images/product.png" alt="productIcon"/>
+                   <span>상품관리</span>
+               </a>
+               <ul class="sub-menu" style="${fn:contains(uri, '/product') || fn:contains(uri, '/productCategory') ? 'display:block;' : ''}">
+                   <li class="${fn:contains(uri, '/productCategory') ? 'on' : ''}">
+                       <a href="${pageContext.request.contextPath}/productCategory/select">상품 카테고리</a>
+                   </li>
+                   <li class="${fn:contains(uri, '/list') ? 'on' : ''}">
+                       <a href="${pageContext.request.contextPath}/product/list/">전체 상품 목록</a>
+                   </li>
+                   <li class="${fn:contains(uri, '/stockQuantity') ? 'on' : ''}">
+                       <a href="${pageContext.request.contextPath}/product/stockQuantity/">재고 현황</a>
+                   </li>
+               </ul>
+           </li>
+
            <li class="main-menu ${fn:contains(uri, '/order') ? 'on' : ''}">
-             <a href="${pageContext.request.contextPath}/order/orderStmt">
+             <a href="javascript:void(0);">
                <img src="${pageContext.request.contextPath}/static/images/order.png" alt="orderIcon" />
                <span>발주관리</span>
              </a>
@@ -64,23 +65,24 @@
              </ul>
            </li>
 
-           <li class="main-menu ${fn:contains(uri, '/sale') || fn:contains(uri, '/accounting') ? 'on' : ''}">
-             <a href="${pageContext.request.contextPath}/sale/list">
-               <img src="${pageContext.request.contextPath}/static/images/sale.png" alt="saleIcon" />
-               <span>매출관리</span>
+         <li class="main-menu ${fn:contains(uri, '/sale') || fn:contains(uri, '/saleStmt') || fn:contains(uri, '/accounting') ? 'on' : ''}">
+             <a href="javascript:void(0);">
+                 <img src="${pageContext.request.contextPath}/static/images/sale.png" alt="saleIcon"/>
+                 <span>매출관리</span>
              </a>
-             <ul class="sub-menu" style="${fn:contains(uri, '/sale') || fn:contains(uri, '/accounting') ? 'display:block;' : ''}">
-               <li class="${fn:contains(uri, '/sale/list') ? 'on' : ''}">
-                 <a href="${pageContext.request.contextPath}/sale/list"> 판매 실적 </a>
-               </li>
-               <li class="${fn:contains(uri, '/saleStmt/saleStmt') ? 'on' : ''}">
-                 <a href="${pageContext.request.contextPath}/saleStmt/list"> 거래명세서 </a>
-               </li>
-               <li class="${fn:contains(uri, '/accounting/list') ? 'on' : ''}">
-                 <a href="${pageContext.request.contextPath}/accounting/list"> 회계 관리 </a>
-               </li>
+           
+             <ul class="sub-menu" style="${fn:contains(uri, '/sale') || fn:contains(uri, '/saleStmt') || fn:contains(uri, '/accounting') ? 'display:block;' : ''}">
+                 <li class="${fn:contains(uri, '/sale') ? 'on' : ''}">
+                     <a href="${pageContext.request.contextPath}/sale/saleList">판매 실적</a>
+                 </li>
+                 <li class="${fn:contains(uri, '/saleStmt') ? 'on' : ''}">
+                     <a href="${pageContext.request.contextPath}/saleStmt/saleStmtList">거래명세서</a>
+                 </li>
+                 <li class="${fn:contains(uri, '/accounting') ? 'on' : ''}">
+                     <a href="${pageContext.request.contextPath}/accounting/accountingList">회계 관리</a>
+                 </li>
              </ul>
-           </li>
+         </li>
 
             <li class="main-menu  ${fn:contains(uri, '/customer') ? 'on' : ''}">
               <a href="${pageContext.request.contextPath}/customer"">
@@ -109,47 +111,91 @@
         </div>
       </header>
 
-  <script>
-$(function () {
-  // 기존의 메인 메뉴 클릭 이벤트
-  $("li.main-menu > a").on("click", function (e) {
-    const href = $(this).attr("href");
-    if (href === "#") {
-      e.preventDefault();
-    }
+    <!-- 헤더 기능  -->
+   <script>
+       $(function () {
+           // 현재 URI를 기반으로 메뉴 활성화 상태를 결정하는 함수
+           function setActiveMenuByUri() {
+               const currentUri = window.location.pathname;
 
-    const $clickedMenu = $(this).parent();
-    const $subMenu = $clickedMenu.find(".sub-menu");
+               // 모든 'on' 클래스와 서브메뉴를 초기화합니다.
+               $("li.main-menu").removeClass("on").find(".sub-menu").hide();
+               $("li.sub-menu li").removeClass("on");
 
-    // if (isAlreadyOpen) return;을 주석 해제하여 기존 기능 활성화
-    // const isAlreadyOpen = $clickedMenu.hasClass("on");
-    // if (isAlreadyOpen) return;
+               // 서브메뉴가 있는 메인 메뉴를 먼저 활성화합니다.
+               $("li.main-menu ul.sub-menu a").each(function () {
+                   const linkUri = $(this).attr('href');
+                   if (linkUri && currentUri.includes(linkUri)) {
+                       const $clickedSubMenuLi = $(this).parent();
+                       const $clickedMainMenu = $(this).closest("li.main-menu");
 
-    $("li.main-menu").removeClass("on").find(".sub-menu").stop(true, true).slideUp(400, function() {
-        $clickedMenu.addClass("on");
-        $subMenu.stop(true, true).slideDown();
+                       $clickedMainMenu.addClass("on");
+                       $clickedSubMenuLi.addClass("on");
+                       $clickedMainMenu.find(".sub-menu").show();
+                       return false; // each 루프 중단
+                   }
+               });
 
-        $(".sub-menu li").removeClass("on");
-        $subMenu.find("li").first().addClass("on");
-    });
-  });
+               // 서브메뉴가 없는 메인 메뉴를 활성화합니다.
+               if ($("li.main-menu.on").length === 0) { // 이미 활성화된 메뉴가 없으면
+                   $("li.main-menu > a").each(function () {
+                       const linkUri = $(this).attr('href');
+                       if (linkUri && currentUri.includes(linkUri) && $(this).closest("li.main-menu").find(".sub-menu").length === 0) {
+                           $(this).closest("li.main-menu").addClass("on");
+                           return false; // each 루프 중단
+                       }
+                   });
+               }
+           }
 
-  // 새로 추가할 서브 메뉴 클릭 이벤트
-  // 서브 메뉴 안의 <a> 태그에 대한 이벤트를 별도로 정의
-  $("li.sub-menu a").on("click", function(e) {
-      // 상위 요소로의 이벤트 전파를 막습니다.
-      // 이렇게 하면 메인 메뉴의 클릭 이벤트가 실행되지 않습니다.
-      e.stopPropagation();
+           // 페이지 로드 시 함수 실행
+           setActiveMenuByUri();
 
-      // 현재 클릭된 서브 메뉴 항목에만 'on' 클래스 추가
-      $(".sub-menu li").removeClass("on");
-      $(this).parent().addClass("on");
+           // --- 이 부분이 수정되었습니다 ---
+           // 메인 메뉴 hover 시 서브메뉴 열기
+           $("li.main-menu").hover(
+               function () {
+                   // 마우스를 올리면 다른 모든 서브메뉴를 닫고 현재 서브메뉴를 엽니다.
+                   $("li.main-menu").removeClass("hover-on");
+                   $("li.main-menu .sub-menu").stop(true, true).slideUp(200);
 
-      // 페이지 이동이 정상적으로 이루어지도록 합니다.
-      // 여기서 e.preventDefault()를 사용하지 않으면 링크로 이동합니다.
-  });
-});
-  </script>
+                   $(this).addClass("hover-on");
+                   $(this).find(".sub-menu").stop(true, true).slideDown(200);
+               },
+               function () {
+                   // 마우스를 떼면
+                   $(this).removeClass("hover-on");
+
+                   // on 클래스가 적용된 메인 메뉴를 제외한 모든 서브메뉴를 닫습니다.
+                   if (!$(this).hasClass('on')) {
+                       $(this).find(".sub-menu").stop(true, true).slideUp(200);
+                   }
+               }
+           );
+           // -----------------------------
+
+           // 서브메뉴 클릭 시 상태를 정확하게 저장
+           $("li.sub-menu a").on("click", function () {
+               const $clickedMainMenu = $(this).closest("li.main-menu");
+               const $clickedSubMenuLi = $(this).parent();
+
+               // localStorage에 상태 저장 (페이지 로드 시 사용될 정보)
+               localStorage.setItem("activeMainMenu", $clickedMainMenu.index());
+               localStorage.setItem("activeSubMenu", $clickedSubMenuLi.index());
+           });
+
+           // 서브메뉴가 없는 메인 메뉴 클릭 시 상태 저장
+           $("li.main-menu:not(:has(ul.sub-menu)) > a").on("click", function () {
+               const $clickedMainMenu = $(this).closest("li.main-menu");
+
+               // localStorage에 상태 저장
+               localStorage.setItem("activeMainMenu", $clickedMainMenu.index());
+               localStorage.removeItem("activeSubMenu");
+           });
+       });
+   </script>
+
+    <!-- 날짜 제한  -->
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const endDateInput = document.getElementById('endDate');
@@ -168,5 +214,5 @@ $(function () {
           endDateInput.setAttribute('max', maxDate);
         }
       });
-  </script>
+    </script>
 

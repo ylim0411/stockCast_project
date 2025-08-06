@@ -27,4 +27,16 @@ public class ClientService {
     public List<ClientDTO> selectByAdminId(int adminId) {
         return clientRepository.selectByAdminId(adminId);
     }
+
+    public boolean update(ClientDTO clientDTO) {
+        return clientRepository.update(clientDTO);
+    }
+
+    public ClientDTO selectByClientId(int clientId) {
+        return clientRepository.selectByClientId(clientId);
+    }
+
+    public boolean insert(ClientDTO clientDTO) {
+        return clientRepository.insert(clientDTO);
+    }
 }

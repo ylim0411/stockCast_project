@@ -28,7 +28,7 @@ public class ProductController {
         return productService.getProductsByClientId(clientId);
     }
 
-    @GetMapping("/")
+    @GetMapping("/list")
     public String productList(Model model) {
         List<ProductCategoryDTO> categoryList = productCategoryService.categorySelect();
         model.addAttribute("categoryList", categoryList);
@@ -87,6 +87,7 @@ public class ProductController {
     public List<ProductDTO> getProductsByCategory(@PathVariable int categoryId) {
         return productService.findByCategoryId(categoryId);
     }
+
     @GetMapping("/stockQuantity")
     public String stockQuantity(Model model) {
         List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList();

@@ -223,9 +223,11 @@ $(document).ready(function(){
         let price = parseFloat($row.find('.price-input').val()) || 0;
         let count = parseInt($row.find('.count-input').val()) || 0;
         let total = price * count;
+
         $row.find('.total-display').val(total.toLocaleString());
         $row.find('.qty-hidden').val(count);
     }
+
     function calcSummary(){
         let totalQty = 0, totalAmt = 0;
         $('.item-row').not('.template').each(function(){
@@ -240,6 +242,7 @@ $(document).ready(function(){
     $(document).on('change', '#clientSelect', function(){
         $('.item-row').not('.template').each(function(){ loadTopCategories($(this)); });
     });
+
     function loadTopCategories($row){
         let clientId = $('#clientSelect').val();
         if (!clientId) return;
@@ -248,6 +251,7 @@ $(document).ready(function(){
             data.forEach(c => $top.append('<option value="'+c.categoryId+'">'+c.categoryName+'</option>'));
         });
     }
+
     $(document).on('change', '.top-category-select', function(){
         let $row = $(this).closest('tr');
         $.get('/productCategory/sub', {
@@ -258,6 +262,7 @@ $(document).ready(function(){
             data.forEach(c => $sub.append('<option value="'+c.categoryId+'">'+c.categoryName+'</option>'));
         });
     });
+
     $(document).on('change', '.sub-category-select', function(){
         let $row = $(this).closest('tr');
         $.get('/product/byCategory/' + $(this).val(), function(data){
