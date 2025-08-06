@@ -10,10 +10,12 @@
 
    <header>
         <div class="logo">
+         <a href="${pageContext.request.contextPath}/main">
           <img
             src="${pageContext.request.contextPath}/static/images/logo.png"
             alt="logo"
           />
+          </a>
         </div>
         <div class="admin">
           <p>${sessionScope.loginedAdminDTO.adminName} 님</p>
