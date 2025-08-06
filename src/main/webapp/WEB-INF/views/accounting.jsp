@@ -28,7 +28,7 @@
                   <p>${findDate} 회계 내역 입니다.</p>
                 </c:if>
               </div>
-            <form action="/accounting/list" method="post" class="form-container">
+            <form action="/accounting/accountingList" method="get" class="form-container">
                 <div class="dateForm">
                     <input type="date" name="startDate" id="startDate"/>
                     <span>~<span>

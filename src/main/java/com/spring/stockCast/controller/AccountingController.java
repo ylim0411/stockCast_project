@@ -37,7 +37,7 @@ public class AccountingController {
             findDate = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"~"+endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             model.addAttribute("valueData",accounts);
             model.addAttribute("findDate",findDate);
-            return "sale";
+            return "accounting";
         }
         // 연도 선택시에만 검색
         if(year != null && !year.isEmpty()){

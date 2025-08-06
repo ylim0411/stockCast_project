@@ -24,7 +24,7 @@
           <p>${findDate} 판매 실적입니다.</p>
         </c:if>
       </div>
-      <form action="/sale/list" method="get" class="form-container">
+      <form action="/sale/saleList" method="get" class="form-container">
         <div class="dateForm">
           <input type="date" name="startDate" id="startDate" />
           <span>~<span>
