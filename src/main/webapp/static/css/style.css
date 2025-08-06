@@ -107,6 +107,10 @@
     gap: 20px;
   }
 
+  header nav ul li.main-menu{
+
+  }
+
   header nav ul li.main-menu.on > a {
     background-color: var(--color-secondary);
     color: var(--color-white);
