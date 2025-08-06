@@ -6,9 +6,7 @@ import java.util.Date;
 
 @Data
 public class AccoListDTO {
-    private Date orderDate; // 발주일
-    private String productName; // 품목명
-    private int purchaseQty; // 수량
-    private int purchasePrice; // 단가
-
+    private Date transactionDate; // 거래발생일
+    private int itemId; // 계정과목 id
+    private int value; // 발생한 가격
 }

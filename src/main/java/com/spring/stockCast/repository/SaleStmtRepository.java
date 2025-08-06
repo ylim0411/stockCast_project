@@ -1,13 +1,11 @@
 package com.spring.stockCast.repository;
 
-import com.spring.stockCast.dto.AccoListDTO;
 import com.spring.stockCast.dto.SaleListDTO;
+import com.spring.stockCast.dto.SaleStmtDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,7 +20,7 @@ public class SaleStmtRepository {
     }
 
     // 거래명세서 상세보기
-    public List<AccoListDTO> findBySaleId(int id) {
+    public List<SaleStmtDTO> findBySaleId(int id) {
         return sql.selectList("SaleStmt.findBySaleId", id);
     }
     // 전체 수
