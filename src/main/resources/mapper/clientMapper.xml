@@ -29,4 +29,65 @@
         SELECT * FROM client
         WHERE adminId = #{adminId}
     </select>
+
+    <update id="update" parameterType="Client">
+        UPDATE client
+        SET
+        clientName = #{clientName},
+        businessNumber = #{businessNumber},
+        ceoName = #{ceoName},
+        address = #{address},
+        contact = #{contact},
+        fax = #{fax},
+        email = #{email},
+        managerName = #{managerName},
+        managerContact = #{managerContact},
+        managerEmail = #{managerEmail},
+        status = #{status},
+        updatedAt = #{updatedAt},
+        deletedAt = #{deletedAt}
+        WHERE clientId = #{clientId}
+    </update>
+
+    <select id="selectByClientId" parameterType="int" resultType="Client">
+        SELECT * FROM client
+        WHERE clientId = #{clientId}
+    </select>
+
+    <insert id="insert" parameterType="Client">
+        INSERT INTO client (
+        adminId,
+        clientName,
+        businessNumber,
+        ceoName,
+        address,
+        contact,
+        fax,
+        email,
+        managerName,
+        managerContact,
+        managerEmail,
+        status,
+        createdAt,
+        updatedAt,
+        deletedAt
+        ) VALUES (
+        #{adminId},
+        #{clientName},
+        #{businessNumber},
+        #{ceoName},
+        #{address},
+        #{contact},
+        #{fax},
+        #{email},
+        #{managerName},
+        #{managerContact},
+        #{managerEmail},
+        #{status},
+        #{createdAt},
+        #{updatedAt},
+        #{deletedAt}
+        )
+    </insert>
+
 </mapper>
