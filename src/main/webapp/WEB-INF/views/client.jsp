@@ -30,7 +30,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           <button class="btn btn-blue">검색</button>
         </div>
         <div>
-          <button class="btn btn-blue">거래처 등록</button>
+          <button class="btn btn-blue openAddModal">거래처 등록</button>
         </div>
       </div>
 
@@ -44,7 +44,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             <th>담당자명</th>
             <th>등록일자</th>
             <th>수정일시</th>
-            <th>삭제일시</th>
+            <th>중지일시</th>
             <th></th>
           </tr>
         </thead>
@@ -72,6 +72,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                   data-manager-name="${client.managerName}"
                   data-manager-contact="${client.managerContact}"
                   data-manager-email="${client.managerEmail}"
+                  data-status="${client.status}"
                   data-created-at="${client.createdAt}"
                   data-deleted-at="${client.deletedAt}"
                 >
@@ -86,9 +87,110 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         <div class="modal-content">
           <h2>거래처 상세보기</h2>
           <form
-            action="/client/save"
+            action="${pageContext.request.contextPath}/client/update"
             method="post"
-            class="form-container"
+            style="
+              flex-direction: column;
+              gap: 20px;
+              max-width: 800px;
+              margin: 0 auto;
+            "
+          >
+            <input type="hidden" name="clientId" />
+            <!-- 1줄 -->
+            <div style="display: flex; gap: 20px">
+              <div style="flex: 1">
+                <label>거래처 이름</label>
+                <input type="text" name="clientName" required />
+              </div>
+              <div style="flex: 1">
+                <label>담당자명</label>
+                <input type="text" name="managerName" />
+              </div>
+            </div>
+
+            <!-- 2줄 -->
+            <div style="display: flex; gap: 20px">
+              <div style="flex: 1">
+                <label>사업자 등록번호</label>
+                <input type="text" name="businessNumber" required />
+              </div>
+              <div style="flex: 1">
+                <label>담당자 연락처</label>
+                <input type="text" name="managerContact" />
+              </div>
+            </div>
+
+            <!-- 3줄 -->
+            <div style="display: flex; gap: 20px">
+              <div style="flex: 1">
+                <label>대표자명</label>
+                <input type="text" name="ceoName" />
+              </div>
+              <div style="flex: 1">
+                <label>담당자 이메일</label>
+                <input type="email" name="managerEmail" />
+              </div>
+            </div>
+
+            <!-- 4줄 -->
+            <div style="display: flex; gap: 20px">
+              <div style="flex: 1">
+                <label>사업장 주소</label>
+                <input type="text" name="address" />
+              </div>
+              <div style="flex: 1">
+                <label>팩스번호</label>
+                <input type="text" name="fax" />
+              </div>
+            </div>
+
+            <!-- 5줄 -->
+            <div style="display: flex; gap: 20px">
+              <div style="flex: 1">
+                <label>거래처 연락처</label>
+                <input type="text" name="contact" />
+              </div>
+              <div style="flex: 1">
+                <label>거래처 상태</label>
+                <select name="status" required>
+                  <option value="정상">정상</option>
+                  <option value="중지">중지</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 6줄 -->
+            <div style="display: flex; gap: 20px">
+              <div style="flex: 1">
+                <label>거래처 이메일</label>
+                <input type="email" name="email" />
+              </div>
+              <div style="flex: 1"></div>
+            </div>
+
+            <!-- 버튼 -->
+            <div class="btn-box">
+              <button type="submit" class="btn btn-blue-b" style="width: 100px">
+                수정
+              </button>
+              <button
+                type="button"
+                class="closeDetailModal"
+                style="width: 100px"
+              >
+                취소
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div id="clienAddlModal" class="modal hidden">
+        <div class="modal-content">
+          <h2>거래처 등록</h2>
+          <form
+            action="${pageContext.request.contextPath}/client/add"
+            method="post"
             style="
               flex-direction: column;
               gap: 20px;
@@ -151,8 +253,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <input type="text" name="contact" />
               </div>
               <div style="flex: 1">
-                <label>거래 시작일</label>
-                <input type="date" name="createdAt" />
+                <label>거래처 상태</label>
+                <select name="status" required>
+                  <option value="정상">정상</option>
+                  <option value="중지">중지</option>
+                </select>
               </div>
             </div>
 
@@ -162,22 +267,15 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <label>거래처 이메일</label>
                 <input type="email" name="email" />
               </div>
-              <div style="flex: 1">
-                <label>거래 종료일</label>
-                <input type="date" name="deletedAt" />
-              </div>
+              <div style="flex: 1"></div>
             </div>
 
             <!-- 버튼 -->
             <div class="btn-box">
               <button type="submit" class="btn btn-blue-b" style="width: 100px">
-                수정
+                추가
               </button>
-              <button
-                type="button"
-                class="closeDetailModal"
-                style="width: 100px"
-              >
+              <button type="button" class="closeAddModal" style="width: 100px">
                 취소
               </button>
             </div>
@@ -203,6 +301,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           $("#clientDetailModal").css("display", "flex");
 
           // 각 input 요소에 데이터 채우기
+          $("input[name='clientId']").val(button.data("client-id"));
           $("input[name='clientName']").val(button.data("client-name"));
           $("input[name='managerName']").val(button.data("manager-name"));
           $("input[name='businessNumber']").val(button.data("business-number"));
@@ -212,6 +311,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           $("input[name='address']").val(button.data("address"));
           $("input[name='fax']").val(button.data("fax"));
           $("input[name='contact']").val(button.data("contact"));
+          $("select[name='status']").val(button.data("status"));
           $("input[name='createdAt']").val(button.data("created-at"));
           $("input[name='email']").val(button.data("email"));
           $("input[name='deletedAt']").val(button.data("deleted-at"));
@@ -219,6 +319,32 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
         $(".closeDetailModal").click(function () {
           $("#clientDetailModal").css("display", "none");
+        });
+
+        $(document).on("click", ".openAddModal", function () {
+          const button = $(this);
+
+          $("#clienAddlModal").css("display", "flex");
+
+          // 각 input 요소에 데이터 채우기
+          $("input[name='clientId']").val(button.data("client-id"));
+          $("input[name='clientName']").val(button.data("client-name"));
+          $("input[name='managerName']").val(button.data("manager-name"));
+          $("input[name='businessNumber']").val(button.data("business-number"));
+          $("input[name='managerContact']").val(button.data("manager-contact"));
+          $("input[name='ceoName']").val(button.data("ceo-name"));
+          $("input[name='managerEmail']").val(button.data("manager-email"));
+          $("input[name='address']").val(button.data("address"));
+          $("input[name='fax']").val(button.data("fax"));
+          $("input[name='contact']").val(button.data("contact"));
+          $("select[name='status']").val(button.data("status"));
+          $("input[name='createdAt']").val(button.data("created-at"));
+          $("input[name='email']").val(button.data("email"));
+          $("input[name='deletedAt']").val(button.data("deleted-at"));
+        });
+
+        $(".closeAddModal").click(function () {
+          $("#clienAddlModal").css("display", "none");
         });
       });
     </script>
