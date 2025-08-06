@@ -20,7 +20,7 @@ import java.util.List;
 public class AccountingController {
     private final AccountingService accountingService;
 
-    @GetMapping("/list") //페이지 이동 시 목록 불러오기
+    @GetMapping("/accountingList") //페이지 이동 시 목록 불러오기
     public String accountingList(@RequestParam(required = false) String startDate,
                                  @RequestParam(required = false) String endDate,
                                  Model model) {
