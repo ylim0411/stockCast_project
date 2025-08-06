@@ -22,7 +22,7 @@ public class SaleController {
     private final SaleService saleService;
 
     // 날짜와 선택년도로 목록 조회하기
-    @GetMapping("/list")
+    @GetMapping("/saleList")
     public String find(@RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate startDate,
                        @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate endDate,
                        @RequestParam(required = false) String year,

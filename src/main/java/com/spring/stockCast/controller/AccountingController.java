@@ -23,7 +23,7 @@ public class AccountingController {
     private final AccountingService accountingService;
 
     // 회계관리 페이지 이동
-    @GetMapping("/list")
+    @GetMapping("/accountingList")
     public String accountingList(@RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate startDate,
                                  @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate endDate,
                                  @RequestParam(required = false) String year,
@@ -59,7 +59,7 @@ public class AccountingController {
     }
 
     @PostMapping("/list")
-    public String findAccounting() {
-        return "redirect:/accounting/list";
+    public String findAccounting(){
+        return "accounting";
     }
 }

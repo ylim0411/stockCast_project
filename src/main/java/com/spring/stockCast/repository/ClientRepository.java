@@ -25,4 +25,16 @@ public class ClientRepository {
     public List<ClientDTO> selectByAdminId(int adminId) {
         return sql.selectList("Client.selectByAdminId",adminId);
     }
+
+    public boolean update(ClientDTO clientDTO) {
+        return sql.update("Client.update", clientDTO) > 0;
+    }
+
+    public ClientDTO selectByClientId(int clientId) {
+        return sql.selectOne("Client.selectByClientId",clientId);
+    }
+
+    public boolean insert(ClientDTO clientDTO) {
+        return sql.insert("Client.insert", clientDTO) > 0;
+    }
 }
