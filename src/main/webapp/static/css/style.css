@@ -132,13 +132,19 @@
     display: none;
   }
 
-  header nav ul .sub-menu li {
+  header nav ul .sub-menu li{
     font-size: var(--font-size-md);
     padding: 10px;
     color: rgba(255, 255, 255, 0.5);
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   header nav ul .sub-menu li.on {
+    color: var(--color-white);
+    display:block;
+  }
+
+  header nav ul .sub-menu li:hover {
     color: var(--color-white);
   }
 
@@ -379,10 +385,13 @@
     .form-container input[type='date'],
     .form-container input[type='text']{
       padding: 5px;
-
       border: 1px solid var(--color-border);
       border-radius: var(--border-radius-base5);
       font-size: var(--font-size-base);
+    }
+
+    .form-container input[type='date']{
+        padding: 5px 20px ;
     }
 
      /* 페이징 ------------------------------------------------- */

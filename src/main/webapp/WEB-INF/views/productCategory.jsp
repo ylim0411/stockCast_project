@@ -7,10 +7,8 @@
     <meta charset="UTF-8">
     <title>index</title>
      <meta name="viewport" content="width=device-width, initial-scale=1">
-     <script src="${pageContext.request.contextPath}/webjars/chartjs/2.9.4/Chart.min.js"></script>
      <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/chart.css"/>
 
 </head>
 <style>

@@ -17,14 +17,14 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/sale")
+@RequestMapping("/sales")
 public class SaleController {
     private final CustomerService customerService;
     private final SaleService saleService;
     private final AccountingService accountingService;
     private final SaleStmtService saleStmtService;
     // 판매실적 화면 이동
-    @GetMapping("/list")
+    @GetMapping("/saleList")
     public String chartForm(Model model){
         LocalDate today = LocalDate.now(); // 오늘날짜 불러오기
         String currentYear = String.valueOf(today.getYear()); // 오늘날짜의 연도 추출

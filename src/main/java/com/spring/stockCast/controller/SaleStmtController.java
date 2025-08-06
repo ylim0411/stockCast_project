@@ -25,7 +25,7 @@ public class SaleStmtController {
     private final SaleStmtService saleStmtService;
     private final OrderStmtService orderStmtService;
     // 발주 목록 조회 (검색 + 페이징)
-    @GetMapping("/list")
+    @GetMapping("/saleStmtList")
     public String find(@RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate startDate,
                        @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate endDate,
                        @RequestParam(required = false) String orderNumber,
