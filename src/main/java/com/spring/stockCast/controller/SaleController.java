@@ -16,7 +16,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/sale")
+@RequestMapping("/sales")
 public class SaleController {
     private final CustomerService customerService;
     private final SaleService saleService;
@@ -33,12 +33,9 @@ public class SaleController {
         if (startDate != null && endDate != null) {
             sales = saleService.findByDate(startDate, endDate); // 기간 판매내역 불러오기
             findDate = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"~"+endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            addSaleDataToModel(model,sales);
-            model.addAttribute("findDate",findDate);
-            return "sale";
         }
         // 연도 선택시에만 검색
-        if(year != null && !year.isEmpty()){
+        else if(year != null && !year.isEmpty()){
             sales = saleService.findByYear(year); // 해당 년도에 해당하는 판매내역 불러오기
             findDate = year;
         }else {
