@@ -7,7 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -20,7 +19,6 @@ import java.util.List;
 public class SaleStmtController {
     private final ClientService clientService;
     private final SaleStmtService saleStmtService;
-    private final OrderStmtService orderStmtService;
     // 발주 목록 조회 (검색 + 페이징)
     @GetMapping("/saleStmtList")
     public String find(@RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate startDate,
@@ -28,27 +26,8 @@ public class SaleStmtController {
                        @RequestParam(required = false) String orderNumber,
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        Model model){
-        List<SaleListDTO> sales;
-        int totalCount;
-        // 날짜 필터가 있을 때만 검색
-        if (startDate != null && endDate != null) {
-            sales = saleStmtService.findByDatePaging(startDate, endDate, page);
-            totalCount = saleStmtService.countByDate(startDate, endDate);
-        } else if (orderNumber != null && !orderNumber.isEmpty()) {
-            // 발주번호 검색
-            sales = saleStmtService.findByNoPaging(orderNumber, page);
-            totalCount = saleStmtService.countByNo(orderNumber);
-        } else {
-            // 전체조회
-            sales = saleStmtService.pagingList(page);
-            totalCount = saleStmtService.countAll();
-        }
-        // 페이징 정보
-        PageDTO pageDTO = orderStmtService.pagingParamWithSearch(page, totalCount);
 
-        // 검색정보 유지
-        model.addAttribute("saleList", sales);
-        model.addAttribute("paging", pageDTO);
+        model.addAllAttributes(saleStmtService.controller(startDate,endDate,orderNumber,page));
 
         return "saleStmt";
     }

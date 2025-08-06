@@ -5,6 +5,7 @@ import com.spring.stockCast.dto.AccountItemDTO;
 import com.spring.stockCast.dto.AccountingDTO;
 import com.spring.stockCast.dto.SaleListDTO;
 import com.spring.stockCast.enums.AccountType;
+import com.spring.stockCast.enums.Direction;
 import com.spring.stockCast.repository.AccountingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class AccountingService {
     public List<AccountingDTO> findAll() {
         return accountingRepository.findAll();
     }
+
     // 각 계정 항목 가져오기
     public AccountingDTO getAccountingPageData() {
         List<AccountItemDTO> allAccountItems = accountingRepository.findAllItem();
@@ -60,6 +62,7 @@ public class AccountingService {
                 .totalCredit(totalCredit)
                 .build();
     }
+
     // 기간에 맞는 거래내역 불러오기
     public List<AccoListDTO> findByDate(LocalDate startDate, LocalDate endDate) {
         Map<String, Object> param = new HashMap<>();
@@ -78,11 +81,13 @@ public class AccountingService {
     public List<String> findAccountYear() {
         return accountingRepository.findAccountYear();
     }
+
     // 동일한 이름의 value 더해서 맵으로 뽑기
     public Map<String, Integer> findValue(List<AccoListDTO> accounts) {
         Map<String, Integer> result = new HashMap<>();
         Map<Integer, String> accountItemMap = new HashMap<>();
         List<AccountItemDTO> allAccountItems = accountingRepository.findAllItem();
+        int totalDebit = 0, totalCredit =0;
         // item에 있던 id와 name을 key value로 전환
         for (AccountItemDTO item : allAccountItems) {
             accountItemMap.put(item.getItemId(), item.getName());
@@ -92,8 +97,16 @@ public class AccountingService {
             String itemName = accountItemMap.get(acco.getItemId());
             if (itemName != null) {
                 result.put(itemName, result.getOrDefault(itemName, 0) + acco.getValue());
+                if(acco.getDirection().equals(Direction.차변)){
+                    totalDebit+=acco.getValue();
+                }else if(acco.getDirection().equals(Direction.대변)){
+                    totalCredit+=acco.getValue();
+                }
             }
         }
+
+        result.put("totalDebit",totalDebit);
+        result.put("totalCredit",totalCredit);
         return result;
     }
 
