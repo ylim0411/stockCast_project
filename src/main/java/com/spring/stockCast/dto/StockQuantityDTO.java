@@ -2,17 +2,29 @@ package com.spring.stockCast.dto;
 
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Data
 public class StockQuantityDTO {
     private String productId;
     private String productName;
-    private String topLevelCategoryName; // 최상위 카테고리 이름 (뷰에서 추가된 필드)
+    private Integer parentId;
     private Integer categoryLevel;
     private String categoryName;
-    private Double purchasePrice;
+    private Integer topLevelCategoryId;
+    private String topLevelCategoryName;
+
+    private Timestamp categoryCreatedAt;
+    private Timestamp productCreatedAt;
+
     private Integer purchaseQty;
-    private Double salePrice;
+    private Double purchasePrice;
+    private Double totalPurchase;
+
     private Integer saleQty;
+    private Double salePrice;
+    private Double totalSale;
+
     private Double price;
     private Integer stockQuantity;
     private Double totalStockAmount;
