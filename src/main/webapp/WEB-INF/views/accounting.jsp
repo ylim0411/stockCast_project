@@ -72,7 +72,7 @@
                         <c:forEach var="account" items="${pageData.assetsList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>0</td>
+                                <td>${accountValues[account.name]}</td>
                             </tr>
                         </c:forEach>
 
@@ -82,7 +82,7 @@
                         <c:forEach var="account" items="${pageData.expenseList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>0</td>
+                                <td>${accountValues[account.name]}</td>
                             </tr>
                         </c:forEach>
 
@@ -122,7 +122,7 @@
                         <c:forEach var="account" items="${pageData.liabilitiesList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>0</td>
+                                <td>${accountValues[account.name]}</td>
                             </tr>
                         </c:forEach>
 
@@ -132,7 +132,7 @@
                         <c:forEach var="account" items="${pageData.capitalList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>0</td>
+                                <td>${accountValues[account.name]}</td>
                             </tr>
                         </c:forEach>
 
@@ -142,7 +142,7 @@
                         <c:forEach var="account" items="${pageData.revenueList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>0</td>
+                                <td>${accountValues[account.name]}</td>
                             </tr>
                         </c:forEach>
 
