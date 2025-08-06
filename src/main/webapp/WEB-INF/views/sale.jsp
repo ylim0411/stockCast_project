@@ -53,13 +53,21 @@
     </div>
     <!-- 1. 도넛 차트 (판매 품목에 따른 분류) -->
     <script>
+      var rawSalesData = [];
+      <c:forEach items="${saleCategory}" var="entry">
+        rawSalesData.push({ label: '${entry.key}', value: ${entry.value} });
+      </c:forEach>;
+      rawSalesData.sort(function(a, b) {
+        return b.value - a.value;
+      });
+
       var salesLabels = [];
       var salesData = [];
 
-      <c:forEach items="${saleCategory}" var="entry">
-        salesLabels.push('${entry.key}'); salesData.push(${entry.value});
-      </c:forEach>;
-
+      rawSalesData.forEach(function(item) {
+        salesLabels.push(item.label);
+        salesData.push(item.value);
+      });
       var itemCtx = document
         .getElementById("salesCategoryChart")
         .getContext("2d");
@@ -72,23 +80,29 @@
               label: "판매 품목에 따른 분류",
               data: salesData,
               backgroundColor: [
-                "rgba(255, 99, 132, 0.7)",
-                "rgba(54, 162, 235, 0.7)",
-                "rgba(255, 206, 86, 0.7)",
-                "rgba(75, 192, 192, 0.7)",
-                "rgba(153, 102, 255, 0.7)",
-                "rgba(255, 159, 64, 0.7)",
-                "rgba(201, 203, 207, 0.7)",
-              ],
-              borderColor: [
-                "rgba(255, 99, 132, 1)",
-                "rgba(54, 162, 235, 1)",
-                "rgba(255, 206, 86, 1)",
-                "rgba(75, 192, 192, 1)",
-                "rgba(153, 102, 255, 1)",
-                "rgba(255, 159, 64, 1)",
-                "rgba(201, 203, 207, 1)",
-              ],
+                 "rgba(255, 99, 132, 0.7)",
+                 "rgba(54, 162, 235, 0.7)",
+                 "rgba(255, 206, 86, 0.7)",
+                 "rgba(75, 192, 192, 0.7)",
+                 "rgba(153, 102, 255, 0.7)",
+                 "rgba(255, 159, 64, 0.7)",
+                 "rgba(201, 203, 207, 0.7)",
+                 "rgba(255, 0, 255, 0.7)",
+                 "rgba(0, 255, 255, 0.7)",
+                 "rgba(128, 0, 0, 0.7)"
+               ],
+               borderColor: [
+                 "rgba(255, 99, 132, 1)",
+                 "rgba(54, 162, 235, 1)",
+                 "rgba(255, 206, 86, 1)",
+                 "rgba(75, 192, 192, 1)",
+                 "rgba(153, 102, 255, 1)",
+                 "rgba(255, 159, 64, 1)",
+                 "rgba(201, 203, 207, 1)",
+                 "rgba(255, 0, 255, 1)",
+                 "rgba(0, 255, 255, 1)",
+                 "rgba(128, 0, 0, 1)"
+               ],
               borderWidth: 1,
             },
           ],

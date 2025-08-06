@@ -15,7 +15,7 @@
 </select>
 <!-- 조회된 기간의 회계 거래내역 가져오기 ho -->
 <select id="findByDate" resultType="AccoList">
-    SELECT a.transactionDate, ai.itemId, at.value FROM erp_db.accounting a
+    SELECT a.transactionDate, ai.itemId, at.value, ai.direction FROM erp_db.accounting a
     JOIN account_transaction at ON a.accountingId = at.accountingId
     JOIN account_item ai ON ai.itemId = at.itemId
     WHERE a.transactionDate BETWEEN  #{startDate} AND #{endDate}
@@ -23,7 +23,7 @@
 </select>
 <!-- 선택한 년도에 해당하는 판매목록 표시 ho -->
 <select id="findByYear" parameterType="String" resultType="AccoList">
-    SELECT a.transactionDate, ai.itemId, at.value FROM erp_db.accounting a
+    SELECT a.transactionDate, ai.itemId, at.value, ai.direction FROM erp_db.accounting a
     JOIN account_transaction at ON a.accountingId = at.accountingId
     JOIN account_item ai ON ai.itemId = at.itemId
     WHERE SUBSTR(a.transactionDate,1,4) = #{year}

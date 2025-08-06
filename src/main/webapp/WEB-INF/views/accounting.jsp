@@ -100,7 +100,7 @@
 
                         <tr>
                             <td>총 차변</td>
-                            <td>${pageData.totalDebit}</td>
+                            <td>${accountValues["totalDebit"]}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -160,7 +160,7 @@
 
                         <tr>
                             <td>총 대변</td>
-                            <td>${pageData.totalCredit}</td>
+                            <td>${accountValues["totalCredit"]}</td>
                         </tr>
                     </tbody>
                 </table>
