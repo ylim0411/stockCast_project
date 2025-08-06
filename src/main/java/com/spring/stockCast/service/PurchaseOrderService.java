@@ -1,7 +1,7 @@
 package com.spring.stockCast.service;
 
 
-import com.spring.stockCast.dto.AccoListDTO;
+
 import org.springframework.stereotype.Repository;
 import com.spring.stockCast.dto.PurchaseOrderDTO;
 import com.spring.stockCast.repository.PurchaseOrderRepository;

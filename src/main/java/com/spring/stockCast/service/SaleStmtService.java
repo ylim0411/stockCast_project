@@ -75,7 +75,7 @@ public class SaleStmtService {
     }
 
     // 거래명세서 상세보기
-    public List<AccoListDTO> findBySaleId(int id) {
+    public List<SaleStmtDTO> findBySaleId(int id) {
         return saleStmtRepository.findBySaleId(id);
     }
 

@@ -1,7 +1,6 @@
 package com.spring.stockCast.repository;
 
 
-import com.spring.stockCast.dto.AccoListDTO;
 import com.spring.stockCast.dto.PurchaseOrderDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;

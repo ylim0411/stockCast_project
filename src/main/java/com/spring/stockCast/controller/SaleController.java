@@ -7,7 +7,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -21,21 +20,9 @@ import java.util.List;
 public class SaleController {
     private final CustomerService customerService;
     private final SaleService saleService;
-    private final AccountingService accountingService;
-    private final SaleStmtService saleStmtService;
-    // 판매실적 화면 이동
-    @GetMapping("/saleList")
-    public String chartForm(Model model){
-        LocalDate today = LocalDate.now(); // 오늘날짜 불러오기
-        String currentYear = String.valueOf(today.getYear()); // 오늘날짜의 연도 추출
-        List<SaleDTO> sales = saleService.findByYear(currentYear); // 올해 거래내역 불러오기
-
-        addSaleDataToModel(model,sales);
-        return "sale";
-    }
 
     // 날짜와 선택년도로 목록 조회하기
-    @PostMapping("/findDate")
+    @GetMapping("/saleList")
     public String find(@RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate startDate,
                        @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate endDate,
                        @RequestParam(required = false) String year,
@@ -45,7 +32,6 @@ public class SaleController {
         // 날짜 필터가 있을 때만 검색
         if (startDate != null && endDate != null) {
             sales = saleService.findByDate(startDate, endDate); // 기간 판매내역 불러오기
-            addSaleDataToModel(model,sales);
             findDate = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"~"+endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             addSaleDataToModel(model,sales);
             model.addAttribute("findDate",findDate);
@@ -61,7 +47,7 @@ public class SaleController {
             sales = saleService.findByYear(currentYear); // 올해 거래내역 불러오기
         }
         addSaleDataToModel(model,sales);
-        model.addAttribute("findDate",findDate);
+        model.addAttribute("findDate",findDate); // 화면에 표시될 선택된 날짜
         return "sale";
     }
 
