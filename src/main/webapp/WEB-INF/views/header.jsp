@@ -68,6 +68,7 @@
                  <img src="${pageContext.request.contextPath}/static/images/sale.png" alt="saleIcon"/>
                  <span>매출관리</span>
              </a>
+           
              <ul class="sub-menu" style="${fn:contains(uri, '/sale') || fn:contains(uri, '/saleStmt') || fn:contains(uri, '/accounting') ? 'display:block;' : ''}">
                  <li class="${fn:contains(uri, '/sale') ? 'on' : ''}">
                      <a href="${pageContext.request.contextPath}/sale/saleList">판매 실적</a>
@@ -148,26 +149,28 @@
            // 페이지 로드 시 함수 실행
            setActiveMenuByUri();
 
-           // 메인 메뉴 hover 시 서브메뉴 열기/닫기
+           // --- 이 부분이 수정되었습니다 ---
+           // 메인 메뉴 hover 시 서브메뉴 열기
            $("li.main-menu").hover(
                function () {
-                   // 이 부분을 수정합니다.
-                   // 현재 활성화된 메뉴가 아닌 경우에만 다른 모든 서브메뉴를 닫고 현재 서브메뉴를 엽니다.
-                   if (!$(this).hasClass('on')) {
-                       // on 클래스가 없는 다른 메뉴의 서브메뉴를 모두 닫습니다.
-                       $("li.main-menu:not(.on) .sub-menu").stop(true, true).slideUp(200);
+                   // 마우스를 올리면 다른 모든 서브메뉴를 닫고 현재 서브메뉴를 엽니다.
+                   $("li.main-menu").removeClass("hover-on");
+                   $("li.main-menu .sub-menu").stop(true, true).slideUp(200);
 
-                       // 현재 메뉴의 서브메뉴를 엽니다.
-                       $(this).find(".sub-menu").stop(true, true).slideDown(200);
-                   }
+                   $(this).addClass("hover-on");
+                   $(this).find(".sub-menu").stop(true, true).slideDown(200);
                },
                function () {
-                   // 활성화된 메뉴가 아닌 경우에만 서브메뉴 닫기
+                   // 마우스를 떼면
+                   $(this).removeClass("hover-on");
+
+                   // on 클래스가 적용된 메인 메뉴를 제외한 모든 서브메뉴를 닫습니다.
                    if (!$(this).hasClass('on')) {
                        $(this).find(".sub-menu").stop(true, true).slideUp(200);
                    }
                }
            );
+           // -----------------------------
 
            // 서브메뉴 클릭 시 상태를 정확하게 저장
            $("li.sub-menu a").on("click", function () {
@@ -181,13 +184,12 @@
 
            // 서브메뉴가 없는 메인 메뉴 클릭 시 상태 저장
            $("li.main-menu:not(:has(ul.sub-menu)) > a").on("click", function () {
-                const $clickedMainMenu = $(this).closest("li.main-menu");
+               const $clickedMainMenu = $(this).closest("li.main-menu");
 
-                // localStorage에 상태 저장
-                localStorage.setItem("activeMainMenu", $clickedMainMenu.index());
-                localStorage.removeItem("activeSubMenu");
+               // localStorage에 상태 저장
+               localStorage.setItem("activeMainMenu", $clickedMainMenu.index());
+               localStorage.removeItem("activeSubMenu");
            });
-
        });
    </script>
 
