@@ -2,6 +2,7 @@ package com.spring.stockCast.service;
 
 import com.spring.stockCast.dto.ProductCategoryDTO;
 import com.spring.stockCast.dto.ProductDTO;
+import com.spring.stockCast.dto.StockQuantityDTO;
 import com.spring.stockCast.repository.ProductCategoryRepository;
 import com.spring.stockCast.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -66,4 +67,27 @@ public class ProductCategoryService {
         return productCategoryRepository.findSubCategoriesByParentIdAndClientId(parentId, clientId);
     }
 
+    public List<StockQuantityDTO> categoryList() {
+        return productCategoryRepository.categoryList();
+    }
+
+    // 대분류, 중분류 저장 (추가)
+    public void saveCategory(ProductCategoryDTO categoryDTO) {
+        productCategoryRepository.save(categoryDTO);
+    }
+
+    // 소분류(상품) 저장 (추가)
+    public void saveProduct(ProductDTO productDTO) {
+        productRepository.addCategory(productDTO);
+    }
+
+    // 모든 대분류 카테고리 조회 (추가)
+    public List<ProductCategoryDTO> findTopLevelCategories() {
+        return productCategoryRepository.findTopLevelCategories();
+    }
+
+    // 특정 대분류의 중분류 카테고리 조회 (추가)
+    public List<ProductCategoryDTO> findMiddleLevelCategoriesByParentId(int parentId) {
+        return productCategoryRepository.findMiddleLevelCategoriesByParentId(parentId);
+    }
 }
