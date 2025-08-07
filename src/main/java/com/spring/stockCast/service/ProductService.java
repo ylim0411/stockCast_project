@@ -65,10 +65,13 @@ public class ProductService {
     public List<ProductDTO> findByCategoryId(int categoryId) {
         return productRepository.findByCategoryId(categoryId);
     }
-  
-    public List<StockQuantityDTO> stockQuantityList() {
-        return productRepository.stockQuantityList();
 
+    public List<StockQuantityDTO> stockQuantityList(String keyword) {
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            return productRepository.findStockQuantityByKeyword("%" + keyword + "%");
+        } else {
+            return productRepository.stockQuantityList();
+        }
     }
 
     public List<ProductDTO> findProductsByCategoryId(int parentId) {

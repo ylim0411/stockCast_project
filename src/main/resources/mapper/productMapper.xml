@@ -108,6 +108,14 @@
         SELECT * FROM product_summary_view;
     </select>
 
+    <select id="findStockQuantityByKeyword" parameterType="String" resultType="StockQuantity">
+        SELECT *
+        FROM product_summary_view
+        WHERE topLevelCategoryName LIKE #{keyword}
+        OR categoryName LIKE #{keyword}
+        OR productName LIKE #{keyword}
+    </select>
+
     <insert id="addCategory" parameterType="Product">
         INSERT INTO product (storeId, categoryId, productName, price, stockQuantity)
         VALUES (#{storeId}, #{categoryId}, #{productName}, #{price}, #{stockQuantity});
