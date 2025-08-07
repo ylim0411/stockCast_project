@@ -2,16 +2,14 @@ package com.spring.stockCast.controller;
 
 import com.spring.stockCast.dto.AdminDTO;
 import com.spring.stockCast.dto.ClientDTO;
+import com.spring.stockCast.dto.PageDTO;
 import com.spring.stockCast.dto.StoreDTO;
 import com.spring.stockCast.enums.ClientStatus;
 import com.spring.stockCast.service.ClientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
@@ -25,12 +23,53 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping("/")
-    public String clientForm(HttpSession session, Model model) {
+    public String clientForm(
+            HttpSession session,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            Model model) {
+
         AdminDTO adminDTO = (AdminDTO) session.getAttribute("loginedAdminDTO");
-        List<ClientDTO> tmpClientDTOs = clientService.selectByAdminId(adminDTO.getAdminId());
+
+        int pageLimit = 10; // 한 페이지에 보여줄 항목 수
+        int start = (page - 1) * pageLimit;
+
+        // 전체 수
+        int total = clientService.countByAdminId(adminDTO.getAdminId());
+
+        // 페이징 정보
+        PageDTO pageDTO = clientService.pagingParamWithSearch(page, total);
+
+        // 현재 페이지 데이터 조회
+        List<ClientDTO> tmpClientDTOs = clientService.selectPagingByAdminId(adminDTO.getAdminId(), start, pageLimit);
+
         model.addAttribute("clientList", tmpClientDTOs);
+        model.addAttribute("paging", pageDTO);
+
         return "client";
     }
+
+    @GetMapping("/filter")
+    public String filterClients(@RequestParam("searchKeyword") String keyword,
+                                @RequestParam(value = "page", defaultValue = "1") int page,
+                                HttpSession session,
+                                Model model) {
+        AdminDTO adminDTO = (AdminDTO) session.getAttribute("loginedAdminDTO");
+        int adminId = adminDTO.getAdminId();
+
+        int total = clientService.countClientsByKeyword(adminId, keyword);
+        int boardLimit = 10;
+        int start = (page - 1) * boardLimit;
+
+        List<ClientDTO> clientList = clientService.searchClientsWithPaging(adminId, keyword, start, boardLimit);
+        PageDTO paging = clientService.pagingParamWithSearch(page, total);
+
+        model.addAttribute("clientList", clientList);
+        model.addAttribute("searchKeyword", keyword);
+        model.addAttribute("paging", paging);
+
+        return "client"; // client.jsp
+    }
+
 
     @PostMapping("/add")
     public String add(@ModelAttribute ClientDTO clientDTO, Model model, HttpSession session) {
