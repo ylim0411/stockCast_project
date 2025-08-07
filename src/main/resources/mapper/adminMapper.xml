@@ -18,4 +18,10 @@
     <delete id="deleteAdminById" parameterType="int">
         DELETE FROM admin WHERE adminId = #{adminId}
     </delete>
+
+    <select id="checkId" resultType="String">
+        SELECT loginId
+        FROM admin
+        WHERE loginId = #{loginId}
+    </select>
 </mapper>

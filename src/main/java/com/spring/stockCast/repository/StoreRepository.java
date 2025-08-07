@@ -24,4 +24,15 @@ public class StoreRepository {
     public void save(StoreDTO storeDTO) {
         sql.insert("Store.insert", storeDTO);
     }
+    public int countByAdminId(int adminId) {
+        return sql.selectOne("Store.countByAdminId", adminId);
+    }
+
+    public List<StoreDTO> selectPageByAdminId(int adminId, int offset, int limit) {
+        java.util.Map<String, Object> paramMap = new java.util.HashMap<>();
+        paramMap.put("adminId", adminId);
+        paramMap.put("offset", offset);
+        paramMap.put("limit", limit);
+        return sql.selectList("Store.selectPageByAdminId", paramMap);
+    }
 }
