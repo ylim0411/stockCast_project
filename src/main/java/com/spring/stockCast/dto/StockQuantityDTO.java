@@ -6,8 +6,11 @@ import java.sql.Timestamp;
 
 @Data
 public class StockQuantityDTO {
-    private String productId;
+    // 상품 정보
+    private Integer productId;
     private String productName;
+
+    // 카테고리 정보
     private Integer parentId;
     private Integer categoryLevel;
     private String categoryName;
@@ -17,16 +20,23 @@ public class StockQuantityDTO {
     private Timestamp categoryCreatedAt;
     private Timestamp productCreatedAt;
 
+    // 입고 요약
     private Integer purchaseQty;
-    private Double purchasePrice;
-    private Double totalPurchase;
+    private Integer purchasePrice;
+    private Integer totalPurchase;
 
+    // 출고 요약
     private Integer saleQty;
-    private Double salePrice;
-    private Double totalSale;
+    private Integer salePrice;
+    private Integer totalSale;
 
-    private Double price;
+    // 기말 재고
+    private Integer price;
     private Integer stockQuantity;
-    private Double totalStockAmount;
+    private Long totalStockAmount;
 
+    // 초기 재고
+    private Integer initialStockQuantity;
+    private Integer initialUnitPrice;
+    private Long totalInitialStockAmount;
 }

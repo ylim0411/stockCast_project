@@ -26,7 +26,7 @@
     <script></script>
   </head>
   <body>
-    <div id="stockQuantity" class="container">
+    <div id="stockQuantity" class="containerAuto">
       <h1>재고 현황</h1>
       <input type="text" name="productName" placeholder="상품명 검색" />
       <button type="submit" class="btn btn-blue">검색</button>
@@ -75,9 +75,9 @@
                 <td>${stockQuantity.saleQty}</td>
                 <td><fmt:formatNumber value="${stockQuantity.salePrice}" pattern="#,###"/></td>
                 <td><fmt:formatNumber value="${stockQuantity.totalSale}" pattern="#,###"/></td>
-                <td>${stockQuantity.stockQuantity}</td>
-                <td><fmt:formatNumber value="${stockQuantity.price}" pattern="#,###"/></td>
-                <td><fmt:formatNumber value="${stockQuantity.totalStockAmount}" pattern="#,###"/></td>
+                <td>${stockQuantity.initialStockQuantity}</td>
+                <td><fmt:formatNumber value="${stockQuantity.initialUnitPrice}" pattern="#,###"/></td>
+                <td><fmt:formatNumber value="${stockQuantity.totalInitialStockAmount}" pattern="#,###"/></td>
               </tr>
             </c:forEach>
           </tbody>
