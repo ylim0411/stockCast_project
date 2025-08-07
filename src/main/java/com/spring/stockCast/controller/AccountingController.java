@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 
 @Controller
@@ -22,9 +23,11 @@ public class AccountingController {
     public String accountingList(@RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate startDate,
                                  @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate endDate,
                                  @RequestParam(required = false) String year,
+                                 @RequestParam(required = false) String btn,
+                                 HttpSession session,
                                  Model model){
         // 서비스 제일아래에 모든내용 있음
-        model.addAllAttributes(accountingService.controller(startDate,endDate,year));
+        model.addAllAttributes(accountingService.controller(startDate,endDate,year,btn,session));
         return "accounting";
     }
 }

@@ -26,7 +26,7 @@ public class SaleStmtController {
                        @RequestParam(required = false) String orderNumber,
                        @RequestParam(value = "page", defaultValue = "1") int page,
                        Model model){
-
+        // 서비스 제일아래에 모든내용 있음
         model.addAllAttributes(saleStmtService.controller(startDate,endDate,orderNumber,page));
 
         return "saleStmt";

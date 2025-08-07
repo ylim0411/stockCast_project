@@ -104,9 +104,16 @@ public class OrderStmtController {
 
     // 발주 상세 페이지
     @GetMapping("/orderDetail")
-    public String orderDetail(@RequestParam int id, Model model) {
+    public String orderDetail(@RequestParam int id,
+                              @RequestParam(required = false) String status,
+                              Model model) {
+        if (status != null) {
+            // 실제 상태를 업데이트하는 서비스 로직 호출
+            orderStmtService.updateStatus(id, status);
+        }
         model.addAttribute("orderInfo", orderStmtService.findById(id));
         model.addAttribute("orderItems", purchaseOrderService.findByOrderId(id));
+        model.addAttribute("orderStatus",status);
         return "orderDetail";
     }
 

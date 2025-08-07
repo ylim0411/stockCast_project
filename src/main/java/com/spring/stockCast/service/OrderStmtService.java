@@ -32,7 +32,6 @@ public class OrderStmtService {
         param.put("limit", pageLimit);
 
         List<OrderStmtDTO> list = orderStmtRepository.findByDatePaging(param);
-        setOrderStatus(list);
         return list;
     }
 
@@ -46,7 +45,6 @@ public class OrderStmtService {
         param.put("limit", pageLimit);
 
         List<OrderStmtDTO> list = orderStmtRepository.findByNoPaging(param);
-        setOrderStatus(list);
         return list;
     }
 
@@ -59,7 +57,6 @@ public class OrderStmtService {
         pagingParams.put("limit", pageLimit);
 
         List<OrderStmtDTO> list = orderStmtRepository.pagingList(pagingParams);
-        setOrderStatus(list);
         return list;
     }
 
@@ -96,17 +93,6 @@ public class OrderStmtService {
         return pageDTO;
     }
 
-    // 발주 상태 계산
-    private void setOrderStatus(List<OrderStmtDTO> list) {
-        LocalDate today = LocalDate.now();
-        for (OrderStmtDTO dto : list) {
-            LocalDate orderDate = dto.getOrderDate().toInstant()
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDate();
-            dto.setStatus(!orderDate.plusDays(3).isBefore(today) ? OrderStatus.진행중 : OrderStatus.완료);
-        }
-    }
-
     // 발주 id 조회
     public int getLastOrderId() {
         Integer lastId = orderStmtRepository.getLastOrderId();
@@ -139,5 +125,13 @@ public class OrderStmtService {
     // 발주서 삭제
     public void deleteOrder(int orderId) {
         orderStmtRepository.deleteOrder(orderId);
+    }
+
+    // 발주서 status 변경
+    public void updateStatus(int id, String status) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("id", id);
+        param.put("status", status);
+        orderStmtRepository.updateStatus(param);
     }
 }

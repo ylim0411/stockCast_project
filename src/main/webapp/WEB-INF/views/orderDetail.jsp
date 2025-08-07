@@ -21,19 +21,26 @@
  <div class="section-wrap">
     <!-- 상태 + 버튼 -->
     <div class="section-actions">
-        <div>
-            <strong>현재 발주 상태 :</strong>
-            <c:choose>
-                <c:when test="${orderInfo.status == '진행중'}">
-                    <span class="btn-orange-b statusBtn">진행중</span>
-                </c:when>
-                <c:when test="${orderInfo.status == '완료'}">
-                    <span class="btn-blue-b statusBtn">완료</span>
-                </c:when>
-                <c:when test="${orderInfo.status == '취소'}">
-                    <span class="btn-red-b statusBtn">취소</span>
-                </c:when>
-            </c:choose>
+       <div style="display:flex; gap:10px; width:50%;">
+           <strong>발주 상태 변경 :</strong>
+         <form action="/order/orderDetail" method="get">
+             <c:set var="currentStatus" value="${orderStatus}" />
+             <input type="hidden" name="id" value="${orderInfo.orderId}">
+             <c:choose>
+                 <c:when test="${currentStatus == '완료'}">
+                     <span class="btn-blue-b statusBtn">완료</span>
+                 </c:when>
+                 <c:otherwise>
+                     <select style="width:120px;" name="status" onchange="this.form.submit()" class="saleYear-select">
+                         <c:forEach var="statusOption" items="${['진행중', '완료', '취소']}">
+                             <option value="${statusOption}" <c:if test="${statusOption == currentStatus}">selected</c:if>>
+                                 ${statusOption}
+                             </option>
+                         </c:forEach>
+                     </select>
+                 </c:otherwise>
+             </c:choose>
+         </form>
         </div>
         <div class="btn-box">
             <button type="button" class="btn btn-blue"

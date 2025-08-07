@@ -23,6 +23,7 @@ public class SaleController {
                        @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate endDate,
                        @RequestParam(required = false) String year,
                        Model model){
+        // 서비스 제일아래에 모든내용 있음
         model.addAllAttributes(saleService.controller(startDate,endDate,year));
         return "sale";
     }
