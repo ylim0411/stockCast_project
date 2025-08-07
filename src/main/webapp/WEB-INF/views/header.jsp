@@ -70,15 +70,14 @@
              </ul>
            </li>
 
-         <li class="main-menu ${fn:contains(uri, '/sale') || fn:contains(uri, '/saleStmt') || fn:contains(uri, '/accounting') ? 'on' : ''}">
+         <li class="main-menu ${fn:contains(uri, '/sales') || fn:contains(uri, '/saleStmt') || fn:contains(uri, '/accounting') ? 'on' : ''}">
              <a href="javascript:void(0);">
                  <img src="${pageContext.request.contextPath}/static/images/sale.png" alt="saleIcon"/>
                  <span>매출관리</span>
              </a>
-
-             <ul class="sub-menu" style="${fn:contains(uri, '/sale') || fn:contains(uri, '/saleStmt') || fn:contains(uri, '/accounting') ? 'display:block;' : ''}">
-                 <li class="${fn:contains(uri, '/sale') ? 'on' : ''}">
-                     <a href="${pageContext.request.contextPath}/sale/saleList">판매 실적</a>
+             <ul class="sub-menu" style="${fn:contains(uri, '/sales') || fn:contains(uri, '/saleStmt') || fn:contains(uri, '/accounting') ? 'display:block;' : ''}">
+                 <li class="${fn:contains(uri, '/sales') ? 'on' : ''}">
+                     <a href="${pageContext.request.contextPath}/sales/saleList">판매 실적</a>
                  </li>
                  <li class="${fn:contains(uri, '/saleStmt') ? 'on' : ''}">
                      <a href="${pageContext.request.contextPath}/saleStmt/saleStmtList">거래명세서</a>
@@ -237,7 +236,7 @@
     <script>
       document.addEventListener('DOMContentLoaded', () => {
         const endDateInput = document.getElementById('endDate');
-
+        const startDateInput = document.getElementById('startDate');
         const getFormattedDate = function () {
           const today = new Date();
           const year = today.getFullYear();
@@ -250,6 +249,10 @@
         if (endDateInput) {
           const maxDate = getFormattedDate();
           endDateInput.setAttribute('max', maxDate);
+        }
+        if (startDateInput) {
+          const maxDate = getFormattedDate();
+          startDateInput.setAttribute('max', maxDate);
         }
       });
     </script>

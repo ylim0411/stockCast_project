@@ -108,5 +108,16 @@
         SELECT * FROM product_summary_view;
     </select>
 
+    <insert id="addCategory" parameterType="Product">
+        INSERT INTO product (categoryId, productName)
+        VALUES (#{categoryId}, #{productName});
+    </insert>
+
+    <select id="findProductsByCategoryId" parameterType="int" resultType="StockQuantity">
+        SELECT * FROM product_summary_view WHERE parentId = #{parentId};
+
+    </select>
+
+
 
 </mapper>

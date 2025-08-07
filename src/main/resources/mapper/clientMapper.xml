@@ -90,4 +90,39 @@
         )
     </insert>
 
+    <select id="selectPagingByAdminId" parameterType="map" resultType="Client">
+        SELECT * FROM client
+        WHERE adminId = #{adminId}
+        ORDER BY clientId ASC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <select id="countByAdminId" parameterType="int" resultType="int">
+        SELECT COUNT(*) FROM client
+        WHERE adminId = #{adminId}
+    </select>
+
+    <select id="searchClientsWithPaging" parameterType="map" resultType="Client">
+        SELECT * FROM client
+        WHERE adminId = #{adminId}
+        AND (
+        clientName LIKE CONCAT('%', #{keyword}, '%')
+        OR ceoName LIKE CONCAT('%', #{keyword}, '%')
+        OR businessNumber LIKE CONCAT('%', #{keyword}, '%')
+        )
+        ORDER BY clientId ASC
+        LIMIT #{start}, #{limit}
+    </select>
+
+    <select id="countClientsByKeyword" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM client
+        WHERE adminId = #{adminId}
+        AND (
+        clientName LIKE CONCAT('%', #{keyword}, '%')
+        OR ceoName LIKE CONCAT('%', #{keyword}, '%')
+        OR businessNumber LIKE CONCAT('%', #{keyword}, '%')
+        )
+    </select>
+
+
 </mapper>

@@ -57,4 +57,12 @@ public class ProductRepository {
         return sql.selectList("Product.stockQuantityList");
 
     }
+
+    public void addCategory(ProductDTO productDTO) {
+        sql.insert("Product.addCategory", productDTO);
+    }
+
+    public List<ProductDTO> findProductsByCategoryId(int parentId) {
+        return sql.selectList("Product.findProductsByCategoryId", parentId);
+    }
 }

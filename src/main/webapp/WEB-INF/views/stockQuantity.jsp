@@ -1,6 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %> <%@ include
-file="/WEB-INF/views/header.jsp" %> <%@taglib prefix="c"
-uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ include file="/WEB-INF/views/header.jsp" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -61,21 +63,21 @@ uri="http://java.sun.com/jsp/jstl/core"%>
             <c:forEach items="${stockQuantityList}" var="stockQuantity">
               <tr>
                 <td>${stockQuantity.topLevelCategoryName}</td>
-                <td>${stockQuantity.productName}</td>
+                <td>${stockQuantity.categoryName}</td>
                 <td>${stockQuantity.productId}</td>
                 <td>${stockQuantity.productName}</td>
                 <td>${stockQuantity.stockQuantity}</td>
-                <td>${stockQuantity.price}</td>
-                <td>${stockQuantity.totalStockAmount}</td>
+                <td><fmt:formatNumber value="${stockQuantity.price}" pattern="#,###"/></td>
+                <td><fmt:formatNumber value="${stockQuantity.totalStockAmount}" pattern="#,###"/></td>
                 <td>${stockQuantity.purchaseQty}</td>
-                <td>${stockQuantity.purchasePrice}</td>
-                <td>${stockQuantity.purchasePrice}</td>
+                <td><fmt:formatNumber value="${stockQuantity.purchasePrice}" pattern="#,###"/></td>
+                <td><fmt:formatNumber value="${stockQuantity.totalPurchase}" pattern="#,###"/></td>
                 <td>${stockQuantity.saleQty}</td>
-                <td>${stockQuantity.salePrice}</td>
-                <td>${stockQuantity.salePrice}</td>
+                <td><fmt:formatNumber value="${stockQuantity.salePrice}" pattern="#,###"/></td>
+                <td><fmt:formatNumber value="${stockQuantity.totalSale}" pattern="#,###"/></td>
                 <td>${stockQuantity.stockQuantity}</td>
-                <td>${stockQuantity.price}</td>
-                <td>${stockQuantity.price}</td>
+                <td><fmt:formatNumber value="${stockQuantity.price}" pattern="#,###"/></td>
+                <td><fmt:formatNumber value="${stockQuantity.totalStockAmount}" pattern="#,###"/></td>
               </tr>
             </c:forEach>
           </tbody>

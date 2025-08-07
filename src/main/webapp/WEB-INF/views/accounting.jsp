@@ -72,7 +72,7 @@
                         <c:forEach var="account" items="${pageData.assetsList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>0</td>
+                                <td>${accountValues[account.name]}</td>
                             </tr>
                         </c:forEach>
 
@@ -82,7 +82,7 @@
                         <c:forEach var="account" items="${pageData.expenseList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>0</td>
+                                <td>${accountValues[account.name]}</td>
                             </tr>
                         </c:forEach>
 
@@ -100,7 +100,7 @@
 
                         <tr>
                             <td>총 차변</td>
-                            <td>${pageData.totalDebit}</td>
+                            <td>${accountValues["totalDebit"]}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -122,7 +122,7 @@
                         <c:forEach var="account" items="${pageData.liabilitiesList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>0</td>
+                                <td>${accountValues[account.name]}</td>
                             </tr>
                         </c:forEach>
 
@@ -132,7 +132,7 @@
                         <c:forEach var="account" items="${pageData.capitalList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>0</td>
+                                <td>${accountValues[account.name]}</td>
                             </tr>
                         </c:forEach>
 
@@ -142,7 +142,7 @@
                         <c:forEach var="account" items="${pageData.revenueList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>0</td>
+                                <td>${accountValues[account.name]}</td>
                             </tr>
                         </c:forEach>
 
@@ -160,7 +160,7 @@
 
                         <tr>
                             <td>총 대변</td>
-                            <td>${pageData.totalCredit}</td>
+                            <td>${accountValues["totalCredit"]}</td>
                         </tr>
                     </tbody>
                 </table>
