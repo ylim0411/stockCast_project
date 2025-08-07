@@ -112,10 +112,9 @@ public class OrderStmtController {
             // 실제 상태를 업데이트하는 서비스 로직 호출
             orderStmtService.updateStatus(id, status);
         }
-        if(status == "완료"){
-            System.out.println("test1"+purchaseOrderService.findByOrderId(id));
+        if(status.equals("완료")){
             for(PurchaseOrderDTO dto : purchaseOrderService.findByOrderId(id)){
-                System.out.println("test2"+dto.getProductId());
+                purchaseOrderService.linkAccounting(dto.getOrderId(),dto.getProductId(),dto.getPurchasePrice(),dto.getPurchaseQty());
             }
         }
         model.addAttribute("orderInfo", orderStmtService.findById(id));

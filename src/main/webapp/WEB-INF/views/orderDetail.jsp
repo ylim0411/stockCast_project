@@ -23,17 +23,18 @@
     <div class="section-actions">
        <div style="display:flex; gap:10px; width:50%;">
            <strong>발주 상태 변경 :</strong>
-         <form action="/order/orderDetail" method="get">
-             <c:set var="currentStatus" value="${orderStatus}" />
-             <input type="hidden" name="id" value="${orderInfo.orderId}">
-             <select style="width:120px;" name="status" onchange="this.form.submit()" class="saleYear-select">
-                 <c:forEach var="statusOption" items="${['진행중', '완료', '취소']}">
-                     <option value="${statusOption}" <c:if test="${statusOption == currentStatus}">selected</c:if>>
-                         ${statusOption}
-                     </option>
-                 </c:forEach>
-             </select>
-         </form>
+        <form action="/order/orderDetail" method="get">
+            <c:set var="currentStatus" value="${orderStatus}" />
+            <input type="hidden" name="id" value="${orderInfo.orderId}">
+            <select style="width:120px;" name="status" onchange="this.form.submit()" class="saleYear-select"
+                <c:if test="${currentStatus eq '완료'}">disabled</c:if>>
+                <c:forEach var="statusOption" items="${['진행중', '완료', '취소']}">
+                    <option value="${statusOption}" <c:if test="${statusOption == currentStatus}">selected</c:if>>
+                        ${statusOption}
+                    </option>
+                </c:forEach>
+            </select>
+        </form>
         </div>
         <div class="btn-box">
             <button type="button" class="btn btn-blue"
