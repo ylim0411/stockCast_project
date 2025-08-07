@@ -89,12 +89,14 @@ public class ProductController {
     }
 
     @GetMapping("/stockQuantity")
-    public String stockQuantity(Model model) {
-        List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList();
+    public String stockQuantity(@RequestParam(value = "keyword", required = false) String keyword,
+                                Model model) {
+        List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList(keyword);
         model.addAttribute("stockQuantityList", stockQuantityList);
-
         return "stockQuantity";
     }
+
+
 
 
 //    @GetMapping("/delete")

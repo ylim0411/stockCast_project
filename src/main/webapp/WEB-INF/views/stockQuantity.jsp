@@ -28,8 +28,10 @@
   <body>
     <div id="stockQuantity" class="containerAuto">
       <h1>재고 현황</h1>
-      <input type="text" name="productName" placeholder="상품명 검색" />
-      <button type="submit" class="btn btn-blue">검색</button>
+      <form method="get" action="${pageContext.request.contextPath}/product/stockQuantity" style="margin-bottom: 20px;">
+        <input type="text" name="keyword" placeholder="상품명 검색" value="${param.keyword}" />
+        <button type="submit" class="btn btn-blue">검색</button>
+      </form>
 
       <div>
         <table>
