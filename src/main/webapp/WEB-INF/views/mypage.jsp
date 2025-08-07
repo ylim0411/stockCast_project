@@ -100,6 +100,9 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           </tr>
         </table>
         <input type="submit" value="수정하기" class="btn btn-blue" />
+        <button type="button" class="btn btn-red" onclick="submitDelete()">
+          탈퇴하기
+        </button>
       </form>
       <br /><br /><br />
       <!-- 관리 점포 목록 -->
@@ -353,6 +356,25 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           pwField.type = "password";
           toggleBtn.textContent = "👁️"; // 보기 전 → 눈 뜬 이모지
         }
+      }
+      function submitDelete() {
+        if (!confirm("정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
+          return;
+        }
+
+        // 숨겨진 form 생성해서 POST 요청
+        const form = document.createElement("form");
+        form.method = "post";
+        form.action = `${pageContext.request.contextPath}/admin/delete`;
+
+        const input = document.createElement("input");
+        input.type = "hidden";
+        input.name = "adminId";
+        input.value = "${sessionScope.loginedAdminDTO.adminId}";
+        form.appendChild(input);
+
+        document.body.appendChild(form);
+        form.submit();
       }
     </script>
   </body>

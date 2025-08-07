@@ -24,4 +24,8 @@ public class AdminService {
     public AdminDTO isJoinedById(String email) {
         return adminRepository.isJoinedById(email);
     }
+
+    public boolean deleteAdminById(int adminId) {
+        return adminRepository.deleteAdminById(adminId);
+    }
 }
