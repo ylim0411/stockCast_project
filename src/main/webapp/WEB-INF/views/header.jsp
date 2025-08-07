@@ -5,7 +5,7 @@
 <c:set var="uri" value="${pageContext.request.requestURI}" />
 
  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
+ <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 
    <header>
@@ -18,8 +18,13 @@
           </a>
         </div>
         <div class="admin">
-          <p>${sessionScope.loginedAdminDTO.adminName} 님</p>
+          <h2>${sessionScope.loginedAdminDTO.adminName} 님</h2>
+         <button class="alert" onclick="openModal()">
+           <img src="${pageContext.request.contextPath}/static/images/alertIcon.png" alt="alert" />
+           <p class="alert-count">1</p>
+         </button>
         </div>
+
         <nav>
           <ul>
             <li class="main-menu ${fn:contains(uri, '/main') ? 'on' : ''}">
@@ -39,7 +44,7 @@
                </a>
                <ul class="sub-menu" style="${fn:contains(uri, '/product') || fn:contains(uri, '/productCategory') ? 'display:block;' : ''}">
                    <li class="${fn:contains(uri, '/productCategory') ? 'on' : ''}">
-                       <a href="${pageContext.request.contextPath}/productCategory/select">상품 카테고리</a>
+                       <a href="${pageContext.request.contextPath}/productCategory/list">상품 카테고리</a>
                    </li>
                    <li class="${fn:contains(uri, '/list') ? 'on' : ''}">
                        <a href="${pageContext.request.contextPath}/product/list/">전체 상품 목록</a>
@@ -110,6 +115,40 @@
         </div>
       </header>
 
+      <!-- 모달 -->
+    <div id="customModal" class="modal">
+    <div class="modal-content">
+      <button onclick="closeModal()" class="closeBtn" >&times;</button>
+      <div class="modal-title">
+        <h2> 재고 부족 알림 </h2>
+      </div>
+      <div class="lowStockList-box">   
+      <ul id="lowStockList" class="stock-card-list">
+        <!-- 재고 부족 상품 카드들이 여기 들어감 -->
+         <li>
+          <p>아이스크림</p>
+          <p>현재 2개 / <span>필요 5개</span></p>
+        </li>
+      </ul>
+      </div>
+    </div>
+  </div>
+
+   <!-- 모달 기능 -->
+    <script>
+      function openModal() {
+        const today = new Date().toISOString().slice(0, 10);
+         $('#customModal').fadeIn();
+      }
+
+      function closeModal() {
+        $('#customModal').fadeOut();
+      }
+
+      
+    </script>
+
+
     <!-- 헤더 기능  -->
    <script>
        $(function () {
@@ -171,7 +210,6 @@
                    }
                }
            );
-           // -----------------------------
 
            // 서브메뉴 클릭 시 상태를 정확하게 저장
            $("li.sub-menu a").on("click", function () {

@@ -32,7 +32,7 @@
           <button type="submit" class="btn btn-blue">조회</button>
         </div>
         <div class="searchForm">
-          <select name="year" class="saleYear-select">
+          <select style="width:120px;" name="year" class="saleYear-select">
             <option value="">조회년도</option>
             <c:forEach var="year" items="${saleYear}">
               <option value="${year}">${year}</option>

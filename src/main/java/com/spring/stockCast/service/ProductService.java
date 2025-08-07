@@ -74,4 +74,9 @@ public class ProductService {
     public List<ProductDTO> findProductsByCategoryId(int parentId) {
         return productRepository.findProductsByCategoryId(parentId);
     }
+
+    public void updateProductName(int productId, String newName) {
+        productRepository.updateProductName(productId, newName);
+    }
+
 }

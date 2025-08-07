@@ -3,34 +3,53 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Accounting">
-<!-- 판매발주 목록 전체가져오기 ho -->
-<select id="findAll" resultType="Accounting">
-    SELECT a.accountingId, a.transactionDate, i.name, t.value, t.direction FROM erp_db.accounting a
-    JOIN account_transaction t ON a.accountingId = t.accountingId
-    JOIN account_item i ON t.itemId = i.itemId;
-</select>
-<!-- 회계 계정 전체 가져오기 ho -->
-<select id="findAllItem" resultType="AccountItem">
-    SELECT * FROM erp_db.account_item
-</select>
-<!-- 조회된 기간의 회계 거래내역 가져오기 ho -->
-<select id="findByDate" resultType="AccoList">
-    SELECT a.transactionDate, ai.itemId, at.value, ai.direction FROM erp_db.accounting a
-    JOIN account_transaction at ON a.accountingId = at.accountingId
-    JOIN account_item ai ON ai.itemId = at.itemId
-    WHERE a.transactionDate BETWEEN  #{startDate} AND #{endDate}
-    ORDER BY a.transactionDate;
-</select>
-<!-- 선택한 년도에 해당하는 판매목록 표시 ho -->
-<select id="findByYear" parameterType="String" resultType="AccoList">
-    SELECT a.transactionDate, ai.itemId, at.value, ai.direction FROM erp_db.accounting a
-    JOIN account_transaction at ON a.accountingId = at.accountingId
-    JOIN account_item ai ON ai.itemId = at.itemId
-    WHERE SUBSTR(a.transactionDate,1,4) = #{year}
-    ORDER BY a.transactionDate;
-</select>
-<!-- 회계기록이 있는 년도만 조회 ho -->
-<select id="findAccountYear" resultType="String">
-    SELECT DISTINCT(SUBSTR(transactionDate,1,4)) FROM accounting
-</select>
+    <!-- 판매발주 목록 전체가져오기 ho -->
+    <select id="findAll" resultType="Accounting">
+        SELECT a.accountingId, a.transactionDate, i.name, t.value, t.direction FROM erp_db.accounting a
+        JOIN account_transaction t ON a.accountingId = t.accountingId
+        JOIN account_item i ON t.itemId = i.itemId;
+    </select>
+    <!-- 회계 계정 전체 가져오기 ho -->
+    <select id="findAllItem" resultType="AccountItem">
+        SELECT * FROM erp_db.account_item
+    </select>
+    <!-- 조회된 기간의 회계 거래내역 가져오기 ho -->
+    <select id="findByDate" resultType="AccoList">
+        SELECT a.transactionDate, ai.itemId, at.value, ai.direction FROM erp_db.accounting a
+        JOIN account_transaction at ON a.accountingId = at.accountingId
+        JOIN account_item ai ON ai.itemId = at.itemId
+        WHERE a.transactionDate BETWEEN  #{startDate} AND #{endDate}
+        ORDER BY a.transactionDate;
+    </select>
+    <!-- 선택한 년도에 해당하는 판매목록 표시 ho -->
+    <select id="findByYear" parameterType="String" resultType="AccoList">
+        SELECT a.transactionDate, ai.itemId, at.value, ai.direction FROM erp_db.accounting a
+        JOIN account_transaction at ON a.accountingId = at.accountingId
+        JOIN account_item ai ON ai.itemId = at.itemId
+        WHERE SUBSTR(a.transactionDate,1,4) = #{year}
+        ORDER BY a.transactionDate;
+    </select>
+    <!-- 회계기록이 있는 년도만 조회 ho -->
+    <select id="findAccountYear" resultType="String">
+        SELECT DISTINCT(SUBSTR(transactionDate,1,4)) FROM accounting
+    </select>
+    <!-- 회계에서 발주시 연동(PurchaseOrder) accounting 추가 ho -->
+    <insert id="insertOrder" parameterType="map">
+        INSERT INTO accounting(orderId, transactionDate)
+        VALUES(#{orderId}, CURDATE());
+    </insert>
+    <!-- 위 내용 이후 발주시 차변입력 연동 ho -->
+    <insert id="insertAccountOrderDebit" parameterType="map">
+        INSERT INTO account_transaction(accountingId,itemId,value,direction)
+        VALUES((SELECT accountingId FROM accounting
+        WHERE orderId = #{orderId}),(SELECT itemId FROM account_item
+        WHERE name = '재고자산'),#{purchasePrice}*#{purchaseQty},'차변');
+    </insert>
+    <!-- 위 내용 이후 발주시 대변입력 연동 ho -->
+    <insert id="insertAccountOrderCredit" parameterType="map">
+        INSERT INTO account_transaction(accountingId,itemId,value,direction)
+        VALUES((SELECT accountingId FROM accounting
+        WHERE orderId = #{orderId}),(SELECT itemId FROM account_item
+        WHERE name = '미지급금'),#{purchasePrice}*#{purchaseQty},'대변');
+    </insert>
 </mapper>

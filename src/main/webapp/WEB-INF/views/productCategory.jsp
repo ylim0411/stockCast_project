@@ -103,7 +103,6 @@
 
                 <div style="margin-top: 10px; text-align: right;">
                   <button type="button" class="btn" id="editBtn">수정</button>
-                  <button type="button" class="btn btn-danger" id="deleteBtn">삭제</button>
                   <button type="button" class="btn" id="closeModal">닫기</button>
                 </div>
               </div>
@@ -239,7 +238,7 @@
             const list = $("#childCategoryList").empty();
             $("#childCount").text(data.length);
             data.forEach(item => {
-              const li = $("<li>").addClass("category-button").text(item.categoryName).data("id", item.categoryId);
+              const li = $("<li>").addClass("category-button").text(item.productName).data("id", item.categoryId);
               li.click(function () {
                 selectedChildId = $(this).data("id");
                 $("#childCategoryList li").removeClass("active");
@@ -279,12 +278,27 @@
         }
       });
 
-      $("#childInput").keypress(function (e) {
-        if (e.which === 13 && selectedMiddleId) {
-          registerCategory($(this).val(), 3, selectedMiddleId);
-          $(this).val("");
-        }
-      });
+    $("#childInput").keypress(function (e) {
+      if (e.which === 13 && selectedMiddleId) {
+        const name = $(this).val();
+        const selectedStoreId = "${sessionScope.selectedStoredId}";
+
+        $.post("/productCategory/saveProduct", {
+          categoryId: selectedMiddleId,
+          productName: name,
+          storeId: selectedStoreId,
+
+        }, function (res) {
+          if (res === "success") {
+            loadChildCategories(selectedMiddleId);
+            $("#childInput").val("");
+          } else {
+            alert("소분류 등록 실패" + res);
+          }
+        });
+      }
+    });
+
 
       // 초기화
       function resetInputs() {
@@ -295,6 +309,44 @@
         selectedTopId = null;
         selectedMiddleId = null;
       }
+
+            // 수정 저장 버튼 클릭
+            $('#saveEditBtn').click(function(){
+              const type = $('#editType').val();
+              const id = $('#editId').val();
+              const newName = $('#categoryEditInput').val().trim();
+
+              if(!newName) {
+                alert('이름을 입력해주세요');
+                return;
+              }
+
+              $.ajax({
+                url: '/productCategory/updateCategoryName',
+                method: 'POST',
+                data: {
+                  id: id,
+                  type: type,
+                  newName: newName
+                },
+                success: function(res) {
+                  if(res === 'success') {
+                    alert('수정 완료');
+                    location.reload(); // 화면 갱신
+                  } else {
+                    alert('수정 실패');
+                  }
+                },
+                error: function() {
+                  alert('서버 오류');
+                }
+              });
+            });
+
+            $('#cancelEditBtn').click(function(){
+              $('#editCategoryModal').hide();
+            });
+
     });
 
 </script>

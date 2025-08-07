@@ -36,20 +36,22 @@
                     <button type="submit" class="btn btn-blue">조회</button>
                 </div>
                 <div class="searchForm">
-                    <select name="year" class="saleYear-select">
-                        <option value="">조회년도</option>
-                        <c:forEach var="year" items="${accountYear}">
-                            <option value="${year}">${year}</option>
-                        </c:forEach>
-                    </select>
+                    <select style="width:120px;" name="year" class="saleYear-select" onchange="this.form.submit()">
+                            <option value="" selected>${selectedYear}</option>
+                            <c:forEach var="yearOption" items="${accountYear}">
+                                <c:if test="${yearOption != selectedYear}">
+                                    <option value="${yearOption}">${yearOption}</option>
+                                </c:if>
+                            </c:forEach>
+                        </select>
                     <div>
-                        <button class="btn btn-blue">당월</button>
-                        <button class="btn btn-blue">1분기</button>
-                        <button class="btn btn-blue">2분기</button>
-                        <button class="btn btn-blue">3분기</button>
-                        <button class="btn btn-blue">4분기</button>
-                        <button class="btn btn-blue">상반기</button>
-                        <button class="btn btn-blue">하반기</button>
+                        <button name="btn" value="cMonth" class="btn btn-blue">당월</button>
+                        <button name="btn" value="1q" class="btn btn-blue">1분기</button>
+                        <button name="btn" value="2q" class="btn btn-blue">2분기</button>
+                        <button name="btn" value="3q" class="btn btn-blue">3분기</button>
+                        <button name="btn" value="4q" class="btn btn-blue">4분기</button>
+                        <button name="btn" value="first" class="btn btn-blue">상반기</button>
+                        <button name="btn" value="second" class="btn btn-blue">하반기</button>
                     </div>
                 </div>
             </form>
@@ -61,8 +63,8 @@
                             <th colspan="2">차변 (자산 및 비용)</th>
                         </tr>
                         <tr>
-                            <td>계정과목</td>
-                            <td>금액</td>
+                            <td style="width : 15%;">계정과목</td>
+                            <td style="width : 15%;">금액</td>
                         </tr>
                     </thead>
                     <tbody>
@@ -111,8 +113,8 @@
                             <th colspan="2">대변 (부채, 자본 및 수익)</th>
                         </tr>
                         <tr>
-                            <td>계정과목</td>
-                            <td>금액</td>
+                            <td style="width : 15%;">계정과목</td>
+                            <td style="width : 15%;">금액</td>
                         </tr>
                     </thead>
                     <tbody>
