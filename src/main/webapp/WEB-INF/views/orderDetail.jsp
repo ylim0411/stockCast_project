@@ -26,20 +26,13 @@
          <form action="/order/orderDetail" method="get">
              <c:set var="currentStatus" value="${orderStatus}" />
              <input type="hidden" name="id" value="${orderInfo.orderId}">
-             <c:choose>
-                 <c:when test="${currentStatus == '완료'}">
-                     <span class="btn-blue-b statusBtn">완료</span>
-                 </c:when>
-                 <c:otherwise>
-                     <select style="width:120px;" name="status" onchange="this.form.submit()" class="saleYear-select">
-                         <c:forEach var="statusOption" items="${['진행중', '완료', '취소']}">
-                             <option value="${statusOption}" <c:if test="${statusOption == currentStatus}">selected</c:if>>
-                                 ${statusOption}
-                             </option>
-                         </c:forEach>
-                     </select>
-                 </c:otherwise>
-             </c:choose>
+             <select style="width:120px;" name="status" onchange="this.form.submit()" class="saleYear-select">
+                 <c:forEach var="statusOption" items="${['진행중', '완료', '취소']}">
+                     <option value="${statusOption}" <c:if test="${statusOption == currentStatus}">selected</c:if>>
+                         ${statusOption}
+                     </option>
+                 </c:forEach>
+             </select>
          </form>
         </div>
         <div class="btn-box">

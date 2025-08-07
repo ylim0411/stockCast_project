@@ -2,6 +2,7 @@ package com.spring.stockCast.controller;
 
 import com.spring.stockCast.dto.OrderStmtDTO;
 import com.spring.stockCast.dto.PageDTO;
+import com.spring.stockCast.dto.PurchaseOrderDTO;
 import com.spring.stockCast.service.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -110,6 +111,12 @@ public class OrderStmtController {
         if (status != null) {
             // 실제 상태를 업데이트하는 서비스 로직 호출
             orderStmtService.updateStatus(id, status);
+        }
+        if(status == "완료"){
+            System.out.println("test1"+purchaseOrderService.findByOrderId(id));
+            for(PurchaseOrderDTO dto : purchaseOrderService.findByOrderId(id)){
+                System.out.println("test2"+dto.getProductId());
+            }
         }
         model.addAttribute("orderInfo", orderStmtService.findById(id));
         model.addAttribute("orderItems", purchaseOrderService.findByOrderId(id));

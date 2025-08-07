@@ -20,7 +20,6 @@ public class PurchaseOrderRepository {
     private final SqlSessionTemplate sql;
 
     // 발주 상세 저장
-    @Transactional
     public void insertOrderDetail(int orderId, int productId, int purchasePrice, int purchaseQty) {
         Map<String, Object> param = new HashMap<>();
         param.put("orderId", orderId);
@@ -29,12 +28,16 @@ public class PurchaseOrderRepository {
         param.put("purchaseQty", purchaseQty);
 
         sql.insert("PurchaseOrder.insertOrderDetail", param);
+    }
+
+    @Transactional
+    // 상태 완료 변경시 발주로 인한 재고, 회계 연동
+    public void linkAccounting(Map<String,Object> param){
         sql.insert("Accounting.insertOrder",param); // 발주시 accounting(회계거래) 추가 ho
         sql.insert("Accounting.insertAccountOrderDebit",param); // 회계거래와 계정 연동 차변(재고자산 추가) ho
         sql.insert("Accounting.insertAccountOrderCredit",param); // 회계거래와 계정 연동 대변(미지급금 추가) ho
         sql.update("Product.updateOrder",param); // 발주시 상품 재고 증가 ho
     }
-
     // 발주 상세 목록 조회
     public List<PurchaseOrderDTO> findByOrderId(int orderId) {
         return sql.selectList("PurchaseOrder.findByOrderId", orderId);
