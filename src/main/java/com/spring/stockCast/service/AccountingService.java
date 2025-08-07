@@ -3,17 +3,15 @@ package com.spring.stockCast.service;
 import com.spring.stockCast.dto.AccoListDTO;
 import com.spring.stockCast.dto.AccountItemDTO;
 import com.spring.stockCast.dto.AccountingDTO;
-import com.spring.stockCast.dto.SaleListDTO;
 import com.spring.stockCast.enums.AccountType;
 import com.spring.stockCast.enums.Direction;
 import com.spring.stockCast.repository.AccountingRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,11 +70,6 @@ public class AccountingService {
         return accountingRepository.findByDate(param);
     }
 
-    // 해당 년도에 해당하는 거래내역 불러오기
-    public List<AccoListDTO> findByYear(String year) {
-        return accountingRepository.findByYear(year);
-    }
-
     // 회계내역이 있는 년도 불러오기
     public List<String> findAccountYear() {
         return accountingRepository.findAccountYear();
@@ -111,24 +104,75 @@ public class AccountingService {
     }
 
     // 컨트롤러 작업
-    public Map<String,Object> controller(LocalDate startDate, LocalDate endDate, String year) {
+    public Map<String,Object> controller(LocalDate startDate, LocalDate endDate, String year, String btn, HttpSession session) {
         AccountingDTO pageData = getAccountingPageData(); // 존재하는 모든 계정 불러오기
         String findDate="";
         List<AccoListDTO> accounts;
 
+        // 당월, 분기 등 선택시 적용
+        String sessionYear = (String) session.getAttribute("selectedYear");
+
+        // 세션에 year 있으면 가져와서 적용
+        if (year != null && !year.isEmpty()) {
+            session.setAttribute("selectedYear", year);
+        }
+        else if (sessionYear == null) {
+            year = String.valueOf(LocalDate.now().getYear());
+            session.setAttribute("selectedYear", year);
+        }
+        else {
+            year = sessionYear;
+        }
+        // 당월, 분기 등 버튼 선택시 적용
+        if(btn != null && !btn.isEmpty()){
+            int currentYear = Integer.parseInt(year);
+
+            switch (btn){
+                case "cMonth": // 당월
+                    LocalDate now = LocalDate.now();
+                    startDate = now.withDayOfMonth(1);
+                    endDate = now.withDayOfMonth(now.lengthOfMonth());
+                    break;
+                case "1q": // 1분기
+                    startDate = LocalDate.of(currentYear, 1, 1);
+                    endDate = LocalDate.of(currentYear, 3, 31);
+                    break;
+                case "2q": // 2분기
+                    startDate = LocalDate.of(currentYear, 4, 1);
+                    endDate = LocalDate.of(currentYear, 6, 30);
+                    break;
+                case "3q": // 3분기
+                    startDate = LocalDate.of(currentYear, 7, 1);
+                    endDate = LocalDate.of(currentYear, 9, 30);
+                    break;
+                case "4q": // 4분기
+                    startDate = LocalDate.of(currentYear, 10, 1);
+                    endDate = LocalDate.of(currentYear, 12, 31);
+                    break;
+                case "first": // 상반기
+                    startDate = LocalDate.of(currentYear, 1, 1);
+                    endDate = LocalDate.of(currentYear, 6, 30);
+                    break;
+                case "second": // 하반기
+                    startDate = LocalDate.of(currentYear, 7, 1);
+                    endDate = LocalDate.of(currentYear, 12, 31);
+                    break;
+            }
+        }
+
         // 날짜 필터가 있을 때만 검색
         if (startDate != null && endDate != null) {
             accounts = findByDate(startDate, endDate); // 기간 거래내역 불러오기
-            findDate = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"~"+endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        }
-        // 연도 선택시에만 검색
-        else if(year != null && !year.isEmpty()){
-            accounts = findByYear(year); // 해당 년도에 해당하는 판매내역 불러오기
-            findDate = year;
+            findDate = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "~" + endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }else {
-            LocalDate today = LocalDate.now(); // 오늘날짜 불러오기
-            String currentYear = String.valueOf(today.getYear()); // 오늘날짜의 연도 추출
-            accounts = findByYear(currentYear); // 올해 거래내역 불러오기
+            // 연도가 null이거나 비어있으면 현재 연도로 설정
+            if (year == null || year.isEmpty()) {
+                year = String.valueOf(LocalDate.now().getYear());
+            }
+            startDate = LocalDate.of(Integer.parseInt(year), 1, 1);
+            endDate = LocalDate.of(Integer.parseInt(year), 12, 31);
+            accounts = findByDate(startDate, endDate); // findByYear 대신 findByDate 사용
+            findDate = year; // 화면 표시용은 연도만 표기
         }
         Map<String, Integer> accountValues = findValue(accounts); // 계정이름(key),가격(value) 들은 맵 전달
 

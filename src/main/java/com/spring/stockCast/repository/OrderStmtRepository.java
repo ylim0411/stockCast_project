@@ -74,4 +74,8 @@ public class OrderStmtRepository {
         sql.delete("Orders.deleteOrder", orderId);
     }
 
+    // 발주서 status  수정
+    public void updateStatus(Map<String, Object> param) {
+        sql.update("Orders.updateStatus",param);
+    }
 }

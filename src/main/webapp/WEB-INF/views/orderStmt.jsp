@@ -70,7 +70,7 @@
                   </td>
                   <td>
                       <button type="button" class="btn btn-blue"
-                          onclick="goOrderDetail(${order.orderId})">발주서 보기</button>
+                          onclick="goOrderDetail(${order.orderId}, '${order.status.name()}')">발주서 보기</button>
                   </td>
               </tr>
           </c:forEach>
@@ -117,8 +117,8 @@
         location.href = "/order/orderSave";
     }
 
-    const goOrderDetail = (id) => {
-            location.href = "/order/orderDetail?id=" + id;
+    const goOrderDetail = (id, status) => {
+            location.href = "/order/orderDetail?id=" + id+"&status="+status;
         }
   </script>
 </html>

@@ -29,10 +29,11 @@
         WHERE
         orderId LIKE CONCAT('%', #{orderNumber}, '%')
         AND status = '완료'
+        ORDER BY orderId DESC
         LIMIT #{start}, #{limit};
         ]]>
     </select>
-    <!--  총 개수 ho -->
+    <!-- 기간에 포함되는 총 개수 ho -->
     <select id="countByDate" parameterType="map" resultType="int">
         <![CDATA[
         SELECT COUNT(DISTINCT os.orderId)
@@ -55,6 +56,7 @@
        SELECT * FROM erp_db.order_category_view
         WHERE orderDate >= #{startDate}
           AND orderDate < #{endDate} AND status = '완료'
+        ORDER BY orderId DESC
         LIMIT #{start}, #{limit}
         ]]>
     </select>
@@ -63,6 +65,7 @@
         <![CDATA[
         SELECT * FROM erp_db.order_category_view
         WHERE status = '완료'
+        ORDER BY orderId DESC
         LIMIT #{start}, #{limit}
         ]]>
     </select>
