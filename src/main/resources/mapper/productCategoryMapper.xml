@@ -21,6 +21,14 @@
         SELECT * FROM productCategory;
     </select>
 
+    <!-- 모달창 카테고리명 수정 -->
+    <update id="updateCategoryNameByLevel" parameterType="map">
+        UPDATE productCategory
+        SET categoryName = #{newName}
+        WHERE categoryId = #{categoryId} AND categoryLevel = #{level};
+    </update>
+
+
     <!-- 카테고리 분류 항목 출력  -->
     <select id="list" resultType="StockQuantity">
         SELECT * FROM product_summary_view;
