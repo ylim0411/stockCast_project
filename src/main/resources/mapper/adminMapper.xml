@@ -14,4 +14,8 @@
     <select id="isJoinedById" resultType="Admin">
         SELECT * FROM admin WHERE loginId = #{email}
     </select>
+
+    <delete id="deleteAdminById" parameterType="int">
+        DELETE FROM admin WHERE adminId = #{adminId}
+    </delete>
 </mapper>
