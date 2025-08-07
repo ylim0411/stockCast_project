@@ -111,7 +111,7 @@
         </nav>
         <div class="userContext">
           <a href="/mypage/" class="on">마이페이지</a>
-          <a href="/">로그아웃</a>
+          <a href="/admin/logout">로그아웃</a>
         </div>
       </header>
 

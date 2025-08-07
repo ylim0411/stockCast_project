@@ -69,7 +69,7 @@ public class AdminController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "index";
+        return "login";
     }
     @PostMapping("/delete")
     public String deleteAdmin(
