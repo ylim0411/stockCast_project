@@ -44,7 +44,7 @@
                </a>
                <ul class="sub-menu" style="${fn:contains(uri, '/product') || fn:contains(uri, '/productCategory') ? 'display:block;' : ''}">
                    <li class="${fn:contains(uri, '/productCategory') ? 'on' : ''}">
-                       <a href="${pageContext.request.contextPath}/productCategory/select">상품 카테고리</a>
+                       <a href="${pageContext.request.contextPath}/productCategory/list">상품 카테고리</a>
                    </li>
                    <li class="${fn:contains(uri, '/list') ? 'on' : ''}">
                        <a href="${pageContext.request.contextPath}/product/list/">전체 상품 목록</a>
