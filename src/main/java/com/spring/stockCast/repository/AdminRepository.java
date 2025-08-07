@@ -22,4 +22,8 @@ public class AdminRepository {
     public AdminDTO isJoinedById(String email) {
         return sql.selectOne("Admin.isJoinedById", email);
     }
+
+    public boolean deleteAdminById(int adminId) {
+        return sql.delete("Admin.deleteAdminById", adminId) > 0;
+    }
 }

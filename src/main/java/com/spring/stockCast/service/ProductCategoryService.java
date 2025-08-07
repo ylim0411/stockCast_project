@@ -90,4 +90,8 @@ public class ProductCategoryService {
     public List<ProductCategoryDTO> findMiddleLevelCategoriesByParentId(int parentId) {
         return productCategoryRepository.findMiddleLevelCategoriesByParentId(parentId);
     }
+
+    public void updateCategoryNameByLevel(int categoryId, String newName, int level) {
+        productCategoryRepository.updateCategoryNameByLevel(categoryId, newName, level);
+    }
 }

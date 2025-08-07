@@ -76,12 +76,56 @@ public class ProductCategoryController {
     public List<ProductCategoryDTO> getMiddleCategories(@RequestParam int parentId) {
         return productCategoryService.findMiddleLevelCategoriesByParentId(parentId);
     }
+    
+    // 소분류 등록
+    @PostMapping("/saveProduct")
+    @ResponseBody
+    public String saveProductAjax(@RequestParam("categoryId") int categoryId,
+                                  @RequestParam("productName") String productName,
+                                  @RequestParam("storeId") int storeId) {
+        try {
+            ProductDTO productDTO = new ProductDTO();
+            productDTO.setStoreId(storeId);
+            productDTO.setCategoryId(categoryId); // 중분류 ID
+            productDTO.setProductName(productName);
+            productDTO.setPrice(0);
+            productDTO.setStockQuantity(0);
+            productCategoryService.saveProduct(productDTO);
+            return "success";
+        } catch (Exception e) {
+            return "error";
+        }
+    }
+
 
     @GetMapping("/childCategories")
     @ResponseBody
     public List<ProductDTO> getChildCategories(@RequestParam int parentId) {
         return productService.findProductsByCategoryId(parentId);
     }
+
+    // 모달 카테고리 이름 수정 요청 처리 (추가/수정)
+    @PostMapping("/updateCategoryName")
+    @ResponseBody
+    public String updateCategoryName(@RequestParam("id") int id,
+                                     @RequestParam("type") String type,
+                                     @RequestParam("newName") String newName) {
+        try {
+            if("top".equals(type)) {
+                productCategoryService.updateCategoryNameByLevel(id, newName, 1);
+            } else if ("middle".equals(type)) {
+                productCategoryService.updateCategoryNameByLevel(id, newName, 2);
+            } else if ("product".equals(type)) {
+                productService.updateProductName(id, newName);
+            } else {
+                return "error";
+            }
+            return "success";
+        } catch (Exception e) {
+            return "error";
+        }
+    }
+
 
 
     // 발주 대분류 (거래처별) young

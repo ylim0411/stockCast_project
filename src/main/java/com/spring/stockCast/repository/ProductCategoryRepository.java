@@ -57,4 +57,13 @@ public class ProductCategoryRepository {
     public List<ProductCategoryDTO> findMiddleLevelCategoriesByParentId(int parentId) {
         return sql.selectList("ProductCategory.findMiddleLevelCategoriesByParentId", parentId);
     }
+
+    public void updateCategoryNameByLevel(int categoryId, String newName, int level) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("categoryId", categoryId);
+        param.put("newName", newName);
+        param.put("level", level);
+        sql.update("ProductCategory.updateCategoryNameByLevel", param);
+    }
+
 }

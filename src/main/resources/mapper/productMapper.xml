@@ -109,18 +109,24 @@
     </select>
 
     <insert id="addCategory" parameterType="Product">
-        INSERT INTO product (categoryId, productName)
-        VALUES (#{categoryId}, #{productName});
+        INSERT INTO product (storeId, categoryId, productName, price, stockQuantity)
+        VALUES (#{storeId}, #{categoryId}, #{productName}, #{price}, #{stockQuantity});
     </insert>
 
     <select id="findProductsByCategoryId" parameterType="int" resultType="StockQuantity">
-        SELECT * FROM product_summary_view WHERE parentId = #{parentId};
+        SELECT * FROM product WHERE categoryId = #{parentId};
     </select>
     <update id="updateOrder" parameterType="map">
         UPDATE product SET stockQuantity = stockQuantity+#{purchaseQty}
         WHERE productId = #{productId};
     </update>
 
+    <!-- 모달창 카테고리명 수정 -->
+    <update id="updateProductName" parameterType="map">
+        UPDATE product
+        SET productName = #{newName}
+        WHERE productId = #{productId};
+    </update>
 
 
 </mapper>

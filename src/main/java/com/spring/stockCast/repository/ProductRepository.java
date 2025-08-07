@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -64,5 +65,12 @@ public class ProductRepository {
 
     public List<ProductDTO> findProductsByCategoryId(int parentId) {
         return sql.selectList("Product.findProductsByCategoryId", parentId);
+    }
+
+    public void updateProductName(int productId, String newName) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("productId", productId);
+        param.put("newName", newName);
+        sql.update("Product.updateProductName", param);
     }
 }
