@@ -37,4 +37,25 @@ public class ClientRepository {
     public boolean insert(ClientDTO clientDTO) {
         return sql.insert("Client.insert", clientDTO) > 0;
     }
+
+    public List<ClientDTO> selectPagingByAdminId(Map<String, Object> param) {
+        return sql.selectList("Client.selectPagingByAdminId", param);
+    }
+
+    public int countByAdminId(int adminId) {
+        return sql.selectOne("Client.countByAdminId", adminId);
+    }
+    // 검색 키워드로 거래처 목록 페이징 조회
+    public List<ClientDTO> searchClientsWithPaging(Map<String, Object> param) {
+        return sql.selectList("Client.searchClientsWithPaging", param);
+    }
+
+    // 검색 키워드로 거래처 수 조회
+    public int countClientsByKeyword(Map<String, Object> param) {
+        return sql.selectOne("Client.countClientsByKeyword", param);
+    }
+
+
+
+
 }

@@ -25,10 +25,18 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
       <!-- 검색/등록 영역 -->
       <div class="form-container">
-        <div>
-          <input type="text" placeholder="거래처 검색" name="searchKeyword" />
-          <button class="btn btn-blue">검색</button>
-        </div>
+        <form
+          method="get"
+          action="${pageContext.request.contextPath}/client/filter"
+        >
+          <input
+            type="text"
+            name="searchKeyword"
+            placeholder="검색어 입력"
+            value="${searchKeyword}"
+          />
+          <button type="submit" class="btn btn-blue-b">검색</button>
+        </form>
         <div>
           <button class="btn btn-blue openAddModal">거래처 등록</button>
         </div>
@@ -400,15 +408,42 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         </div>
       </div>
 
-      <!-- 페이징 -->
-      <div class="btn-box">
-        <button class="btn btn-blue">&lt;</button>
-        <button class="btn btn-blue-b">1</button>
-        <button class="btn btn-blue">2</button>
-        <button class="btn btn-blue">3</button>
-        <button class="btn btn-blue">4</button>
-        <button class="btn btn-blue">&gt;</button>
+      <!-- 발주 페이징 -->
+      <div class="paging">
+        <c:choose>
+          <c:when test="${paging.page <= 1}">
+            <span>&lt;</span>
+          </c:when>
+          <c:otherwise>
+            <a href="?page=${paging.page - 1}&searchKeyword=${searchKeyword}"
+              >&lt;</a
+            >
+          </c:otherwise>
+        </c:choose>
+
+        <c:forEach var="i" begin="${paging.startPage}" end="${paging.endPage}">
+          <c:choose>
+            <c:when test="${i == paging.page}">
+              <span class="page">${i}</span>
+            </c:when>
+            <c:otherwise>
+              <a href="?page=${i}&searchKeyword=${searchKeyword}">${i}</a>
+            </c:otherwise>
+          </c:choose>
+        </c:forEach>
+
+        <c:choose>
+          <c:when test="${paging.page >= paging.maxPage}">
+            <span>&gt;</span>
+          </c:when>
+          <c:otherwise>
+            <a href="?page=${paging.page + 1}&searchKeyword=${searchKeyword}"
+              >&gt;</a
+            >
+          </c:otherwise>
+        </c:choose>
       </div>
+      <!-- paging -->
     </div>
     <script>
       $(document).ready(function () {
