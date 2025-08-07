@@ -5,7 +5,7 @@
 <c:set var="uri" value="${pageContext.request.requestURI}" />
 
  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
+ <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
  <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 
    <header>
@@ -18,8 +18,13 @@
           </a>
         </div>
         <div class="admin">
-          <p>${sessionScope.loginedAdminDTO.adminName} 님</p>
+          <h2>${sessionScope.loginedAdminDTO.adminName} 님</h2>
+         <button class="alert" onclick="openModal()">
+           <img src="${pageContext.request.contextPath}/static/images/alertIcon.png" alt="alert" />
+           <p class="alert-count">1</p>
+         </button>
         </div>
+
         <nav>
           <ul>
             <li class="main-menu ${fn:contains(uri, '/main') ? 'on' : ''}">
@@ -70,7 +75,7 @@
                  <img src="${pageContext.request.contextPath}/static/images/sale.png" alt="saleIcon"/>
                  <span>매출관리</span>
              </a>
-           
+
              <ul class="sub-menu" style="${fn:contains(uri, '/sale') || fn:contains(uri, '/saleStmt') || fn:contains(uri, '/accounting') ? 'display:block;' : ''}">
                  <li class="${fn:contains(uri, '/sale') ? 'on' : ''}">
                      <a href="${pageContext.request.contextPath}/sale/saleList">판매 실적</a>
@@ -110,6 +115,40 @@
           <a href="/">로그아웃</a>
         </div>
       </header>
+
+      <!-- 모달 -->
+    <div id="customModal" class="modal">
+    <div class="modal-content">
+      <button onclick="closeModal()" class="closeBtn" >&times;</button>
+      <div class="modal-title">
+        <h2> 재고 부족 알림 </h2>
+      </div>
+      <div class="lowStockList-box">   
+      <ul id="lowStockList" class="stock-card-list">
+        <!-- 재고 부족 상품 카드들이 여기 들어감 -->
+         <li>
+          <p>아이스크림</p>
+          <p>현재 2개 / <span>필요 5개</span></p>
+        </li>
+      </ul>
+      </div>
+    </div>
+  </div>
+
+   <!-- 모달 기능 -->
+    <script>
+      function openModal() {
+        const today = new Date().toISOString().slice(0, 10);
+         $('#customModal').fadeIn();
+      }
+
+      function closeModal() {
+        $('#customModal').fadeOut();
+      }
+
+      
+    </script>
+
 
     <!-- 헤더 기능  -->
    <script>
@@ -172,7 +211,6 @@
                    }
                }
            );
-           // -----------------------------
 
            // 서브메뉴 클릭 시 상태를 정확하게 저장
            $("li.sub-menu a").on("click", function () {

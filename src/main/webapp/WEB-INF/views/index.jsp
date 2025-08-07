@@ -4,7 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>index</title>
+    <title>StockCast Login</title>
      <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
 </head>
 <body>
