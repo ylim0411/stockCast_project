@@ -26,4 +26,8 @@ public class AdminRepository {
     public boolean deleteAdminById(int adminId) {
         return sql.delete("Admin.deleteAdminById", adminId) > 0;
     }
+
+    public boolean checkId(String loginId) {
+        return (sql.selectOne("Admin.checkId", loginId) == null);
+    }
 }

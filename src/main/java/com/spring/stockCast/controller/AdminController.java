@@ -4,6 +4,7 @@ import com.spring.stockCast.dto.AdminDTO;
 import com.spring.stockCast.service.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -25,15 +26,17 @@ public class AdminController {
 
     // 실제 게시글을 DB에 저장
     @PostMapping("/login")
-    public String login(@ModelAttribute AdminDTO adminDTO, HttpSession session) {
+    public String login(@ModelAttribute AdminDTO adminDTO, HttpSession session, Model model) {
         AdminDTO loginedAdminDTO = adminService.login(adminDTO);
-        if (loginedAdminDTO != null)
+        if (loginedAdminDTO == null)
         {
-            session.setAttribute("loginedAdminDTO", loginedAdminDTO);
-            session.setAttribute("selectedStoredId", 1);
-            return "main";
+            model.addAttribute("loginError", "로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
+            return "login";
         }
-        return "redirect:/admin/login";
+        session.setAttribute("loginedAdminDTO", loginedAdminDTO);
+        session.setAttribute("selectedStoredId", 1);
+        return "main";
+
     }
 
     @GetMapping("join")
@@ -43,12 +46,18 @@ public class AdminController {
 
     // 실제 게시글을 DB에 저장
     @PostMapping("/join")
-    public String join(@ModelAttribute AdminDTO adminDTO) {
+    public String join(@ModelAttribute AdminDTO adminDTO, Model model) {
         System.out.println(adminDTO);
+        if (!adminService.checkId(adminDTO.getLoginId()))
+        {
+            model.addAttribute("joinError", "아이디가 중복됩니다. 회원가입을 다시 해주세요");
+            return "join";
+        }
         int joinResult = adminService.join(adminDTO);
         if (joinResult == 0)
         {
-            return "redirect:/admin/join";
+            model.addAttribute("joinError", "회원가입에 실패했습니다. 정보들을 확인해주세요");
+            return "join";
         }
         return "login";
     }

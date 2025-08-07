@@ -86,15 +86,55 @@
       input[type="submit"]:hover {
         background-color: #0056b3;
       }
+      .error-msg {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+        position: relative;
+        background: #fee;
+        border: 1px solid red;
+        padding: 5px 10px;
+        border-radius: 4px;
+        max-width: 300px;
+      }
+
+      .error-msg::before {
+        content: "";
+        position: absolute;
+        top: -6px;
+        left: 10px;
+        border-width: 6px;
+        border-style: solid;
+        border-color: transparent transparent #fee transparent;
+      }
     </style>
   </head>
   <body>
     <div class="container">
       <h2>회원가입</h2>
       <form action="/admin/join" method="post">
-        <input type="text" required name="adminName" placeholder="이름" value="${name}"/>
-        <input type="text" required name="loginId" placeholder="아이디" value="${email}"/>
-        <input type="text" required name="loginPw" placeholder="비밀번호" />
+        <input
+          type="text"
+          required
+          name="adminName"
+          placeholder="이름"
+          value="${name}"
+        />
+        <input
+          type="text"
+          required
+          name="loginId"
+          placeholder="아이디"
+          value="${email}"
+        />
+        <input
+          id="loginPw"
+          type="password"
+          required
+          name="loginPw"
+          placeholder="비밀번호"
+        />
+        <div id="pwErrorMsg" class="error-msg" style="display: none"></div>
         <input
           type="text"
           required
@@ -111,7 +151,24 @@
         <input type="submit" disabled id="submit" value="회원가입" />
       </form>
     </div>
-    <script type="text/javascript">
+    <script>
+      // <c:if test="${not empty joinError}">alert('${joinError}')</c:if>;
+      const pwInput = document.getElementById("loginPw");
+      const pwErrorMsg = document.getElementById("pwErrorMsg");
+
+      pwInput.addEventListener("input", () => {
+        const value = pwInput.value;
+        const pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
+
+        if (!pattern.test(value)) {
+          pwErrorMsg.style.display = "block";
+          pwErrorMsg.textContent =
+            "비밀번호는 영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.";
+        } else {
+          pwErrorMsg.style.display = "none";
+          pwErrorMsg.textContent = "";
+        }
+      });
       const businessNumberCheck = () => {
         const businessCheck = document.getElementById("businessCheck");
         const submit = document.getElementById("submit");

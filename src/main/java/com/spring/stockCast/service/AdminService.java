@@ -28,4 +28,8 @@ public class AdminService {
     public boolean deleteAdminById(int adminId) {
         return adminRepository.deleteAdminById(adminId);
     }
+
+    public boolean checkId(String loginId) {
+        return adminRepository.checkId(loginId);
+    }
 }
