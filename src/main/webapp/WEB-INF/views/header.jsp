@@ -1,12 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 <c:set var="uri" value="${pageContext.request.requestURI}" />
-
- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
- <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
- <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
    <header>
         <div class="logo">
