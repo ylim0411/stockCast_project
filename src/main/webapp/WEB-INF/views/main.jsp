@@ -49,21 +49,19 @@ dayOfWeek + ")"; %>
           <div class="traffic-box">
             <div class="traffic-content">
               <div class="temperature">
-                <strong>${weather.temperature != null ? weather.temperature : '정보 없음'}°C</strong>
+                <strong>${traffic.temperature != null ? traffic.temperature : '정보 없음'}%</strong>
                 <span class="rain">유동인구</span>
               </div>
-              <img src="/static/images/weather/${weather.icon}.png" alt="날씨 아이콘" class="weather-icon" />
+              <img src="/static/images/weather/${traffic.icon}.png" alt="사람 아이콘" class="weather-icon" />
             </div>
-            <!-- traffic-content -->
 
             <div class="recommend-banner">
-              <p class="recommend-text">${weather.recommendation}의 </br> 판매량이 늘어날 것으로 예상됩니다.</p>
+              <p class="recommend-text"><span>${traffic.recommendation}</span>의 판매량이 </br> 늘어날 것으로 예상됩니다.</p>
               <div class="banner-buttons">
-                 <button onclick="location.href='/order/orderSave'" class="btn btn-blue">발주서 작성</button>
-                                <button onclick="location.href='/product/list'" class="btn btn-blue">상품 목록 보기</button>
+                <button onclick="location.href='/order/orderSave'" class="btn btn-blue">발주서 작성</button>
+                <button onclick="location.href='/product/list'" class="btn btn-blue">상품 목록 보기</button>
               </div>
             </div>
-            <!-- recommend-banner -->
           </div>
         </div>
         <!-- section1 -->

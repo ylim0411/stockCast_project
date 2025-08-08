@@ -491,7 +491,6 @@ header .userContext .on {
   padding: 10px;
 }
 
-
 /* 아래 영역(검색+테이블+페이징) -------------------------------------*/
 .section-wrap {
   height: auto;
@@ -500,12 +499,12 @@ header .userContext .on {
   gap: 10px;
 }
 
-.section-wrap100{
+.section-wrap100 {
   height: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
-} 
+}
 
 .section-wrap80 {
   height: 80%;
