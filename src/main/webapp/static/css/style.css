@@ -61,6 +61,28 @@ body {
   font-family: var(--font-family-default);
 }
 
+.Desktop {
+  width:100%;
+  height:100%;
+  background-image: url('${pageContext.request.contextPath}/static/images/desktop.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.StockCast {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.StockCast img {
+  width: 100%;
+  object-fit: cover;
+}
+
 /* modal ------------------------------------------------- */
 .modal {
   display: none;
