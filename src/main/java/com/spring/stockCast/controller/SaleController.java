@@ -27,4 +27,11 @@ public class SaleController {
         model.addAllAttributes(saleService.controller(startDate,endDate,year));
         return "sale";
     }
+
+    // 모의 테스트
+    @GetMapping("/saleOrder")
+    public String saleOrder(Model model){
+        saleService.saleOrderController(model);
+        return "saleOrder";
+    }
 }

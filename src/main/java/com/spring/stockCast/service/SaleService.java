@@ -5,6 +5,7 @@ import com.spring.stockCast.dto.SaleDTO;
 import com.spring.stockCast.repository.SaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -84,5 +85,10 @@ public class SaleService {
         result.put("saleYear", findSaleYear()); // 판매내역이 있는 년도 리스트로 전달
 
         return result;
+    }
+    // 판매 로직 테스트
+    public void saleOrderController(Model model) {
+
+
     }
 }
