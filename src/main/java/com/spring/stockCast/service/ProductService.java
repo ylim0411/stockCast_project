@@ -9,6 +9,9 @@ import com.spring.stockCast.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -79,4 +82,30 @@ public class ProductService {
         productRepository.updateProductName(productId, newName);
     }
 
+//    public List<StockQuantityDTO> getStockQuantityList(Integer month, String productName) {
+//        Map<String, Object> param = new HashMap<>();
+//
+//        if (month != null && month >= 1 && month <= 12) {
+//            YearMonth yearMonth = YearMonth.of(LocalDate.now().getYear(), month);
+//            LocalDate startDate = yearMonth.atDay(1);
+//            LocalDate endDate = yearMonth.atEndOfMonth();
+//            param.put("startDate", startDate);
+//            param.put("endDate", endDate);
+//        }
+//        if (productName != null && !productName.trim().isEmpty()) {
+//            param.put("productName", "%" + productName.trim() + "%");
+//        }
+//
+//        return productRepository.stockQuantityList(param);
+//    }
+//
+//    public void closeStockMonth(int month) {
+//        if (month < 1 || month > 12) {
+//            throw new IllegalArgumentException("월은 1~12 사이여야 합니다.");
+//        }
+//        LocalDate closeDate = YearMonth.of(LocalDate.now().getYear(), month).atEndOfMonth();
+//
+//        // 마감 처리 - productinitstock 테이블에 저장
+//        productRepository.closeStockByDate(closeDate);
+//    }
 }

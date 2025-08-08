@@ -88,6 +88,7 @@ public class ProductController {
         return productService.findByCategoryId(categoryId);
     }
 
+    // 재고현황
     @GetMapping("/stockQuantity")
     public String stockQuantity(Model model) {
         List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList();
@@ -96,12 +97,27 @@ public class ProductController {
         return "stockQuantity";
     }
 
-
-//    @GetMapping("/delete")
-//    public String productDelete(@RequestParam("id") int productId) {
-//        System.out.println("delete?" + productId);
-//        productService.delete(productId);
-//        return "redirect:/product/";
+//    // 재고 현황 페이지
+//    @GetMapping("/stockQuantity")
+//    public String stockStatus(@RequestParam(required = false) Integer month,
+//                              @RequestParam(required = false) String productName,
+//                              Model model) {
+//        List<StockQuantityDTO> stockList = productService.getStockQuantityList(month, productName);
+//        model.addAttribute("stockQuantityList", stockList);
+//        model.addAttribute("selectedMonth", month);
+//        model.addAttribute("searchProductName", productName);
+//        return "product/stockStatus";
 //    }
+//
+//    // 재고 마감 처리 (ex: ?month=8)
+//    @PostMapping("/closeStock")
+//    @ResponseBody
+//    public String closeStock(@RequestParam int month) {
+//        productService.closeStockMonth(month);
+//        return "success";
+//    }
+
+
+
 
 }

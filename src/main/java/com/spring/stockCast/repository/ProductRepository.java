@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,10 +32,6 @@ public class ProductRepository {
     public List<ProductDTO> findProductList() {
         return sql.selectList("Product.findProductList");
     }
-
-//    public void delete(int productId) {
-//        sql.delete("Product.delete", productId);
-//    }
 
     public void updateProduct(ProductDTO product) {
         sql.update("Product.update", product);
@@ -73,4 +70,14 @@ public class ProductRepository {
         param.put("newName", newName);
         sql.update("Product.updateProductName", param);
     }
+
+//    // 재고현황 리스트 조회 (뷰 기반, 조건 파라미터 전달)
+//    public List<StockQuantityDTO> stockQuantityList(Map<String, Object> param) {
+//        return sql.selectList("Product.stockQuantityList", param);
+//    }
+//
+//    // 월별 재고 마감 처리 (해당 월 마지막 날짜 재고현황을 기초재고로 저장)
+//    public void closeStockByDate(LocalDate closeDate) {
+//        sql.insert("Product.closeStockByDate", closeDate);
+//    }
 }
