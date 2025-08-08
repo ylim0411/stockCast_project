@@ -1,12 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 <c:set var="uri" value="${pageContext.request.requestURI}" />
-
- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
- <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
- <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
    <header>
         <div class="logo">
@@ -89,7 +87,7 @@
          </li>
 
             <li class="main-menu  ${fn:contains(uri, '/customer') ? 'on' : ''}">
-              <a href="${pageContext.request.contextPath}/customer"">
+              <a href="${pageContext.request.contextPath}/customer">
                 <img
                   src="${pageContext.request.contextPath}/static/images/customer.png"
                   alt="customerIcon"
@@ -111,7 +109,7 @@
         </nav>
         <div class="userContext">
           <a href="/mypage/" class="on">마이페이지</a>
-          <a href="/">로그아웃</a>
+          <a href="/admin/logout">로그아웃</a>
         </div>
       </header>
 

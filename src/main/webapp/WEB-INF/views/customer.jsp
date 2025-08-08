@@ -19,7 +19,7 @@
         <h2 class="title">고객 분석</h2>
     </div>
 
-    <div class="section-wrap">
+    <div class="section-wrap80">
         <div class="chart-box">
             <div class="chart-card">
                 <h3 class="chart-title">성별 분석 그래프</h3>
@@ -41,7 +41,7 @@
                 </div>
             </div>
          </div>
-    </div> <!-- section-wrap -->
+    </div> <!-- chart-wrap -->
 </div> <!-- container -->
 
 <script>

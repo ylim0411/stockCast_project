@@ -1,16 +1,14 @@
 package com.spring.stockCast.controller;
 
 import com.spring.stockCast.dto.AdminDTO;
+import com.spring.stockCast.dto.PageDTO;
 import com.spring.stockCast.dto.StoreDTO;
 import com.spring.stockCast.service.AdminService;
 import com.spring.stockCast.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -22,10 +20,38 @@ public class MypageController {
     private final StoreService storeService;
 
     @GetMapping("/")
-    public String mypageForm(HttpSession session, Model model) {
+    public String mypageForm(
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            HttpSession session,
+            Model model) {
+
         AdminDTO adminDTO = (AdminDTO) session.getAttribute("loginedAdminDTO");
-        List<StoreDTO> tmpstoreDTO = storeService.selectAll(adminDTO.getAdminId());
-        model.addAttribute("storeList", tmpstoreDTO);
+        if (adminDTO == null) {
+            return "redirect:/admin/login"; // 로그인 안 되어 있으면 로그인 페이지로
+        }
+
+        int pageSize = 5; // 한 페이지에 보여줄 점포 수
+        int totalCount = storeService.countByAdminId(adminDTO.getAdminId());
+        int totalPages = (int) Math.ceil((double) totalCount / pageSize);
+
+        // page가 1보다 작거나 totalPages보다 크면 보정
+        if (page < 1) page = 1;
+        else if (page > totalPages) page = totalPages;
+
+        int offset = (page - 1) * pageSize;
+
+        List<StoreDTO> storeList = storeService.selectPageByAdminId(adminDTO.getAdminId(), offset, pageSize);
+
+        // 페이징 정보 생성
+        PageDTO paging = new PageDTO();
+        paging.setPage(page);
+        paging.setMaxPage(totalPages);
+        paging.setStartPage(1);
+        paging.setEndPage(totalPages);
+
+        model.addAttribute("storeList", storeList);
+        model.addAttribute("paging", paging);
+
         return "mypage";
     }
 

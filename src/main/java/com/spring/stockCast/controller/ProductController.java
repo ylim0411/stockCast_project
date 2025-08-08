@@ -90,12 +90,13 @@ public class ProductController {
 
     // 재고현황
     @GetMapping("/stockQuantity")
-    public String stockQuantity(Model model) {
-        List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList();
+    public String stockQuantity(@RequestParam(value = "keyword", required = false) String keyword,
+                                Model model) {
+        List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList(keyword);
         model.addAttribute("stockQuantityList", stockQuantityList);
-
         return "stockQuantity";
     }
+
 
 //    // 재고 현황 페이지
 //    @GetMapping("/stockQuantity")
@@ -115,6 +116,7 @@ public class ProductController {
 //    public String closeStock(@RequestParam int month) {
 //        productService.closeStockMonth(month);
 //        return "success";
+
 //    }
 
 

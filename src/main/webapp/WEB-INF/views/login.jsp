@@ -1,4 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %> <%@ taglib
+prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -90,6 +91,8 @@
       <button onclick="googleJoin()">구글 계정으로 연동</button>
     </div>
     <script>
+      // 로그인 실패시 alert 띄우기
+      <c:if test="${not empty loginError}">alert('${loginError}');</c:if>;
       const join = () => {
         location.href = "/admin/join";
       };

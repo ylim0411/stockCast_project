@@ -17,16 +17,39 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       rel="stylesheet"
       href="${pageContext.request.contextPath}/static/css/modal.css"
     />
+    <style>
+      .error-msg {
+        color: red;
+        font-size: 12px;
+        margin-top: 5px;
+        position: relative;
+        background: #fee;
+        border: 1px solid red;
+        padding: 5px 10px;
+        border-radius: 4px;
+        max-width: 1000px;
+      }
+
+      .error-msg::before {
+        content: "";
+        position: absolute;
+        top: -6px;
+        left: 10px;
+        border-width: 6px;
+        border-style: solid;
+        border-color: transparent transparent #fee transparent;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
       <!-- 타이틀 -->
-      <div class="title-box">
+      <div class="title-box" style="height: 10%;">
         <div class="title">마이 페이지</div>
       </div>
 
       <!-- 관리자 정보 -->
-      <div class="title-box">
+      <div>
         <div class="title" style="font-size: 18px">관리자 정보</div>
       </div>
       <form action="/admin/update" method="post">
@@ -58,32 +81,40 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           <tr>
             <th>비밀번호</th>
             <td style="position: relative">
-              <input
-                style="border: none; text-align: center"
-                type="password"
-                id="loginPw"
-                name="loginPw"
-                placeholder="비밀번호"
-                value="${sessionScope.loginedAdminDTO.loginPw}"
-                required
-              />
-              <button
-                type="button"
-                onclick="togglePassword()"
-                id="togglePwBtn"
-                style="
-                  position: absolute;
-                  right: 10px;
-                  top: 50%;
-                  transform: translateY(-50%);
-                  background: none;
-                  border: none;
-                  font-size: 16px;
-                  cursor: pointer;
-                "
-              >
-                👁️
-              </button>
+              <div>
+                <input
+                  style="border: none; text-align: center"
+                  type="password"
+                  id="loginPw"
+                  name="loginPw"
+                  placeholder="비밀번호"
+                  value="${sessionScope.loginedAdminDTO.loginPw}"
+                  required
+                />
+                <button
+                  type="button"
+                  onclick="togglePassword()"
+                  id="togglePwBtn"
+                  style="
+                    position: relative;
+                    right: 25px;
+                    top: 10px;
+                    transform: translateY(-50%);
+                    background: none;
+                    border: none;
+                    font-size: 16px;
+                    cursor: pointer;
+                    z-index: 9999;
+                  "
+                >
+                  👁️
+                </button>
+              </div>
+              <div
+                id="pwErrorMsg"
+                class="error-msg"
+                style="display: none"
+              ></div>
             </td>
           </tr>
           <tr>
@@ -104,9 +135,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           탈퇴하기
         </button>
       </form>
-      <br /><br /><br />
       <!-- 관리 점포 목록 -->
-      <div class="title-box">
+      <div class="title-box" style="height: 10%;">
         <div class="title" style="font-size: 18px">관리 점포 목록</div>
       </div>
 
@@ -247,18 +277,59 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           </form>
         </div>
       </div>
+      <!-- 발주 페이징 -->
+      <div class="paging">
+        <c:choose>
+          <c:when test="${paging.page <= 1}">
+            <span>&lt;</span>
+          </c:when>
+          <c:otherwise>
+            <a href="?page=${paging.page - 1}&searchKeyword=${searchKeyword}"
+              >&lt;</a
+            >
+          </c:otherwise>
+        </c:choose>
 
-      <!-- 페이지네이션 -->
-      <div class="pagination" style="margin-top: 20px">
-        <button class="btn">&lt;</button>
-        <button class="btn btn-blue">1</button>
-        <button class="btn">2</button>
-        <button class="btn">3</button>
-        <button class="btn">4</button>
-        <button class="btn">&gt;</button>
+        <c:forEach var="i" begin="${paging.startPage}" end="${paging.endPage}">
+          <c:choose>
+            <c:when test="${i == paging.page}">
+              <span class="page">${i}</span>
+            </c:when>
+            <c:otherwise>
+              <a href="?page=${i}&searchKeyword=${searchKeyword}">${i}</a>
+            </c:otherwise>
+          </c:choose>
+        </c:forEach>
+
+        <c:choose>
+          <c:when test="${paging.page >= paging.maxPage}">
+            <span>&gt;</span>
+          </c:when>
+          <c:otherwise>
+            <a href="?page=${paging.page + 1}&searchKeyword=${searchKeyword}"
+              >&gt;</a
+            >
+          </c:otherwise>
+        </c:choose>
       </div>
-    </div>
     <script>
+      const pwInput = document.getElementById("loginPw");
+      const pwErrorMsg = document.getElementById("pwErrorMsg");
+
+      pwInput.addEventListener("input", () => {
+        const value = pwInput.value;
+        const pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
+
+        if (!pattern.test(value)) {
+          pwErrorMsg.style.display = "block";
+          pwErrorMsg.textContent =
+            "비밀번호는 영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.";
+        } else {
+          pwErrorMsg.style.display = "none";
+          pwErrorMsg.textContent = "";
+        }
+      });
+
       const rows = document.querySelectorAll(".selectable-row");
       window.onload = function () {
         rows.forEach((row) => {

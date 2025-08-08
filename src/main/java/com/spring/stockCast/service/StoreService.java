@@ -24,4 +24,12 @@ public class StoreService {
     public void save(StoreDTO storeDTO) {
         storeRepository.save(storeDTO);
     }
+
+    public int countByAdminId(int adminId) {
+        return storeRepository.countByAdminId(adminId);
+    }
+
+    public List<StoreDTO> selectPageByAdminId(int adminId, int offset, int limit) {
+        return storeRepository.selectPageByAdminId(adminId, offset, limit);
+    }
 }

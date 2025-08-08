@@ -53,7 +53,9 @@ public class ProductRepository {
   
     public List<StockQuantityDTO> stockQuantityList() {
         return sql.selectList("Product.stockQuantityList");
-
+    }
+    public List<StockQuantityDTO> findStockQuantityByKeyword(String keyword) {
+        return sql.selectList("Product.findStockQuantityByKeyword", keyword);
     }
 
     public void addCategory(ProductDTO productDTO) {

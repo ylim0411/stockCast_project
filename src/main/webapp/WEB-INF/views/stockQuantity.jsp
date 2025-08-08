@@ -39,7 +39,15 @@
         </c:forEach>
       </select>
 
-      <button type="submit" class="btn btn-blue">검색</button>
+    <script></script>
+  </head>
+  <body>
+    <div id="stockQuantity" class="containerAuto">
+      <h1>재고 현황</h1>
+      <form method="get" action="${pageContext.request.contextPath}/product/stockQuantity" style="margin-bottom: 20px;">
+        <input type="text" name="keyword" placeholder="상품명 검색" value="${param.keyword}" />
+        <button type="submit" class="btn btn-blue">검색</button>
+      </form>
 
       <!-- 마감 버튼: 초기재고 마감일 저장 -->
       <button type="button" id="btnCloseMonth" class="btn btn-red">마감</button>
