@@ -6,13 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,7 +19,8 @@ import java.util.UUID;
 public class AdminController {
     private final AdminService adminService;
     @GetMapping("login")
-    public String loginForm() {
+    public String loginForm(HttpServletRequest request, HttpServletResponse response) {
+        clearSession(request, response);
         return "login";
     }
 
@@ -35,7 +35,7 @@ public class AdminController {
         }
         session.setAttribute("loginedAdminDTO", loginedAdminDTO);
         session.setAttribute("selectedStoredId", 1);
-        return "main";
+        return "redirect:/main";
 
     }
 
@@ -67,9 +67,8 @@ public class AdminController {
     }
 
     @GetMapping("/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
-        return "login";
+    public String logout() {
+        return "redirect:/admin/login";
     }
     @PostMapping("/delete")
     public String deleteAdmin(
@@ -93,6 +92,20 @@ public class AdminController {
         }
 
         // 로그인 페이지로 리디렉션
-        return logout(session);
+        return logout();
+    }
+    private void clearSession(HttpServletRequest request, HttpServletResponse response)
+    {
+        HttpSession session = request.getSession(false); // 새 세션 생성하지 않음
+        if (session != null) {
+            session.removeAttribute("loginedAdminDTO"); // 안전하게 속성 제거
+            session.invalidate(); // 세션 무효화
+        }
+
+        // (선택) 브라우저에 남아있는 JSESSIONID 쿠키 삭제
+        Cookie cookie = new Cookie("JSESSIONID", null);
+        cookie.setPath(request.getContextPath().isEmpty() ? "/" : request.getContextPath());
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
 }

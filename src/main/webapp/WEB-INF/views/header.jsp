@@ -5,6 +5,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 <c:set var="uri" value="${pageContext.request.requestURI}" />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<c:if test="${empty sessionScope.loginedAdminDTO}">
+    <c:redirect url="/admin/login"/>
+</c:if>
 
    <header>
         <div class="logo">
