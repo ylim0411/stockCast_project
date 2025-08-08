@@ -51,7 +51,7 @@
       </div>
     </div>
     </div>
-    <!-- 1. 도넛 차트 (판매 품목에 따른 분류) -->
+    <!-- 1. 파이 차트 (제품별 판매추이) -->
     <script>
       var rawSalesData = [];
       <c:forEach items="${saleCategory}" var="entry">
@@ -72,7 +72,7 @@
         .getElementById("salesCategoryChart")
         .getContext("2d");
       var itemsChart = new Chart(itemCtx, {
-        type: "doughnut",
+        type: "pie",
         data: {
           labels: salesLabels,
           datasets: [
@@ -100,8 +100,7 @@
                  "rgba(255, 159, 64, 1)",
                  "rgba(201, 203, 207, 1)",
                  "rgba(255, 0, 255, 1)",
-                 "rgba(0, 255, 255, 1)",
-                 "rgba(128, 0, 0, 1)"
+                 "rgba(0, 255, 255, 1)"
                ],
               borderWidth: 1,
             },
@@ -110,15 +109,14 @@
         options: {
           responsive: true,
           maintainAspectRatio: false,
-          plugins: {
-            legend: {
-              display: true,
-              position: "right",
-            },
-            title: {
-              display: true,
-              text: "판매 항목별 비율",
-            },
+          // Chart.js 2.9.4 버전에서는 plugins 객체 없이 legend와 title을 직접 사용합니다.
+          legend: {
+            display: true,
+            position: "bottom", // 범례 위치를 아래로 지정
+          },
+          title: {
+            display: true,
+            text: "판매 항목별 비율", // 차트 제목 설정
           },
         },
       });
@@ -156,29 +154,26 @@
           responsive: true,
           maintainAspectRatio: false,
           scales: {
-            y: {
-              beginAtZero: true,
-              title: {
-                display: true,
-                text: "판매금액",
+            xAxes: [{
+              scaleLabel: {
+                display: false // '월' 텍스트 제거
+              }
+            }],
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
               },
-            },
-            x: {
-              title: {
-                display: true,
-                text: "월",
-              },
-            },
+              scaleLabel: {
+                display: false // '판매금액' 텍스트 제거
+              }
+            }]
           },
-          plugins: {
-            legend: {
-              display: true,
-              position: "top",
-            },
-            title: {
-              display: true,
-              text: "월별 판매 추이",
-            },
+          legend: {
+            display: false, // '월별 판매 금액' 범례 제거
+          },
+          title: {
+            display: true,
+            text:"월별 판매 추이",
           },
         },
       });

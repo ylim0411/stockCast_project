@@ -24,10 +24,11 @@ public class AccountingController {
                                  @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate endDate,
                                  @RequestParam(required = false) String year,
                                  @RequestParam(required = false) String btn,
+                                 @RequestParam(required = false) String action,
                                  HttpSession session,
                                  Model model){
         // 서비스 제일아래에 모든내용 있음
-        model.addAllAttributes(accountingService.controller(startDate,endDate,year,btn,session));
+        model.addAllAttributes(accountingService.controller(startDate,endDate,year,btn,action,session));
         return "accounting";
     }
 }
