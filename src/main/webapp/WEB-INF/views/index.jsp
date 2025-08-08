@@ -6,19 +6,15 @@
     <meta charset="UTF-8">
     <title>StockCast Login</title>
     <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 </head>
 <body>
-    <h2>Hello Spring Framework</h2>
-    <a href="/main">메인화면</a>
-
-
-    <a href="/sales/saleList">판매실적 이동</a>
-    <a href="/saleStmt/saleStmtList">거래명세서 이동</a>
-    <a href="/productCategory/list">상품카테고리 이동</a>
-
-
-    <a href="/product/">상품 이동</a>
-    <a href="/product/stockQuantity/">재고 이동</a>
-
+    <div class="Desktop">
+      <div class="StockCast">
+         <a href="/admin/login">
+           <img src="${pageContext.request.contextPath}/static/images/StockCast.png" alt="StockCast" />
+        </a>
+      </div>  
+    </div>
 </body>
 </html>
