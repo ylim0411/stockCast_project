@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>StockCast Login</title>
-     <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
+    <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
 </head>
 <body>
     <h2>Hello Spring Framework</h2>
