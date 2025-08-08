@@ -19,6 +19,7 @@
 
     <a href="/product/">상품 이동</a>
     <a href="/product/stockQuantity/">재고 이동</a>
+    <a href="/sales/saleOrder/">test</a>
 
 </body>
 </html>

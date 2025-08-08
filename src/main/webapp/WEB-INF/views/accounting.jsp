@@ -155,12 +155,12 @@
                             <c:set var="totalCapital" value="${totalCapital + accountValues[account.name]}"/>
                         </c:forEach>
                         <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                </tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
                         <tr>
                             <td>자본 총계</td>
-                            <td><p><fmt:formatNumber value="${totalCapital}" pattern="#,###"/></p></td>
+                            <td><p><fmt:formatNumber value="${totalCapital+totalLiabilities}" pattern="#,###"/></p></td>
                         </tr>
                         <tr>
                         <c:set var="totalIncome" value="0"/>

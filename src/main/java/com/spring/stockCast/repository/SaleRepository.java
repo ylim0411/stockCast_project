@@ -36,5 +36,4 @@ public class SaleRepository {
         return sql.selectList("Sale.findByDateBetween", param);
     }
 
-
 }
