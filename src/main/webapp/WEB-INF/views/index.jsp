@@ -9,11 +9,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 </head>
 <body>
-    <div class="Desktop">
+    <div class="Desktop" style="background-image: url('${pageContext.request.contextPath}/static/images/desktop.png');">
       <div class="StockCast">
          <a href="/admin/login">
            <img src="${pageContext.request.contextPath}/static/images/StockCast.png" alt="StockCast" />
         </a>
+        <span>StockCast</span>
       </div>  
     </div>
 </body>
