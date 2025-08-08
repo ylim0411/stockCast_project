@@ -15,13 +15,13 @@ dayOfWeek + ")"; %>
     <%@ include file="/WEB-INF/views/header.jsp" %>
   </head>
   <body>
-    <div id="main" class="containerAuto">
-      <div class="title-box">
+    <div id="main" class="container">
+      <!-- <div class="title-box">
         <p class="sub-title">대시보드</p>
         <h2 class="title">대시보드</h2>
-      </div>
+      </div> -->
 
-      <div class="section-wrap">
+      <div class="section-wrap100">
         <div class="section1">
           <div class="weather-box">
             <div class="weather-content">
