@@ -49,8 +49,35 @@ dayOfWeek + ")"; %>
           <div class="traffic-box">
             <div class="traffic-content">
               <div class="temperature">
-                <strong>${traffic.temperature != null ? traffic.temperature : '정보 없음'}%</strong>
-                <span class="rain">유동인구</span>
+                <strong>
+                  <c:choose>
+                    <c:when test="${traffic.maxGroup == '10대'}">
+                      <strong>${traffic.age10}</strong>
+                    </c:when>
+                    <c:when test="${traffic.maxGroup == '20대'}">
+                      <strong>${traffic.age20}</strong>
+                    </c:when>
+                    <c:when test="${traffic.maxGroup == '30대'}">
+                      <strong>${traffic.age30}</strong>
+                    </c:when>
+                    <c:when test="${traffic.maxGroup == '40대'}">
+                      <strong>${traffic.age40}</strong>
+                    </c:when>
+                    <c:when test="${traffic.maxGroup == '50대'}">
+                      <strong>${traffic.age50}</strong>
+                    </c:when>
+                    <c:when test="${traffic.maxGroup == '60대'}">
+                      <strong>${traffic.age60}</strong>
+                    </c:when>
+                    <c:when test="${traffic.maxGroup == '70대'}">
+                      <strong>${traffic.age70}</strong>
+                    </c:when>
+                    <c:otherwise>
+                      <strong>정보 없음</strong>
+                    </c:otherwise>
+                  </c:choose>
+                </strong>
+                <span class="rain">유동인구 최다 연령대: ${traffic.maxGroup}</span>
               </div>
               <img src="/static/images/weather/${traffic.icon}.png" alt="사람 아이콘" class="weather-icon" />
             </div>
