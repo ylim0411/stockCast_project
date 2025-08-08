@@ -401,6 +401,7 @@ header .userContext .on {
 .section2 {
   display: flex;
   gap: 20px;
+  height: 50%;
 }
 
 .section1 .weather-box,
@@ -432,13 +433,13 @@ header .userContext .on {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding:0 20px;
+  padding: 20px 20px 0 20px;
 }
 
 .weather-box .weather-content img,
-.traffic-box .traffic-content img{
-  width:150px;
-  height:150px;
+.traffic-box .traffic-content img {
+  width: 150px;
+  height: 150px;
   object-fit: cover;
 }
 
@@ -449,11 +450,11 @@ header .userContext .on {
   gap: 15px;
 }
 
-.temperature .box-title{
+.temperature .box-title {
   font-size: var(--font-size-lg);
 }
 
-.temperature strong{
+.temperature strong {
   font-size: 38px;
   font-weight: 500;
 }
@@ -475,25 +476,21 @@ header .userContext .on {
   line-height: 1.5;
 }
 
-.recommend-text span{
-  color:var(--color-primary);
+.recommend-text span {
+  color: var(--color-primary);
 }
 
-.banner-buttons{
+.banner-buttons {
   margin-top: 35px;
   display: flex;
   gap: 10px;
 }
 
 .banner-buttons button {
-  width:50%;
-  padding : 10px;
+  width: 50%;
+  padding: 10px;
 }
 
-.sales-chart-box .chart-box{
-    height:300px;
-    border: 1px solid #000;
-}
 
 /* 아래 영역(검색+테이블+페이징) -------------------------------------*/
 .section-wrap {
@@ -502,6 +499,13 @@ header .userContext .on {
   flex-direction: column;
   gap: 10px;
 }
+
+.section-wrap100{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+} 
 
 .section-wrap80 {
   height: 80%;
