@@ -66,18 +66,18 @@
                 <td>${stockQuantity.categoryName}</td>
                 <td>${stockQuantity.productId}</td>
                 <td>${stockQuantity.productName}</td>
-                <td>${stockQuantity.stockQuantity}</td>
-                <td><fmt:formatNumber value="${stockQuantity.price}" pattern="#,###"/></td>
-                <td><fmt:formatNumber value="${stockQuantity.totalStockAmount}" pattern="#,###"/></td>
+                <td>${stockQuantity.initialStockQuantity}</td>
+                <td><fmt:formatNumber value="${stockQuantity.initialUnitPrice}" pattern="#,###"/></td>
+                <td><fmt:formatNumber value="${stockQuantity.totalInitialStockAmount}" pattern="#,###"/></td>
                 <td>${stockQuantity.purchaseQty}</td>
                 <td><fmt:formatNumber value="${stockQuantity.purchasePrice}" pattern="#,###"/></td>
                 <td><fmt:formatNumber value="${stockQuantity.totalPurchase}" pattern="#,###"/></td>
                 <td>${stockQuantity.saleQty}</td>
                 <td><fmt:formatNumber value="${stockQuantity.salePrice}" pattern="#,###"/></td>
                 <td><fmt:formatNumber value="${stockQuantity.totalSale}" pattern="#,###"/></td>
-                <td>${stockQuantity.initialStockQuantity}</td>
-                <td><fmt:formatNumber value="${stockQuantity.initialUnitPrice}" pattern="#,###"/></td>
-                <td><fmt:formatNumber value="${stockQuantity.totalInitialStockAmount}" pattern="#,###"/></td>
+                <td>${stockQuantity.stockQuantity}</td>
+                <td><fmt:formatNumber value="${stockQuantity.price}" pattern="#,###"/></td>
+                <td><fmt:formatNumber value="${stockQuantity.totalStockAmount}" pattern="#,###"/></td>
               </tr>
             </c:forEach>
           </tbody>
