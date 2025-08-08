@@ -1,5 +1,6 @@
 package com.spring.stockCast.service;
 
+import com.spring.stockCast.dto.TrafficDTO;
 import com.spring.stockCast.dto.WeatherDTO;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -13,6 +14,8 @@ import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class MainService {
@@ -180,4 +183,77 @@ public class MainService {
             return "기본 상품군을 추천합니다.";
         }
     }
+
+    public TrafficDTO getTraffic() {
+        TrafficDTO dto = new TrafficDTO();
+
+        try {
+            String apiKey = "a037dc383dd844d6bae539b2f2cb55b4";
+            String sigunCd = "41110"; // 수원시
+            String ym = "202508";
+
+            String apiUrl = "https://openapi.gg.go.kr/ResadengPopulation?"
+                    + "KEY=" + apiKey
+                    + "&Type=json"
+                    + "&SIGUN_CD=" + sigunCd
+                    + "&YM=" + ym;
+
+            URL url = new URL(apiUrl);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) sb.append(line);
+            br.close();
+
+            JSONObject json = new JSONObject(sb.toString());
+            JSONArray items = json
+                    .getJSONArray("ResadengPopulation")
+                    .getJSONObject(1) // 실제 데이터
+                    .getJSONArray("row");
+
+            if (items.length() == 0) return dto;
+
+            JSONObject data = items.getJSONObject(0); // 첫 번째 데이터 기준
+
+            // 연령대 별 유동 인구 수 합산
+            Map<String, Integer> ageMap = new HashMap<>();
+            int total = 0;
+            for (int age = 10; age <= 70; age += 10) {
+                String keyMale = "TYPAGE" + age + "_MALE_TOTSUM";
+                String keyFemale = "TYPAGE" + age + "_FEMALE_TOTSUM";
+                int sum = data.optInt(keyMale, 0) + data.optInt(keyFemale, 0);
+                ageMap.put(age + "대", sum);
+                total += sum;
+            }
+
+            // 최대 연령대 찾기
+            String maxAgeGroup = "";
+            int maxCount = 0;
+            for (Map.Entry<String, Integer> entry : ageMap.entrySet()) {
+                if (entry.getValue() > maxCount) {
+                    maxAgeGroup = entry.getKey(); // ex: "20대"
+                    maxCount = entry.getValue();
+                }
+            }
+
+            // 퍼센트 계산
+            int percent = (int) Math.round((maxCount * 100.0) / total);
+
+            dto.setTemperature(percent + "%");
+            dto.setRecommendation(maxAgeGroup + "가 가장 많습니다.");
+            dto.setIcon(maxAgeGroup.replace("대", "") + "s.png"); // 예: "20s.png"
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return dto;
+    }
+
+
+
 }
