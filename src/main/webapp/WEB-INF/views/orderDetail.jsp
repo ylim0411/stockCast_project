@@ -26,6 +26,7 @@
         <form action="/order/orderDetail" method="get">
             <c:set var="currentStatus" value="${orderStatus}" />
             <input type="hidden" name="id" value="${orderInfo.orderId}">
+            <input type="hidden" name="approach" value="approach">
             <select style="width:120px;" name="status" onchange="this.form.submit()" class="saleYear-select"
                 <c:if test="${currentStatus eq '완료'}">disabled</c:if>>
                 <c:forEach var="statusOption" items="${['진행중', '완료', '취소']}">

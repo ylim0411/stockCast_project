@@ -107,14 +107,17 @@ public class OrderStmtController {
     @GetMapping("/orderDetail")
     public String orderDetail(@RequestParam int id,
                               @RequestParam(required = false) String status,
+                              @RequestParam(required = false) String approach,
                               Model model) {
-        if (status != null) {
-            // 실제 상태를 업데이트하는 서비스 로직 호출
-            orderStmtService.updateStatus(id, status);
-        }
-        if(status.equals("완료")){
-            for(PurchaseOrderDTO dto : purchaseOrderService.findByOrderId(id)){
-                purchaseOrderService.linkAccounting(dto.getOrderId(),dto.getProductId(),dto.getPurchasePrice(),dto.getPurchaseQty());
+        if (approach != null && !approach.isEmpty()) {
+            if (status != null) {
+                // 실제 상태를 업데이트하는 서비스 로직 호출
+                orderStmtService.updateStatus(id, status);
+            }
+            if (status.equals("완료")) {
+                for (PurchaseOrderDTO dto : purchaseOrderService.findByOrderId(id)) {
+                    purchaseOrderService.linkAccounting(dto.getOrderId(), dto.getProductId(), dto.getPurchasePrice(), dto.getPurchaseQty());
+                }
             }
         }
         model.addAttribute("orderInfo", orderStmtService.findById(id));

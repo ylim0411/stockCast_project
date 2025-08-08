@@ -34,4 +34,8 @@ public class AccountingRepository {
     public List<String> findAccountYear() {
         return sql.selectList("Accounting.findAccountYear");
     }
+    // 불러오기 실행 메서드
+    public List<Map<String, Object>> AccountLoad() {
+        return sql.selectList("Accounting.load");
+    }
 }

@@ -47,17 +47,12 @@ public class AccountingService {
                 .filter(item -> item.getAccount_type() == AccountType.비용)
                 .collect(Collectors.toList());
 
-        long totalDebit = 1000000;
-        long totalCredit = 1000000;
-
         return AccountingDTO.builder()
                 .assetsList(assetsList)
                 .liabilitiesList(liabilitiesList)
                 .capitalList(capitalList)
                 .revenueList(revenueList)
                 .expenseList(expenseList)
-                .totalDebit(totalDebit)
-                .totalCredit(totalCredit)
                 .build();
     }
 
@@ -102,16 +97,39 @@ public class AccountingService {
         result.put("totalCredit",totalCredit);
         return result;
     }
+    // 불러오기 실행 메서드
+    public Map<String, Integer> AccountLoad(){
+        List<Map<String, Object>> rawData = accountingRepository.AccountLoad();
+        Map<String, Integer> result = new HashMap<>();
 
+        if (rawData != null && !rawData.isEmpty()) {
+            for (Map<String, Object> row : rawData) {
+                String name = (String) row.get("name");
+                Object valueObj = row.get("value");
+                Integer value = 0;
+
+                // Object 타입을 Integer로 안전하게 변환
+                if (valueObj instanceof Number) {
+                    value = ((Number) valueObj).intValue();
+                }
+
+                if (name != null) {
+                    result.put(name, value);
+                }
+            }
+        }
+        return result;
+    }
     // 컨트롤러 작업
-    public Map<String,Object> controller(LocalDate startDate, LocalDate endDate, String year, String btn, HttpSession session) {
+    public Map<String,Object> controller(LocalDate startDate, LocalDate endDate, String year, String btn,String action, HttpSession session) {
         AccountingDTO pageData = getAccountingPageData(); // 존재하는 모든 계정 불러오기
         String findDate="";
         List<AccoListDTO> accounts;
-
-        // 당월, 분기 등 선택시 적용
-        String sessionYear = (String) session.getAttribute("selectedYear");
-
+        // 최초 진입시 isLoad null을 false(점포매출)로 변경
+        if (session.getAttribute("isLoad") == null) {
+            session.setAttribute("isLoad", false);
+        }
+        String sessionYear = (String) session.getAttribute("selectedYear"); // 당월, 분기 등 선택시 적용
         // 세션에 year 있으면 가져와서 적용
         if (year != null && !year.isEmpty()) {
             session.setAttribute("selectedYear", year);
@@ -123,6 +141,13 @@ public class AccountingService {
         else {
             year = sessionYear;
         }
+        // 불러오기 버튼 클릭시 session 업로드
+        if ("load".equals(action)) {
+            session.setAttribute("isLoad", true);
+        } else if ("store".equals(action)) {
+            session.setAttribute("isLoad", false);
+        }
+
         // 당월, 분기 등 버튼 선택시 적용
         if(btn != null && !btn.isEmpty()){
             int currentYear = Integer.parseInt(year);
@@ -175,7 +200,10 @@ public class AccountingService {
             findDate = year; // 화면 표시용은 연도만 표기
         }
         Map<String, Integer> accountValues = findValue(accounts); // 계정이름(key),가격(value) 들은 맵 전달
-
+        // 불러오기에 따른 데이터 삽입 및 삭제
+        if((boolean) session.getAttribute("isLoad")){
+            accountValues.putAll(AccountLoad());
+        }
         Map<String,Object> result = new HashMap<>();
         result.put("valueData",accounts); // 회계날짜, 계정아이디, 값 각 기간별 구분됨
         result.put("pageData", pageData); // AccountingDTO 모음
