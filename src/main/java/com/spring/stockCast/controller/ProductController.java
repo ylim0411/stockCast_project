@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
 
@@ -97,29 +99,49 @@ public class ProductController {
         return "stockQuantity";
     }
 
-
 //    // 재고 현황 페이지
 //    @GetMapping("/stockQuantity")
 //    public String stockStatus(@RequestParam(required = false) Integer month,
 //                              @RequestParam(required = false) String productName,
 //                              Model model) {
-//        List<StockQuantityDTO> stockList = productService.getStockQuantityList(month, productName);
-//        model.addAttribute("stockQuantityList", stockList);
+//
+//        // 월이 선택되지 않았을 경우, 현재 월을 기준으로 설정
+//        if (month == null) {
+//            month = LocalDate.now().getMonthValue();
+//        }
+//
+//        // 조회 기간 설정
+//        YearMonth yearMonth = YearMonth.now();
+//        if (month != null) {
+//            yearMonth = YearMonth.of(LocalDate.now().getYear(), month);
+//        }
+//        LocalDate startDate = yearMonth.atDay(1);
+//        LocalDate endDate = yearMonth.atEndOfMonth();
+//
+//        List<StockQuantityDTO> stockList = productService.getStockQuantityList(startDate, endDate, productName);
+//        model.addAttribute("stockList", stockList);
 //        model.addAttribute("selectedMonth", month);
 //        model.addAttribute("searchProductName", productName);
-//        return "product/stockStatus";
+//        return "stockQuantity"; // JSP 파일명을 stockQuantity로 통일
 //    }
 //
-//    // 재고 마감 처리 (ex: ?month=8)
+//    // 재고 마감 처리 (POST 요청으로 변경)
 //    @PostMapping("/closeStock")
 //    @ResponseBody
-//    public String closeStock(@RequestParam int month) {
-//        productService.closeStockMonth(month);
-//        return "success";
-
+//    public String closeStock() {
+//        // 마감일은 다음달 1일로 설정
+//        LocalDate closeDate = LocalDate.now().plusMonths(1).withDayOfMonth(1);
+//
+//        try {
+//            // 마감 처리 로직 실행
+//            productService.closeStockByDate(closeDate);
+//            return "success";
+//        } catch (Exception e) {
+//            // 에러 발생 시 로그 기록 및 실패 반환
+//            return "failure";
+//        }
 //    }
-
-
 
 
 }
+

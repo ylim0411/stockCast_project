@@ -73,13 +73,25 @@ public class ProductRepository {
         sql.update("Product.updateProductName", param);
     }
 
-//    // 재고현황 리스트 조회 (뷰 기반, 조건 파라미터 전달)
-//    public List<StockQuantityDTO> stockQuantityList(Map<String, Object> param) {
-//        return sql.selectList("Product.stockQuantityList", param);
+//    public List<StockQuantityDTO> stockList(LocalDate startDate, LocalDate endDate, String productName) {
+//        Map<String, Object> param = new HashMap<>();
+//        param.put("startDate", startDate);
+//        param.put("endDate", endDate);
+//        param.put("productName", productName);
+//        return sql.selectList("Product.stockList", param); // 매퍼 ID에 맞게 "Product.stockList" 호출
 //    }
 //
-//    // 월별 재고 마감 처리 (해당 월 마지막 날짜 재고현황을 기초재고로 저장)
-//    public void closeStockByDate(LocalDate closeDate) {
-//        sql.insert("Product.closeStockByDate", closeDate);
+//    /**
+//     * 월말 마감 처리: 현재 `product` 테이블의 재고 정보를
+//     * 지정된 `closeDate` (보통 다음달 1일)의 기초 재고로 `productinitstock`에 저장합니다.
+//     *
+//     * @param closeDate 마감 처리 기준 날짜 (다음달 1일)
+//     */
+//    public void closeStock(LocalDate closeDate) {
+//        Map<String, Object> param = new HashMap<>();
+//        param.put("closeDate", closeDate);
+//        sql.insert("Product.closeStock", param);
 //    }
+
+
 }

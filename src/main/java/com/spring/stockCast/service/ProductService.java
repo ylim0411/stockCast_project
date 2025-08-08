@@ -85,30 +85,20 @@ public class ProductService {
         productRepository.updateProductName(productId, newName);
     }
 
-//    public List<StockQuantityDTO> getStockQuantityList(Integer month, String productName) {
-//        Map<String, Object> param = new HashMap<>();
-//
-//        if (month != null && month >= 1 && month <= 12) {
-//            YearMonth yearMonth = YearMonth.of(LocalDate.now().getYear(), month);
-//            LocalDate startDate = yearMonth.atDay(1);
-//            LocalDate endDate = yearMonth.atEndOfMonth();
-//            param.put("startDate", startDate);
-//            param.put("endDate", endDate);
-//        }
-//        if (productName != null && !productName.trim().isEmpty()) {
-//            param.put("productName", "%" + productName.trim() + "%");
-//        }
-//
-//        return productRepository.stockQuantityList(param);
+    // 재고 현황 조회 (기간 및 상품명으로 필터링)
+//    public List<StockQuantityDTO> getStockQuantityList(LocalDate startDate, LocalDate endDate, String productName) {
+//        // ProductRepository의 stockList 메서드를 호출합니다.
+//        return productRepository.stockList(startDate, endDate, productName);
 //    }
 //
-//    public void closeStockMonth(int month) {
-//        if (month < 1 || month > 12) {
-//            throw new IllegalArgumentException("월은 1~12 사이여야 합니다.");
-//        }
-//        LocalDate closeDate = YearMonth.of(LocalDate.now().getYear(), month).atEndOfMonth();
-//
-//        // 마감 처리 - productinitstock 테이블에 저장
-//        productRepository.closeStockByDate(closeDate);
+//    /**
+//     * 재고 마감 처리를 수행합니다.
+//     * 현재 상품 재고를 다음 달의 기초 재고로 설정합니다.
+//     *
+//     * @param closeDate 마감 처리 기준 날짜 (다음달 1일)
+//     */
+//    public void closeStockByDate(LocalDate closeDate) {
+//        productRepository.closeStock(closeDate);
 //    }
+
 }
