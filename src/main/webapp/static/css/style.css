@@ -3,6 +3,8 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 ol,
@@ -19,6 +21,8 @@ a {
 
 img {
   vertical-align: top;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 
 :root {
@@ -74,8 +78,8 @@ body {
 
 .StockCast {
   position: absolute;
-  left: 5%;
-  top: 10%;
+  left: 130px;
+  top: 140px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -96,9 +100,32 @@ body {
   object-fit: cover;
 }
 
-.StockCast span {
+.StockCast span,
+ul.difultImg li span {
   color: var(--color-white);
   font-size: var(--font-size-md);
+}
+
+ul.difultImg {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+ul.difultImg li {
+  width: 70px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+ul li.difultImg img {
+  width: 100%;
+  object-fit: cover;
+  padding: 5px;
 }
 
 /* login ------------------------------------------------- */
@@ -591,7 +618,7 @@ header .userContext .on {
   background-color: var(--color-white);
   border-radius: var(--border-radius-base10);
   box-shadow: var(--box-shadow);
-  padding: 20px 40px;
+  padding: 30px 50px;
   overflow: hidden;
 }
 
@@ -613,12 +640,12 @@ header .userContext .on {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 50%;
+  height: 60%;
 }
 
 .weather-box .weather-content img,
 .traffic-box .traffic-content img {
-  width: 150px;
+  width: 130px;
   height: auto;
   object-fit: cover;
 }
@@ -643,7 +670,7 @@ header .userContext .on {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 50%;
+  height: 40%;
 }
 
 .banner-title {
@@ -661,7 +688,6 @@ header .userContext .on {
 }
 
 .banner-buttons {
-  margin-top: 35px;
   display: flex;
   gap: 10px;
 }
@@ -676,7 +702,6 @@ header .userContext .on {
   height: auto;
   display: flex;
   flex-direction: column;
-  gap: 10px;
 }
 
 .section-wrap100 {
@@ -720,6 +745,104 @@ th {
   background-color: var(--color-secondary);
   color: var(--color-white);
   font-weight: bold;
+}
+
+/* 상품  테이블 ------------------------------------------------- */
+.product-table th:nth-child(1),
+.product-table td:nth-child(1),
+.product-table th:nth-child(2),
+.product-table td:nth-child(2),
+.product-table th:nth-child(4),
+.product-table td:nth-child(4) {
+  width: 10%;
+  max-width: 100px;
+}
+
+.product-table th:nth-child(3),
+.product-table td:nth-child(3),
+.product-table th:nth-child(6),
+.product-table td:nth-child(6) {
+  width: 7%;
+  max-width: 70px;
+}
+
+.product-table th:nth-child(5),
+.product-table td:nth-child(5) {
+  width: 12%;
+  max-width: 120px;
+}
+
+.product-table th:nth-child(7),
+.product-table td:nth-child(7) {
+  width: 25%;
+  max-width: 250px;
+}
+
+.product-table th:nth-child(8),
+.product-table td:nth-child(8) {
+  width: 7%;
+  max-width: 70px;
+}
+
+/* 재고현황 목록 테이블 ------------------------------------------------- */
+
+.stock-table th,
+.stock-table td {
+  border: 1px solid var(--color-border);
+}
+
+.stock-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+/* 대분류, 중분류, 상품명 (70px, 약 10%) */
+.stock-table th:nth-child(1),
+.stock-table td:nth-child(1), /* 대분류 */
+.stock-table th:nth-child(2),
+.stock-table td:nth-child(2), /* 중분류 */
+.stock-table th:nth-child(4),
+.stock-table td:nth-child(4) /* 상품명 */ {
+  width: 2%;
+  min-width: 70px;
+  word-break: keep-all;
+}
+
+/* 상품코드 + 모든 수량 (50px, 약 6%) */
+.stock-table th:nth-child(3),
+.stock-table td:nth-child(3), /* 상품코드 */
+ /* 입고 수량 */
+.stock-table th:nth-child(11),
+.stock-table td:nth-child(11), /* 출고 수량 */
+.stock-table th:nth-child(14),
+.stock-table td:nth-child(14) /* 기말 재고수량 */ {
+  width: 1%;
+  min-width: 20px;
+}
+
+/* 모든 단가·금액 (70px, 약 8%) */
+.stock-table th:nth-child(5),
+.stock-table td:nth-child(5), /* 기초 재고수량 */
+.stock-table th:nth-child(8),
+.stock-table td:nth-child(8),
+.stock-table th:nth-child(6),
+.stock-table td:nth-child(6), /* 기초 재고단가 */
+.stock-table th:nth-child(7),
+.stock-table td:nth-child(7), /* 기초 재고금액 */
+.stock-table th:nth-child(9),
+.stock-table td:nth-child(9), /* 입고 단가 */
+.stock-table th:nth-child(10),
+.stock-table td:nth-child(10), /* 입고 금액 */
+.stock-table th:nth-child(12),
+.stock-table td:nth-child(12), /* 출고 단가 */
+.stock-table th:nth-child(13),
+.stock-table td:nth-child(13), /* 출고 금액 */
+.stock-table th:nth-child(15),
+.stock-table td:nth-child(15), /* 기말 재고단가 */
+.stock-table th:nth-child(16),
+.stock-table td:nth-child(16) /* 기말 재고금액 */ {
+  width: 3%;
+  max-width: 70px;
 }
 
 /* 발주 현황 테이블 ------------------------------------------------- */
@@ -901,30 +1024,34 @@ select {
   white-space: nowrap;
 }
 
-/* orderItems 고정 폭 설정 */
 .orderItems th:nth-child(1),
 .orderItems td:nth-child(1) {
-  width: 50px; /* 체크박스 */
+  min-width: 50px;
+  width: 5%;
 }
 
 .orderItems th:nth-child(2),
 .orderItems td:nth-child(2) {
-  width: 200px; /* 상품명 */
+  min-width: 200px;
+  width: 25%;
 }
 
 .orderItems th:nth-child(3),
 .orderItems td:nth-child(3) {
-  width: 120px; /* 구매단가 */
+  min-width: 120px;
+  width: 15%;
 }
 
 .orderItems th:nth-child(4),
 .orderItems td:nth-child(4) {
-  width: 80px; /* 수량 */
+  min-width: 80px;
+  width: 10%;
 }
 
 .orderItems th:nth-child(5),
 .orderItems td:nth-child(5) {
-  width: 150px; /* 총 금액 */
+  min-width: 150px;
+  width: 20%;
 }
 
 .clientsName select,
@@ -1104,11 +1231,12 @@ input[type='number']::-webkit-outer-spin-button {
   border-radius: var(--border-radius-base5);
   font-size: var(--font-size-base);
 }
+
 .search-period-info {
   text-align: right;
   margin-bottom: 10px;
   font-size: 14px;
-  color: #6c757d;
+  color: var(--color-black);
 }
 /* ho */
 
@@ -1117,10 +1245,10 @@ select {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23333333' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23333' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 10px center;
-  background-size: 15px;
+  background-size: 10px;
   cursor: pointer;
 }
 
