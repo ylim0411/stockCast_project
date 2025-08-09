@@ -31,4 +31,57 @@
     <select id="findSaleYear" resultType="String">
         SELECT DISTINCT(SUBSTR(saleDate,1,4)) FROM sale
     </select>
+    <!-- saleId 제일큰수 찾기, 주문번호 출력용 ho -->
+    <select id="findMaxSaleId" resultType="int">
+        SELECT MAX(saleId) saleId FROM sale
+    </select>
+    <!-- sale 항목 db에 추가 ho -->
+    <insert id="saleCreateStmt" parameterType="map">
+        INSERT INTO sale(saleId,saleDate)
+        VALUES (#{saleId},#{today})
+    </insert>
+    <!-- 위에서 등록한 sale 항목에 구매상품 등록 ho -->
+    <insert id="saleSave" parameterType="map">
+        INSERT INTO sale_product(saleId,productId,salePrice,saleQty)
+        VALUES (#{saleId},#{productId},(SELECT price FROM product WHERE productId = #{productId}),#{qty})
+    </insert>
+    <!-- 상품이름으로 상품아이디 찾기 ho -->
+    <select id="findProductId" parameterType="String" resultType="int">
+        SELECT productId FROM product
+        WHERE productName = #{pName}
+    </select>
+    <!-- 회계에서 판매시 연동 accounting 추가 ho -->
+    <insert id="insertOrder" parameterType="map">
+        INSERT INTO accounting(saleId, transactionDate)
+        VALUES(#{saleId},#{today});
+    </insert>
+    <!-- 위 내용 이후 발주시 차변입력 연동 ho -->
+    <insert id="insertAccountOrderDebit" parameterType="map">
+        INSERT INTO account_transaction(accountingId,itemId,value,direction)
+        VALUES((SELECT accountingId FROM accounting
+        WHERE saleId = #{saleId} AND isEntry = 0),(SELECT itemId FROM account_item
+        WHERE name = '외상매출금'),(SELECT price FROM product WHERE productId = #{productId})*#{qty},'차변');
+    </insert>
+    <!-- 위 내용 이후 발주시 대변입력 연동 ho -->
+    <insert id="insertAccountOrderCredit" parameterType="map">
+        INSERT INTO account_transaction(accountingId,itemId,value,direction)
+        VALUES((SELECT accountingId FROM accounting
+        WHERE saleId = #{saleId} AND isEntry = 0),(SELECT itemId FROM account_item
+        WHERE name = '상품매출'),(SELECT price FROM product WHERE productId = #{productId})*#{qty},'대변');
+    </insert>
+    <!-- 회계 기입 후 구분하는 불리안 true처리 ho -->
+    <update id="updateEntry" parameterType="map">
+        UPDATE accounting SET isEntry = 1
+        WHERE saleId = #{saleId} AND isEntry = 0;
+    </update>
+    <!-- 상품재고 확인 -->
+    <select id="findProductStock" parameterType="map" resultType="int">
+        SELECT stockQuantity FROM product
+        WHERE productName = #{productName}  AND storeId =#{storeId};
+    </select>
+    <!-- 판매점포 이름 가져오기 -->
+    <select id="findStoreName" parameterType="String" resultType="String">
+        SELECT storeName FROM store
+        WHERE storeId = #{storeId}
+    </select>
 </mapper>

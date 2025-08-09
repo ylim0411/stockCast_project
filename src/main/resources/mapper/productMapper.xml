@@ -120,17 +120,27 @@
     <select id="findProductsByCategoryId" parameterType="int" resultType="StockQuantity">
         SELECT * FROM product WHERE categoryId = #{parentId};
     </select>
+    <!-- 발주시 상품재고 증가 ho -->
     <update id="updateOrder" parameterType="map">
         UPDATE product SET stockQuantity = stockQuantity+#{purchaseQty}
         WHERE productId = #{productId};
     </update>
-
+    <!-- 판매시 상품재고 감소 ho -->
+    <update id="updateSale" parameterType="map">
+        UPDATE product SET stockQuantity = stockQuantity-#{qty}
+        WHERE productId = #{productId};
+    </update>
     <!-- 모달창 카테고리명 수정 -->
     <update id="updateProductName" parameterType="map">
         UPDATE product
         SET productName = #{newName}
         WHERE productId = #{productId};
     </update>
+    <!-- 점포 아이디에 맞는 상품 가져오기 ho -->
+    <select id="findProductSaleAll" parameterType="String" resultType="Product">
+        SELECT * FROM product
+        WHERE storeId = #{storeId}
+    </select>
 
 <!--    <select id="stockList" parameterType="map" resultType="StockQuantityDTO">-->
 <!--        SELECT-->

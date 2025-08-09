@@ -73,6 +73,10 @@ public class ProductRepository {
         sql.update("Product.updateProductName", param);
     }
 
+    public List<ProductDTO> findProductSaleAll(String storeId) {
+        return sql.selectList("Product.findProductSaleAll",storeId);
+    }
+
 //    public List<StockQuantityDTO> stockList(LocalDate startDate, LocalDate endDate, String productName) {
 //        Map<String, Object> param = new HashMap<>();
 //        param.put("startDate", startDate);

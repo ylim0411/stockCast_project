@@ -14,8 +14,6 @@
            <img src="${pageContext.request.contextPath}/static/images/StockCast.png" alt="StockCast" />
         </a>
       </div>
-      <a href="/main/">로그인하기 귀찮..</a>
-      <a href="/sales/saleOrder">모의판매</a>
     </div>
 </body>
 </html>
