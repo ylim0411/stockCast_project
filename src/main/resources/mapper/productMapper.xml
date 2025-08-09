@@ -57,7 +57,7 @@
     </insert>
 
     <select id="findProductByName" parameterType="String" resultType="Product">
-        SELECT * FROM product WHERE productName = #{productName};
+        SELECT * FROM product WHERE productName LIKE #{productName};
     </select>
 
     <!-- 발주 카테고리별 상품 조회 young -->
