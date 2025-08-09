@@ -73,9 +73,16 @@ public class ProductRepository {
         sql.update("Product.updateProductName", param);
     }
 
+
+//    // 재고 20개 이하 알림창 you
+//    public List<StockQuantityDTO> findLowStock() { // 추가
+//        return sql.selectList("Product.findLowStock");
+//    }
+
     public List<ProductDTO> findProductSaleAll(String storeId) {
         return sql.selectList("Product.findProductSaleAll",storeId);
     }
+
 
 //    public List<StockQuantityDTO> stockList(LocalDate startDate, LocalDate endDate, String productName) {
 //        Map<String, Object> param = new HashMap<>();

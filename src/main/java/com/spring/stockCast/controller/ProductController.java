@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import java.util.stream.Collectors;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -140,6 +141,23 @@ public class ProductController {
 //            // 에러 발생 시 로그 기록 및 실패 반환
 //            return "failure";
 //        }
+//    }
+
+
+
+    @GetMapping("/lowStock")
+    @ResponseBody
+    public List<StockQuantityDTO> getLowStockProducts() {
+        List<StockQuantityDTO> allStock = productService.stockQuantityList(null);
+        return allStock.stream()
+                .filter(p -> p.getStockQuantity() != null && p.getStockQuantity() <= 20)
+                .collect(Collectors.toList());
+    }
+
+//    @GetMapping("/lowStock")
+//    @ResponseBody
+//    public List<StockQuantityDTO> getLowStockProducts() { // 수정
+//        return productService.findLowStock();
 //    }
 
 

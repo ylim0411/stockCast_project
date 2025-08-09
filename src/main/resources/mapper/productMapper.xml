@@ -117,20 +117,28 @@
         VALUES (#{storeId}, #{categoryId}, #{productName}, #{price}, #{stockQuantity});
     </insert>
 
+    <!-- 확인중 you -->
     <select id="findProductsByCategoryId" parameterType="int" resultType="StockQuantity">
         SELECT * FROM product WHERE categoryId = #{parentId};
     </select>
+
     <!-- 발주시 상품재고 증가 ho -->
+
     <update id="updateOrder" parameterType="map">
         UPDATE product SET stockQuantity = stockQuantity+#{purchaseQty}
         WHERE productId = #{productId};
     </update>
+
+
+    <!-- 모달창 카테고리명 수정 you -->
+
     <!-- 판매시 상품재고 감소 ho -->
     <update id="updateSale" parameterType="map">
         UPDATE product SET stockQuantity = stockQuantity-#{qty}
         WHERE productId = #{productId};
     </update>
     <!-- 모달창 카테고리명 수정 -->
+
     <update id="updateProductName" parameterType="map">
         UPDATE product
         SET productName = #{newName}
@@ -141,6 +149,20 @@
         SELECT * FROM product
         WHERE storeId = #{storeId}
     </select>
+
+<!--    &lt;!&ndash; 재고20개 알림창 수정 you &ndash;&gt;-->
+<!--    <select id="findLowStock" resultType="StockQuantity">-->
+<!--        SELECT-->
+<!--        psv.productId            AS productId,-->
+<!--        psv.productName          AS productName,-->
+<!--        psv.categoryName         AS categoryName,-->
+<!--        psv.topLevelCategoryName AS topLevelCategoryName,-->
+<!--        psv.price                AS price,-->
+<!--        psv.stockQuantity        AS stockQuantity-->
+<!--        FROM product_summary_view psv-->
+<!--        WHERE psv.stockQuantity <= 20-->
+<!--        ORDER BY psv.stockQuantity ASC, psv.productName ASC-->
+<!--    </select>-->
 
 <!--    <select id="stockList" parameterType="map" resultType="StockQuantityDTO">-->
 <!--        SELECT-->

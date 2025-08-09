@@ -125,10 +125,13 @@
       </div>
       <div class="lowStockList-box">
       <ul id="lowStockList" class="stock-card-list">
-        <li>
+
+        <!-- 재고 부족 상품 카드들이 여기 들어감
+         <li>
           <p>아이스크림</p>
           <p>현재 2개 / <span>필요 5개</span></p>
         </li>
+        -->
       </ul>
       </div>
     </div>
@@ -247,4 +250,39 @@
           startDateInput.setAttribute('max', maxDate);
         }
       });
+
+    </script>
+
+    <!-- 재고 모달 -->
+    <script>
+        function loadLowStockList() {
+            $.get("${pageContext.request.contextPath}/product/lowStock", function(data) {
+                const $list = $("#lowStockList").empty();
+                if (data.length === 0) {
+                    $list.append("<li><p>재고 부족 상품이 없습니다.</p></li>");
+                } else {
+                    data.forEach(item => {
+                        $list.append(`
+                            <li class="low-stock-item" data-product-id="${item.productId}">
+                                <p>${item.productName}</p>
+                                <p>현재 ${item.stockQuantity}개 / <span>기준 20개</span></p>
+                            </li>
+                        `);
+                    });
+                }
+            });
+        }
+
+        // 모달 열릴 때 불러오기
+        function openModal() {
+            loadLowStockList();
+            $('#customModal').fadeIn();
+        }
+
+        // 클릭 시 발주 페이지 이동
+        $(document).on("click", ".low-stock-item", function() {
+            window.location.href = "${pageContext.request.contextPath}/order/orderSave";
+        });
+
+
     </script>
