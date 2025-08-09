@@ -74,8 +74,10 @@ public class OrderStmtRepository {
         sql.delete("Orders.deleteOrder", orderId);
     }
 
-    // 발주서 status  수정
+    // 발주서 status  수정 ho
     public void updateStatus(Map<String, Object> param) {
         sql.update("Orders.updateStatus",param);
     }
+    // 이번달 발주내역 불러오기 ho
+    public List<OrderStmtDTO> findByMonth(String currentMonth) { return sql.selectList("Orders.findByMonth",currentMonth); }
 }

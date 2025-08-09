@@ -16,6 +16,7 @@
     <title>StockCast</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="${pageContext.request.contextPath}/webjars/chartjs/2.9.4/Chart.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css" />
     <%@ include file="/WEB-INF/views/header.jsp" %>
   </head>
@@ -78,12 +79,24 @@
              <p class="box-title">수익/비용 통계</p>
            </div>
            <div class="chart-box">
-
+             <canvas id="moneyChart"></canvas>
            </div>
           </div>
           <div class="ranking-box">
             <div class="temperature">
-             <p class="box-title">판매실적 순위</p>
+             <table>
+               <tr>
+                <th colspan="2">판매실적 순위</th>
+               </tr>
+              <c:set var="number" value="1"/>
+              <c:forEach var="top" items="${saleTop}">
+                <tr>
+                 <td>${number}</td>
+                 <td>${top}</td>
+                </tr>
+               <c:set var="number" value="${number+1}"/>
+              </c:forEach>
+             </table>
             </div>
             <div class="ranking">
 
@@ -131,4 +144,85 @@
      });
    });
   </script>
+ <script>
+     // JSP에서 JSTL을 사용하여 동적으로 데이터 생성
+     var salesLabels = [];
+     var salesData = [];
+     var expensesData = []; // 비용 데이터를 위한 새로운 배열
+
+     // 수익 데이터
+     <c:forEach items="${monthPrice}" var="entry">
+         salesLabels.push('${entry.key}');
+         salesData.push(${entry.value});
+     </c:forEach>
+
+     // 비용 데이터를 가져오는 JSTL (예시)
+     // Controller에서 비용 데이터를 monthExpenses 같은 이름으로 전달해야 합니다.
+     <c:forEach items="${monthExpenses}" var="entry">
+         expensesData.push(${entry.value});
+     </c:forEach>
+
+     var salesCtx = document.getElementById("moneyChart").getContext("2d");
+     var salesChart = new Chart(salesCtx, {
+       type: "line",
+       data: {
+         labels: salesLabels,
+         datasets: [
+           {
+             label: "수익", // 첫 번째 데이터셋: 수익
+             data: salesData,
+             backgroundColor: "rgba(54, 162, 235, 0.2)", // 수익 라인 색상
+             borderColor: "rgba(54, 162, 235, 1)",
+             borderWidth: 2,
+             fill: true,
+             tension: 0.3,
+             pointBackgroundColor: "rgba(54, 162, 235, 1)",
+             pointBorderColor: "#fff",
+             pointHoverBackgroundColor: "#fff",
+             pointHoverBorderColor: "rgba(54, 162, 235, 1)",
+           },
+           {
+             label: "비용", // 두 번째 데이터셋: 비용
+             data: expensesData,
+             backgroundColor: "rgba(255, 99, 132, 0.2)", // 비용 라인 색상
+             borderColor: "rgba(255, 99, 132, 1)",
+             borderWidth: 2,
+             fill: true,
+             tension: 0.3,
+             pointBackgroundColor: "rgba(255, 99, 132, 1)",
+             pointBorderColor: "#fff",
+             pointHoverBackgroundColor: "#fff",
+             pointHoverBorderColor: "rgba(255, 99, 132, 1)",
+           }
+         ],
+       },
+       options: {
+         responsive: true,
+         maintainAspectRatio: false,
+         scales: {
+           xAxes: [{
+             scaleLabel: {
+               display: false
+             }
+           }],
+           yAxes: [{
+             ticks: {
+               beginAtZero: true
+             },
+             scaleLabel: {
+               display: false
+             }
+           }]
+         },
+         legend: {
+           display: true, // 범례를 다시 보이도록 설정하여 수익/비용 라인을 구분
+           position: 'bottom',
+         },
+         title: {
+           display: true,
+           text: "수익/비용 통계",
+         },
+       },
+     });
+   </script>
 </html>
