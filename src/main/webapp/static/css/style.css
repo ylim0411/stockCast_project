@@ -585,10 +585,13 @@ header .userContext .on {
 .section1 .traffic-box,
 .section2 .sales-chart-box,
 .section2 .ranking-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: var(--color-white);
   border-radius: var(--border-radius-base10);
   box-shadow: var(--box-shadow);
-  padding: 20px;
+  padding: 20px 40px;
   overflow: hidden;
 }
 
@@ -610,13 +613,13 @@ header .userContext .on {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 20px 0 20px;
+  height: 50%;
 }
 
 .weather-box .weather-content img,
 .traffic-box .traffic-content img {
   width: 150px;
-  height: 150px;
+  height: auto;
   object-fit: cover;
 }
 
@@ -637,19 +640,19 @@ header .userContext .on {
 }
 
 .recommend-banner {
-  margin-top: 20px;
-  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 50%;
 }
 
 .banner-title {
   font-size: var(--font-size-md);
   font-weight: 600;
-  margin-bottom: 10px;
 }
 
 .recommend-text {
   font-size: var(--font-size-lg);
-  margin-bottom: 15px;
   line-height: 1.5;
 }
 
