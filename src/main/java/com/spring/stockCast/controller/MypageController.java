@@ -34,9 +34,14 @@ public class MypageController {
         int totalCount = storeService.countByAdminId(adminDTO.getAdminId());
         int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 
-        // page가 1보다 작거나 totalPages보다 크면 보정
-        if (page < 1) page = 1;
-        else if (page > totalPages) page = totalPages;
+        if (page > totalPages)
+        {
+            page = totalPages;
+        }
+        if (page < 1)
+        {
+            page = 1;
+        }
 
         int offset = (page - 1) * pageSize;
 

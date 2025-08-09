@@ -270,7 +270,10 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </div>
               <div style="flex: 1">
                 <label>팩스번호</label>
-                <input type="text" name="fax" />
+                <input type="text" name="fax"
+                       pattern="^0\d{1,2}-?\d{3,4}-?\d{4}$"
+                       title="팩스번호 형식: 02-123-4567 또는 021234567" />
+
               </div>
             </div>
 
@@ -367,7 +370,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </div>
               <div style="flex: 1">
                 <label>팩스번호</label>
-                <input type="text" name="fax" />
+                <input type="text" name="fax"
+                       pattern="^0\d{1,2}-?\d{3,4}-?\d{4}$"
               </div>
             </div>
 
