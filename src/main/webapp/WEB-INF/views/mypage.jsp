@@ -265,7 +265,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             <input type="text" name="storeAddress" required />
 
             <label>전화번호</label>
-            <input type="text" name="storePhone" required />
+            <input type="text" name="storePhone"
+                   required
+                   pattern="^(01[0-9]-?\d{3,4}-?\d{4}|0\d{1,2}-?\d{3,4}-?\d{4})$"
+                   title="휴대폰(예: 010-1234-5678 또는 01012345678), 집전화(예: 02-123-4567 또는 021234567) 형식으로 입력하세요" />
+
 
             <label>이메일</label>
             <input type="email" name="storeEmail" required />

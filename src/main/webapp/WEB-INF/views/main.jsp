@@ -1,9 +1,14 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %> <%@ taglib prefix="c"
-uri="http://java.sun.com/jsp/jstl/core" %> <%@ page import="java.time.LocalDate" %> <%@ page
-import="java.time.format.TextStyle" %> <%@ page import="java.util.Locale" %> <% LocalDate futureDate =
-LocalDate.now().plusDays(3); String dayOfWeek = futureDate.getDayOfWeek().getDisplayName(TextStyle.SHORT,
-Locale.KOREAN); String formattedDate = futureDate.getMonthValue() + "월 " + futureDate.getDayOfMonth() + "일 (" +
-dayOfWeek + ")"; %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="java.time.LocalDate" %>
+<%@ page import="java.time.format.TextStyle" %>
+<%@ page import="java.util.Locale" %>
+<%
+    LocalDate futureDate = LocalDate.now().plusDays(3);
+    String dayOfWeek = futureDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN);
+    String formattedDate = futureDate.getMonthValue() + "월 " + futureDate.getDayOfMonth() + "일 (" + dayOfWeek + ")";
+%>
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -16,13 +21,9 @@ dayOfWeek + ")"; %>
   </head>
   <body>
     <div id="main" class="container">
-      <!-- <div class="title-box">
-        <p class="sub-title">대시보드</p>
-        <h2 class="title">대시보드</h2>
-      </div> -->
-
       <div class="section-wrap100">
         <div class="section1">
+         <!-- 날씨 API -->
           <div class="weather-box">
             <div class="weather-content">
               <div class="temperature">
@@ -30,12 +31,15 @@ dayOfWeek + ")"; %>
                 <strong>${weather.temperature != null ? weather.temperature : '정보 없음'}°C</strong>
                 <span class="rain">강수확률 ${weather.pop}%</span>
               </div>
-              <img src="/static/images/weather/${weather.icon}.png" alt="날씨 아이콘" class="weather-icon" />
+               <img src="/static/images/weather/${not empty weather.icon ? weather.icon : 'default'}.png" alt="날씨 아이콘" class="weather-icon" />
             </div>
             <!-- weather-content -->
 
             <div class="recommend-banner">
-              <p class="recommend-text"><span>${weather.recommendation}</span>의 판매량이 </br> 늘어날 것으로 예상됩니다.</p>
+            <p class="recommend-text">
+                <span class="weather-recommendation">${weather.recommendation != null ? weather.recommendation : '추천 문구 없음'}</span>의 판매량이 <br>
+                늘어날 것으로 예상됩니다.
+            </p>
               <div class="banner-buttons">
                 <button onclick="location.href='/order/orderSave'" class="btn btn-blue">발주서 작성</button>
                 <button onclick="location.href='/product/list'" class="btn btn-blue">상품 목록 보기</button>
@@ -45,45 +49,20 @@ dayOfWeek + ")"; %>
           </div>
           <!-- weather-box -->
 
-          <!-- 유동인구 예측 박스 -->
+          <!-- 유동인구 API -->
           <div class="traffic-box">
             <div class="traffic-content">
               <div class="temperature">
-                <strong>
-                  <c:choose>
-                    <c:when test="${traffic.maxGroup == '10대'}">
-                      <strong>${traffic.age10}</strong>
-                    </c:when>
-                    <c:when test="${traffic.maxGroup == '20대'}">
-                      <strong>${traffic.age20}</strong>
-                    </c:when>
-                    <c:when test="${traffic.maxGroup == '30대'}">
-                      <strong>${traffic.age30}</strong>
-                    </c:when>
-                    <c:when test="${traffic.maxGroup == '40대'}">
-                      <strong>${traffic.age40}</strong>
-                    </c:when>
-                    <c:when test="${traffic.maxGroup == '50대'}">
-                      <strong>${traffic.age50}</strong>
-                    </c:when>
-                    <c:when test="${traffic.maxGroup == '60대'}">
-                      <strong>${traffic.age60}</strong>
-                    </c:when>
-                    <c:when test="${traffic.maxGroup == '70대'}">
-                      <strong>${traffic.age70}</strong>
-                    </c:when>
-                    <c:otherwise>
-                      <strong>정보 없음</strong>
-                    </c:otherwise>
-                  </c:choose>
-                </strong>
-                <span class="rain">유동인구 최다 연령대: ${traffic.maxGroup}</span>
+                <strong>${traffic.temperature != null ? traffic.temperature : '정보 없음'}</strong>
+                <span class="rain">유동인구 최다 연령대: ${traffic.maxGroup != null ? traffic.maxGroup : '정보 없음'}</span>
               </div>
-              <img src="/static/images/weather/${traffic.icon}.png" alt="사람 아이콘" class="weather-icon" />
+              <img src="/static/images/age/${not empty traffic.icon ? traffic.icon : 'age20'}.png" alt="사람 아이콘" class="age-icon" />
             </div>
 
             <div class="recommend-banner">
-              <p class="recommend-text"><span>${traffic.recommendation}</span>의 판매량이 </br> 늘어날 것으로 예상됩니다.</p>
+              <p class="recommend-text">
+                  <span class="traffic-recommendation">${traffic.recommendation != null ? traffic.recommendation : '추천 문구 없음'}</span>의 판매량이 </br> 늘어날 것으로 예상됩니다.
+              </p>
               <div class="banner-buttons">
                 <button onclick="location.href='/order/orderSave'" class="btn btn-blue">발주서 작성</button>
                 <button onclick="location.href='/product/list'" class="btn btn-blue">상품 목록 보기</button>
@@ -113,7 +92,43 @@ dayOfWeek + ")"; %>
         </div>
         <!-- section2 -->
       </div>
-      <!-- section-wrap80 -->
+      <!-- section-wrap100 -->
     </div>
   </body>
+
+  <script>
+    $(document).ready(function () {
+      // 날씨
+      $.ajax({
+        url: '/api/weather',
+        type: 'GET',
+        success: function (data) {
+          $('.temperature strong').first().text(data.temperature + '°C');
+          $('.temperature .rain').first().text('강수확률 ' + data.pop + '%');
+          $('.weather-icon').first().attr('src', '/static/images/weather/' + (data.icon || 'default') + '.png');
+          $('.weather-recommendation').text(data.recommendation);
+          console.log('날씨 데이터:', data);
+        },
+        error: function (xhr, status, error) {
+          console.log('[날씨] 데이터 로드 실패:', error);
+        }
+      });
+
+     // 유동인구
+    $.ajax({
+       url: '/api/traffic',
+       type: 'GET',
+       success: function (data) {
+         $('.traffic-content strong').text(data.temperature || '정보 없음');
+         $('.traffic-content .rain').text('유동인구 최다 연령대: ' + (data.maxGroup || '정보 없음'));
+         $('.traffic-content .age-icon').attr('src', '/static/images/age/' + (data.icon || 'age20') + '.png');
+         $('.traffic-recommendation').text(data.recommendation || '추천 문구 없음');
+         console.log('유동인구 데이터:', data);
+       },
+       error: function (xhr, status, error) {
+         console.log('[유동인구] 데이터 로드 실패:', error);
+       }
+     });
+   });
+  </script>
 </html>

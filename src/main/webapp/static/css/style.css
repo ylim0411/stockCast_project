@@ -61,26 +61,181 @@ body {
   font-family: var(--font-family-default);
 }
 
+/* Desktop ------------------------------------------ */
+
 .Desktop {
-  width:100%;
-  height:100%;
-  background-image: url('${pageContext.request.contextPath}/static/images/desktop.png');
+  position: relative;
+  width: 100%;
+  height: 100%;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
 }
 
 .StockCast {
-  width: 100px;
-  height: 100px;
+  position: absolute;
+  left: 5%;
+  top: 10%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
+.StockCast a {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(146deg, #0d47a1, #1976d2, #42a5f5);
+  border-radius: var(--border-radius-base10);
+  padding: 5px;
+  text-align: center;
+}
+
 .StockCast img {
+  width: 90%;
+  object-fit: cover;
+}
+
+.StockCast span {
+  color: var(--color-white);
+  font-size: var(--font-size-md);
+}
+
+/* login ------------------------------------------------- */
+
+.login,
+.join-container {
+  position: absolute;
+  left: 50%;
+  top: 15%;
+  transform: translateX(-50%);
+}
+
+.login .logo,
+.join-container .logo {
+  width: 320px;
+  margin: 10px auto;
+}
+
+.login .logo img,
+.join-container .logo img {
   width: 100%;
   object-fit: cover;
+}
+
+.login .login-text,
+.join-container .join-text {
+  width: 500px;
+  background-color: white;
+  padding: 50px;
+  border-radius: var(--border-radius-base10);
+  box-shadow: var(--box-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.login input[type='text'],
+.login input[type='password'],
+.join-container input[type='text'],
+.join-container input[type='password'] {
+  width: 100%;
+  height: 52px;
+  padding: 25px 20px;
+  margin-bottom: 20px;
+  text-align: left;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-base5);
+  font-size: var(--font-size-md);
+  box-sizing: border-box;
+}
+
+.login .btn,
+.join-container .btn {
+  width: 100%;
+  margin: 0;
+  padding: 15px;
+  font-size: var(--font-size-md);
+}
+
+input[type='text']:focus:not([readonly]),
+input[type='password']:focus:not([readonly]),
+textarea:focus {
+  border-color: var(--color-primary);
+  outline: none;
+}
+
+.login-divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  color: var(--color-gray);
+  font-size: 14px;
+}
+
+.login-divider::before,
+.login-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-gray);
+  margin: 0 12px;
+}
+
+.social-login {
+  margin-bottom: 20px;
+}
+
+.google-login {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.google-login img {
+  width: 20px;
+  height: 20px;
+}
+
+.login-links {
+  text-align: center;
+  font-size: 14px;
+}
+
+.login-links .forgot {
+  display: block;
+  margin: 12px 0 8px;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.login-links .forgot:hover {
+  text-decoration: underline;
+}
+
+.login-links .join {
+  font-weight: 700;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.login-links .join:hover {
+  text-decoration: underline;
+}
+
+.error-msg {
+  margin-top: -18px;
+  margin-left: 5px;
+  font-size: var(--font-size-sm);
+  color: var(--color-red);
 }
 
 /* modal ------------------------------------------------- */
@@ -430,10 +585,13 @@ header .userContext .on {
 .section1 .traffic-box,
 .section2 .sales-chart-box,
 .section2 .ranking-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   background-color: var(--color-white);
   border-radius: var(--border-radius-base10);
   box-shadow: var(--box-shadow);
-  padding: 20px;
+  padding: 20px 40px;
   overflow: hidden;
 }
 
@@ -455,13 +613,13 @@ header .userContext .on {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 20px 20px 0 20px;
+  height: 50%;
 }
 
 .weather-box .weather-content img,
 .traffic-box .traffic-content img {
   width: 150px;
-  height: 150px;
+  height: auto;
   object-fit: cover;
 }
 
@@ -482,19 +640,19 @@ header .userContext .on {
 }
 
 .recommend-banner {
-  margin-top: 20px;
-  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 50%;
 }
 
 .banner-title {
   font-size: var(--font-size-md);
   font-weight: 600;
-  margin-bottom: 10px;
 }
 
 .recommend-text {
   font-size: var(--font-size-lg);
-  margin-bottom: 15px;
   line-height: 1.5;
 }
 
