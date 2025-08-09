@@ -2,16 +2,16 @@ package com.spring.stockCast.service;
 
 import com.spring.stockCast.dto.OrderStmtDTO;
 import com.spring.stockCast.dto.PageDTO;
+import com.spring.stockCast.dto.SaleDTO;
 import com.spring.stockCast.enums.OrderStatus;
 import com.spring.stockCast.repository.OrderStmtRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -133,5 +133,31 @@ public class OrderStmtService {
         param.put("id", id);
         param.put("status", status);
         orderStmtRepository.updateStatus(param);
+    }
+    // 연도별 발주비용 월별 조회(꺾은선 그래프 구성용) ho
+    public Map<String, Integer> orderMonth(List<OrderStmtDTO> orderList) {
+        Map<String, Integer> monthPrice = new LinkedHashMap<>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 날짜 포맷 지정
+
+        // saleList에 있는 판매 기록을 순회합니다.
+        for (OrderStmtDTO sale : orderList) {
+            Date saleDate = sale.getOrderDate();
+            int price = sale.getTotalPrice();
+            int quantity = sale.getTotalCount();
+
+            // Date 객체를 지정된 "yyyy-MM-dd" 형식의 문자열로 변환합니다.
+            String dateKey = sdf.format(saleDate);
+
+            int currentTotal = monthPrice.getOrDefault(dateKey, 0);
+            int newTotal = currentTotal + (price * quantity);
+
+            monthPrice.put(dateKey, newTotal);
+        }
+
+        return monthPrice;
+    }
+    // 이번달 발주내역 가져오기
+    public List<OrderStmtDTO> findByMonth(String currentMonth) {
+        return orderStmtRepository.findByMonth(currentMonth);
     }
 }

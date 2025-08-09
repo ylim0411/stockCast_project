@@ -37,5 +37,4 @@
     <delete id="deleteByOrderId" parameterType="int">
         DELETE FROM purchaseOrder WHERE orderId = #{orderId}
     </delete>
-
 </mapper>

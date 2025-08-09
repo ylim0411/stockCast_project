@@ -110,80 +110,40 @@
 
 <script>
 $(document).ready(function(){
-
     // 행 추가 버튼 클릭 시 이벤트 리스너
-    $('.add-row').click(function(){
-        // 템플릿 행을 복제 (깊은 복제)
-        let $newRow = $('.template').clone(true).removeClass('template').show();
+    $('.add-row').on('click', function(){
+        let $newRow = $('.template').clone().removeClass('template').show();
 
         // 복제된 새 행에 name 속성 추가
         $newRow.find('.product-select').attr('name', 'productName[]');
         $newRow.find('.qty-hidden').attr('name', 'purchaseQty[]');
 
-        // 복제된 input 필드들의 값을 초기화
         $newRow.find('input').val('');
-
-        // 테이블에 새 행 추가
         $('table.orderItems tbody').append($newRow);
-
         updateProductOptions();
         calcSummary();
     });
-    // 수량 입력 시 총 금액 및 재고 확인
-    $(document).on('change', '.count-input', function(){
-        let $currentRow = $(this).closest('tr');
-        let selectedProductName = $currentRow.find('.product-select').val();
-        let enteredQuantity = parseInt($(this).val()) || 0;
 
-        // 상품이 선택되어 있을 때만 재고 확인
-        if (selectedProductName) {
-            // 서버에 재고 정보 요청 (Ajax)
-            $.ajax({
-                url: "/sales/getStock", // 재고를 가져올 새로운 컨트롤러 경로
-                type: "post",
-                data: { productName: selectedProductName },
-                success: function(availableStock) {
-                    if (enteredQuantity > availableStock) {
-                        alert('재고가 부족합니다. 남은 재고: ' + availableStock + '개');
-                        // 입력값을 재고 수량으로 변경하거나 0으로 초기화
-                        $currentRow.find('.count-input').val(availableStock);
-                        enteredQuantity = availableStock; // 로직의 일관성을 위해 변수도 업데이트
-                    }
-
-                    // 재고 확인 후 기존의 총 금액 계산 함수 호출
-                    calculateRowTotal($currentRow.find('.count-input'));
-                },
-                error: function(xhr, status, error) {
-                    console.error("재고 확인 중 오류 발생:", xhr.status, error);
-                    alert("재고 정보를 가져오는 데 실패했습니다.");
-                    // 오류 발생 시에도 총 금액 계산을 위해 호출
-                    calculateRowTotal($currentRow.find('.count-input'));
-                }
-            });
-        } else {
-            // 상품이 선택되지 않았을 경우, 기존 로직만 실행
-            calculateRowTotal($(this));
-        }
-    });
     // 선택 삭제 버튼 클릭 시 이벤트 리스너
-    $('#delete-selected').click(function(){
+    $('#delete-selected').on('click', function(){
         $('.item-row .row-select:checked').each(function(){
             $(this).closest('tr').remove();
         });
         updateProductOptions();
         calcSummary();
+        $('#select-all').prop('checked', false);
     });
 
     // 전체 선택/해제
-    $('#select-all').click(function(){
+    $('#select-all').on('click', function(){
         $('.row-select').prop('checked', $(this).prop('checked'));
     });
 
     // 개별 체크박스 클릭 시 전체 선택 체크박스 상태 업데이트
     $(document).on('click', '.row-select', function(){
-        let totalCheckboxes = $('.row-select').not('#select-all').length;
-        let checkedCheckboxes = $('.row-select:checked').not('#select-all').length;
-        $('#select-all').prop('checked', totalCheckboxes === checkedCheckboxes);
+        let totalCheckboxes = $('.item-row:not(.template) .row-select').length;
+        let checkedCheckboxes = $('.item-row:not(.template) .row-select:checked').length;
+        $('#select-all').prop('checked', totalCheckboxes === checkedCheckboxes && totalCheckboxes > 0);
     });
 
     // 상품 선택 시 발생하는 이벤트 (AJAX 포함)
@@ -199,27 +159,60 @@ $(document).ready(function(){
                 type: "post",
                 data: { productName: selectedValue },
                 success: function(data) {
-                    $currentRow.find('.product-price').text(data);
-                    calculateRowTotal($currentRow.find('.count-input'));
+                    $currentRow.find('.product-price').text(data.toLocaleString());
+                    checkStockAndCalculate($currentRow);
                 },
-                error: function(xhr, status, error) {
-                     console.error("AJAX 요청 오류 발생:", xhr.status, error);
-                     $currentRow.find('.product-price').text('');
+                error: function() {
+                     $currentRow.find('.product-price').text('0');
                      $currentRow.find('.count-input').val(0);
                      calculateRowTotal($currentRow.find('.count-input'));
                 }
             });
         } else {
-            $currentRow.find('.product-price').text('');
+            $currentRow.find('.product-price').text('0');
             $currentRow.find('.count-input').val(0);
             calculateRowTotal($currentRow.find('.count-input'));
         }
     });
 
-    // 수량 입력 시 총 금액 및 요약 업데이트
+    // 수량 입력 시 총 금액 및 재고 업데이트
     $(document).on('keyup change', '.count-input', function(){
-        calculateRowTotal($(this));
+        const $this = $(this);
+        const quantity = parseInt($this.val());
+        if(quantity < 0 || isNaN(quantity)) {
+            $this.val(0);
+        }
+        checkStockAndCalculate($this.closest('tr'));
     });
+
+    // 재고 확인 및 총 금액 계산 함수
+    function checkStockAndCalculate($row) {
+        let selectedProductName = $row.find('.product-select').val();
+        let enteredQuantity = parseInt($row.find('.count-input').val()) || 0;
+
+        if (selectedProductName && enteredQuantity > 0) {
+            $.ajax({
+                url: "/sales/getStock",
+                type: "post",
+                data: { productName: selectedProductName },
+                success: function(availableStock) {
+                    if (enteredQuantity > availableStock) {
+                        alert('재고가 부족합니다. 남은 재고: ' + availableStock + '개');
+                        $row.find('.count-input').val(availableStock);
+                        enteredQuantity = availableStock;
+                    }
+                    calculateRowTotal($row.find('.count-input'));
+                },
+                error: function() {
+                    alert("재고 정보를 가져오는 데 실패했습니다.");
+                    calculateRowTotal($row.find('.count-input'));
+                }
+            });
+        } else {
+            calculateRowTotal($row.find('.count-input'));
+        }
+    }
+
 
     // 행별 총 금액 계산 함수
     function calculateRowTotal(quantityInput) {
@@ -252,26 +245,55 @@ $(document).ready(function(){
     }
 
     function updateProductOptions() {
-        // 이미 선택된 상품 목록을 배열에 저장
         let selectedProducts = $('.product-select').map(function() {
             return $(this).val();
         }).get();
 
-        // 모든 상품 선택 옵션을 순회
         $('.product-select option').each(function() {
             let optionValue = $(this).val();
-            // 현재 옵션이 이미 선택된 목록에 포함되어 있으면
             if (optionValue && selectedProducts.includes(optionValue)) {
-                // '상품선택' 옵션과 현재 행의 선택된 옵션을 제외하고 비활성화
                 if ($(this).closest('select').val() !== optionValue) {
                     $(this).prop('disabled', true);
                 }
             } else {
-                // 선택되지 않은 옵션은 활성화
                 $(this).prop('disabled', false);
             }
         });
     }
+
+    // 폼 제출 시 유효성 검사 (수정된 부분)
+    $('#saleSave').on('submit', function(event) {
+        let isValid = true;
+        let errorMessages = [];
+
+        // 템플릿 행은 제외하고 검사
+        const activeRows = $('.item-row').not('.template');
+        if(activeRows.length === 0) {
+            alert('주문할 상품을 한 개 이상 추가해주세요.');
+            isValid = false;
+        } else {
+            activeRows.each(function(index) {
+                const $row = $(this);
+                const productName = $row.find('.product-select').val();
+                const quantity = parseInt($row.find('.count-input').val()) || 0;
+
+                if (!productName) {
+                    errorMessages.push('• ' + (index + 1) + '번째 행: 상품을 선택해주세요.');
+                    isValid = false;
+                }
+                if (quantity <= 0) {
+                    errorMessages.push('• ' + (index + 1) + '번째 행: 수량을 1개 이상 입력해주세요.');
+                    isValid = false;
+                }
+            });
+        }
+
+        if (!isValid) {
+            alert('주문 오류:\n' + errorMessages.join('\n'));
+            event.preventDefault(); // 폼 제출 중단
+            return false; // jQuery 이벤트 핸들러에서도 false를 반환
+        }
+    });
 
     // 페이지 로드 시 초기 요약 계산 및 옵션 상태 업데이트
     calcSummary();
