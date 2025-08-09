@@ -28,6 +28,8 @@ public class SaleRepository {
     public List<SaleDTO> findByYear(String year) {
         return sql.selectList("Sale.findByYear",year);
     }
+    // 이번달 판매목록 불러오기
+    public List<SaleDTO> findByMonth(String currentMonth) { return sql.selectList("Sale.findByMonth", currentMonth); }
     // 기간 판매내역 불러오기
     public List<SaleDTO> findByDate(LocalDate startDate, LocalDate endDate) {
         Map<String, Object> param = new HashMap<>();
@@ -73,5 +75,9 @@ public class SaleRepository {
     // 판매점포 이름 가져오기
     public String findStoreName(String storeId) {
         return sql.selectOne("Sale.findStoreName",storeId);
+    }
+    // 판매실적 상위 5개 물품 조회
+    public List<String> findTop5() {
+        return sql.selectList("Sale.findTop5");
     }
 }

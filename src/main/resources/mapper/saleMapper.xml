@@ -84,4 +84,18 @@
         SELECT storeName FROM store
         WHERE storeId = #{storeId}
     </select>
+    <!-- 판매율 상위 5개 품목 가져오기 -->
+    <select id="findTop5" resultType="String">
+        SELECT p.productName FROM sale_product sp
+        JOIN product p ON p.productId = sp.productId
+        GROUP BY p.productId
+        ORDER BY SUM(sp.saleQty) DESC
+        LIMIT 5;
+    </select>
+    <!-- 이번달에 판매한 목록조회 -->
+    <select id="findByMonth" parameterType="String" resultType="Sale">
+        SELECT s.saleDate, sp.salePrice, sp.saleQty FROM sale s
+        JOIN sale_product sp ON sp.saleId = s.saleId
+        WHERE SUBSTR(s.saleDate,6,2) = #{currentMonth}
+    </select>
 </mapper>
