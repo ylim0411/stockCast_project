@@ -164,7 +164,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             </div>
 
             <!-- 4줄 -->
-            <div style="display: flex; gap: 20px">
+            <div>
               <div style="flex: 1">
                 <label>사업장 주소</label>
                 <input type="text" name="address" readonly />
