@@ -22,14 +22,14 @@
     <!-- 날짜 + 검색 조회 -->
       <form action="/order/orderStmt" method="get" class="form-container">
         <div class="dateForm">
-            <input type="date" name="startDate" id="startDate" value="${param.startDate}">
+            <input type="date" name="startDate" id="startDate">
             <span>~</span>
-            <input type="date" name="endDate" id="endDate" value="${param.endDate}">
+            <input type="date" name="endDate" id="endDate">
             <button type="submit" class="btn btn-blue">조회</button>
         </div>
 
         <div class="searchForm">
-            <input type="text" name="orderStmtId" placeholder="발주번호 검색" value="${param.orderStmtId}"/>
+            <input type="text" name="orderStmtId" placeholder="발주번호 검색"/>
             <button type="submit" class="btn btn-blue">검색</button>
             <button type="button" class="btn btn-blue" onclick="goOrderSave()"> 발주서 작성</button>
           </div>

@@ -21,22 +21,22 @@
 
 .doughnut-chart {
     /* 기존 너비 유지 */
-    width: 450px;
-    height: 450px;
+    width: 400px;
+    height: 400px;
 }
 
 .line-chart {
     /* width: 1000px; 대신 flex-grow를 사용해 남은 공간을 채우도록 함 */
     flex-grow: 1;
     width: auto;
-    height: 420px;
+    height: 400px;
 }
 
 /* 화면 너비가 1200px 이하일 때 (예: 노트북, 태블릿 가로모드) */
 @media (max-width: 1200px) {
     .doughnut-chart {
-        width: 400px;
-        height: 400px;
+        width: 300px;
+        height: 300px;
     }
     .line-chart {
         height: 380px;
@@ -49,8 +49,8 @@
         gap: 20px; /* 간격 줄이기 */
     }
     .doughnut-chart {
-        width: 350px;
-        height: 350px;
+        width: 300px;
+        height: 300px;
     }
     .line-chart {
         height: 340px;

@@ -19,85 +19,92 @@
 </head>
 <body>
   <div id="stockQuantity" class="containerAuto">
-    <h1>재고 현황</h1>
-
-    <form id="searchForm" method="get" action="${pageContext.request.contextPath}/stock/list" style="margin-bottom: 20px;">
-      <input
-        type="text"
-        name="productName"
-        placeholder="상품명 검색"
-        value="${param.productName != null ? param.productName : ''}"
-      />
-
-      <select name="month">
-        <option value="">월간 전체</option>
-        <c:forEach var="m" begin="1" end="12">
-          <option value="${m}" <c:if test="${param.month != null && param.month == m}">selected</c:if>>
-            ${m}월
-          </option>
-        </c:forEach>
-      </select>
-      <button type="submit" class="btn btn-blue">검색</button>
-    </form>
-
-    <button type="button" id="btnCloseMonth" class="btn btn-red">마감</button>
-
-    <div>
-      <table>
-        <thead>
-          <tr>
-            <th rowspan="2">대분류</th>
-            <th rowspan="2">중분류</th>
-            <th rowspan="2">상품코드</th>
-            <th rowspan="2">상품명</th>
-            <th colspan="3">기초재고</th>
-            <th colspan="3">입고</th>
-            <th colspan="3">출고</th>
-            <th colspan="3">기말재고</th>
-          </tr>
-          <tr>
-            <th>재고수량</th>
-            <th>재고단가</th>
-            <th>재고금액</th>
-            <th>입고수량</th>
-            <th>입고단가</th>
-            <th>입고금액</th>
-            <th>출고수량</th>
-            <th>출고단가</th>
-            <th>출고금액</th>
-            <th>재고수량</th>
-            <th>재고단가</th>
-            <th>재고금액</th>
-          </tr>
-        </thead>
-        <tbody>
-          <c:forEach items="${stockQuantityList}" var="stockQuantity">
-            <tr>
-              <td>${stockQuantity.topLevelCategoryName}</td>
-              <td>${stockQuantity.categoryName}</td>
-              <td>${stockQuantity.productId}</td>
-              <td>${stockQuantity.productName}</td>
-
-              <td>${stockQuantity.initialStockQuantity}</td>
-              <td><fmt:formatNumber value="${stockQuantity.initialUnitPrice}" pattern="#,###" /></td>
-              <td><fmt:formatNumber value="${stockQuantity.totalInitialStockAmount}" pattern="#,###" /></td>
-
-              <td>${stockQuantity.purchaseQty}</td>
-              <td><fmt:formatNumber value="${stockQuantity.purchasePrice}" pattern="#,###" /></td>
-              <td><fmt:formatNumber value="${stockQuantity.totalPurchase}" pattern="#,###" /></td>
-
-              <td>${stockQuantity.saleQty}</td>
-              <td><fmt:formatNumber value="${stockQuantity.salePrice}" pattern="#,###" /></td>
-              <td><fmt:formatNumber value="${stockQuantity.totalSale}" pattern="#,###" /></td>
-
-              <td>${stockQuantity.stockQuantity}</td>
-              <td><fmt:formatNumber value="${stockQuantity.price}" pattern="#,###" /></td>
-              <td><fmt:formatNumber value="${stockQuantity.totalStockAmount}" pattern="#,###" /></td>
-            </tr>
-          </c:forEach>
-        </tbody>
-      </table>
+    <div class="title-box">
+        <p class="sub-title">상품 관리</p>
+        <h2 class="title">재고현황</h2>
     </div>
+    <div class="section-wrap">
+      <div class="form-container">
+        <div class="btn-box">
+          <form id="searchForm" method="get" action="${pageContext.request.contextPath}/stock/list">
+              <input
+                type="text"
+                name="productName"
+                placeholder="상품명 검색"
+                value="${param.productName != null ? param.productName : ''}"
+              />
+        
+              <select name="month" style="width: 150px;">
+                <option value="">월간 전체</option>
+                <c:forEach var="m" begin="1" end="12">
+                  <option value="${m}" <c:if test="${param.month != null && param.month == m}">selected</c:if>>
+                    ${m}월
+                  </option>
+                </c:forEach>
+              </select>
+              <button type="submit" class="btn btn-blue">검색</button>
+          </form>
+        </div>
+        <button type="button" id="btnCloseMonth" class="btn btn-red">마감</button>
+      </div>
+      <div>
+        <table class="stock-table">
+          <thead>
+            <tr>
+              <th rowspan="2">대분류</th>
+              <th rowspan="2">중분류</th>
+              <th rowspan="2">상품코드</th>
+              <th rowspan="2">상품명</th>
+              <th colspan="3">기초재고</th>
+              <th colspan="3">입고</th>
+              <th colspan="3">출고</th>
+              <th colspan="3">기말재고</th>
+            </tr>
+            <tr>
+              <th>재고수량</th>
+              <th>재고단가</th>
+              <th>재고금액</th>
+              <th>입고수량</th>
+              <th>입고단가</th>
+              <th>입고금액</th>
+              <th>출고수량</th>
+              <th>출고단가</th>
+              <th>출고금액</th>
+              <th>재고수량</th>
+              <th>재고단가</th>
+              <th>재고금액</th>
+            </tr>
+          </thead>
+          <tbody>
+            <c:forEach items="${stockQuantityList}" var="stockQuantity">
+              <tr>
+                <td>${stockQuantity.topLevelCategoryName}</td>
+                <td>${stockQuantity.categoryName}</td>
+                <td>${stockQuantity.productId}</td>
+                <td>${stockQuantity.productName}</td>
+
+                <td>${stockQuantity.initialStockQuantity}</td>
+                <td><fmt:formatNumber value="${stockQuantity.initialUnitPrice}" pattern="#,###" /></td>
+                <td><fmt:formatNumber value="${stockQuantity.totalInitialStockAmount}" pattern="#,###" /></td>
+
+                <td>${stockQuantity.purchaseQty}</td>
+                <td><fmt:formatNumber value="${stockQuantity.purchasePrice}" pattern="#,###" /></td>
+                <td><fmt:formatNumber value="${stockQuantity.totalPurchase}" pattern="#,###" /></td>
+
+                <td>${stockQuantity.saleQty}</td>
+                <td><fmt:formatNumber value="${stockQuantity.salePrice}" pattern="#,###" /></td>
+                <td><fmt:formatNumber value="${stockQuantity.totalSale}" pattern="#,###" /></td>
+
+                <td>${stockQuantity.stockQuantity}</td>
+                <td><fmt:formatNumber value="${stockQuantity.price}" pattern="#,###" /></td>
+                <td><fmt:formatNumber value="${stockQuantity.totalStockAmount}" pattern="#,###" /></td>
+              </tr>
+            </c:forEach>
+          </tbody>
+        </table>
+      </div>
+    </div>
+   
   </div>
 
   <script>

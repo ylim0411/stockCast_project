@@ -13,89 +13,25 @@
 
   <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 
-<script>
-  const categoryList = [
-    <c:forEach items="${categoryList}" var="parent" varStatus="i">
-      {
-        categoryId: ${parent.categoryId},
-        categoryName: "${parent.categoryName}",
-        categoryLevel: ${parent.categoryLevel},
-        childCategories: [
-          <c:forEach items="${parent.categoryList}" var="middle" varStatus="j">
-            {
-              categoryId: ${middle.categoryId},
-              categoryName: "${middle.categoryName}",
-              categoryLevel: ${middle.categoryLevel}
-            }<c:if test="${!j.last}">,</c:if>
-          </c:forEach>
-        ]
-      }<c:if test="${!i.last}">,</c:if>
-    </c:forEach>
-  ];
 
-  $(document).ready(function () {
-
-    window.updateFn = (btn) => {
-      const row = btn.closest("tr");
-      const inputs = row.querySelectorAll("input, select");
-      const saveBtn = row.querySelector(".saveBtn");
-      const isEditing = row.classList.toggle("editing");
-
-      inputs.forEach(input => {
-        if (!input.name.includes("productId") && !input.name.includes("createdAt")) {
-          input.disabled = !isEditing;
-          input.readOnly = !isEditing;
-        }
-      });
-
-      if (saveBtn) {
-        saveBtn.style.display = isEditing ? "inline-block" : "none";
-      }
-
-      btn.textContent = isEditing ? "취소" : "수정";
-    };
-
-    $(".addRow").click(function () {
-        let $templateRow = $(".productAdd").first();
-        let $newRow = $templateRow.clone(true);
-        $newRow.removeClass("productAdd");
-        $newRow.removeAttr("style");
-        $newRow.find("input").val("");
-
-        $("table tbody").append($newRow);
-    });
-
-    $(document).on("change", "select[name='addParentCategoryId']", function () {
-      const selectParentId = parseInt($(this).val());
-      const $middleSelect = $(this).closest("tr").find("select[name='addMiddleCategoryId']");
-      $middleSelect.empty();
-
-      const selectParent = categoryList.find(cat => cat.categoryId === selectParentId);
-         if (selectParent && selectParent.childCategories) {
-           selectParent.childCategories.forEach(child => {
-          $middleSelect.append(
-            $("<option>").val(child.categoryId).text(child.categoryName)
-          );
-        });
-      } else {
-        $middleSelect.append($("<option>").val("").text("중분류 없음"));
-      }
-    });
-  });
-</script>
 </head>
 <body>
-  <div id="product" class="container">
-    <div>
-     <h1>전체 상품 목록 목록</h1>
-      <button class="addRow btn btn-blue" type="button">상품 등록</button>
-      <form action="/product/search" method="get" class="form-container">
-        <div class="searchForm">
-          <input type="text" name="productName" placeholder="상품명 검색" value="${param.productName}"/>
-          <button type="submit" class="btn btn-blue">검색</button>
+  <div id="product" class="containerAuto">
+    <div class="title-box">
+        <p class="sub-title">상품 관리</p>
+        <h2 class="title">전체 상품 목록</h2>
+    </div>
+    <div class="section-wrap">
+      <form action="/product/search" method="get">
+        <div class="form-container"> 
+          <div class="btn-box">
+            <input type="text" name="productName" placeholder="상품명 검색" value="${param.productName}"/>
+            <button type="submit" class="btn btn-blue">검색</button>
+          </div>
+          <button class="addRow btn btn-blue" type="button">상품 등록</button>
         </div>
       </form>
-      <table>
+      <table class="productTable">
         <thead>
           <tr>
             <th>대분류</th>
@@ -206,4 +142,75 @@
     </div>
   </div>
 </body>
+
+<script>
+  const categoryList = [
+    <c:forEach items="${categoryList}" var="parent" varStatus="i">
+      {
+        categoryId: ${parent.categoryId},
+        categoryName: "${parent.categoryName}",
+        categoryLevel: ${parent.categoryLevel},
+        childCategories: [
+          <c:forEach items="${parent.categoryList}" var="middle" varStatus="j">
+            {
+              categoryId: ${middle.categoryId},
+              categoryName: "${middle.categoryName}",
+              categoryLevel: ${middle.categoryLevel}
+            }<c:if test="${!j.last}">,</c:if>
+          </c:forEach>
+        ]
+      }<c:if test="${!i.last}">,</c:if>
+    </c:forEach>
+  ];
+
+  $(document).ready(function () {
+
+    window.updateFn = (btn) => {
+      const row = btn.closest("tr");
+      const inputs = row.querySelectorAll("input, select");
+      const saveBtn = row.querySelector(".saveBtn");
+      const isEditing = row.classList.toggle("editing");
+
+      inputs.forEach(input => {
+        if (!input.name.includes("productId") && !input.name.includes("createdAt")) {
+          input.disabled = !isEditing;
+          input.readOnly = !isEditing;
+        }
+      });
+
+      if (saveBtn) {
+        saveBtn.style.display = isEditing ? "inline-block" : "none";
+      }
+
+      btn.textContent = isEditing ? "취소" : "수정";
+    };
+
+    $(".addRow").click(function () {
+        let $templateRow = $(".productAdd").first();
+        let $newRow = $templateRow.clone(true);
+        $newRow.removeClass("productAdd");
+        $newRow.removeAttr("style");
+        $newRow.find("input").val("");
+
+        $("table tbody").append($newRow);
+    });
+
+    $(document).on("change", "select[name='addParentCategoryId']", function () {
+      const selectParentId = parseInt($(this).val());
+      const $middleSelect = $(this).closest("tr").find("select[name='addMiddleCategoryId']");
+      $middleSelect.empty();
+
+      const selectParent = categoryList.find(cat => cat.categoryId === selectParentId);
+         if (selectParent && selectParent.childCategories) {
+           selectParent.childCategories.forEach(child => {
+          $middleSelect.append(
+            $("<option>").val(child.categoryId).text(child.categoryName)
+          );
+        });
+      } else {
+        $middleSelect.append($("<option>").val("").text("중분류 없음"));
+      }
+    });
+  });
+</script>
 </html>

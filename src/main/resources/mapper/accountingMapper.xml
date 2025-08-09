@@ -42,14 +42,23 @@
     <insert id="insertAccountOrderDebit" parameterType="map">
         INSERT INTO account_transaction(accountingId,itemId,value,direction)
         VALUES((SELECT accountingId FROM accounting
-        WHERE orderId = #{orderId}),(SELECT itemId FROM account_item
+        WHERE orderId = #{orderId} AND isEntry = 0),(SELECT itemId FROM account_item
         WHERE name = '재고자산'),#{purchasePrice}*#{purchaseQty},'차변');
     </insert>
     <!-- 위 내용 이후 발주시 대변입력 연동 ho -->
     <insert id="insertAccountOrderCredit" parameterType="map">
         INSERT INTO account_transaction(accountingId,itemId,value,direction)
         VALUES((SELECT accountingId FROM accounting
-        WHERE orderId = #{orderId}),(SELECT itemId FROM account_item
+        WHERE orderId = #{orderId} AND isEntry = 0),(SELECT itemId FROM account_item
         WHERE name = '미지급금'),#{purchasePrice}*#{purchaseQty},'대변');
     </insert>
+    <!-- 회계 기입 후 구분하는 불리안 true처리 ho -->
+    <update id="updateEntry" parameterType="map">
+        UPDATE accounting SET isEntry = 1
+        WHERE orderId = #{orderId} AND isEntry = 0;
+    </update>
+    <!-- 목데이터 로드 ho -->
+    <select id="load" resultType="map">
+        SELECT * FROM loadData
+    </select>
 </mapper>

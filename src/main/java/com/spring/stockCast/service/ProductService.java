@@ -50,7 +50,7 @@ public class ProductService {
         if (productName == null || productName.trim().isEmpty()) {
             return productRepository.findProductList(); // 전체 조회
         }
-        return productRepository.findProductByName(productName);
+        return productRepository.findProductByName("%" + productName + "%");
     }
 
 

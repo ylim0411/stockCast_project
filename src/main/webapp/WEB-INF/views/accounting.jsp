@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="/WEB-INF/views/header.jsp" %>
 <!DOCTYPE html>
 <html>
@@ -28,12 +29,14 @@
                   <p>${findDate} 회계 내역 입니다.</p>
                 </c:if>
               </div>
-            <form action="/accounting/accountingList" method="get" class="form-container">
+            <form action="/accounting/accountingList" method="get" class="form-container" name="accountingForm">
                 <div class="dateForm">
                     <input type="date" name="startDate" id="startDate"/>
                     <span>~<span>
                     <input type="date" name="endDate" id="endDate"/>
                     <button type="submit" class="btn btn-blue">조회</button>
+                    <button type="submit" class="btn btn-blue" name="action" value="load">불러오기</button>
+                    <button type="submit" class="btn btn-blue" name="action" value="store">점포매출</button>
                 </div>
                 <div class="searchForm">
                     <select style="width:120px;" name="year" class="saleYear-select" onchange="this.form.submit()">
@@ -71,21 +74,28 @@
                         <tr>
                             <th colspan="2"><b>자산</b></td>
                         </tr>
+                        <c:set var="totalAssets" value="0"/>
                         <c:forEach var="account" items="${pageData.assetsList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>${accountValues[account.name]}</td>
+                                <td><p><fmt:formatNumber value="${accountValues[account.name]}" pattern="#,###"/></p></td>
                             </tr>
+                        <c:set var="totalAssets" value="${totalAssets + accountValues[account.name]}"/>
                         </c:forEach>
-
+                        <tr>
+                            <td>자산 총계</td>
+                            <td><p><fmt:formatNumber value="${totalAssets}" pattern="#,###"/></p></td>
+                        </tr>
                         <tr>
                             <th colspan="2"><b>비용</b></td>
                         </tr>
+                        <c:set var="totalExpenses" value="0"/>
                         <c:forEach var="account" items="${pageData.expenseList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>${accountValues[account.name]}</td>
+                                <td><p><fmt:formatNumber value="${accountValues[account.name]}" pattern="#,###"/></p></td>
                             </tr>
+                            <c:set var="totalExpenses" value="${totalExpenses + accountValues[account.name]}"/>
                         </c:forEach>
 
                         <c:set var="debitRowCount" value="${fn:length(pageData.assetsList) + fn:length(pageData.expenseList) + 2}"/>
@@ -99,11 +109,15 @@
                                 </tr>
                             </c:forEach>
                         </c:if>
-
                         <tr>
-                            <td>총 차변</td>
-                            <td>${accountValues["totalDebit"]}</td>
+                            <td>비용 총계</td>
+                            <td><p><fmt:formatNumber value="${totalExpenses}" pattern="#,###"/></p></td>
                         </tr>
+
+                        <!-- <tr>
+                            <td>총 차변</td>
+                            <td><p><fmt:formatNumber value="${totalAssets+totalExpenses}" pattern="#,###"/></p></td>
+                        </tr> -->
                     </tbody>
                 </table>
 
@@ -121,34 +135,46 @@
                         <tr>
                             <th colspan="2"><b>부채</b></td>
                         </tr>
+                        <c:set var="totalLiabilities" value="0"/>
                         <c:forEach var="account" items="${pageData.liabilitiesList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>${accountValues[account.name]}</td>
+                                <td><p><fmt:formatNumber value="${accountValues[account.name]}" pattern="#,###"/></p></td>
                             </tr>
+                            <c:set var="totalLiabilities" value="${totalLiabilities + accountValues[account.name]}"/>
                         </c:forEach>
-
                         <tr>
-                            <th colspan="2"><b>자본</b></td>
+                            <th colspan="2"><b>자본</b></th>
                         </tr>
+                        <c:set var="totalCapital" value="0"/>
                         <c:forEach var="account" items="${pageData.capitalList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>${accountValues[account.name]}</td>
+                                <td><p><fmt:formatNumber value="${accountValues[account.name]}" pattern="#,###"/></p></td>
                             </tr>
+                            <c:set var="totalCapital" value="${totalCapital + accountValues[account.name]}"/>
                         </c:forEach>
-
                         <tr>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>자본 총계</td>
+                            <td><p><fmt:formatNumber value="${totalCapital+totalLiabilities}" pattern="#,###"/></p></td>
+                        </tr>
+                        <tr>
+                        <c:set var="totalIncome" value="0"/>
                             <th colspan="2"><b>수익</b></td>
                         </tr>
                         <c:forEach var="account" items="${pageData.revenueList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td>${accountValues[account.name]}</td>
+                                <td><p><fmt:formatNumber value="${accountValues[account.name]}" pattern="#,###"/></p></td>
                             </tr>
+                            <c:set var="totalIncome" value="${totalIncome + accountValues[account.name]}"/>
                         </c:forEach>
 
-                        <c:set var="debitRowCount" value="${fn:length(pageData.assetsList) + fn:length(pageData.expenseList) + 2}"/>
+                        <c:set var="debitRowCount" value="${fn:length(pageData.assetsList) + fn:length(pageData.expenseList) + 1}"/>
                         <c:set var="creditRowCount" value="${fn:length(pageData.liabilitiesList) + fn:length(pageData.capitalList) + fn:length(pageData.revenueList) + 3}"/>
                         <c:if test="${debitRowCount > creditRowCount}">
                             <c:set var="emptyRowCount" value="${debitRowCount - creditRowCount}"/>
@@ -159,11 +185,14 @@
                                 </tr>
                             </c:forEach>
                         </c:if>
-
                         <tr>
-                            <td>총 대변</td>
-                            <td>${accountValues["totalCredit"]}</td>
+                            <td>수익 총계</td>
+                            <td><p><fmt:formatNumber value="${totalIncome}" pattern="#,###"/></p></td>
                         </tr>
+                        <!-- <tr>
+                            <td>총 대변</td>
+                            <td><p><fmt:formatNumber value="${totalLiabilities+totalCapital+totalIncome}" pattern="#,###"/></p></td>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>

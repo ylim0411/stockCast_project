@@ -1,37 +1,42 @@
 package com.spring.stockCast.controller;
 
-import com.spring.stockCast.dto.TrafficDTO;
-import com.spring.stockCast.dto.WeatherDTO;
-import com.spring.stockCast.service.MainService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.spring.stockCast.dto.OrderStmtDTO;
+import com.spring.stockCast.dto.PurchaseOrderDTO;
+import com.spring.stockCast.dto.SaleDTO;
+import com.spring.stockCast.service.OrderStmtService;
+import com.spring.stockCast.service.PurchaseOrderService;
+import com.spring.stockCast.service.SaleService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class MainController {
-
-    @Autowired
-    private MainService mainService;
-    private TrafficDTO trafficDTO;
-
+    private final SaleService saleService;
+    private final OrderStmtService orderStmtService;
     @GetMapping("/")
-    public String Home(){
+    public String home() {
         return "index";
     }
 
     @GetMapping("/main")
     public String mainPage(Model model) {
-        WeatherDTO weather = mainService.getWeather();
-        TrafficDTO traffic = mainService.getTraffic();
+        List<String> topSales = saleService.findTop5();
 
-        model.addAttribute("weather", weather);
-        model.addAttribute("traffic", traffic);
-        model.addAttribute("today", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
-
-        return "main"; // main.jsp
+        LocalDate today = LocalDate.now(); // 오늘날짜 불러오기
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM");
+        String currentMonth = today.format(formatter); // 오늘날짜의 월 추출 String
+        List<SaleDTO> sales = saleService.findByMonth(currentMonth); // 올해 거래내역 불러오기
+        List<OrderStmtDTO> orders = orderStmtService.findByMonth(currentMonth); // 올해 발주내역 불러오기
+        model.addAttribute("saleTop",topSales);
+        model.addAttribute("monthPrice", saleService.saleMonth(sales)); // 판매된 일, 매출액 맵으로 전달
+        model.addAttribute("monthExpenses", orderStmtService.orderMonth(orders)); // 발주된 일, 매출액 맵으로 전달
+        return "main";
     }
 }
