@@ -1,11 +1,15 @@
 package com.spring.stockCast.service;
 
 
+import com.spring.stockCast.dto.ProductDTO;
 import com.spring.stockCast.dto.SaleDTO;
+import com.spring.stockCast.repository.ProductRepository;
 import com.spring.stockCast.repository.SaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -14,7 +18,7 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SaleService {
     private final SaleRepository saleRepository;
-
+    private final ProductRepository productRepository;
     // 전체 판매내역 불러오기
     public List<SaleDTO> findAll() {
         return saleRepository.findAll();
@@ -28,9 +32,13 @@ public class SaleService {
         return saleRepository.findByYear(year);
     }
     // 기간 판매내역 불러오기
-    public List<SaleDTO> findByDate(LocalDate startDate, LocalDate endDate) {
-        return saleRepository.findByDate(startDate,endDate);
-    }
+    public List<SaleDTO> findByDate(LocalDate startDate, LocalDate endDate) { return saleRepository.findByDate(startDate,endDate); }
+    // 점포 아이디에 맞는 상품목록 가져오기
+    public List<ProductDTO> findProductSaleAll(String storeId){ return productRepository.findProductSaleAll(storeId);};
+    // 판매내역 중 제일 최신의 saleId 가져오기
+    public int findMaxSaleId(){ return saleRepository.findMaxSaleId();}
+    // 판매점포 이름 가져오기
+    private String findStoreName(String storeId) { return saleRepository.findStoreName(storeId); }
     // 전체 판매내역의 카테고리 리스트 가져오기(도넛차트 구성용)
     public Map<String, Integer> findCategory(List<SaleDTO> saleList) {
         Map<String, Integer> categorySales = new HashMap<>();
@@ -58,8 +66,8 @@ public class SaleService {
 
         return monthPrice;
     }
-    // 컨트롤러
-    public Map<String,Object> controller(LocalDate startDate, LocalDate endDate, String year) {
+    // 판매실적 컨트롤러
+    public Map<String,Object> saleController(LocalDate startDate, LocalDate endDate, String year) {
         String findDate="";
         List<SaleDTO> sales;
         // 날짜 필터가 있을 때만 검색
@@ -84,5 +92,56 @@ public class SaleService {
         result.put("saleYear", findSaleYear()); // 판매내역이 있는 년도 리스트로 전달
 
         return result;
+    }
+    // 실제 판매 컨트롤러
+    public Map<String, Object> saleOrderController(HttpSession session) {
+
+        String storeId = session.getAttribute("selectedStoredId").toString(); // StoreController 에서 저장한 id 받아오기
+        List<ProductDTO> products = findProductSaleAll(storeId); // 점포 id를 통해 점포 상품들 불러오기
+
+        Map<String,Object> result = new HashMap<>();
+        for(ProductDTO dto : products){
+            result.put(dto.getProductName(),dto.getPrice()); // 상품명(key), 가격(value) 입력
+        }
+        result.put("today",LocalDate.now()); // 오늘날짜 전달
+        result.put("products",products); // 점포 id를 통해 점포 상품들 불러오기
+        result.put("maxSaleId",(findMaxSaleId()+1)); // 주문번호 표시
+        result.put("storeName",findStoreName(storeId)); // 점포이름 전달
+        return result;
+    }
+
+    // 판매상품을 등록할 수 있는 목록 생성
+    public void saleCreateStmt(String saleId, LocalDate today) {
+        saleRepository.saleCreateStmt(saleId,today);
+    }
+
+    // 판매상품 DB에 저장
+    public void saleSave(String saleId, LocalDate today, int productId, Integer qty) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("saleId", saleId);
+        param.put("today", today);
+        param.put("productId",productId);
+        param.put("qty",qty);
+
+        saleRepository.saleSave(param);
+    }
+
+    // 판매 이후 회계 (accounting) 연동 및 재고 증가
+    public void linkAccounting(String saleId, LocalDate today, int productId, Integer qty) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("saleId", saleId);
+        param.put("today", today);
+        param.put("productId", productId);
+        param.put("qty", qty);
+
+        saleRepository.linkAccounting(param);
+    }
+    // 상품이름으로 상품아이디 찾기
+    public int findProductId(String pName) {
+        return saleRepository.findProductId(pName);
+    }
+    // 재고 적을시 수량 반환
+    public int findProductStock(String storeId, String productName) {
+        return saleRepository.findProductStock(storeId, productName);
     }
 }

@@ -6,7 +6,6 @@
     <meta charset="UTF-8">
     <title>StockCast Login</title>
     <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
 </head>
 <body>
     <div class="Desktop" style="background-image: url('${pageContext.request.contextPath}/static/images/desktop.png');">

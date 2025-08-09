@@ -38,7 +38,6 @@ public class PurchaseOrderRepository {
         sql.insert("Accounting.insertAccountOrderCredit",param); // 회계거래와 계정 연동 대변(미지급금 추가) ho
         sql.update("Accounting.updateEntry",param); // 차변대변 입력된 테이블 구분 false -> true 전환 ho
         sql.update("Product.updateOrder",param); // 발주시 상품 재고 증가 ho
-
     }
     // 발주 상세 목록 조회
     public List<PurchaseOrderDTO> findByOrderId(int orderId) {
