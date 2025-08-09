@@ -85,6 +85,11 @@ public class ProductService {
         productRepository.updateProductName(productId, newName);
     }
 
+//    // 재고 20개 이하 알림창 you
+//    public List<StockQuantityDTO> findLowStock() { // 추가
+//        return productRepository.findLowStock();
+//    }
+
     // 재고 현황 조회 (기간 및 상품명으로 필터링)
 //    public List<StockQuantityDTO> getStockQuantityList(LocalDate startDate, LocalDate endDate, String productName) {
 //        // ProductRepository의 stockList 메서드를 호출합니다.
