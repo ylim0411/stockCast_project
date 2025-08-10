@@ -102,24 +102,18 @@
 
     <!-- 발주 상세 조회 -->
     <select id="findById" parameterType="int" resultType="OrderStmt">
-        <![CDATA[
         SELECT
-            os.orderId,
-            os.orderDate,
-            c.clientId,
-            c.clientName,
-            IFNULL(SUM(po.purchaseQty), 0) AS totalCount,
-            IFNULL(SUM(po.purchaseQty * po.purchasePrice), 0) AS totalPrice,
-            CASE
-                WHEN DATE_ADD(os.orderDate, INTERVAL 3 DAY) < CURDATE() THEN '완료'
-                ELSE '진행중'
-            END AS status
+        os.orderId,
+        os.orderDate,
+        os.status,  c.clientId,
+        c.clientName,
+        IFNULL(SUM(po.purchaseQty), 0) AS totalCount,
+        IFNULL(SUM(po.purchaseQty * po.purchasePrice), 0) AS totalPrice
         FROM orderStmt os
         JOIN client c ON os.clientId = c.clientId
         LEFT JOIN purchaseOrder po ON os.orderId = po.orderId
         WHERE os.orderId = #{orderId}
-        GROUP BY os.orderId, os.orderDate, c.clientId, c.clientName
-        ]]>
+        GROUP BY os.orderId, os.orderDate, os.status, c.clientId, c.clientName
     </select>
 
     <!-- 발주 수정 -->
@@ -135,11 +129,13 @@
         DELETE FROM orderStmt
         WHERE orderId = #{orderId}
     </delete>
+
     <!-- 발주 상태값 바꾸기 ho -->
     <update id="updateStatus" parameterType="map">
         UPDATE  orderstmt SET status = #{status}
         WHERE orderId = #{id};
     </update>
+
     <!-- 이번달 발주내역 불러오기 ho -->
     <select id="findByMonth" parameterType="String" resultType="OrderStmt">
         SELECT o.orderDate, p.purchasePrice as totalPrice, p.purchaseQty as totalCount  FROM orderstmt o

@@ -18,8 +18,7 @@
         <h2 class="title">발주 상세 페이지</h2>
     </div>
 
- <div class="section-wrap">
-    <!-- 상태 + 버튼 -->
+ <div class="section-wrap100">
     <div class="section-actions">
        <div style="display:flex; gap:10px; width:50%;">
            <strong>발주 상태 변경 :</strong>
@@ -38,15 +37,15 @@
         </form>
         </div>
         <div class="btn-box">
-            <button type="button" class="btn btn-blue"
-                    onclick="location.href='/order/orderUpdate?id=${orderInfo.orderId}'">수정</button>
-            <button type="button" class="btn btn-red"
-                    onclick="deleteOrder(${orderInfo.orderId})">삭제</button>
+            <c:if test="${orderInfo.status ne '완료'}">
+                   <button type="button" class="btn btn-blue" onclick="location.href='/order/orderUpdate?id=${orderInfo.orderId}'">수정</button>
+                   <button type="button" class="btn btn-red" onclick="deleteOrder(${orderInfo.orderId})">삭제</button>
+               </c:if>
         </div>
     </div>
 
     <!-- 주문 상세 -->
-    <div class="section-box">
+    <div class="section-box section-box1">
         <div class="section-header">주문 상세</div>
         <div class="section-body">
             <div class="row">
@@ -80,29 +79,29 @@
         </div>
     </div>
 
-        <!-- 발주 품목 -->
-        <div class="section-box items-section">
-            <div class="section-header">발주 품목</div>
-             <div class="order-items">
-                <div class="order-item header">
-                    <div>상품번호</div>
-                    <div>상품명</div>
-                    <div>구매단가</div>
-                    <div>수량</div>
-                    <div>청구비용</div>
+    <!-- 발주 품목 -->
+    <div class="section-box section-box2 items-section">
+        <div class="section-header">발주 품목</div>
+        <div class="order-items">
+            <div class="order-item header">
+                <div>상품번호</div>
+                <div>상품명</div>
+                <div>구매단가</div>
+                <div>수량</div>
+                <div>청구비용</div>
+            </div>
+            <c:forEach items="${orderItems}" var="item">
+                <div class="order-item">
+                    <div>${item.productId}</div>
+                    <div>${item.productName}</div>
+                    <div><fmt:formatNumber value="${item.purchasePrice}" pattern="#,###"/></div>
+                    <div>${item.purchaseQty}</div>
+                    <div><fmt:formatNumber value="${item.purchasePrice * item.purchaseQty}" pattern="#,###"/></div>
                 </div>
-                <c:forEach items="${orderItems}" var="item">
-                    <div class="order-item">
-                        <div>${item.productId}</div>
-                        <div>${item.productName}</div>
-                        <div><fmt:formatNumber value="${item.purchasePrice}" pattern="#,###"/></div>
-                        <div>${item.purchaseQty}</div>
-                        <div><fmt:formatNumber value="${item.purchasePrice * item.purchaseQty}" pattern="#,###"/></div>
-                    </div>
-                </c:forEach>
-            </div> <!-- order-items -->
-        </div> <!-- section-box  -->
-    </div> <!-- section-wrap -->
+            </c:forEach>
+        </div> <!-- order-items -->
+    </div> <!-- section-box  -->
+  </div> <!-- section-wrap -->
 </div> <!-- container -->
 
 <script>

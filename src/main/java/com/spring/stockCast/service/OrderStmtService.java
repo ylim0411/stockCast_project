@@ -124,6 +124,12 @@ public class OrderStmtService {
 
     // 발주서 삭제
     public void deleteOrder(int orderId) {
+        OrderStmtDTO orderInfo = orderStmtRepository.findById(orderId);
+
+        if ("완료".equals(orderInfo.getStatus())) {
+            throw new IllegalStateException("완료된 발주서는 삭제할 수 없습니다.");
+        }
+
         orderStmtRepository.deleteOrder(orderId);
     }
 
@@ -156,6 +162,7 @@ public class OrderStmtService {
 
         return monthPrice;
     }
+
     // 이번달 발주내역 가져오기
     public List<OrderStmtDTO> findByMonth(String currentMonth) {
         return orderStmtRepository.findByMonth(currentMonth);
