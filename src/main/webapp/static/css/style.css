@@ -552,6 +552,7 @@ header .userContext .on {
 }
 
 .btn-blue:hover {
+  border: 1px solid var(--color-secondary);
   background-color: var(--color-secondary);
   color: var(--color-white);
 }
@@ -578,16 +579,19 @@ header .userContext .on {
 }
 
 .btn-blue-b {
+  border: 1px solid var(--color-secondary);
   background-color: var(--color-secondary);
   color: var(--color-white);
 }
 
 .btn-red-b {
+  border: 1px solid var(--color-red);
   background-color: var(--color-red);
   color: var(--color-white);
 }
 
 .btn-orange-b {
+  border: 1px solid var(--color-orange);
   background-color: var(--color-orange);
   color: var(--color-white);
 }
