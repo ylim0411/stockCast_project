@@ -29,28 +29,30 @@
                   <div class="searchForm">
                       <input type="text" name="orderNumber" placeholder="발주번호 검색"/>
                       <button type="submit" class="btn btn-blue">검색</button>
-                    </div>
-                </form>
-            <table>
-                <tr>
-                    <th>발주번호</th>
-                    <th>발주일자</th>
-                    <th>거래처명</th>
-                    <th>카테고리</th>
-                    <th>총금액</th>
-                    <th>보고서</th>
-                </tr>
-                <c:forEach items="${saleList}" var="sale">
+                  </div>
+            </form>
+            <div class="table-container">
+                <table>
                     <tr>
-                        <td>${sale.orderId}</td>
-                        <td><fmt:formatDate value = "${sale.orderdate}" pattern="yyyy-MM-dd"/></td>
-                        <td>${sale.clientName}</td>
-                        <td>${sale.categoryName}</td>
-                        <td><fmt:formatNumber value="${sale.price}" pattern="#,###"/></td>
-                        <td><button type="button" class="btn btn-blue" onclick="onSaleStmt(${sale.orderId})">거래명세서</td>
+                        <th>발주번호</th>
+                        <th>발주일자</th>
+                        <th>거래처명</th>
+                        <th>카테고리</th>
+                        <th>총금액</th>
+                        <th>보고서</th>
                     </tr>
-                </c:forEach>
-            </table>
+                    <c:forEach items="${saleList}" var="sale">
+                        <tr>
+                            <td>${sale.orderId}</td>
+                            <td><fmt:formatDate value = "${sale.orderdate}" pattern="yyyy-MM-dd"/></td>
+                            <td>${sale.clientName}</td>
+                            <td>${sale.categoryName}</td>
+                            <td><fmt:formatNumber value="${sale.price}" pattern="#,###"/></td>
+                            <td><button type="button" class="btn btn-blue" onclick="onSaleStmt(${sale.orderId})">거래명세서</td>
+                        </tr>
+                    </c:forEach>
+                </table>
+            </div>
              <!-- 발주 페이징 -->
                <div class="paging">
                    <c:choose>

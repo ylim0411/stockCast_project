@@ -16,7 +16,7 @@
 
 </head>
 <body>
-  <div id="product" class="containerAuto">
+  <div id="product" class="container">
     <div class="title-box">
         <p class="sub-title">상품 관리</p>
         <h2 class="title">전체 상품 목록</h2>
@@ -31,6 +31,7 @@
           <button class="addRow btn btn-blue" type="button">상품 등록</button>
         </div>
       </form>
+      <div class="table-container">
       <table class="productTable">
         <thead>
           <tr>
@@ -139,6 +140,7 @@
             </tr>
         </tbody>
       </table>
+      </div>
     </div>
   </div>
 </body>
