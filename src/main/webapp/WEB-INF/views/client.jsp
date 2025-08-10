@@ -332,7 +332,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </div>
               <div style="flex: 1">
                 <label>팩스번호</label>
-                <input type="text" name="fax" pattern="^0\d{1,2}-?\d{3,4}-?\d{4}$"
+                <input type="text" name="fax" pattern="^0\d{1,2}-?\d{3,4}-?\d{4}$"/>
               </div>
             </div>
 
