@@ -118,7 +118,7 @@
     </insert>
 
     <!-- 확인중 you -->
-    <select id="findProductsByCategoryId" parameterType="int" resultType="StockQuantity">
+    <select id="findProductsByCategoryId" parameterType="int" resultType="Product">
         SELECT * FROM product WHERE categoryId = #{parentId};
     </select>
 
@@ -130,12 +130,12 @@
     </update>
 
 
-<!--    &lt;!&ndash; 모달창 카테고리명 수정 you &ndash;&gt;-->
-<!--    <update id="updateProductName" parameterType="map">-->
-<!--        UPDATE product-->
-<!--        SET productName = #{newName}-->
-<!--        WHERE productId = #{productId};-->
-<!--    </update>-->
+    <!-- 모달창 카테고리명 수정 you -->
+    <update id="updateProductName" parameterType="map">
+        UPDATE product
+        SET productName = #{newName}
+        WHERE productId = #{productId};
+    </update>
 
 
     <!-- 판매시 상품재고 감소 ho -->
@@ -143,13 +143,8 @@
         UPDATE product SET stockQuantity = stockQuantity-#{qty}
         WHERE productId = #{productId};
     </update>
-    <!-- 모달창 카테고리명 수정 -->
 
-    <update id="updateProductName" parameterType="map">
-        UPDATE product
-        SET productName = #{newName}
-        WHERE productId = #{productId};
-    </update>
+
     <!-- 점포 아이디에 맞는 상품 가져오기 ho -->
     <select id="findProductSaleAll" parameterType="String" resultType="Product">
         SELECT * FROM product

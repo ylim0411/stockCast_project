@@ -22,7 +22,7 @@
           <h2>${sessionScope.loginedAdminDTO.adminName} 님</h2>
          <button class="alert" onclick="openModal()">
            <img src="${pageContext.request.contextPath}/static/images/alertIcon.png" alt="alert" />
-           <p class="alert-count">1</p>
+           <p class="alert-count"></p>
          </button>
         </div>
 
@@ -138,7 +138,7 @@
   </div>
 
    <script>
-      function openModal() {
+/*       function openModal() {
         const today = new Date().toISOString().slice(0, 10);
          $('#customModal').fadeIn();
       }
@@ -146,6 +146,7 @@
       function closeModal() {
         $('#customModal').fadeOut();
       }
+ */
 
     </script>
 
@@ -255,34 +256,55 @@
 
     <!-- 재고 모달 -->
     <script>
-        function loadLowStockList() {
-            $.get("${pageContext.request.contextPath}/product/lowStock", function(data) {
-                const $list = $("#lowStockList").empty();
-                if (data.length === 0) {
-                    $list.append("<li><p>재고 부족 상품이 없습니다.</p></li>");
-                } else {
-                    data.forEach(item => {
-                        $list.append(`
-                            <li class="low-stock-item" data-product-id="${item.productId}">
-                                <p>${item.productName}</p>
-                                <p>현재 ${item.stockQuantity}개 / <span>기준 20개</span></p>
-                            </li>
-                        `);
-                    });
-                }
+      function normItem(row) {
+        return {
+          id:   row.productId ?? row.product_id ?? row.PRODUCTID,
+          name: row.productName ?? row.product_name ?? row.PRODUCTNAME,
+          qty:  row.stockQuantity ?? row.stock_quantity ?? row.STOCKQUANTITY
+        };
+      }
+
+      function updateAlertCount(n){
+        const $b = $('.alert-count');
+        if(n>0){ $b.text(n).show(); } else { $b.hide(); }
+      }
+
+      function loadLowStockList() {
+        $.getJSON("${pageContext.request.contextPath}/product/lowStock", function(data){
+          console.log("[lowStock] raw:", data);
+          const items = (data || []).map(normItem);
+          const $list = $("#lowStockList").empty();
+
+          if(items.length === 0){
+            $list.append('<li><p>재고 부족 상품이 없습니다.</p></li>');
+          }else{
+            items.forEach(function(it){
+              var name = it.name || '(상품명 없음)';
+              var qty  = (it.qty ?? 0);
+              var html =
+                '<li class="low-stock-item" data-product-id="' + it.id + '">' +
+                  '<p class="low-stock-name">' + name + '</p>' +
+                  '<p>현재 ' + qty + '개 / <span>기준 20개</span></p>' +
+                '</li>';
+              $list.append(html);
             });
-        }
-
-        // 모달 열릴 때 불러오기
-        function openModal() {
-            loadLowStockList();
-            $('#customModal').fadeIn();
-        }
-
-        // 클릭 시 발주 페이지 이동
-        $(document).on("click", ".low-stock-item", function() {
-            window.location.href = "${pageContext.request.contextPath}/order/orderSave";
+          }
+          updateAlertCount(items.length);
         });
+      }
 
+      function openModal(){ loadLowStockList(); $('#customModal').fadeIn(); }
+      function closeModal(){ $('#customModal').fadeOut(); }
 
+      $(function(){
+        $.getJSON("${pageContext.request.contextPath}/product/lowStock", function(d){
+          updateAlertCount((d||[]).length);
+        });
+      });
+
+      $(document).on('click','.low-stock-item', function(){
+        window.location.href = "${pageContext.request.contextPath}/order/orderSave";
+      });
     </script>
+
+

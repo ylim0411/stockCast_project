@@ -85,6 +85,7 @@ public class ProductService {
         productRepository.updateProductName(productId, newName);
     }
 
+
 //    // 재고 20개 이하 알림창 you
 //    public List<StockQuantityDTO> findLowStock() { // 추가
 //        return productRepository.findLowStock();
