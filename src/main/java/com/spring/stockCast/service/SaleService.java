@@ -57,9 +57,9 @@ public class SaleService {
         }
         return categorySales;
     }
-    // 연도별 매출액 월별 조회(꺾은선 그래프 구성용)
-    public Map<String, Integer> saleMonth(List<SaleDTO> saleList) {
-        Map<String, Integer> monthPrice = new LinkedHashMap<>();
+    // 연도별 매출액 일별 조회(꺾은선 그래프 구성용)
+    public Map<String, Integer> saleDay(List<SaleDTO> saleList) {
+        Map<String, Integer> dayPrice = new LinkedHashMap<>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 날짜 포맷 지정
 
@@ -72,10 +72,26 @@ public class SaleService {
             // Date 객체를 지정된 "yyyy-MM-dd" 형식의 문자열로 변환합니다.
             String dateKey = sdf.format(saleDate);
 
-            int currentTotal = monthPrice.getOrDefault(dateKey, 0);
+            int currentTotal = dayPrice.getOrDefault(dateKey, 0);
             int newTotal = currentTotal + (price * quantity);
 
-            monthPrice.put(dateKey, newTotal);
+            dayPrice.put(dateKey, newTotal);
+        }
+
+        return dayPrice;
+    }
+
+    public Map<String, Integer> saleMonth(List<SaleDTO> saleList) {
+        Map<String, Integer> monthPrice = new LinkedHashMap<>();
+        for (int i = 1; i <= 12; i++) {
+            monthPrice.put(i + "월", 0);
+        }
+        for (SaleDTO sale : saleList) {
+            int monthNumber = sale.getSaleDate().getMonth() + 1;
+            String monthKey = monthNumber + "월";
+            int currentTotal = monthPrice.get(monthKey);
+            int newTotal = currentTotal + (sale.getSalePrice() * sale.getSaleQty());
+            monthPrice.put(monthKey, newTotal);
         }
 
         return monthPrice;

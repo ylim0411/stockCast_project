@@ -48,13 +48,13 @@
                             </c:forEach>
                         </select>
                     <div>
-                        <button name="btn" value="cMonth" class="btn btn-blue">당월</button>
-                        <button name="btn" value="1q" class="btn btn-blue">1분기</button>
-                        <button name="btn" value="2q" class="btn btn-blue">2분기</button>
-                        <button name="btn" value="3q" class="btn btn-blue">3분기</button>
-                        <button name="btn" value="4q" class="btn btn-blue">4분기</button>
-                        <button name="btn" value="first" class="btn btn-blue">상반기</button>
-                        <button name="btn" value="second" class="btn btn-blue">하반기</button>
+                        <button name="btn" value="cMonth" class="btn ${param.btn eq 'cMonth' ? 'btn-blue-b' : 'btn-blue'}">당월</button>
+                        <button name="btn" value="1q" class="btn ${param.btn eq '1q' ? 'btn-blue-b' : 'btn-blue'}">1분기</button>
+                        <button name="btn" value="2q" class="btn ${param.btn eq '2q' ? 'btn-blue-b' : 'btn-blue'}">2분기</button>
+                        <button name="btn" value="3q" class="btn ${param.btn eq '3q' ? 'btn-blue-b' : 'btn-blue'}">3분기</button>
+                        <button name="btn" value="4q" class="btn ${param.btn eq '4q' ? 'btn-blue-b' : 'btn-blue'}">4분기</button>
+                        <button name="btn" value="first" class="btn ${param.btn eq 'first' ? 'btn-blue-b' : 'btn-blue'}">상반기</button>
+                        <button name="btn" value="second" class="btn ${param.btn eq 'second' ? 'btn-blue-b' : 'btn-blue'}">하반기</button>
                     </div>
                 </div>
             </form>
@@ -78,9 +78,9 @@
                         <c:forEach var="account" items="${pageData.assetsList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td><p><fmt:formatNumber value="${accountValues[account.name]}" pattern="#,###"/></p></td>
+                                <td><p><fmt:formatNumber value="${empty accountValues[account.name] ? 0 : accountValues[account.name]}" pattern="#,###"/></p></td>
                             </tr>
-                        <c:set var="totalAssets" value="${totalAssets + accountValues[account.name]}"/>
+                        <c:set var="totalAssets" value="${totalAssets + (empty accountValues[account.name] ? 0 : accountValues[account.name])}"/>
                         </c:forEach>
                         <tr>
                             <td>자산 총계</td>
@@ -93,9 +93,9 @@
                         <c:forEach var="account" items="${pageData.expenseList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td><p><fmt:formatNumber value="${accountValues[account.name]}" pattern="#,###"/></p></td>
+                                <td><p><fmt:formatNumber value="${empty accountValues[account.name] ? 0 : accountValues[account.name]}" pattern="#,###"/></p></td>
                             </tr>
-                            <c:set var="totalExpenses" value="${totalExpenses + accountValues[account.name]}"/>
+                            <c:set var="totalExpenses" value="${totalExpenses + (empty accountValues[account.name] ? 0 : accountValues[account.name])}"/>
                         </c:forEach>
 
                         <c:set var="debitRowCount" value="${fn:length(pageData.assetsList) + fn:length(pageData.expenseList) + 2}"/>
@@ -114,11 +114,7 @@
                             <td><p><fmt:formatNumber value="${totalExpenses}" pattern="#,###"/></p></td>
                         </tr>
 
-                        <!-- <tr>
-                            <td>총 차변</td>
-                            <td><p><fmt:formatNumber value="${totalAssets+totalExpenses}" pattern="#,###"/></p></td>
-                        </tr> -->
-                    </tbody>
+                        </tbody>
                 </table>
 
                 <table>
@@ -139,9 +135,9 @@
                         <c:forEach var="account" items="${pageData.liabilitiesList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td><p><fmt:formatNumber value="${accountValues[account.name]}" pattern="#,###"/></p></td>
+                                <td><p><fmt:formatNumber value="${empty accountValues[account.name] ? 0 : accountValues[account.name]}" pattern="#,###"/></p></td>
                             </tr>
-                            <c:set var="totalLiabilities" value="${totalLiabilities + accountValues[account.name]}"/>
+                            <c:set var="totalLiabilities" value="${totalLiabilities + (empty accountValues[account.name] ? 0 : accountValues[account.name])}"/>
                         </c:forEach>
                         <tr>
                             <th colspan="2"><b>자본</b></th>
@@ -150,9 +146,9 @@
                         <c:forEach var="account" items="${pageData.capitalList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td><p><fmt:formatNumber value="${accountValues[account.name]}" pattern="#,###"/></p></td>
+                                <td><p><fmt:formatNumber value="${empty accountValues[account.name] ? 0 : accountValues[account.name]}" pattern="#,###"/></p></td>
                             </tr>
-                            <c:set var="totalCapital" value="${totalCapital + accountValues[account.name]}"/>
+                            <c:set var="totalCapital" value="${totalCapital + (empty accountValues[account.name] ? 0 : accountValues[account.name])}"/>
                         </c:forEach>
                         <tr>
                             <td></td>
@@ -169,9 +165,9 @@
                         <c:forEach var="account" items="${pageData.revenueList}">
                             <tr>
                                 <td>${account.name}</td>
-                                <td><p><fmt:formatNumber value="${accountValues[account.name]}" pattern="#,###"/></p></td>
+                                <td><p><fmt:formatNumber value="${empty accountValues[account.name] ? 0 : accountValues[account.name]}" pattern="#,###"/></p></td>
                             </tr>
-                            <c:set var="totalIncome" value="${totalIncome + accountValues[account.name]}"/>
+                            <c:set var="totalIncome" value="${totalIncome + (empty accountValues[account.name] ? 0 : accountValues[account.name])}"/>
                         </c:forEach>
 
                         <c:set var="debitRowCount" value="${fn:length(pageData.assetsList) + fn:length(pageData.expenseList) + 1}"/>
@@ -189,11 +185,7 @@
                             <td>수익 총계</td>
                             <td><p><fmt:formatNumber value="${totalIncome}" pattern="#,###"/></p></td>
                         </tr>
-                        <!-- <tr>
-                            <td>총 대변</td>
-                            <td><p><fmt:formatNumber value="${totalLiabilities+totalCapital+totalIncome}" pattern="#,###"/></p></td>
-                        </tr> -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>

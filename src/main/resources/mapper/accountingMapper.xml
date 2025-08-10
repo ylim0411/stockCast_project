@@ -21,14 +21,6 @@
         WHERE a.transactionDate BETWEEN  #{startDate} AND #{endDate}
         ORDER BY a.transactionDate;
     </select>
-    <!-- 선택한 년도에 해당하는 판매목록 표시 ho -->
-    <select id="findByYear" parameterType="String" resultType="AccoList">
-        SELECT a.transactionDate, ai.itemId, at.value, ai.direction FROM erp_db.accounting a
-        JOIN account_transaction at ON a.accountingId = at.accountingId
-        JOIN account_item ai ON ai.itemId = at.itemId
-        WHERE SUBSTR(a.transactionDate,1,4) = #{year}
-        ORDER BY a.transactionDate;
-    </select>
     <!-- 회계기록이 있는 년도만 조회 ho -->
     <select id="findAccountYear" resultType="String">
         SELECT DISTINCT(SUBSTR(transactionDate,1,4)) FROM accounting
