@@ -110,11 +110,15 @@
             </li>
           </ul>
         </nav>
-        <div class="userContext">
-          <a href="/mypage/" class="on">마이페이지</a>
-          <a href="/admin/logout">로그아웃</a>
-          <a href="/sales/saleOrder">모의판매</a>
-        </div>
+        <c:if test="${not empty sessionScope.loginedAdminDTO}">
+            <div class="userContext">
+                <a href="${pageContext.request.contextPath}/mypage/"
+                   class="${fn:contains(uri, '/mypage') ? 'on' : ''}">마이페이지</a>
+                <a href="${pageContext.request.contextPath}/admin/logout">로그아웃</a>
+                <a href="${pageContext.request.contextPath}/sales/saleOrder"
+                   class="${fn:contains(uri, '/saleOrder') ? 'on' : ''}">모의판매</a>
+            </div>
+        </c:if>
       </header>
 
       <div id="customModal" class="modal">

@@ -69,7 +69,7 @@ public class ProductService {
         return productRepository.findByCategoryId(categoryId);
     }
 
-    public List<StockQuantityDTO> stockQuantityList(String keyword) {
+    public List<StockQuantityDTO> stockQuantityList(String keyword, Integer month) {
         if (keyword != null && !keyword.trim().isEmpty()) {
             return productRepository.findStockQuantityByKeyword("%" + keyword + "%");
         } else {
