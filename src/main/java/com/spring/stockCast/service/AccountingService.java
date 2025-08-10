@@ -23,8 +23,8 @@ public class AccountingService {
     private final AccountingRepository accountingRepository;
 
     // 판매발주 목록 전체가져오기
-    public List<AccountingDTO> findAll() {
-        return accountingRepository.findAll();
+    public List<AccountingDTO> findAll(String storeId) {
+        return accountingRepository.findAll(storeId);
     }
 
     // 각 계정 항목 가져오기
@@ -57,10 +57,11 @@ public class AccountingService {
     }
 
     // 기간에 맞는 거래내역 불러오기
-    public List<AccoListDTO> findByDate(LocalDate startDate, LocalDate endDate) {
+    public List<AccoListDTO> findByDate(LocalDate startDate, LocalDate endDate, String storeId) {
         Map<String, Object> param = new HashMap<>();
         param.put("startDate", startDate);
         param.put("endDate", endDate);
+        param.put("storeId", storeId);
 
         return accountingRepository.findByDate(param);
     }
@@ -125,6 +126,7 @@ public class AccountingService {
         AccountingDTO pageData = getAccountingPageData(); // 존재하는 모든 계정 불러오기
         String findDate="";
         List<AccoListDTO> accounts;
+        String storeId = session.getAttribute("selectedStoredId").toString(); // 로그인된 계정의 점포 id 불러오기
         // 최초 진입시 isLoad null을 false(점포매출)로 변경
         if (session.getAttribute("isLoad") == null) {
             session.setAttribute("isLoad", false);
@@ -187,7 +189,7 @@ public class AccountingService {
 
         // 날짜 필터가 있을 때만 검색
         if (startDate != null && endDate != null) {
-            accounts = findByDate(startDate, endDate); // 기간 거래내역 불러오기
+            accounts = findByDate(startDate, endDate,storeId); // 기간 거래내역 불러오기
             findDate = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")) + "~" + endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }else {
             // 연도가 null이거나 비어있으면 현재 연도로 설정
@@ -196,7 +198,7 @@ public class AccountingService {
             }
             startDate = LocalDate.of(Integer.parseInt(year), 1, 1);
             endDate = LocalDate.of(Integer.parseInt(year), 12, 31);
-            accounts = findByDate(startDate, endDate); // findByYear 대신 findByDate 사용
+            accounts = findByDate(startDate, endDate,storeId); // findByYear 대신 findByDate 사용
             findDate = year; // 화면 표시용은 연도만 표기
         }
         Map<String, Integer> accountValues = findValue(accounts); // 계정이름(key),가격(value) 들은 맵 전달

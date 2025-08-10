@@ -35,7 +35,7 @@ public class MainController {
         List<SaleDTO> sales = saleService.findByMonth(currentMonth); // 올해 거래내역 불러오기
         List<OrderStmtDTO> orders = orderStmtService.findByMonth(currentMonth); // 올해 발주내역 불러오기
         model.addAttribute("saleTop",topSales);
-        model.addAttribute("monthPrice", saleService.saleMonth(sales)); // 판매된 일, 매출액 맵으로 전달
+        model.addAttribute("monthPrice", saleService.saleDay(sales)); // 판매된 일, 매출액 맵으로 전달
         model.addAttribute("monthExpenses", orderStmtService.orderMonth(orders)); // 발주된 일, 매출액 맵으로 전달
         return "main";
     }

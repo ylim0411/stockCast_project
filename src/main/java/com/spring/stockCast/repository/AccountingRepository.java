@@ -15,7 +15,7 @@ import java.util.Map;
 public class AccountingRepository {
     private final SqlSessionTemplate sql;
     // 판매발주 목록 전체가져오기
-    public List<AccountingDTO> findAll() {
+    public List<AccountingDTO> findAll(String storeId) {
         return sql.selectList("Accounting.findAll");
     }
     // 전체 계정과목 불러오기
@@ -25,10 +25,6 @@ public class AccountingRepository {
     // 날짜 검색
     public List<AccoListDTO> findByDate(Map<String, Object> param) {
         return sql.selectList("Accounting.findByDate",param);
-    }
-    // 해당 년도에 해당하는 거래내역 불러오기
-    public List<AccoListDTO> findByYear(String year) {
-        return sql.selectList("Accounting.findByYear",year);
     }
     // 회계내역이 있는 년도 불러오기
     public List<String> findAccountYear() {
