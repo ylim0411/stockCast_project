@@ -38,7 +38,7 @@ img {
   --color-bg: #f0f3f7; /* 전체 배경 */
 
   /* 그림자 */
-  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  --box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 
   /* 폰트 사이즈 */
   --font-size-base: 14px; /* 본문 기본 */
@@ -615,7 +615,7 @@ header .userContext .on {
 .section1,
 .section2 {
   display: flex;
-  gap: 20px;
+  gap: 32px;
   height: 50%;
 }
 
@@ -639,7 +639,7 @@ header .userContext .on {
   background-color: var(--color-white);
   border-radius: var(--border-radius-base10);
   box-shadow: var(--box-shadow);
-  padding: 20px;
+  padding: 30px;
   overflow: hidden;
 }
 
@@ -718,6 +718,114 @@ header .userContext .on {
   padding: 10px;
 }
 
+/* chart, ranking */
+.sales-chart-box .title,
+.ranking-box .title {
+  font-size: var(--font-size-xl);
+  text-align: center;
+  height: 15%;
+  font-weight: 500;
+}
+
+ul.ranking {
+  width: 100%;
+  height: 85%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: var(--font-size-lg);
+}
+
+ul.ranking li {
+  display: flex;
+  gap: 15px;
+  background-color: var(--color-bg);
+  border-radius: var(--border-radius-base5);
+  padding: 15px;
+}
+
+ul.ranking li span {
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  background-color: var(--color-gray);
+  color: var(--color-white);
+  border-radius: 50%;
+  line-height: 25px;
+  font-size: var(--font-size-md);
+}
+
+ul.ranking li:nth-child(1) span,
+ul.ranking li:nth-child(2) span,
+ul.ranking li:nth-child(3) span {
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+}
+
+/* .ranking-box table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: var(--font-size-md);
+  color: var(--color-black);
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-base10);
+  overflow: hidden;
+  text-align: center; 
+}
+
+.ranking-box table th {
+  text-align: center;
+  padding: 12px 20px;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  font-weight: bold;
+  font-size: var(--font-size-lg);
+  border-bottom: none;
+}
+
+.ranking-box table td {
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+  vertical-align: middle;
+  background-color: var(--color-white);
+  transition: none;
+}
+
+.ranking-box table tr:last-child td {
+  border-bottom: none;
+}
+
+.ranking-box table tr:hover td {
+  background-color: var(--color-white);
+  cursor: default;
+  transform: none;
+}
+
+.ranking-box table td:nth-child(1) {
+  width: 40px;
+  text-align: center;
+  font-weight: bold;
+  color: var(--color-primary);
+  font-size: var(--font-size-md);
+}
+
+.ranking-box table td:nth-child(2) {
+  font-weight: 500;
+}
+
+.ranking-box .temperature {
+  width: 100%;
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.ranking-box .temperature .box-title {
+  padding: 20px;
+  margin-bottom: 0;
+} */
+
 /* 아래 영역(검색+테이블+페이징) -------------------------------------*/
 .section-wrap {
   height: auto;
@@ -729,7 +837,7 @@ header .userContext .on {
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 32px;
 }
 
 .section-wrap80 {
@@ -817,7 +925,7 @@ th {
   width: 100%;
 }
 
-/* 대분류, 중분류, 상품명 (70px, 약 10%) */
+/* 대분류, 중분류, 상품명 */
 .stock-table th:nth-child(1),
 .stock-table td:nth-child(1), /* 대분류 */
 .stock-table th:nth-child(2),
@@ -829,7 +937,7 @@ th {
   word-break: keep-all;
 }
 
-/* 상품코드 + 모든 수량 (50px, 약 6%) */
+/* 상품코드 + 모든 수량*/
 .stock-table th:nth-child(3),
 .stock-table td:nth-child(3), /* 상품코드 */
  /* 입고 수량 */
@@ -841,7 +949,7 @@ th {
   min-width: 20px;
 }
 
-/* 모든 단가·금액 (70px, 약 8%) */
+/* 모든 단가·금액 */
 .stock-table th:nth-child(5),
 .stock-table td:nth-child(5), /* 기초 재고수량 */
 .stock-table th:nth-child(8),
@@ -1246,6 +1354,7 @@ input[type='number']::-webkit-outer-spin-button {
 .order-item:last-child {
   border-bottom: none;
 }
+
 /* ho */
 .saleYear-select {
   padding: 5px;
@@ -1340,74 +1449,6 @@ select {
 }
 .dot.age40 {
   background: rgba(144, 202, 249, 0.8);
-}
-/* -- 판매실적 순위 테이블 스타일 수정 (ranking-box 내) -- */
-
-.ranking-box table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  font-size: var(--font-size-md);
-  color: var(--color-black);
-  background-color: var(--color-white);
-  border-radius: var(--border-radius-base10);
-  overflow: hidden;
-  text-align: center; /* 테이블 전체를 가운데 정렬 */
-}
-
-.ranking-box table th {
-  /* 기존: text-align: left; */
-  text-align: center; /* th를 명확하게 가운데 정렬 */
-  padding: 12px 20px;
-  background-color: var(--color-secondary);
-  color: var(--color-white);
-  font-weight: bold;
-  font-size: var(--font-size-lg);
-  border-bottom: none;
-}
-
-.ranking-box table td {
-  padding: 15px 20px;
-  border-bottom: 1px solid var(--color-border);
-  /* 기존: text-align: left; */
-  text-align: center; /* td를 명확하게 가운데 정렬 */
-  vertical-align: middle;
-  background-color: var(--color-white);
-  transition: none;
-}
-
-.ranking-box table tr:last-child td {
-  border-bottom: none;
-}
-
-/* 마우스 오버(hover) 효과 완전히 제거 */
-.ranking-box table tr:hover td {
-  background-color: var(--color-white);
-  cursor: default;
-  transform: none;
-}
-
-.ranking-box table td:nth-child(1) {
-  width: 40px;
-  text-align: center;
-  font-weight: bold;
-  color: var(--color-primary);
-  font-size: var(--font-size-md);
-}
-
-.ranking-box table td:nth-child(2) {
-  font-weight: 500;
-}
-
-.ranking-box .temperature {
-  width: 100%;
-  padding-bottom: 0;
-  margin-bottom: 0;
-}
-
-.ranking-box .temperature .box-title {
-  padding: 20px;
-  margin-bottom: 0;
 }
 
 /* 거래처 */
