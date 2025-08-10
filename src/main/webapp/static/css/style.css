@@ -771,6 +771,12 @@ ul.ranking li:nth-child(3) span {
 }
 
 .section-wrap100 {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.section-wrap85 {
   height: 85%;
   display: flex;
   flex-direction: column;
@@ -794,9 +800,8 @@ table {
 .table-container {
   background-color: var(--color-white);
   border: 1px solid var(--color-border);
-  /* border-radius: var(--border-radius-base10); */
-  /* padding: 20px; */
-  height: 600px;
+  height: calc(100% - 80px);
+  min-height: 600px;
 }
 
 th,

@@ -20,7 +20,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         <h2 class="title">거래처 관리</h2>
       </div>
 
-      <div class="section-wrap">
+      <div class="section-wrap80">
         <!-- 검색/등록 영역 -->
         <div class="form-container">
           <form method="get" action="${pageContext.request.contextPath}/client/filter">

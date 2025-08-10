@@ -18,7 +18,7 @@
             <p class="sub-title">매출 관리</p>
             <h2 class="title">거래명세서</h2>
         </div>
-            <div class="section-wrap">
+            <div class="section-wrap80">
              <form action="/saleStmt/saleStmtList" method="get" class="form-container">
                   <div class="dateForm">
                       <input type="date" name="startDate" id="startDate">

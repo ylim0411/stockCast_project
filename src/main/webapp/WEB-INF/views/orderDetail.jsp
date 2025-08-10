@@ -18,7 +18,7 @@
         <h2 class="title">발주 상세 페이지</h2>
     </div>
 
- <div class="section-wrap100">
+ <div class="section-wrap85">
     <div class="section-actions">
        <div style="display:flex; gap:10px; width:50%;">
            <strong>발주 상태 변경 :</strong>
