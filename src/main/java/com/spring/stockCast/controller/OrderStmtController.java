@@ -9,6 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -84,10 +85,8 @@ public class OrderStmtController {
             throw new IllegalArgumentException("거래처를 선택하세요.");
         }
 
-        // 1. 발주서 저장
         orderStmtService.saveOrder(clientId, orderId, orderDate);
 
-        // 2. 상품 데이터 저장 (빈 행은 건너뛰기)
         for (int i = 0; i < productId.size(); i++) {
             Integer pid = productId.get(i);
             Integer qty = purchaseQty.get(i);
@@ -111,7 +110,7 @@ public class OrderStmtController {
                               Model model) {
         if (approach != null && !approach.isEmpty()) {
             if (status != null) {
-                // 실제 상태를 업데이트하는 서비스 로직 호출
+
                 orderStmtService.updateStatus(id, status);
             }
             if (status.equals("완료")) {
@@ -133,11 +132,10 @@ public class OrderStmtController {
         model.addAttribute("orderInfo", orderInfo);
         model.addAttribute("orderItems", purchaseOrderService.findByOrderId(id));
         model.addAttribute("clients", clientService.getAllClients());
-        // 대분류는 JSP에서 Ajax로 호출 → clientId만 넘겨주기
+
         return "orderUpdate";
     }
 
-    // 발주 수정 저장
     // 발주 수정 저장
     @PostMapping("/orderUpdate")
     public String updateOrder(
@@ -158,7 +156,6 @@ public class OrderStmtController {
             return "redirect:/order/orderStmt";
         }
 
-        // 길이 가장 짧은 쪽 기준으로 반복
         int loopCount = Math.min(productId.size(),
                 Math.min(purchasePrice.size(), purchaseQty.size()));
 
@@ -180,9 +177,19 @@ public class OrderStmtController {
 
     // 발주 삭제
     @GetMapping("/orderDelete")
-    public String deleteOrder(@RequestParam int id) {
-        purchaseOrderService.deleteByOrderId(id);
-        orderStmtService.deleteOrder(id);
+    public String deleteOrder(@RequestParam int id, RedirectAttributes redirectAttributes) {
+        try {
+            // 서비스 메서드 호출 전에 purchaseOrder 먼저 삭제
+            purchaseOrderService.deleteByOrderId(id);
+            orderStmtService.deleteOrder(id);
+            redirectAttributes.addFlashAttribute("message", "발주서가 성공적으로 삭제되었습니다.");
+        } catch (IllegalStateException e) {
+
+            redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
+        } catch (Exception e) {
+
+            redirectAttributes.addFlashAttribute("errorMessage", "삭제 중 오류가 발생했습니다.");
+        }
         return "redirect:/order/orderStmt";
     }
 

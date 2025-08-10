@@ -496,6 +496,7 @@ header .userContext .on {
   margin-left: 220px;
   flex: 1;
   height: 100vh;
+  overflow: hidden;
 }
 
 .containerAuto {
@@ -762,70 +763,6 @@ ul.ranking li:nth-child(3) span {
   color: var(--color-white);
 }
 
-/* .ranking-box table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 15px;
-  font-size: var(--font-size-md);
-  color: var(--color-black);
-  background-color: var(--color-white);
-  border-radius: var(--border-radius-base10);
-  overflow: hidden;
-  text-align: center; 
-}
-
-.ranking-box table th {
-  text-align: center;
-  padding: 12px 20px;
-  background-color: var(--color-secondary);
-  color: var(--color-white);
-  font-weight: bold;
-  font-size: var(--font-size-lg);
-  border-bottom: none;
-}
-
-.ranking-box table td {
-  padding: 15px 20px;
-  border-bottom: 1px solid var(--color-border);
-  text-align: center;
-  vertical-align: middle;
-  background-color: var(--color-white);
-  transition: none;
-}
-
-.ranking-box table tr:last-child td {
-  border-bottom: none;
-}
-
-.ranking-box table tr:hover td {
-  background-color: var(--color-white);
-  cursor: default;
-  transform: none;
-}
-
-.ranking-box table td:nth-child(1) {
-  width: 40px;
-  text-align: center;
-  font-weight: bold;
-  color: var(--color-primary);
-  font-size: var(--font-size-md);
-}
-
-.ranking-box table td:nth-child(2) {
-  font-weight: 500;
-}
-
-.ranking-box .temperature {
-  width: 100%;
-  padding-bottom: 0;
-  margin-bottom: 0;
-}
-
-.ranking-box .temperature .box-title {
-  padding: 20px;
-  margin-bottom: 0;
-} */
-
 /* 아래 영역(검색+테이블+페이징) -------------------------------------*/
 .section-wrap {
   height: auto;
@@ -834,10 +771,9 @@ ul.ranking li:nth-child(3) span {
 }
 
 .section-wrap100 {
-  height: 100%;
+  height: 85%;
   display: flex;
   flex-direction: column;
-  gap: 32px;
 }
 
 .section-wrap80 {
@@ -1217,7 +1153,7 @@ input[type='number']::-webkit-outer-spin-button {
   height: 500px;
 }
 
-/* 발주 상세페이지 css ------------------------------------------------- */
+/* 발주 상세페이지 ------------------------------------------------- */
 .section-actions {
   display: flex;
   justify-content: space-between;
@@ -1226,14 +1162,22 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .section-box {
-  height: 50%;
-  max-height: 300px;
   background-color: var(--color-white);
   border-radius: 10px;
   margin-bottom: 20px;
   overflow: hidden;
   font-size: var(--font-size-base);
   padding-bottom: 10px;
+}
+
+.section-box1 {
+  height: 310px;
+  min-height: 310px;
+}
+
+.section-box2 {
+  height: calc(100% - 350px);
+  min-height: 310px;
 }
 
 .section-header {
@@ -1251,34 +1195,52 @@ input[type='number']::-webkit-outer-spin-button {
   gap: 20px;
 }
 
-.row {
+.section-body .row {
   display: flex;
   justify-content: space-between;
   gap: 20px;
 }
 
-.col {
+.section-body .col {
   width: 30%;
 }
 
-.label {
+.section-body .label {
   font-weight: 500;
   padding: 10px 0;
   font-size: var(--font-size-md);
 }
 
-.value {
+.section-body .value {
   padding: 8px 10px;
   border: 1px solid var(--color-border);
   border-radius: 5px;
 }
 
+.order-item.header {
+  font-weight: 500;
+}
+
+.order-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-md);
+}
+
+.order-item:last-child {
+  border-bottom: none;
+}
+
 .order-items {
   overflow: hidden;
+  /* height: calc(300px - 63px); */
   height: calc(100% - 63px);
   overflow-y: auto;
   padding: 10px 20px;
-  table-layout: fixed !important;
+  /* table-layout: fixed !important; */
 }
 
 /* 체크박스 */
@@ -1338,23 +1300,6 @@ input[type='number']::-webkit-outer-spin-button {
   cursor: pointer;
 }
 
-.order-item.header {
-  font-weight: 500;
-}
-
-.order-item {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  padding: 12px;
-  text-align: center;
-  border-bottom: 1px solid var(--color-border);
-  font-size: var(--font-size-md);
-}
-
-.order-item:last-child {
-  border-bottom: none;
-}
-
 /* ho */
 .saleYear-select {
   padding: 5px;
@@ -1383,7 +1328,7 @@ select {
   cursor: pointer;
 }
 
-/*  customer chart  ------------------------------------------------------------------------------ */
+/* 고객 분석  ---------------------------------------------------------------------------------------- */
 .chart-box {
   height: 100%;
   display: flex;
@@ -1427,7 +1372,7 @@ select {
 }
 
 .chart-card canvas {
-  width: 55% !important; /* 차트 너비 제한 */
+  width: 55% !important;
   height: auto !important;
 }
 
@@ -1451,7 +1396,7 @@ select {
   background: rgba(144, 202, 249, 0.8);
 }
 
-/* 거래처 */
+/* 거래처 ---------------------------------------------------------------------------------------------------*/
 .client-container {
   position: relative;
 }

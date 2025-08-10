@@ -22,7 +22,7 @@
   </head>
   <body>
     <div id="main" class="container">
-      <div class="section-wrap100">
+      <div class="section-wrap100" style="gap: 32px;">
         <div class="section1">
          <!-- 날씨 API -->
           <div class="weather-box">
