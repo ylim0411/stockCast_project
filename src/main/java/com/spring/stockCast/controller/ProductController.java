@@ -92,13 +92,21 @@ public class ProductController {
     }
 
     // 재고현황
+    // 재고현황
     @GetMapping("/stockQuantity")
     public String stockQuantity(@RequestParam(value = "keyword", required = false) String keyword,
+                                @RequestParam(value = "month", required = false) Integer  month,
                                 Model model) {
-        List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList(keyword);
+
+        List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList(keyword, month);
+
         model.addAttribute("stockQuantityList", stockQuantityList);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("month", month);
+
         return "stockQuantity";
     }
+
 
 //    // 재고 현황 페이지
 //    @GetMapping("/stockQuantity")
@@ -148,7 +156,7 @@ public class ProductController {
     @GetMapping("/lowStock")
     @ResponseBody
     public List<StockQuantityDTO> getLowStockProducts() {
-        List<StockQuantityDTO> allStock = productService.stockQuantityList(null);
+        List<StockQuantityDTO> allStock = productService.stockQuantityList(null,-1);
         return allStock.stream()
                 .filter(p -> p.getStockQuantity() != null && p.getStockQuantity() <= 20)
                 .collect(Collectors.toList());

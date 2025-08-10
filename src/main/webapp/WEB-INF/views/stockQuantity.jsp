@@ -10,9 +10,7 @@
   <title>재고 현황</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <script src="${pageContext.request.contextPath}/webjars/chartjs/2.9.4/Chart.min.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="${pageContext.request.contextPath}/static/js/chart.js"></script>
 
   <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css" />
   <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/chart.css" />
@@ -26,12 +24,12 @@
     <div class="section-wrap">
       <div class="form-container">
         <div class="btn-box">
-          <form id="searchForm" method="get" action="${pageContext.request.contextPath}/stock/list">
+          <form id="searchForm" method="get" action="${pageContext.request.contextPath}/product/stockQuantity">
               <input
                 type="text"
-                name="productName"
+                name="keyword"
                 placeholder="상품명 검색"
-                value="${param.productName != null ? param.productName : ''}"
+                value="${param.keyword != null ? param.keyword : ''}"
               />
         
               <select name="month" style="width: 150px;">
