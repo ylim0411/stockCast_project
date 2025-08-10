@@ -75,32 +75,21 @@
 
         <div class="section2">
           <div class="sales-chart-box">
-           <div class="temperature">
-             <p class="box-title">수익/비용 통계</p>
-           </div>
+            <p class="title">수익/비용 통계</p>
            <div class="chart-box">
              <canvas id="moneyChart"></canvas>
            </div>
           </div>
           <div class="ranking-box">
-            <div class="temperature">
-             <table>
-               <tr>
-                <th colspan="2">판매실적 순위</th>
-               </tr>
-              <c:set var="number" value="1"/>
-              <c:forEach var="top" items="${saleTop}">
-                <tr>
-                 <td>${number}</td>
-                 <td>${top}</td>
-                </tr>
-               <c:set var="number" value="${number+1}"/>
+             <p class="title">판매실적 순위</p>
+            <ul class="ranking">
+              <c:forEach var="top" items="${saleTop}" varStatus="st">
+                <li>
+                  <span>${st.index + 1}</span>
+                  <p>${top}</p>
+                </li>
               </c:forEach>
-             </table>
-            </div>
-            <div class="ranking">
-
-            </div>
+            </ul>
           </div>
         </div>
         <!-- section2 -->
@@ -217,10 +206,6 @@
          legend: {
            display: true, // 범례를 다시 보이도록 설정하여 수익/비용 라인을 구분
            position: 'bottom',
-         },
-         title: {
-           display: true,
-           text: "수익/비용 통계",
          },
        },
      });
