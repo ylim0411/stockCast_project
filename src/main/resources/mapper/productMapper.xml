@@ -130,7 +130,13 @@
     </update>
 
 
-    <!-- 모달창 카테고리명 수정 you -->
+<!--    &lt;!&ndash; 모달창 카테고리명 수정 you &ndash;&gt;-->
+<!--    <update id="updateProductName" parameterType="map">-->
+<!--        UPDATE product-->
+<!--        SET productName = #{newName}-->
+<!--        WHERE productId = #{productId};-->
+<!--    </update>-->
+
 
     <!-- 판매시 상품재고 감소 ho -->
     <update id="updateSale" parameterType="map">
