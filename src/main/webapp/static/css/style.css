@@ -279,13 +279,13 @@ textarea:focus {
 
 .modal-content {
   position: absolute;
-  top: 17%;
+  top: 27%;
   left: 50%;
   transform: translateX(-50%);
   background: #fff;
   width: 400px;
   padding: 20px;
-  margin: 100px auto;
+  /* margin: 100px auto; */
   border-radius: var(--border-radius-base10);
   text-align: center;
 }
@@ -528,6 +528,17 @@ header .userContext .on {
   background-color: #1f6cb8;
 }
 
+.cencle-btn {
+  border: 1px solid var(--color-border);
+  color: var(--color-gray);
+  transition: 0.35s ease;
+}
+
+.cencle-btn:hover {
+  border: 1px solid var(--color-secondary);
+  color: var(--color-secondary);
+}
+
 .btn-box {
   display: flex;
   justify-content: flex-end;
@@ -609,7 +620,17 @@ header .userContext .on {
 }
 
 .section1 .weather-box,
-.section1 .traffic-box,
+.section1 .traffic-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-base10);
+  box-shadow: var(--box-shadow);
+  padding: 30px 50px;
+  overflow: hidden;
+}
+
 .section2 .sales-chart-box,
 .section2 .ranking-box {
   display: flex;
@@ -618,7 +639,7 @@ header .userContext .on {
   background-color: var(--color-white);
   border-radius: var(--border-radius-base10);
   box-shadow: var(--box-shadow);
-  padding: 30px 50px;
+  padding: 20px;
   overflow: hidden;
 }
 
@@ -708,7 +729,7 @@ header .userContext .on {
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
 }
 
 .section-wrap80 {
@@ -729,14 +750,14 @@ table {
 .table-container {
   background-color: var(--color-white);
   border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-base10);
-  padding: 20px;
+  /* border-radius: var(--border-radius-base10); */
+  /* padding: 20px; */
   height: 600px;
 }
 
 th,
 td {
-  height: 50px;
+  height: 55px;
   border-bottom: 1px solid var(--color-border);
   font-size: var(--font-size-md);
 }
@@ -979,6 +1000,7 @@ select {
 }
 
 /* 거래명세서 css ------------------------------------------------- */
+
 .detail-header {
   display: flex;
   justify-content: flex-end;
@@ -1322,68 +1344,116 @@ select {
 /* -- 판매실적 순위 테이블 스타일 수정 (ranking-box 내) -- */
 
 .ranking-box table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-    font-size: var(--font-size-md);
-    color: var(--color-black);
-    background-color: var(--color-white);
-    border-radius: var(--border-radius-base10);
-    overflow: hidden;
-    text-align: center; /* 테이블 전체를 가운데 정렬 */
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: var(--font-size-md);
+  color: var(--color-black);
+  background-color: var(--color-white);
+  border-radius: var(--border-radius-base10);
+  overflow: hidden;
+  text-align: center; /* 테이블 전체를 가운데 정렬 */
 }
 
 .ranking-box table th {
-    /* 기존: text-align: left; */
-    text-align: center; /* th를 명확하게 가운데 정렬 */
-    padding: 12px 20px;
-    background-color: var(--color-secondary);
-    color: var(--color-white);
-    font-weight: bold;
-    font-size: var(--font-size-lg);
-    border-bottom: none;
+  /* 기존: text-align: left; */
+  text-align: center; /* th를 명확하게 가운데 정렬 */
+  padding: 12px 20px;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  font-weight: bold;
+  font-size: var(--font-size-lg);
+  border-bottom: none;
 }
 
 .ranking-box table td {
-    padding: 15px 20px;
-    border-bottom: 1px solid var(--color-border);
-    /* 기존: text-align: left; */
-    text-align: center; /* td를 명확하게 가운데 정렬 */
-    vertical-align: middle;
-    background-color: var(--color-white);
-    transition: none;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--color-border);
+  /* 기존: text-align: left; */
+  text-align: center; /* td를 명확하게 가운데 정렬 */
+  vertical-align: middle;
+  background-color: var(--color-white);
+  transition: none;
 }
 
 .ranking-box table tr:last-child td {
-    border-bottom: none;
+  border-bottom: none;
 }
 
 /* 마우스 오버(hover) 효과 완전히 제거 */
 .ranking-box table tr:hover td {
-    background-color: var(--color-white);
-    cursor: default;
-    transform: none;
+  background-color: var(--color-white);
+  cursor: default;
+  transform: none;
 }
 
 .ranking-box table td:nth-child(1) {
-    width: 40px;
-    text-align: center;
-    font-weight: bold;
-    color: var(--color-primary);
-    font-size: var(--font-size-md);
+  width: 40px;
+  text-align: center;
+  font-weight: bold;
+  color: var(--color-primary);
+  font-size: var(--font-size-md);
 }
 
 .ranking-box table td:nth-child(2) {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .ranking-box .temperature {
-    width: 100%;
-    padding-bottom: 0;
-    margin-bottom: 0;
+  width: 100%;
+  padding-bottom: 0;
+  margin-bottom: 0;
 }
 
 .ranking-box .temperature .box-title {
-    padding: 20px;
-    margin-bottom: 0;
+  padding: 20px;
+  margin-bottom: 0;
+}
+
+/* 거래처 */
+.client-container {
+  position: relative;
+}
+
+.client-container .modal-content {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.client-container .modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 22px;
+}
+
+.client-container .modal-content label {
+  display: block;
+  margin-top: 10px;
+}
+
+.client-container .modal-content input {
+  width: 100%;
+  padding: 7px 8px;
+  margin-top: 5px;
+  box-sizing: border-box;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+}
+
+.client-container select {
+  width: 170px;
+}
+
+.client-container .submit-btn {
+  margin: 15px 0 0 0;
+}
+
+.client-container .btn-box {
+  margin: 15px 0 0 0;
+}
+
+.client-container .btn-box .btn {
+  width: 50%;
+  margin: 0;
 }
