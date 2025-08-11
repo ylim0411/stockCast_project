@@ -1,5 +1,6 @@
 package com.spring.stockCast.repository;
 
+import com.spring.stockCast.dto.ProductCategoryDTO;
 import com.spring.stockCast.dto.ProductDTO;
 import com.spring.stockCast.dto.StockQuantityDTO;
 import lombok.RequiredArgsConstructor;
