@@ -39,9 +39,9 @@
         VALUES (#{saleId},#{productId},(SELECT price FROM product WHERE productId = #{productId}),#{qty})
     </insert>
     <!-- 상품이름으로 상품아이디 찾기 ho -->
-    <select id="findProductId" parameterType="String" resultType="int">
+    <select id="findProductId" parameterType="map" resultType="int">
         SELECT productId FROM product
-        WHERE productName = #{pName}
+        WHERE productName = #{pName} AND storeId = #{storeId}
     </select>
     <!-- 회계에서 판매시 연동 accounting 추가 ho -->
     <insert id="insertOrder" parameterType="map">

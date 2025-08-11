@@ -48,7 +48,8 @@ img {
   --font-size-xl: 24px; /* 큰 제목 */
 
   /* 폰트 */
-  --font-family-default: 'Noto Sans KR', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-family-default: "Noto Sans KR", "Segoe UI", Tahoma, Geneva, Verdana,
+    sans-serif;
 
   /* 기타 */
   --border-radius-base20: 20px;
@@ -162,10 +163,10 @@ ul li.difultImg img {
   gap: 15px;
 }
 
-.login input[type='text'],
-.login input[type='password'],
-.join-container input[type='text'],
-.join-container input[type='password'] {
+.login input[type="text"],
+.login input[type="password"],
+.join-container input[type="text"],
+.join-container input[type="password"] {
   width: 100%;
   height: 52px;
   padding: 25px 20px;
@@ -185,8 +186,8 @@ ul li.difultImg img {
   font-size: var(--font-size-md);
 }
 
-input[type='text']:focus:not([readonly]),
-input[type='password']:focus:not([readonly]),
+input[type="text"]:focus:not([readonly]),
+input[type="password"]:focus:not([readonly]),
 textarea:focus {
   border-color: var(--color-primary);
   outline: none;
@@ -202,7 +203,7 @@ textarea:focus {
 
 .login-divider::before,
 .login-divider::after {
-  content: '';
+  content: "";
   flex: 1;
   height: 1px;
   background: var(--color-gray);
@@ -418,8 +419,9 @@ header .admin .alert img {
 }
 
 header .admin .alert:hover img {
-  filter: drop-shadow(0 0 5px #42a5f5) drop-shadow(0 0 10px #42a5f5) drop-shadow(0 0 15px #1976d2)
-    drop-shadow(0 0 20px #42a5f5) drop-shadow(0 0 25px #1565c0);
+  filter: drop-shadow(0 0 5px #42a5f5) drop-shadow(0 0 10px #42a5f5)
+    drop-shadow(0 0 15px #1976d2) drop-shadow(0 0 20px #42a5f5)
+    drop-shadow(0 0 25px #1565c0);
 }
 
 header nav {
@@ -994,9 +996,6 @@ th {
   width: 10%;
 }
 
-
-
-
 /* form 태그 ------------------------------------------------- */
 .form-container {
   display: flex;
@@ -1012,9 +1011,9 @@ th {
   gap: 5px;
 }
 
-input[type='date'],
-input[type='text'],
-input[type='number'],
+input[type="date"],
+input[type="text"],
+input[type="number"],
 input[readonly],
 select {
   font-size: var(--font-size-md);
@@ -1028,15 +1027,15 @@ select {
 }
 
 /* 달력 인풋 & 텍스트 인풋 ------------------------------------------------- */
-.form-container input[type='date'],
-.form-container input[type='text'] {
+.form-container input[type="date"],
+.form-container input[type="text"] {
   padding: 5px;
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-base5);
   font-size: var(--font-size-base);
 }
 
-.form-container input[type='date'] {
+.form-container input[type="date"] {
   padding: 5px 20px;
 }
 
@@ -1182,8 +1181,8 @@ table.orderItems td {
   cursor: pointer;
 }
 
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -1260,13 +1259,13 @@ input[type='number']::-webkit-outer-spin-button {
   border-radius: 5px;
 }
 
-.accountNum{
+.accountNum {
   margin-bottom: 20px;
 }
 
 /* 발주서, 거래명세서 아래 표 */
 .order-item.header,
-.sale-item.header{
+.sale-item.header {
   font-weight: 500;
 }
 
@@ -1289,12 +1288,12 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .order-item:last-child,
-.sale-item:last-child{
+.sale-item:last-child {
   border-bottom: none;
 }
 
 .order-items,
-.sale-items{
+.sale-items {
   overflow: hidden;
   /* height: calc(300px - 63px); */
   height: calc(100% - 63px);

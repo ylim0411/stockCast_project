@@ -52,6 +52,8 @@ public class SaleController {
             @RequestParam(required = false) String saleId,
             @RequestParam(value = "productName[]", required = false) List<String> productName,
             @RequestParam(value = "purchaseQty[]", required = false) List<Integer> purchaseQty,
+            @RequestParam(required = false) String gender,
+            @RequestParam(required = false) String age,
             HttpSession session
     ) {
         if (productName != null && !productName.isEmpty() && purchaseQty != null && !purchaseQty.isEmpty()) {
@@ -67,11 +69,12 @@ public class SaleController {
 
                     // 수량이 null이 아니고 0보다 클 때만 DB에 저장
                     if (qty != null && qty > 0) {
-                        int productId = saleService.findProductId(pName);
+                        int productId = saleService.findProductId(pName, storeId);
 
                         // DB 저장 및 회계 처리 로직 통합
                         saleService.saleSave(saleId, today, productId, qty);
                         saleService.linkAccounting(saleId, today, productId, qty);
+                        saleService.insertCustomer(gender,age,storeId);
                     }
                 }
             }
