@@ -36,7 +36,7 @@ public class ProductController {
     @GetMapping("/list")
     public String productList(Model model, HttpSession session) {
         int storeId = (int) session.getAttribute("selectedStoredId");
-        List<ProductCategoryDTO> categoryList = productCategoryService.categorySelect(storeId);
+        List<ProductCategoryDTO> categoryList = productCategoryService.categorySelect(storeId, "");
         model.addAttribute("categoryList", categoryList);
 
         return "product";
@@ -81,10 +81,8 @@ public class ProductController {
     public String searchProduct(@RequestParam("productName") String productName, Model model, HttpSession session){
         int storeId = (int) session.getAttribute("selectedStoredId");
 
-        List<ProductDTO> searchResult = productService.findProductByName(productName);
-        List<ProductCategoryDTO> productCategory = productCategoryService.categorySelect(storeId);
+        List<ProductCategoryDTO> productCategory = productCategoryService.categorySelect(storeId, productName);
 
-        model.addAttribute("searchResult", searchResult);
         model.addAttribute("categoryList", productCategory);
         return "product";
     }

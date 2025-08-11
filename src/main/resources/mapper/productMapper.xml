@@ -39,7 +39,10 @@
     </select>
 
     <select id="selectProductsByCategoryId" parameterType="map" resultType="Product">
-        SELECT * FROM product WHERE categoryId = #{categoryId} AND storeId = #{storeId};
+        SELECT * FROM product
+        WHERE categoryId = #{categoryId}
+        AND storeId = #{storeId}
+        AND productName LIKE #{keyword};
     </select>
 
     <select id="findProductList" resultType="Product">

@@ -19,7 +19,7 @@ public class ProductCategoryService {
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductRepository productRepository;
 
-    public List<ProductCategoryDTO> categorySelect(int storeId) {
+    public List<ProductCategoryDTO> categorySelect(int storeId, String keyword) {
         List<ProductCategoryDTO> categoryAll = productCategoryRepository.categorySelect();
 
         Map<Integer, ProductCategoryDTO> categoryMap = new HashMap<>();
@@ -43,7 +43,7 @@ public class ProductCategoryService {
             }
 
             if (productCategory.getCategoryLevel() == 2) {
-                List<ProductDTO> products = productRepository.selectProductsByCategoryId(productCategory.getCategoryId(),storeId);
+                List<ProductDTO> products = productRepository.selectProductsByCategoryId(productCategory.getCategoryId(),storeId, "%" + keyword + "%");
                 if (products != null && !products.isEmpty()) {
                     productCategory.setProductList(products);
                 }
