@@ -44,33 +44,47 @@ public class ProductController {
                                 @RequestParam("productName") String productName,
                                 @RequestParam("price") int price,
                                 @RequestParam("stockQuantity") int stockQuantity,
-                                @RequestParam("middleCategoryId") int middleCategoryId) {
+                                @RequestParam("middleCategoryId") int middleCategoryId,
+                                HttpSession session) {
 
+        System.out.println("update 컨트롤러 위");
+
+        int storeId = (int) session.getAttribute("selectedStoredId");
+        
         ProductDTO product = new ProductDTO();
         product.setProductId(productId);
+        product.setStoreId(storeId); // 수정중
         product.setProductName(productName);
         product.setPrice(price);
         product.setStockQuantity(stockQuantity);
         product.setCategoryId(middleCategoryId); // ← 여기에 중분류 ID 넣는 게 핵심
 
         productService.updateProduct(product);
-        return "redirect:/product/";
+
+        System.out.println("update 컨트롤러 아래: " + product);
+
+        return "redirect:/product/list";
     }
 
     @PostMapping("/add")
     public String addProduct(@RequestParam("addProductName") String productName,
                              @RequestParam("addPrice") int price,
                              @RequestParam("addStockQuantity") int stockQuantity,
-                             @RequestParam("addMiddleCategoryId") int middleCategoryId) {
+                             @RequestParam("addMiddleCategoryId") int middleCategoryId,
+                             HttpSession session) {
+
+        int storeId = (int) session.getAttribute("selectedStoredId");
 
         ProductDTO product = new ProductDTO();
+        product.setStoreId(storeId); // 수정중
         product.setProductName(productName);
         product.setPrice(price);
         product.setStockQuantity(stockQuantity);
         product.setCategoryId(middleCategoryId); // ← 여기에 중분류 ID 넣는 게 핵심
 
         productService.addProduct(product);
-        return "redirect:/product/";
+
+        return "redirect:/product/list";
     }
 
     @GetMapping("/search")

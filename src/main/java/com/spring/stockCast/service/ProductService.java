@@ -33,6 +33,7 @@ public class ProductService {
 
 
     public void updateProduct(ProductDTO product) {
+        System.out.println("updateProduct 서비스");
         productRepository.updateProduct(product);
     }
 
