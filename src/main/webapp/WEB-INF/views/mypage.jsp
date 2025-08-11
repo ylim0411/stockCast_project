@@ -43,11 +43,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
   </head>
   <body>
     <div class="container">
-      <!-- 타이틀 -->
-      <div class="title-box" style="height: 10%;">
-        <div class="title">마이 페이지</div>
+      <div class="title-box">
+          <p class="sub-title">    </p>
+          <h2 class="title">마이 페이지</h2>
       </div>
-
+    <div class="section-wrap85">
       <!-- 관리자 정보 -->
       <div>
         <div class="title" style="font-size: 18px">관리자 정보</div>
@@ -314,6 +314,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             >
           </c:otherwise>
         </c:choose>
+      </div>
       </div>
     <script>
     $(document).ready(function () {

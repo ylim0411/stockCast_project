@@ -16,10 +16,6 @@ import java.util.Map;
 public class SaleRepository {
     private final SqlSessionTemplate sql;
 
-    // 전체 판매내역 불러오기
-    public List<SaleDTO> findAll() {
-        return sql.selectList("Sale.findAll");
-    }
     // 판매내역이 있는 년도 불러오기
     public List<String> findSaleYear() {
         return sql.selectList("Sale.findSaleYear");
@@ -42,10 +38,11 @@ public class SaleRepository {
         return sql.selectOne("Sale.findMaxSaleId");
     }
     // 판매상품을 등록할 수 있는 목록 생성
-    public void saleCreateStmt(String saleId, LocalDate today) {
+    public void saleCreateStmt(String saleId, String storeId, LocalDate today) {
         Map<String,Object> param = new HashMap<>();
         param.put("saleId",saleId);
         param.put("today",today);
+        param.put("storeId",storeId);
         sql.insert("saleCreateStmt",param);
     }
     // 판매상품 DB에 저장
