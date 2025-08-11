@@ -167,12 +167,6 @@ public class ProductController {
                 .collect(Collectors.toList());
     }
 
-//    @GetMapping("/lowStock")
-//    @ResponseBody
-//    public List<StockQuantityDTO> getLowStockProducts() { // 수정
-//        return productService.findLowStock();
-//    }
-
 
 }
 

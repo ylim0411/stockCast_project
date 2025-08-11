@@ -95,11 +95,6 @@ public class ProductRepository {
     }
 
 
-//    // 재고 20개 이하 알림창 you
-//    public List<StockQuantityDTO> findLowStock() { // 추가
-//        return sql.selectList("Product.findLowStock");
-//    }
-
     public List<ProductDTO> findProductSaleAll(String storeId) {
         return sql.selectList("Product.findProductSaleAll",storeId);
     }
