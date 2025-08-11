@@ -3,6 +3,7 @@ package com.spring.stockCast.service;
 
 import com.spring.stockCast.dto.ProductDTO;
 import com.spring.stockCast.dto.SaleDTO;
+import com.spring.stockCast.enums.Gender;
 import com.spring.stockCast.repository.ProductRepository;
 import com.spring.stockCast.repository.SaleRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,9 +37,13 @@ public class SaleService {
     // 판매점포 이름 가져오기
     public String findStoreName(String storeId) { return saleRepository.findStoreName(storeId); }
     // 판매실적 상위 5개 물품 조회
-    public List<String> findTop5(){ return saleRepository.findTop5();}
+    public List<String> findTop5(String storeId){ return saleRepository.findTop5(storeId);}
     // 상품이름으로 상품아이디 찾기
-    public int findProductId(String pName) { return saleRepository.findProductId(pName); }
+    public int findProductId(String pName, String storeId) {
+        Map<String,Object> result = new HashMap<>();
+        result.put("pName", pName);
+        result.put("storeId",storeId);
+        return saleRepository.findProductId(result); }
     // 재고 적을시 수량 반환
     public int findProductStock(String storeId, String productName) { return saleRepository.findProductStock(storeId, productName); }
     // 전체 판매내역의 카테고리 리스트 가져오기(도넛차트 구성용)
@@ -161,5 +166,39 @@ public class SaleService {
 
         saleRepository.linkAccounting(param);
     }
-
+    // 구매자등록
+    public void insertCustomer(String gender, String age, String storeId) {
+        Map<String, Object> param = new HashMap<>();
+        Gender resultGender = null;
+        int resultAge = 0;
+        switch (gender){
+            case "man":
+                resultGender = Gender.남;
+                break;
+            case "woman":
+                resultGender = Gender.여;
+                break;
+        }
+        switch (age){
+            case "10s":
+                resultAge = 15;
+                break;
+            case "20s":
+                resultAge = 25;
+                break;
+            case "30s":
+                resultAge = 35;
+                break;
+            case "40s":
+                resultAge = 45;
+                break;
+            case "atc":
+                resultAge = 75;
+                break;
+        }
+        param.put("gender",resultGender);
+        param.put("age",resultAge);
+        param.put("storeId",storeId);
+        saleRepository.insertCustomer(param);
+    }
 }

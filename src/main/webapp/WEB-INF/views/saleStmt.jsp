@@ -43,7 +43,7 @@
                     </tr>
                     <c:forEach items="${saleList}" var="sale">
                         <tr>
-                            <td>${sale.orderId}</td>
+                            <td>${sale.orderSubnum}</td>
                             <td><fmt:formatDate value = "${sale.orderdate}" pattern="yyyy-MM-dd"/></td>
                             <td>${sale.clientName}</td>
                             <td>${sale.categoryName}</td>

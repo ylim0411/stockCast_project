@@ -3,11 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="SaleStmt">
-    <!-- 거래명세서 목록 표시 ho -->
-    <select id="findAll" resultType="saleList">
-        SELECT * FROM erp_db.order_category_view
-        WHERE status = "완료";
-    </select>
     <!-- 발주번호와 일치하는 거래명세서 내역 가져오기 ho -->
     <select id="findBySaleId" parameterType="int" resultType="SaleStmt">
         SELECT o.orderId, o.orderDate, p.productName, s.purchaseQty, s.purchasePrice FROM  orderStmt o
@@ -20,16 +15,18 @@
         SELECT COUNT(DISTINCT os.orderId)
         FROM orderStmt os
         JOIN purchaseOrder po ON os.orderId = po.orderId
-        WHERE os.status ="완료";
+        WHERE os.status ="완료"
+        AND os.storeId = #{storeId};
     </select>
     <!-- 발주번호 검색 + 페이징 ho -->
     <select id="findByNoPaging" parameterType="map" resultType="saleList">
         <![CDATA[
         SELECT * FROM erp_db.order_category_view
         WHERE
-        orderId LIKE CONCAT('%', #{orderNumber}, '%')
+        orderSubnum LIKE CONCAT('%', #{orderNumber}, '%')
         AND status = '완료'
-        ORDER BY orderId DESC
+        AND storeId = #{storeId}
+        ORDER BY orderSubnum DESC
         LIMIT #{start}, #{limit};
         ]]>
     </select>
@@ -41,14 +38,15 @@
         WHERE os.orderDate >= #{startDate}
         AND os.orderDate < #{endDate}
         AND os.status = "완료"
+        AND os.storeId = #{storeId}
         ]]>
     </select>
     <!--  총 개수 ho -->
-    <select id="countByNo" parameterType="string" resultType="int">
-        SELECT COUNT(DISTINCT os.orderId)
+    <select id="countByNo" parameterType="map" resultType="int">
+        SELECT COUNT(DISTINCT os.orderSubnum)
         FROM orderStmt os
-        WHERE os.orderId LIKE CONCAT('%', #{orderNumber}, '%')
-        AND os.status = "완료"
+        WHERE os.orderSubnum LIKE CONCAT('%', #{orderNumber}, '%')
+        AND os.status = "완료" AND os.storeId = #{storeId}
     </select>
     <!-- 달력 검색 + 페이징 ho -->
     <select id="findByDatePaging" parameterType="map" resultType="saleList">
@@ -56,6 +54,7 @@
        SELECT * FROM erp_db.order_category_view
         WHERE orderDate >= #{startDate}
           AND orderDate < #{endDate} AND status = '완료'
+          AND storeId = #{storeId}
         ORDER BY orderId DESC
         LIMIT #{start}, #{limit}
         ]]>
@@ -65,6 +64,7 @@
         <![CDATA[
         SELECT * FROM erp_db.order_category_view
         WHERE status = '완료'
+        AND storeId = #{storeId}
         ORDER BY orderId DESC
         LIMIT #{start}, #{limit}
         ]]>

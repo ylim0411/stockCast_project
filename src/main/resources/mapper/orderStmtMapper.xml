@@ -81,9 +81,9 @@
         JOIN client c ON os.clientId = c.clientId
         JOIN purchaseOrder po ON os.orderId = po.orderId
         WHERE os.storeId = #{storeId}
-          AND os.orderId LIKE CONCAT('%', #{orderStmtId}, '%')
+          AND os.orderSubnum LIKE CONCAT('%', #{orderStmtId}, '%')
         GROUP BY os.orderId, os.orderDate, c.clientName
-        ORDER BY os.orderId DESC
+        ORDER BY os.orderSubnum DESC
         LIMIT #{start}, #{limit}
         ]]>
     </select>
@@ -91,10 +91,10 @@
     <!--  총 개수  -->
     <select id="countByNo" parameterType="map" resultType="int">
         <![CDATA[
-        SELECT COUNT(DISTINCT os.orderId)
+        SELECT COUNT(DISTINCT os.orderSubnum)
         FROM orderStmt os
         WHERE os.storeId = #{storeId}
-          AND os.orderId LIKE CONCAT('%', #{orderStmtId}, '%')
+          AND os.orderSubnum LIKE CONCAT('%', #{orderStmtId}, '%')
         ]]>
     </select>
 
