@@ -57,6 +57,16 @@ public class ProductRepository {
     public List<StockQuantityDTO> findStockQuantityByKeyword(String keyword) {
         return sql.selectList("Product.findStockQuantityByKeyword", keyword);
     }
+    public List<StockQuantityDTO> findStockQuantityByKeywordAndMonth(String keyword, int month) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword);
+        params.put("month", month);
+
+        return sql.selectList("Product.findStockQuantityByKeywordAndMonth", params);
+    }
+    public List<StockQuantityDTO> findStockQuantityByMonth(int month) {
+        return sql.selectList("Product.findStockQuantityByMonth", month);
+    }
 
     public void addCategory(ProductDTO productDTO) {
         sql.insert("Product.addCategory", productDTO);

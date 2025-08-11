@@ -97,7 +97,10 @@ public class ProductController {
     public String stockQuantity(@RequestParam(value = "keyword", required = false) String keyword,
                                 @RequestParam(value = "month", required = false) Integer  month,
                                 Model model) {
-
+        if (month == null)
+        {
+            month = 0;
+        }
         List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList(keyword, month);
 
         model.addAttribute("stockQuantityList", stockQuantityList);

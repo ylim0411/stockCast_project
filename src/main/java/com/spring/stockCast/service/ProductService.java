@@ -69,12 +69,17 @@ public class ProductService {
         return productRepository.findByCategoryId(categoryId);
     }
 
-    public List<StockQuantityDTO> stockQuantityList(String keyword, Integer month) {
+    public List<StockQuantityDTO> stockQuantityList(String keyword, int month) {
         if (keyword != null && !keyword.trim().isEmpty()) {
+            if (month > 0)
+            {
+                return productRepository.findStockQuantityByKeywordAndMonth("%" + keyword + "%", month);
+            }
             return productRepository.findStockQuantityByKeyword("%" + keyword + "%");
-        } else {
-            return productRepository.stockQuantityList();
+        } else if (month > 0) {
+            return productRepository.findStockQuantityByMonth(month);
         }
+        return productRepository.stockQuantityList();
     }
 
     public List<ProductDTO> findProductsByCategoryId(int parentId) {
