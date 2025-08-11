@@ -963,6 +963,40 @@ th {
   max-width: 100px;
 }
 
+/* 입고관리  테이블 ------------------------------------------------- */
+.saleStmt-table th:nth-child(1),
+.saleStmt-table td:nth-child(1) {
+  width: 8%;
+}
+
+.saleStmt-table th:nth-child(2),
+.saleStmt-table td:nth-child(2) {
+  width: 12%;
+}
+
+.saleStmt-table th:nth-child(3),
+.saleStmt-table td:nth-child(3) {
+  width: 15%;
+}
+
+.saleStmt-table th:nth-child(4),
+.saleStmt-table td:nth-child(4) {
+  width: 8%;
+}
+
+.saleStmt-table th:nth-child(5),
+.saleStmt-table td:nth-child(5) {
+  width: 12%;
+}
+
+.saleStmt-table th:nth-child(6),
+.saleStmt-table td:nth-child(6) {
+  width: 10%;
+}
+
+
+
+
 /* form 태그 ------------------------------------------------- */
 .form-container {
   display: flex;
@@ -1226,7 +1260,13 @@ input[type='number']::-webkit-outer-spin-button {
   border-radius: 5px;
 }
 
-.order-item.header {
+.accountNum{
+  margin-bottom: 20px;
+}
+
+/* 발주서, 거래명세서 아래 표 */
+.order-item.header,
+.sale-item.header{
   font-weight: 500;
 }
 
@@ -1239,11 +1279,22 @@ input[type='number']::-webkit-outer-spin-button {
   font-size: var(--font-size-md);
 }
 
-.order-item:last-child {
+.sale-item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-md);
+}
+
+.order-item:last-child,
+.sale-item:last-child{
   border-bottom: none;
 }
 
-.order-items {
+.order-items,
+.sale-items{
   overflow: hidden;
   /* height: calc(300px - 63px); */
   height: calc(100% - 63px);
