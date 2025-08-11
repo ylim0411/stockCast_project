@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -24,10 +25,10 @@ public class SaleStmtController {
     public String find(@RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate startDate,
                        @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate endDate,
                        @RequestParam(required = false) String orderNumber,
-                       @RequestParam(value = "page", defaultValue = "1") int page,
+                       @RequestParam(value = "page", defaultValue = "1") int page, HttpSession session,
                        Model model){
         // 서비스 제일아래에 모든내용 있음
-        model.addAllAttributes(saleStmtService.controller(startDate,endDate,orderNumber,page));
+        model.addAllAttributes(saleStmtService.controller(startDate,endDate,orderNumber,page, session));
 
         return "saleStmt";
     }
