@@ -5,8 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,8 +12,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class OrderStmtRepository {
     private final SqlSessionTemplate sql;
-
-    /* ===== 발주 조회 ===== */
 
     // 날짜 검색 + 페이징
     public List<OrderStmtDTO> findByDatePaging(Map<String, Object> param) {
@@ -28,7 +24,7 @@ public class OrderStmtRepository {
     }
 
     // 전체 목록 페이징
-    public List<OrderStmtDTO> pagingList(Map<String, Integer> pagingParams) {
+    public List<OrderStmtDTO> pagingList(Map<String, Object> pagingParams) {
         return sql.selectList("Orders.pagingList", pagingParams);
     }
 
@@ -38,15 +34,14 @@ public class OrderStmtRepository {
     }
 
     // 발주 번호 검색
-    public int countByNo(String orderStmtId) {
+    public int countByNo(Map<String, Object> orderStmtId) {
         return sql.selectOne("Orders.countByNo", orderStmtId);
     }
 
     // 전체 수
-    public int orderCount() {
-        return sql.selectOne("Orders.orderCount");
+    public int orderCount(Integer selectedStoreId) {
+        return sql.selectOne("Orders.orderCount", selectedStoreId); // ★ storeId 전달
     }
-
 
     // 마지막 발주 id 조회
     public int getLastOrderId() {
@@ -60,7 +55,7 @@ public class OrderStmtRepository {
     }
 
     // 발주 상세 조회
-    public OrderStmtDTO findById(int orderId) {
+    public OrderStmtDTO findById(Map<String, Object> orderId) {
         return sql.selectOne("Orders.findById", orderId);
     }
 
@@ -70,14 +65,17 @@ public class OrderStmtRepository {
     }
 
     // 발주 삭제
-    public void deleteOrder(int orderId) {
+    public void deleteOrder(Map<String, Object> orderId) {
         sql.delete("Orders.deleteOrder", orderId);
     }
 
     // 발주서 status  수정 ho
     public void updateStatus(Map<String, Object> param) {
-        sql.update("Orders.updateStatus",param);
+        sql.update("Orders.updateStatus", param);
     }
+
     // 이번달 발주내역 불러오기 ho
-    public List<OrderStmtDTO> findByMonth(String currentMonth) { return sql.selectList("Orders.findByMonth",currentMonth); }
+    public List<OrderStmtDTO> findByMonth(String currentMonth) {
+        return sql.selectList("Orders.findByMonth", currentMonth);
+    }
 }

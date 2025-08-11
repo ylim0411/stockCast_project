@@ -746,7 +746,7 @@ ul.ranking li {
   gap: 15px;
   background-color: var(--color-bg);
   border-radius: var(--border-radius-base5);
-  padding: 15px;
+  padding: 12px;
 }
 
 ul.ranking li span {
