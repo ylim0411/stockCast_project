@@ -74,8 +74,8 @@ public class SaleRepository {
         return sql.selectOne("Sale.findStoreName",storeId);
     }
     // 판매실적 상위 5개 물품 조회
-    public List<String> findTop5() {
-        return sql.selectList("Sale.findTop5");
+    public List<String> findTop5(String storeId) {
+        return sql.selectList("Sale.findTop5",storeId);
     }
     // 구매자 등록
     public void insertCustomer(Map<String, Object> param) {

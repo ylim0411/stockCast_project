@@ -37,7 +37,7 @@ public class SaleService {
     // 판매점포 이름 가져오기
     public String findStoreName(String storeId) { return saleRepository.findStoreName(storeId); }
     // 판매실적 상위 5개 물품 조회
-    public List<String> findTop5(){ return saleRepository.findTop5();}
+    public List<String> findTop5(String storeId){ return saleRepository.findTop5(storeId);}
     // 상품이름으로 상품아이디 찾기
     public int findProductId(String pName, String storeId) {
         Map<String,Object> result = new HashMap<>();

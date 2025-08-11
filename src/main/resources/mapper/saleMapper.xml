@@ -78,9 +78,10 @@
         WHERE storeId = #{storeId}
     </select>
     <!-- 판매율 상위 5개 품목 가져오기 -->
-    <select id="findTop5" resultType="String">
+    <select id="findTop5" parameterType="String" resultType="String">
         SELECT p.productName FROM sale_product sp
         JOIN product p ON p.productId = sp.productId
+        WHERE p.storeId = #{storeId}
         GROUP BY p.productId
         ORDER BY SUM(sp.saleQty) DESC
         LIMIT 5;
