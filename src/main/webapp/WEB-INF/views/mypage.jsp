@@ -148,8 +148,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         <colgroup>
           <col style="width: 6%" />
           <!-- storeId -->
-          <col style="width: 8%" />
-          <!-- adminId -->
           <col style="width: 15%" />
           <!-- storeName -->
           <col style="width: 30%" />
@@ -164,7 +162,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         <thead>
           <tr>
             <th>점포 ID</th>
-            <th>관리자 ID</th>
+            <th style="display:none;">관리자 ID</th>
             <th>점포명</th>
             <th>주소</th>
             <th>전화번호</th>
@@ -187,7 +185,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                     readonly
                   />
                 </td>
-                <td>
+                <td style="display:none;">
                   <input
                     type="text"
                     name="adminId"
