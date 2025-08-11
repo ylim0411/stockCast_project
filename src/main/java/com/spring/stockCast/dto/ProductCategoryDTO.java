@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class ProductCategoryDTO {
     private int categoryId;
+    private int storeId;
     private String categoryName;
     private Long parentId;
     private int categoryLevel;

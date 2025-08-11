@@ -16,7 +16,7 @@
     <div class="container">
         <div class="title-box">
             <p class="sub-title">매출 관리</p>
-            <h2 class="title">거래명세서</h2>
+            <h2 class="title">입고 관리</h2>
         </div>
             <div class="section-wrap80">
              <form action="/saleStmt/saleStmtList" method="get" class="form-container">
@@ -32,7 +32,7 @@
                   </div>
             </form>
             <div class="table-container">
-                <table>
+                <table class="saleStmt-table">
                     <tr>
                         <th>발주번호</th>
                         <th>발주일자</th>

@@ -15,7 +15,7 @@
 <div class="container">
     <div class="title-box">
         <p class="sub-title">발주 관리</p>
-        <h2 class="title">발주 상세 페이지</h2>
+        <h2 class="title">발주서</h2>
     </div>
 
  <div class="section-wrap85">
@@ -51,7 +51,7 @@
             <div class="row">
                 <div class="col">
                     <p class="label">발주번호</p>
-                    <p class="value">${orderInfo.orderId}</p>
+                    <p class="value">${orderInfo.orderSubnum}</p>
                 </div>
                 <div class="col">
                     <p class="label">발주 등록일</p>

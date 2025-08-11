@@ -77,11 +77,11 @@
                  <span>매출관리</span>
              </a>
              <ul class="sub-menu">
+                 <li class="${fn:contains(uri, '/saleStmt') ? 'on' : ''}">
+                      <a href="${pageContext.request.contextPath}/saleStmt/saleStmtList">입고 관리</a>
+                 </li>
                  <li class="${fn:contains(uri, '/sales') ? 'on' : ''}">
                      <a href="${pageContext.request.contextPath}/sales/saleList">판매 실적</a>
-                 </li>
-                 <li class="${fn:contains(uri, '/saleStmt') ? 'on' : ''}">
-                     <a href="${pageContext.request.contextPath}/saleStmt/saleStmtList">거래명세서</a>
                  </li>
                  <li class="${fn:contains(uri, '/accounting') ? 'on' : ''}">
                      <a href="${pageContext.request.contextPath}/accounting/accountingList">회계 관리</a>

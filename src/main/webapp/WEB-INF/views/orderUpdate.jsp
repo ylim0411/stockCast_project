@@ -46,7 +46,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             <tbody>
               <tr>
                 <th class="vertical-label"><div>발주번호</div></th>
-                <td>${orderInfo.orderId}</td>
+                <td>${orderInfo.orderSubnum}</td>
                 <th class="vertical-label"><div>발주등록일</div></th>
                 <td><fmt:formatDate value="${orderInfo.orderDate}" pattern="yyyy-MM-dd" /></td>
               </tr>

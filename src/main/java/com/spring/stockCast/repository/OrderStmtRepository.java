@@ -44,8 +44,8 @@ public class OrderStmtRepository {
     }
 
     // 마지막 발주 id 조회
-    public int getLastOrderId() {
-        Integer id = sql.selectOne("Orders.getLastOrderId");
+    public int getLastOrderId(Integer storeId) {
+        Integer id = sql.selectOne("Orders.getLastOrderId",storeId);
         return id != null ? id : 0;
     }
 
@@ -77,5 +77,9 @@ public class OrderStmtRepository {
     // 이번달 발주내역 불러오기 ho
     public List<OrderStmtDTO> findByMonth(String currentMonth) {
         return sql.selectList("Orders.findByMonth", currentMonth);
+    }
+    // orderId 최상위 불러오기
+    public int findLastOrderId() {
+        return sql.selectOne("Orders.findLastOrderId");
     }
 }

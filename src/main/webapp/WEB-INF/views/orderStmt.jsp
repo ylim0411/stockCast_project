@@ -49,7 +49,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
             <c:forEach items="${orderStmt}" var="order">
               <tr>
-                <td>${order.orderId}</td>
+                <td>${order.orderSubnum}</td>
                 <td><fmt:formatDate value="${order.orderDate}" pattern="yy/MM/dd" /></td>
                 <td>${order.clientName}</td>
                 <td>${order.totalCount}</td>
