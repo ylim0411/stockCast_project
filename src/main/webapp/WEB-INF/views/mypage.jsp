@@ -216,12 +216,14 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                     type="text"
                     name="storePhone"
                     value="${store.storePhone}"
+                    pattern="^(01[0-9]-?\d{3,4}-?\d{4}|0\d{1,2}-?\d{3,4}-?\d{4})$"
+                    title="휴대폰(예: 010-1234-5678 또는 01012345678), 집전화(예: 02-123-4567 또는 021234567) 형식으로 입력하세요"
                     readonly
                   />
                 </td>
                 <td>
                   <input
-                    type="text"
+                    type="email"
                     name="storeEmail"
                     value="${store.storeEmail}"
                     readonly
