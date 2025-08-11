@@ -104,7 +104,10 @@
     <!-- 발주서 저장 -->
     <insert id="insertOrder" parameterType="map">
         INSERT INTO orderStmt (storeId, orderId, clientId, orderDate)
-        VALUES (#{storeId}, #{orderId}, #{clientId}, #{orderDate})
+        SELECT #{storeId}, #{orderId}, c.clientId, #{orderDate}
+        FROM client c
+        WHERE c.clientId = #{clientId}
+        AND c.storeId  = #{storeId}
     </insert>
 
     <!-- 발주 상세 조회 -->
@@ -127,11 +130,14 @@
 
     <!-- 발주 수정 -->
     <update id="updateOrder" parameterType="map">
-        UPDATE orderStmt
-        SET clientId = #{clientId},
-        orderDate = #{orderDate}
-        WHERE storeId = #{storeId}
-        AND orderId = #{orderId}
+        UPDATE orderStmt os
+        JOIN client c
+        ON c.clientId = #{clientId}
+        AND c.storeId  = #{storeId}
+        SET os.clientId = c.clientId,
+        os.orderDate = #{orderDate}
+        WHERE os.storeId = #{storeId}
+        AND os.orderId = #{orderId}
     </update>
 
     <!-- 발주 삭제 -->
