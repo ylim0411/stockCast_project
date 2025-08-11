@@ -106,7 +106,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                     z-index: 9999;
                   "
                 >
-                    <img id="togglePwIcon" src="${pageContext.request.contextPath}/static/images/eye-gray.png" alt="보기" style="width:20px;height:20px;">
+                    <img id="togglePwIcon" src="${pageContext.request.contextPath}/static/images/eye-close.png" alt="보기" style="width:20px;height:20px;">
                 </button>
               </div>
               <div
@@ -449,12 +449,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
         if (pwField.type === "password") {
           pwField.type = "text";
-          icon.src = `${pageContext.request.contextPath}/static/images/eye-blue.png`; // 열린 눈
+          icon.src = `${pageContext.request.contextPath}/static/images/eye-open.png`; // 열린 눈
 
           icon.alt = "숨기기";
         } else {
           pwField.type = "password";
-          icon.src = `${pageContext.request.contextPath}/static/images/eye-gray.png`; // 닫힌 눈
+          icon.src = `${pageContext.request.contextPath}/static/images/eye-close.png`; // 닫힌 눈
           icon.alt = "보기";
         }
       }
