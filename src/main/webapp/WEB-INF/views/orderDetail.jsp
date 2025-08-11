@@ -51,7 +51,7 @@
             <div class="row">
                 <div class="col">
                     <p class="label">발주번호</p>
-                    <p class="value">${orderInfo.orderId}</p>
+                    <p class="value">${orderInfo.orderSubnum}</p>
                 </div>
                 <div class="col">
                     <p class="label">발주 등록일</p>

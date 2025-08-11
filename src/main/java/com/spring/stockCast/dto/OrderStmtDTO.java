@@ -12,6 +12,7 @@ public class OrderStmtDTO {
     private String clientName;
     private int  totalCount;
     private int totalPrice;
+    private int orderSubnum;
     private OrderStatus status;
 }
 

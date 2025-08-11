@@ -58,8 +58,7 @@ public class OrderStmtController {
 
         // 페이징 정보
         PageDTO pageDTO = orderStmtService.pagingParamWithSearch(page, totalCount);
-
-        model.addAttribute("orderNum",orderStmtService.orderNum(storeId));
+        // 점포별 발주번호 생성
         model.addAttribute("orderStmt", orders);
         model.addAttribute("paging", pageDTO);
 
@@ -87,8 +86,9 @@ public class OrderStmtController {
     @PostMapping("/orderSave")
     public String saveOrder(
             @RequestParam int clientId,
-            @RequestParam int orderId,
+            @RequestParam int orderSubnum,
             @RequestParam String orderDate,
+            @RequestParam int order_Id,
             @RequestParam("productId[]") List<Integer> productId,
             @RequestParam("purchasePrice[]") List<Integer> purchasePrice,
             @RequestParam("purchaseQty[]") List<Integer> purchaseQty,
@@ -106,7 +106,7 @@ public class OrderStmtController {
             throw new IllegalArgumentException("권한이 없거나 유효하지 않은 거래처입니다.");
         }
 
-        orderStmtService.saveOrder(storeId, clientId, orderId, orderDate);
+        orderStmtService.saveOrder(storeId, clientId, orderSubnum, orderDate);
 
         for (int i = 0; i < productId.size(); i++) {
             Integer pid = productId.get(i);
@@ -116,7 +116,7 @@ public class OrderStmtController {
             if (pid == null || pid <= 0) continue; // 상품 없으면 건너뜀
             if (qty == null || qty <= 0) continue; // 수량 없으면 건너뜀
 
-            purchaseOrderService.saveOrderDetail(storeId, orderId, pid, price != null ? price : 0, qty);
+            purchaseOrderService.saveOrderDetail(storeId, order_Id, pid, price != null ? price : 0, qty);
         }
 
         return "redirect:/order/orderStmt";
@@ -249,9 +249,11 @@ public class OrderStmtController {
     // 새로운 발주번호, 등록일 생성
     @GetMapping("/new-info")
     @ResponseBody
-    public Map<String, Object> getNewOrderInfo() {
+    public Map<String, Object> getNewOrderInfo(HttpSession session) {
+        Integer storeId = (Integer) session.getAttribute("selectedStoredId");
         Map<String, Object> result = new HashMap<>();
-        result.put("orderNumber", orderStmtService.getLastOrderId() + 1);
+        result.put("orderNumber", orderStmtService.getLastOrderId(storeId) + 1); // orderSubnum
+        result.put("order_Id", orderStmtService.findLastOrderId() +1); // orderId
         result.put("orderDate", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         return result;
     }

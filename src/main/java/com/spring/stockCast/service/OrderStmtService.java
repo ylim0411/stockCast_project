@@ -97,22 +97,16 @@ public class OrderStmtService {
     }
 
     // 발주 id 조회
-    public int getLastOrderId() {
-        Integer lastId = orderStmtRepository.getLastOrderId();
+    public int getLastOrderId(Integer storeId) {
+        Integer lastId = orderStmtRepository.getLastOrderId(storeId);
         return lastId != null ? lastId : 0;
     }
 
-    // 발주번호 찾기 young
-    public int orderNum(Integer selectedStoreId){
-        int result = orderStmtRepository.orderNum(selectedStoreId);
-        return result+1;
-    }
-
-    // 발주서 저장
-    public void saveOrder(Integer selectedStoreId, int clientId, int orderId, String orderDate) {
+        // 발주서 저장
+    public void saveOrder(Integer selectedStoreId, int clientId, int orderSubnum, String orderDate) {
         Map<String, Object> param = new HashMap<>();
         param.put("storeId", selectedStoreId);
-        param.put("orderId", orderId);
+        param.put("orderSubnum", orderSubnum);
         param.put("clientId", clientId);
         param.put("orderDate", orderDate);
         orderStmtRepository.insertOrder(param);
@@ -187,5 +181,9 @@ public class OrderStmtService {
     // 이번달 발주내역 가져오기
     public List<OrderStmtDTO> findByMonth(String currentMonth) {
         return orderStmtRepository.findByMonth(currentMonth);
+    }
+    // 발주번호 제일 큰거 가져오기
+    public int findLastOrderId() {
+        return orderStmtRepository.findLastOrderId();
     }
 }

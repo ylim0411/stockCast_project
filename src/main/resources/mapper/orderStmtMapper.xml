@@ -4,12 +4,6 @@
 
 <mapper namespace="Orders">
 
-    <!--  발주번호 young -->
-    <select id="orderNum" parameterType="Integer" resultType="int">
-        SELECT COUNT(*) FROM orderStmt
-        WHERE storeId = #{selectedStoreId}
-    </select>
-
     <!--  페이징 전체 조회  -->
     <select id="pagingList" parameterType="map" resultType="OrderStmt">
         <![CDATA[
@@ -19,7 +13,8 @@
           c.clientName AS clientName,
           IFNULL(SUM(po.purchaseQty), 0) AS totalCount,
           IFNULL(SUM(po.purchaseQty * po.purchasePrice), 0) AS totalPrice,
-          os.status
+          os.status,
+          os.orderSubnum
         FROM orderStmt os
         JOIN client c ON os.clientId = c.clientId
         LEFT JOIN purchaseOrder po ON os.orderId = po.orderId
@@ -46,7 +41,8 @@
           c.clientName AS clientName,
           SUM(po.purchaseQty) AS totalCount,
           SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
-          os.status
+          os.status,
+          os.orderSubnum
         FROM orderStmt os
         JOIN client c ON os.clientId = c.clientId
         JOIN purchaseOrder po ON os.orderId = po.orderId
@@ -79,7 +75,8 @@
           c.clientName AS clientName,
           SUM(po.purchaseQty) AS totalCount,
           SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
-          os.status
+          os.status,
+          os.orderSubnum
         FROM orderStmt os
         JOIN client c ON os.clientId = c.clientId
         JOIN purchaseOrder po ON os.orderId = po.orderId
@@ -102,15 +99,19 @@
     </select>
 
 
+    <!-- 마지막 발주 서브 조회 -->
+    <select id="getLastOrderId" parameterType="Integer" resultType="int">
+        SELECT IFNULL(MAX(orderSubnum), 0) FROM orderStmt
+        WHERE storeId = #{storeId}
+    </select>
     <!-- 마지막 발주 ID 조회 -->
-    <select id="getLastOrderId" resultType="int">
+    <select id="findLastOrderId" resultType="int">
         SELECT IFNULL(MAX(orderId), 0) FROM orderStmt
     </select>
-
     <!-- 발주서 저장 -->
     <insert id="insertOrder" parameterType="map">
-        INSERT INTO orderStmt (storeId, orderId, clientId, orderDate)
-        SELECT #{storeId}, #{orderId}, c.clientId, #{orderDate}
+        INSERT INTO orderStmt (storeId, orderSubnum, clientId, orderDate)
+        SELECT #{storeId}, #{orderSubnum}, c.clientId, #{orderDate}
         FROM client c
         WHERE c.clientId = #{clientId}
         AND c.storeId  = #{storeId}
@@ -124,6 +125,7 @@
         os.status,
         c.clientId,
         c.clientName,
+        os.orderSubnum,
         IFNULL(SUM(po.purchaseQty), 0) AS totalCount,
         IFNULL(SUM(po.purchaseQty * po.purchasePrice), 0) AS totalPrice
         FROM orderStmt os

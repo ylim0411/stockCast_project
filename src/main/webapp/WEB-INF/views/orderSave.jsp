@@ -20,7 +20,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       <div class="section-wrap">
         <form id="orderSave" action="/order/orderSave" method="post">
           <!-- 숨겨진 필드 -->
-          <input type="hidden" name="orderId" id="orderIdHidden" />
+          <input type="hidden" name="orderSubnum" id="orderIdHidden" />
+          <input type="hidden" name="order_Id" id="order_IdHidden" />
           <input type="hidden" name="orderDate" id="orderDateHidden" />
 
           <!-- 저장 -->
@@ -152,6 +153,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           $('#order-number').text(data.orderNumber);
           $('#order-date').text(data.orderDate);
           $('#orderIdHidden').val(data.orderNumber);
+          $('#order_IdHidden').val(data.order_Id);
           $('#orderDateHidden').val(data.orderDate);
         });
 
