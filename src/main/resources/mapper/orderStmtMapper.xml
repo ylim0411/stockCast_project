@@ -8,15 +8,16 @@
     <select id="pagingList" parameterType="map" resultType="OrderStmt">
         <![CDATA[
         SELECT
-            os.orderId AS orderId,
-            os.orderDate AS orderDate,
-            c.clientName AS clientName,
-            IFNULL(SUM(po.purchaseQty), 0) AS totalCount,
-            IFNULL(SUM(po.purchaseQty * po.purchasePrice), 0) AS totalPrice,
-            os.status
+          os.orderId AS orderId,
+          os.orderDate AS orderDate,
+          c.clientName AS clientName,
+          IFNULL(SUM(po.purchaseQty), 0) AS totalCount,
+          IFNULL(SUM(po.purchaseQty * po.purchasePrice), 0) AS totalPrice,
+          os.status
         FROM orderStmt os
         JOIN client c ON os.clientId = c.clientId
         LEFT JOIN purchaseOrder po ON os.orderId = po.orderId
+        WHERE os.storeId = #{storeId}
         GROUP BY os.orderId, os.orderDate, c.clientName
         ORDER BY os.orderId DESC
         LIMIT #{start}, #{limit}
@@ -24,27 +25,28 @@
     </select>
 
     <!-- 페이징 수 -->
-    <select id="orderCount" resultType="int">
-        SELECT COUNT(DISTINCT os.orderId)
-        FROM orderStmt os
-        JOIN purchaseOrder po ON os.orderId = po.orderId
+    <select id="orderCount" parameterType="int" resultType="int">
+        SELECT COUNT(*)
+        FROM orderStmt
+        WHERE storeId = #{_parameter}
     </select>
 
     <!-- 달력 검색 + 페이징 -->
     <select id="findByDatePaging" parameterType="map" resultType="OrderStmt">
         <![CDATA[
         SELECT
-            os.orderId AS orderId,
-            os.orderDate AS orderDate,
-            c.clientName AS clientName,
-            SUM(po.purchaseQty) AS totalCount,
-            SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
-            os.status
+          os.orderId AS orderId,
+          os.orderDate AS orderDate,
+          c.clientName AS clientName,
+          SUM(po.purchaseQty) AS totalCount,
+          SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
+          os.status
         FROM orderStmt os
         JOIN client c ON os.clientId = c.clientId
         JOIN purchaseOrder po ON os.orderId = po.orderId
-        WHERE os.orderDate >= #{startDate}
-          AND os.orderDate < #{endDate}
+        WHERE os.storeId = #{storeId}
+          AND os.orderDate >= #{startDate}
+          AND os.orderDate <  #{endDate}
         GROUP BY os.orderId, os.orderDate, c.clientName
         ORDER BY os.orderId DESC
         LIMIT #{start}, #{limit}
@@ -56,8 +58,9 @@
         <![CDATA[
         SELECT COUNT(DISTINCT os.orderId)
         FROM orderStmt os
-        WHERE os.orderDate >= #{startDate}
-        AND os.orderDate < #{endDate}
+        WHERE os.storeId = #{storeId}
+          AND os.orderDate >= #{startDate}
+          AND os.orderDate <  #{endDate}
         ]]>
     </select>
 
@@ -65,16 +68,17 @@
     <select id="findByNoPaging" parameterType="map" resultType="OrderStmt">
         <![CDATA[
         SELECT
-            os.orderId AS orderId,
-            os.orderDate AS orderDate,
-            c.clientName AS clientName,
-            SUM(po.purchaseQty) AS totalCount,
-            SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
-            os.status
+          os.orderId AS orderId,
+          os.orderDate AS orderDate,
+          c.clientName AS clientName,
+          SUM(po.purchaseQty) AS totalCount,
+          SUM(po.purchaseQty * po.purchasePrice) AS totalPrice,
+          os.status
         FROM orderStmt os
         JOIN client c ON os.clientId = c.clientId
         JOIN purchaseOrder po ON os.orderId = po.orderId
-        WHERE os.orderId LIKE CONCAT('%', #{orderStmtId}, '%')
+        WHERE os.storeId = #{storeId}
+          AND os.orderId LIKE CONCAT('%', #{orderStmtId}, '%')
         GROUP BY os.orderId, os.orderDate, c.clientName
         ORDER BY os.orderId DESC
         LIMIT #{start}, #{limit}
@@ -82,10 +86,13 @@
     </select>
 
     <!--  총 개수  -->
-    <select id="countByNo" parameterType="string" resultType="int">
+    <select id="countByNo" parameterType="map" resultType="int">
+        <![CDATA[
         SELECT COUNT(DISTINCT os.orderId)
         FROM orderStmt os
-        WHERE os.orderId LIKE CONCAT('%', #{orderStmtId}, '%')
+        WHERE os.storeId = #{storeId}
+          AND os.orderId LIKE CONCAT('%', #{orderStmtId}, '%')
+        ]]>
     </select>
 
 
@@ -96,23 +103,25 @@
 
     <!-- 발주서 저장 -->
     <insert id="insertOrder" parameterType="map">
-        INSERT INTO orderStmt (orderId, clientId, orderDate)
-        VALUES (#{orderId}, #{clientId}, #{orderDate})
+        INSERT INTO orderStmt (storeId, orderId, clientId, orderDate)
+        VALUES (#{storeId}, #{orderId}, #{clientId}, #{orderDate})
     </insert>
 
     <!-- 발주 상세 조회 -->
-    <select id="findById" parameterType="int" resultType="OrderStmt">
+    <select id="findById" parameterType="map" resultType="OrderStmt">
         SELECT
         os.orderId,
         os.orderDate,
-        os.status,  c.clientId,
+        os.status,
+        c.clientId,
         c.clientName,
         IFNULL(SUM(po.purchaseQty), 0) AS totalCount,
         IFNULL(SUM(po.purchaseQty * po.purchasePrice), 0) AS totalPrice
         FROM orderStmt os
         JOIN client c ON os.clientId = c.clientId
         LEFT JOIN purchaseOrder po ON os.orderId = po.orderId
-        WHERE os.orderId = #{orderId}
+        WHERE os.storeId = #{storeId}
+        AND os.orderId = #{orderId}
         GROUP BY os.orderId, os.orderDate, os.status, c.clientId, c.clientName
     </select>
 
@@ -121,25 +130,33 @@
         UPDATE orderStmt
         SET clientId = #{clientId},
         orderDate = #{orderDate}
-        WHERE orderId = #{orderId}
+        WHERE storeId = #{storeId}
+        AND orderId = #{orderId}
     </update>
 
     <!-- 발주 삭제 -->
-    <delete id="deleteOrder" parameterType="int">
+    <delete id="deleteOrder" parameterType="map">
         DELETE FROM orderStmt
-        WHERE orderId = #{orderId}
+        WHERE storeId = #{storeId}
+        AND orderId = #{orderId}
     </delete>
 
     <!-- 발주 상태값 바꾸기 ho -->
     <update id="updateStatus" parameterType="map">
-        UPDATE  orderstmt SET status = #{status}
-        WHERE orderId = #{id};
+        UPDATE orderStmt
+        SET status = #{status}
+        WHERE storeId = #{storeId}
+        AND orderId = #{orderId}
     </update>
 
     <!-- 이번달 발주내역 불러오기 ho -->
-    <select id="findByMonth" parameterType="String" resultType="OrderStmt">
-        SELECT o.orderDate, p.purchasePrice as totalPrice, p.purchaseQty as totalCount  FROM orderstmt o
-        JOIN purchaseorder p ON p.orderId = o.orderId
-        WHERE SUBSTR(orderDate,6,2) = #{currentMonth}
+    <select id="findByMonth" parameterType="string" resultType="OrderStmt">
+        SELECT o.orderDate,
+        p.purchasePrice AS totalPrice,
+        p.purchaseQty   AS totalCount
+        FROM orderStmt o
+        JOIN purchaseOrder p ON p.orderId = o.orderId
+        WHERE SUBSTR(o.orderDate, 6, 2) = #{currentMonth}
     </select>
+
 </mapper>
