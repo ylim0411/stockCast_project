@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -22,14 +23,15 @@ public class ProductCategoryController {
 
     // 카테고리 목록 조회
     @GetMapping("/list")
-    public String categoryList(Model model) {
-        List<StockQuantityDTO> categoryList = productCategoryService.categoryList();
-        List<ProductCategoryDTO> topList = productCategoryService.findTopLevelCategories();
-//        List<ProductCategoryDTO> middleList = productCategoryService.findAllMiddleLevelCategories(); // 추가 필요
+    public String categoryList(Model model, HttpSession session) {
+        int storeId = (int) session.getAttribute("selectedStoredId");
+
+        List<StockQuantityDTO> categoryList = productCategoryService.categoryList(storeId);
+//        List<ProductCategoryDTO> topList = productCategoryService.findTopLevelCategories(storeId);
+        List<ProductCategoryDTO> topList = productCategoryService.findTopLevelCategories(storeId);
 
         model.addAttribute("categoryList", categoryList);
         model.addAttribute("topList", topList);
-//        model.addAttribute("middleList", middleList); // 필요하면 만들기
 
         return "productCategory";
     }
@@ -66,15 +68,23 @@ public class ProductCategoryController {
     // 대분류 목록 조회 (모달용) (추가)
     @GetMapping("/topCategories")
     @ResponseBody
-    public List<ProductCategoryDTO> getTopCategories() {
-        return productCategoryService.findTopLevelCategories();
+    public List<ProductCategoryDTO> getTopCategories(HttpSession session) {
+        System.out.println("대분류 controller 위");
+        int storeId = (int) session.getAttribute("selectedStoredId");
+        System.out.println("대분류 controller 아래" + storeId);
+        return productCategoryService.findTopLevelCategories(storeId);
     }
+
+
 
     // 중분류 목록 조회 (모달용) (추가)
     @GetMapping("/middleCategories")
     @ResponseBody
-    public List<ProductCategoryDTO> getMiddleCategories(@RequestParam int parentId) {
-        return productCategoryService.findMiddleLevelCategoriesByParentId(parentId);
+    public List<ProductCategoryDTO> getMiddleCategories(@RequestParam int parentId, HttpSession session) {
+        System.out.println("중분류 controller 위");
+        int storeId = (int) session.getAttribute("selectedStoredId");
+        System.out.println("중분류 controller 아래" + storeId);
+        return productCategoryService.findMiddleLevelCategoriesByParentId(parentId, storeId);
     }
     
     // 소분류 등록

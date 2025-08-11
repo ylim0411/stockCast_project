@@ -63,8 +63,8 @@ public class ProductCategoryService {
         return productCategoryRepository.findSubCategoriesByParentIdAndClientId(parentId, clientId);
     }
 
-    public List<StockQuantityDTO> categoryList() {
-        return productCategoryRepository.categoryList();
+    public List<StockQuantityDTO> categoryList(int storeId) {
+        return productCategoryRepository.categoryList(storeId);
     }
 
     // 대분류, 중분류 저장 (추가)
@@ -77,14 +77,19 @@ public class ProductCategoryService {
         productRepository.addCategory(productDTO);
     }
 
+
+
     // 모든 대분류 카테고리 조회 (추가)
-    public List<ProductCategoryDTO> findTopLevelCategories() {
-        return productCategoryRepository.findTopLevelCategories();
+    public List<ProductCategoryDTO> findTopLevelCategories(int storeId) {
+        System.out.println("service");
+        return productCategoryRepository.findTopLevelCategories(storeId);
     }
 
+
     // 특정 대분류의 중분류 카테고리 조회 (추가)
-    public List<ProductCategoryDTO> findMiddleLevelCategoriesByParentId(int parentId) {
-        return productCategoryRepository.findMiddleLevelCategoriesByParentId(parentId);
+    public List<ProductCategoryDTO> findMiddleLevelCategoriesByParentId(int parentId, int storeId) {
+        System.out.println("service");
+        return productCategoryRepository.findMiddleLevelCategoriesByParentId(parentId, storeId);
     }
 
     public void updateCategoryNameByLevel(int categoryId, String newName, int level) {

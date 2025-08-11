@@ -9,12 +9,32 @@
         VALUES (#{categoryName}, #{parentId}, #{categoryLevel});
     </insert>
 
-    <select id="findTopLevelCategories" resultType="ProductCategory">
-        SELECT * FROM productCategory WHERE categoryLevel = 1;
+    <select id="findTopLevelCategories" parameterType="int" resultType="ProductCategory">
+        SELECT DISTINCT
+        pc.categoryId,
+        pc.categoryName,
+        pc.parentId,
+        pc.categoryLevel,
+        pc.createdAt
+        FROM erp_db.product_summary_view v
+        JOIN erp_db.productcategory pc
+        ON pc.categoryId = v.topLevelCategoryId
+        WHERE v.storeId = #{storeId}
+        ORDER BY pc.categoryName;
     </select>
 
-    <select id="findMiddleLevelCategoriesByParentId" parameterType="int" resultType="ProductCategory">
-        SELECT * FROM productCategory WHERE parentId = #{parentId} AND categoryLevel = 2;
+    <select id="findMiddleLevelCategoriesByParentId" parameterType="map" resultType="ProductCategory">
+        SELECT DISTINCT
+        v.categoryId     AS categoryId,
+        v.categoryName   AS categoryName,
+        v.parentId       AS parentId,
+        v.categoryLevel  AS categoryLevel,
+        v.categoryCreatedAt AS createdAt
+        FROM erp_db.product_summary_view v
+        WHERE v.storeId = #{storeId}
+        AND v.categoryLevel = 2
+        AND v.parentId = #{parentId}
+        ORDER BY v.categoryName
     </select>
 
     <select id="categorySelect" resultType="ProductCategory">
@@ -30,8 +50,8 @@
 
 
     <!-- 카테고리 분류 항목 출력  -->
-    <select id="list" resultType="StockQuantity">
-        SELECT * FROM product_summary_view;
+    <select id="list" parameterType="int" resultType="StockQuantity">
+        SELECT * FROM product_summary_view WHERE storeId = #{storeId};
     </select>
 
     <!-- 발주 대분류 (거래처별) young -->

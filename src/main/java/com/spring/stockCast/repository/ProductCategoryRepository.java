@@ -39,8 +39,8 @@ public class ProductCategoryRepository {
         return sql.selectList("Product.findByCategoryId", categoryId);
     }
 
-    public List<StockQuantityDTO> categoryList() {
-        return sql.selectList("ProductCategory.list");
+    public List<StockQuantityDTO> categoryList(int storeId) {
+        return sql.selectList("ProductCategory.list", storeId);
     }
 
     // 카테고리 저장 (추가)
@@ -48,14 +48,23 @@ public class ProductCategoryRepository {
         sql.insert("ProductCategory.save", categoryDTO);
     }
 
+
+
     // 모든 대분류 카테고리 조회 (추가)
-    public List<ProductCategoryDTO> findTopLevelCategories() {
-        return sql.selectList("ProductCategory.findTopLevelCategories");
+    public List<ProductCategoryDTO> findTopLevelCategories(int storeId) {
+        System.out.println("레포지토리 대분류");
+        return sql.selectList("ProductCategory.findTopLevelCategories", storeId);
     }
 
+
     // 특정 대분류의 중분류 카테고리 조회 (추가)
-    public List<ProductCategoryDTO> findMiddleLevelCategoriesByParentId(int parentId) {
-        return sql.selectList("ProductCategory.findMiddleLevelCategoriesByParentId", parentId);
+    public List<ProductCategoryDTO> findMiddleLevelCategoriesByParentId(int parentId, int storeId) {
+        System.out.println("레포지토리 중분류 위");
+        Map<String, Object> param = new HashMap<>();
+        param.put("parentId", parentId);
+        param.put("storeId", storeId);
+        System.out.println("레포지토리 중분류 아래: " + param);
+        return sql.selectList("ProductCategory.findMiddleLevelCategoriesByParentId", param);
     }
 
     public void updateCategoryNameByLevel(int categoryId, String newName, int level) {
