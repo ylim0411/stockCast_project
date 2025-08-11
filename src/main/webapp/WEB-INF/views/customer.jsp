@@ -74,7 +74,7 @@
            maintainAspectRatio: false,
            legend: { display: false },
            tooltips: {
-               bodyFontSize: 22,
+               bodyFontSize: 16,
                callbacks: {
                    label: function(tooltipItem, data) {
                        var idx = tooltipItem.index;
@@ -126,7 +126,7 @@
            maintainAspectRatio: false,
            legend: { display: false },
            tooltips: {
-               bodyFontSize: 22,
+               bodyFontSize: 16,
                callbacks: {
                    label: function(tooltipItem, data) {
                        var idx = tooltipItem.index;
