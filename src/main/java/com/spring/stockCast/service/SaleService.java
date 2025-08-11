@@ -7,7 +7,6 @@ import com.spring.stockCast.repository.ProductRepository;
 import com.spring.stockCast.repository.SaleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
 
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
@@ -20,10 +19,6 @@ import java.util.*;
 public class SaleService {
     private final SaleRepository saleRepository;
     private final ProductRepository productRepository;
-    // 전체 판매내역 불러오기
-    public List<SaleDTO> findAll() {
-        return saleRepository.findAll();
-    }
     // 판매내역이 있는 년도 불러오기
     public List<String> findSaleYear(){
         return saleRepository.findSaleYear();
@@ -141,8 +136,8 @@ public class SaleService {
     }
 
     // 판매상품을 등록할 수 있는 목록 생성
-    public void saleCreateStmt(String saleId, LocalDate today) {
-        saleRepository.saleCreateStmt(saleId,today);
+    public void saleCreateStmt(String saleId, String storeId, LocalDate today) {
+        saleRepository.saleCreateStmt(saleId,storeId,today);
     }
 
     // 판매상품 DB에 저장

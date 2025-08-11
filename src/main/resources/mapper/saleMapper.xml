@@ -3,13 +3,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="Sale">
-    <!-- 전체 판매내역 조회 ho -->
-    <select id="findAll" resultType="Sale">
-        SELECT s.*, sp.salePrice, sp.saleQty, pc.categoryName FROM sale s
-        JOIN sale_product sp ON s.saleId = sp.saleId
-        JOIN product p ON p.productId = sp.productId
-        JOIN productcategory pc ON pc.categoryId = p.categoryId;
-    </select>
     <!-- 날짜 범위안에 있는 판매 목록 표시 ho -->
     <select id="findByDateBetween" resultType="Sale">
         SELECT s.*, sp.salePrice, sp.saleQty, pc.categoryName FROM sale s
@@ -37,8 +30,8 @@
     </select>
     <!-- sale 항목 db에 추가 ho -->
     <insert id="saleCreateStmt" parameterType="map">
-        INSERT INTO sale(saleId,saleDate)
-        VALUES (#{saleId},#{today})
+        INSERT INTO sale(saleId,storeId,saleDate)
+        VALUES (#{saleId},#{storeId},#{today})
     </insert>
     <!-- 위에서 등록한 sale 항목에 구매상품 등록 ho -->
     <insert id="saleSave" parameterType="map">
