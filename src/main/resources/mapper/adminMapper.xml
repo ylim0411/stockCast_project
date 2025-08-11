@@ -24,4 +24,20 @@
         FROM admin
         WHERE loginId = #{loginId}
     </select>
+
+    <update id="updateAdmin" parameterType="Admin">
+        UPDATE admin
+        SET adminName = #{adminName},
+        loginId = #{loginId},
+        loginPw = #{loginPw},
+        businessNumber = #{businessNumber}
+        WHERE adminId = #{adminId}
+    </update>
+
+    <!-- 추가: findById -->
+    <select id="findById" parameterType="int" resultType="Admin">
+        SELECT adminId, adminName, loginId, loginPw, businessNumber
+        FROM admin
+        WHERE adminId = #{adminId}
+    </select>
 </mapper>

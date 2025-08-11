@@ -25,19 +25,13 @@ public class StoreController {
         AdminDTO adminDTO = (AdminDTO) session.getAttribute("loginedAdminDTO");
         storeDTO.setAdminId(adminDTO.getAdminId());
         storeService.save(storeDTO);
-
-
-        List<StoreDTO> tmpstoreDTO = storeService.selectAll(storeDTO.getAdminId());
-        model.addAttribute("storeList", tmpstoreDTO);
-        return "mypage";
+        return "redirect:/mypage/";
     }
     @PostMapping("/update")
     public String update(@ModelAttribute StoreDTO storeDTO, HttpSession session, Model model) {
 
         storeService.update(storeDTO);
-        List<StoreDTO> tmpstoreDTO = storeService.selectAll(storeDTO.getAdminId());
-        model.addAttribute("storeList", tmpstoreDTO);
-        return "mypage";
+        return "redirect:/mypage/";
     }
 
     @PostMapping("/setSelectedStoreId")

@@ -32,4 +32,12 @@ public class AdminService {
     public boolean checkId(String loginId) {
         return adminRepository.checkId(loginId);
     }
+    public boolean updateAdmin(AdminDTO adminDTO) {
+        int updatedRows = adminRepository.updateAdmin(adminDTO);
+        return updatedRows > 0;
+    }
+
+    public AdminDTO findById(int adminId) {
+        return adminRepository.findById(adminId);
+    }
 }
