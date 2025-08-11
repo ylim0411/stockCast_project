@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,9 +18,17 @@ public class ClientRepository {
         return sql.selectOne("Client.findBySaleId",id);
     }
 
-    // 거래처만 전체 조회
-    public List<Map<String, Object>> findAll() {
-        return sql.selectList("Client.selectAllClients");
+    // 해당 storeId의 모든 거래처 목록 조회 young
+    public List<ClientDTO> selectByStoreId(int storeId) {
+        return sql.selectList("Client.selectByStoreId", storeId);
+    }
+
+    // 해당 clientId가 존재하는지 여부 조회 young
+    public int countByStoreIdAndClientId(int storeId, int clientId) {
+        Map<String, Object> p = new HashMap<>();
+        p.put("storeId", storeId);
+        p.put("clientId", clientId);
+        return sql.selectOne("Client.countByStoreIdAndClientId", p);
     }
 
     public List<ClientDTO> selectByAdminId(int adminId) {
@@ -54,8 +63,5 @@ public class ClientRepository {
     public int countClientsByKeyword(Map<String, Object> param) {
         return sql.selectOne("Client.countClientsByKeyword", param);
     }
-
-
-
 
 }

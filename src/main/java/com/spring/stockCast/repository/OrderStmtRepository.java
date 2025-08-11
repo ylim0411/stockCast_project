@@ -78,4 +78,8 @@ public class OrderStmtRepository {
     public List<OrderStmtDTO> findByMonth(String currentMonth) {
         return sql.selectList("Orders.findByMonth", currentMonth);
     }
+
+    public int orderNum(Integer selectedStoreId) {
+        return sql.selectOne("Orders.orderNum",selectedStoreId);
+    }
 }
