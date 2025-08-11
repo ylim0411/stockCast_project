@@ -5,36 +5,16 @@
 <mapper namespace="ProductCategory">
 
     <insert id="save" parameterType="ProductCategory">
-        INSERT INTO productCategory (categoryName, parentId, categoryLevel)
-        VALUES (#{categoryName}, #{parentId}, #{categoryLevel});
+        INSERT INTO productCategory (storeId, categoryName, parentId, categoryLevel)
+        VALUES (#{storeId}, #{categoryName}, #{parentId}, #{categoryLevel});
     </insert>
 
     <select id="findTopLevelCategories" parameterType="int" resultType="ProductCategory">
-        SELECT DISTINCT
-        pc.categoryId,
-        pc.categoryName,
-        pc.parentId,
-        pc.categoryLevel,
-        pc.createdAt
-        FROM erp_db.product_summary_view v
-        JOIN erp_db.productcategory pc
-        ON pc.categoryId = v.topLevelCategoryId
-        WHERE v.storeId = #{storeId}
-        ORDER BY pc.categoryName;
+        SELECT * FROM productcategory WHERE storeId = #{storeId} AND categoryLevel = 1;
     </select>
 
     <select id="findMiddleLevelCategoriesByParentId" parameterType="map" resultType="ProductCategory">
-        SELECT DISTINCT
-        v.categoryId     AS categoryId,
-        v.categoryName   AS categoryName,
-        v.parentId       AS parentId,
-        v.categoryLevel  AS categoryLevel,
-        v.categoryCreatedAt AS createdAt
-        FROM erp_db.product_summary_view v
-        WHERE v.storeId = #{storeId}
-        AND v.categoryLevel = 2
-        AND v.parentId = #{parentId}
-        ORDER BY v.categoryName
+        SELECT * FROM productcategory WHERE parentId = #{parentId} AND storeId = #{storeId} AND categoryLevel = 2;
     </select>
 
     <select id="categorySelect" resultType="ProductCategory">
