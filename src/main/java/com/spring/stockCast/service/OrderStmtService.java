@@ -102,6 +102,12 @@ public class OrderStmtService {
         return lastId != null ? lastId : 0;
     }
 
+    // 발주번호 찾기 young
+    public int orderNum(Integer selectedStoreId){
+        int result = orderStmtRepository.orderNum(selectedStoreId);
+        return result+1;
+    }
+
     // 발주서 저장
     public void saveOrder(Integer selectedStoreId, int clientId, int orderId, String orderDate) {
         Map<String, Object> param = new HashMap<>();

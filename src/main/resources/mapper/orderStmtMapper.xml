@@ -4,6 +4,12 @@
 
 <mapper namespace="Orders">
 
+    <!--  발주번호 young -->
+    <select id="orderNum" parameterType="Integer" resultType="int">
+        SELECT COUNT(*) FROM orderStmt
+        WHERE storeId = #{selectedStoreId}
+    </select>
+
     <!--  페이징 전체 조회  -->
     <select id="pagingList" parameterType="map" resultType="OrderStmt">
         <![CDATA[

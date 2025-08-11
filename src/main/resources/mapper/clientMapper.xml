@@ -13,10 +13,26 @@
     </resultMap>
 
     <!-- 모든 거래처 조회 -->
-    <select id="selectAllClients" resultType="map">
-        SELECT clientId, clientName
+<!--    <select id="selectAllClients" resultType="map">-->
+<!--        SELECT clientId, clientName-->
+<!--        FROM client-->
+<!--        ORDER BY clientName-->
+<!--    </select>-->
+
+    <!--  해당 storeId의 모든 거래처 목록 조회 young -->
+    <select id="selectByStoreId" parameterType="int" resultType="com.spring.stockCast.dto.ClientDTO">
+        SELECT clientId, clientName, storeId
         FROM client
+        WHERE storeId = #{_parameter}
         ORDER BY clientName
+    </select>
+
+    <!-- 해당 clientId가 존재하는지 여부 조회 young -->
+    <select id="countByStoreIdAndClientId" parameterType="map" resultType="int">
+        SELECT COUNT(1)
+        FROM client
+        WHERE storeId = #{storeId}
+        AND clientId = #{clientId}
     </select>
 
     <!-- 발주번호에 맞는 거래처 조회 ho -->

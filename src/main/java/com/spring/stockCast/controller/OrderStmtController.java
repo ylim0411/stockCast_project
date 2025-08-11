@@ -59,6 +59,7 @@ public class OrderStmtController {
         // 페이징 정보
         PageDTO pageDTO = orderStmtService.pagingParamWithSearch(page, totalCount);
 
+        model.addAttribute("orderNum",orderStmtService.orderNum(storeId));
         model.addAttribute("orderStmt", orders);
         model.addAttribute("paging", pageDTO);
 
@@ -77,7 +78,8 @@ public class OrderStmtController {
         Integer storeId = (Integer) session.getAttribute("selectedStoredId");
         if(storeId == null) storeId = 1;
 
-        model.addAttribute("clients", clientService.getAllClients());
+        // model.addAttribute("clients", clientService.getAllClients());
+        model.addAttribute("clients", clientService.findByStoreId(storeId));
         return "orderSave";
     }
 
@@ -98,6 +100,10 @@ public class OrderStmtController {
 
         if (clientId <= 0) {
             throw new IllegalArgumentException("거래처를 선택하세요.");
+        }
+
+        if (!clientService.existsByStoreIdAndClientId(storeId, clientId)) {
+            throw new IllegalArgumentException("권한이 없거나 유효하지 않은 거래처입니다.");
         }
 
         orderStmtService.saveOrder(storeId, clientId, orderId, orderDate);
@@ -164,8 +170,8 @@ public class OrderStmtController {
         var orderInfo = orderStmtService.findById(storeId, id);
         model.addAttribute("orderInfo", orderInfo);
         model.addAttribute("orderItems", purchaseOrderService.findByOrderId(storeId, id));
-        model.addAttribute("clients", clientService.getAllClients());
-
+        //model.addAttribute("clients", clientService.getAllClients());
+        model.addAttribute("clients", clientService.findByStoreId(storeId));
         return "orderUpdate";
     }
 
@@ -184,6 +190,10 @@ public class OrderStmtController {
         // storeId 받기
         Integer storeId = (Integer) session.getAttribute("selectedStoredId");
         if(storeId == null) storeId = 1;
+
+        if (!clientService.existsByStoreIdAndClientId(storeId, clientId)) {
+            throw new IllegalArgumentException("권한이 없거나 유효하지 않은 거래처입니다.");
+        }
 
         // 기본 발주 수정
         orderStmtService.updateOrder(storeId, clientId, orderId, orderDate);

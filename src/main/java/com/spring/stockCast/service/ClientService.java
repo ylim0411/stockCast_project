@@ -21,9 +21,14 @@ public class ClientService {
         return clientRepository.findBySaleId(id);
     }
 
-    // 거래처만 전체 조회
-    public List<Map<String, Object>> getAllClients() {
-        return clientRepository.findAll();
+    // 해당 storeId의 모든 거래처 목록 조회 young
+    public List<ClientDTO> findByStoreId(int storeId) {
+        return clientRepository.selectByStoreId(storeId);
+    }
+
+    // 해당 clientId가 존재하는지 여부 조회 young
+    public boolean existsByStoreIdAndClientId(int storeId, int clientId) {
+        return clientRepository.countByStoreIdAndClientId(storeId, clientId) > 0;
     }
 
     public List<ClientDTO> selectByAdminId(int adminId) {
@@ -90,7 +95,5 @@ public class ClientService {
         param.put("keyword", "%" + keyword + "%");
         return clientRepository.countClientsByKeyword(param);
     }
-
-
 
 }
