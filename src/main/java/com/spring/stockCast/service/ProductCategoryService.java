@@ -19,7 +19,7 @@ public class ProductCategoryService {
     private final ProductCategoryRepository productCategoryRepository;
     private final ProductRepository productRepository;
 
-    public List<ProductCategoryDTO> categorySelect() {
+    public List<ProductCategoryDTO> categorySelect(int storeId) {
         List<ProductCategoryDTO> categoryAll = productCategoryRepository.categorySelect();
 
         Map<Integer, ProductCategoryDTO> categoryMap = new HashMap<>();
@@ -43,7 +43,7 @@ public class ProductCategoryService {
             }
 
             if (productCategory.getCategoryLevel() == 2) {
-                List<ProductDTO> products = productRepository.selectProductsByCategoryId(productCategory.getCategoryId());
+                List<ProductDTO> products = productRepository.selectProductsByCategoryId(productCategory.getCategoryId(),storeId);
                 if (products != null && !products.isEmpty()) {
                     productCategory.setProductList(products);
                 }
@@ -51,10 +51,6 @@ public class ProductCategoryService {
         }
 
         return parentCategory;
-    }
-
-    public List<ProductCategoryDTO> findAllCategory() {
-        return productCategoryRepository.categorySelect();
     }
 
     // 발주 대분류 (거래처별) young
