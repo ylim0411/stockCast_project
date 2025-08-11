@@ -104,6 +104,7 @@
         SELECT * FROM product_summary_view;
     </select>
 
+
     <select id="findStockQuantityByKeyword" parameterType="String" resultType="StockQuantity">
         SELECT *
         FROM product_summary_view

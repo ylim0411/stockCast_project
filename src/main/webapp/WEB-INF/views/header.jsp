@@ -288,7 +288,7 @@
               var html =
                 '<li class="low-stock-item" data-product-id="' + it.id + '">' +
                   '<p class="low-stock-name">' + name + '</p>' +
-                  '<p>현재 ' + qty + '개 / <span>기준 20개</span></p>' +
+                  '<p>현재재고 ' + qty + '개 / <span>재고부족 ' + (20-qty) +'개</span></p>' +
                 '</li>';
               $list.append(html);
             });

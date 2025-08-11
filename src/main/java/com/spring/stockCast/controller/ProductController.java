@@ -39,6 +39,7 @@ public class ProductController {
         return "product";
     }
 
+
     @PostMapping("/update")
     public String updateProduct(@RequestParam("productId") int productId,
                                 @RequestParam("productName") String productName,
@@ -91,7 +92,6 @@ public class ProductController {
         return productService.findByCategoryId(categoryId);
     }
 
-    // 재고현황
     // 재고현황
     @GetMapping("/stockQuantity")
     public String stockQuantity(@RequestParam(value = "keyword", required = false) String keyword,
@@ -161,7 +161,7 @@ public class ProductController {
     public List<StockQuantityDTO> getLowStockProducts() {
         List<StockQuantityDTO> allStock = productService.stockQuantityList(null,-1);
         return allStock.stream()
-                .filter(p -> p.getStockQuantity() != null && p.getStockQuantity() <= 20)
+                .filter(p -> p.getStockQuantity() != null && p.getStockQuantity() < 20)
                 .collect(Collectors.toList());
     }
 

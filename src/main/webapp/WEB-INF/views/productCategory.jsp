@@ -26,8 +26,8 @@
         <!-- 카테고리 등록 버튼 -->
         <div class="form-container">
           <div class="btn-box">
-            <button id="middle" class="btn btn-blue">중분류 모두 접기</button>
-            <button id="child" class="btn btn-blue">소분류 모두 접기</button>
+            <button id="middle" class="btn btn-blue">중분류<span>&#10095;</span></button>
+            <button id="child" class="btn btn-blue">소분류<span>&#10095;</span></button>
           </div>
           <button class="btn btn-blue-b">카테고리 등록</button>
         </div>
