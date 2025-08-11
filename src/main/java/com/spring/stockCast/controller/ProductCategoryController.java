@@ -42,15 +42,20 @@ public class ProductCategoryController {
                                @RequestParam("categoryName") String categoryName,
                                @RequestParam(value = "parentId", required = false) Integer parentId,
                                @RequestParam(value = "middleParentId", required = false) Integer middleParentId,
-                               RedirectAttributes redirectAttributes) {
+                               RedirectAttributes redirectAttributes,
+                               HttpSession session) {
+        int storeId = (int) session.getAttribute("selectedStoredId");
+
         try {
             if (categoryLevel == 3) {
                 ProductDTO productDTO = new ProductDTO();
+                productDTO.setStoreId(storeId);
                 productDTO.setProductName(categoryName);
                 productDTO.setCategoryId(parentId); // 중분류 ID
                 productCategoryService.saveProduct(productDTO);
             } else {
                 ProductCategoryDTO categoryDTO = new ProductCategoryDTO();
+                categoryDTO.setStoreId(storeId);
                 categoryDTO.setCategoryName(categoryName);
                 categoryDTO.setCategoryLevel(categoryLevel);
                 if (parentId != null) {
@@ -69,9 +74,7 @@ public class ProductCategoryController {
     @GetMapping("/topCategories")
     @ResponseBody
     public List<ProductCategoryDTO> getTopCategories(HttpSession session) {
-        System.out.println("대분류 controller 위");
         int storeId = (int) session.getAttribute("selectedStoredId");
-        System.out.println("대분류 controller 아래" + storeId);
         return productCategoryService.findTopLevelCategories(storeId);
     }
 
@@ -81,9 +84,7 @@ public class ProductCategoryController {
     @GetMapping("/middleCategories")
     @ResponseBody
     public List<ProductCategoryDTO> getMiddleCategories(@RequestParam int parentId, HttpSession session) {
-        System.out.println("중분류 controller 위");
         int storeId = (int) session.getAttribute("selectedStoredId");
-        System.out.println("중분류 controller 아래" + storeId);
         return productCategoryService.findMiddleLevelCategoriesByParentId(parentId, storeId);
     }
     
