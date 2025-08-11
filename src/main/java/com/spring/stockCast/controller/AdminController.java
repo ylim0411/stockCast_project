@@ -100,6 +100,40 @@ public class AdminController {
         // 로그인 페이지로 리디렉션
         return logout(request, response);
     }
+    @PostMapping("/update")
+    public String updateAdmin(
+            @ModelAttribute AdminDTO adminDTO,
+            HttpSession session,
+            RedirectAttributes redirectAttributes) {
+
+        AdminDTO loginedAdmin = (AdminDTO) session.getAttribute("loginedAdminDTO");
+
+        // 로그인 세션 체크
+        if (loginedAdmin == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "로그인이 필요합니다.");
+            return "redirect:/admin/login";
+        }
+
+        // 본인만 수정 가능하게 adminId 세팅 (파라미터 조작 방지)
+        adminDTO.setAdminId(loginedAdmin.getAdminId());
+
+        // 서비스 호출해서 업데이트 수행
+        boolean updateResult = adminService.updateAdmin(adminDTO);
+
+        if (!updateResult) {
+            redirectAttributes.addFlashAttribute("errorMessage", "정보 수정에 실패했습니다.");
+            return "redirect:/mypage/";  // 수정 폼 URL로 변경 가능
+        }
+
+        // 업데이트 성공하면 세션 정보도 갱신
+        AdminDTO updatedAdmin = adminService.findById(adminDTO.getAdminId());
+        session.setAttribute("loginedAdminDTO", updatedAdmin);
+
+        redirectAttributes.addFlashAttribute("successMessage", "정보가 성공적으로 수정되었습니다.");
+        return "redirect:/mypage/";  // 수정 후 보여줄 페이지
+    }
+
+
     private void clearSession(HttpServletRequest request, HttpServletResponse response)
     {
         HttpSession session = request.getSession(false); // 새 세션 생성하지 않음

@@ -30,4 +30,12 @@ public class AdminRepository {
     public boolean checkId(String loginId) {
         return (sql.selectOne("Admin.checkId", loginId) == null);
     }
+
+    public int updateAdmin(AdminDTO adminDTO) {
+        return sql.update("Admin.updateAdmin", adminDTO);
+    }
+
+    public AdminDTO findById(int adminId) {
+        return sql.selectOne("Admin.findById", adminId);
+    }
 }
