@@ -61,7 +61,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 type="text"
                 name="adminName"
                 placeholder="이름"
-                value="${sessionScope.loginedAdminDTO.adminName}"
+                value="${sessionScope.loginedAdminDTO.adminName}"readonly
                 required
               />
             </td>
@@ -73,7 +73,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 type="text"
                 name="loginId"
                 placeholder="아이디"
-                value="${sessionScope.loginedAdminDTO.loginId}"
+                value="${sessionScope.loginedAdminDTO.loginId}"readonly
                 required
               />
             </td>
@@ -88,7 +88,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                   id="loginPw"
                   name="loginPw"
                   placeholder="비밀번호"
-                  value="${sessionScope.loginedAdminDTO.loginPw}"
+                  value="${sessionScope.loginedAdminDTO.loginPw}"readonly
                   required
                 />
                 <button
@@ -98,16 +98,15 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                   style="
                     position: relative;
                     right: 25px;
-                    top: 10px;
+                    top: 0px;
                     transform: translateY(-50%);
                     background: none;
                     border: none;
-                    font-size: 16px;
                     cursor: pointer;
                     z-index: 9999;
                   "
                 >
-                  👁️
+                    <img id="togglePwIcon" src="${pageContext.request.contextPath}/static/images/eye-gray.png" alt="보기" style="width:20px;height:20px;">
                 </button>
               </div>
               <div
@@ -124,13 +123,13 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 type="text"
                 name="businessNumber"
                 placeholder="사업자 등록번호"
-                value="${sessionScope.loginedAdminDTO.businessNumber}"
+                value="${sessionScope.loginedAdminDTO.businessNumber}"readonly
                 required
               />
             </td>
           </tr>
         </table>
-        <input type="submit" value="수정하기" class="btn btn-blue" />
+        <input type="button" id="adminEditBtn" value="수정하기" class="btn btn-blue" />
         <button type="button" class="btn btn-red" onclick="submitDelete()">
           탈퇴하기
         </button>
@@ -317,6 +316,29 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         </c:choose>
       </div>
     <script>
+    $(document).ready(function () {
+      let adminEditMode = false; // 수정 모드 여부
+
+      $("#adminEditBtn").click(function () {
+        if (!adminEditMode) {
+          // 수정 모드로 전환
+          $("form[action='/admin/update']").find("input").each(function () {
+            const name = $(this).attr("name");
+            if (name !== "adminId") { // adminId는 수정 불가
+              $(this).prop("readonly", false);
+              $(this).data("original-value", $(this).val());
+            }
+          });
+
+          adminEditMode = true;
+          $(this).val("적용하기");
+
+        } else {
+          // 적용하기 → 폼 제출
+          $("form[action='/admin/update']")[0].submit();
+        }
+      });
+    });
       const pwInput = document.getElementById("loginPw");
       const pwErrorMsg = document.getElementById("pwErrorMsg");
 
@@ -422,16 +444,20 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       });
       function togglePassword() {
         const pwField = document.getElementById("loginPw");
-        const toggleBtn = document.getElementById("togglePwBtn");
+        const icon = document.getElementById("togglePwIcon");
 
         if (pwField.type === "password") {
           pwField.type = "text";
-          toggleBtn.textContent = "🙈"; // 보기 중 → 눈 가린 이모지
+          icon.src = `${pageContext.request.contextPath}/static/images/eye-blue.png`; // 열린 눈
+
+          icon.alt = "숨기기";
         } else {
           pwField.type = "password";
-          toggleBtn.textContent = "👁️"; // 보기 전 → 눈 뜬 이모지
+          icon.src = `${pageContext.request.contextPath}/static/images/eye-gray.png`; // 닫힌 눈
+          icon.alt = "보기";
         }
       }
+
       function submitDelete() {
         if (!confirm("정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
           return;
