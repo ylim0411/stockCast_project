@@ -118,7 +118,7 @@
         WHERE productId IN (
         SELECT productId
         FROM productinitstock
-        WHERE MONTH(initialStockDate)
+        WHERE MONTH(initialStockDate) = #{month}
         )
         AND (
         topLevelCategoryName LIKE CONCAT('%', #{keyword}, '%')
@@ -135,7 +135,7 @@
         WHERE productId IN (
         SELECT productId
         FROM productinitstock
-        WHERE MONTH(initialStockDate)
+        WHERE MONTH(initialStockDate) = #{month}
         )
         ORDER BY productId ASC
     </select>
