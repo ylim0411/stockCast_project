@@ -6,17 +6,13 @@ import com.spring.stockCast.dto.StockQuantityDTO;
 import com.spring.stockCast.service.ProductCategoryService;
 import com.spring.stockCast.service.ProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.util.stream.Collectors;
 
-import java.time.LocalDate;
-import java.time.YearMonth;
 import java.util.List;
 import java.util.Map;
 
@@ -99,12 +95,14 @@ public class ProductController {
     @GetMapping("/stockQuantity")
     public String stockQuantity(@RequestParam(value = "keyword", required = false) String keyword,
                                 @RequestParam(value = "month", required = false) Integer  month,
-                                Model model) {
+                                Model model,
+                                HttpSession session) {
+        int storeId = (int) session.getAttribute("selectedStoredId");
         if (month == null)
         {
             month = 0;
         }
-        List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList(keyword, month);
+        List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList(keyword, month,storeId);
 
         model.addAttribute("stockQuantityList", stockQuantityList);
         model.addAttribute("keyword", keyword);
@@ -161,8 +159,9 @@ public class ProductController {
 
     @GetMapping("/lowStock")
     @ResponseBody
-    public List<StockQuantityDTO> getLowStockProducts() {
-        List<StockQuantityDTO> allStock = productService.stockQuantityList(null,-1);
+    public List<StockQuantityDTO> getLowStockProducts(HttpSession session) {
+        int storeId = (int) session.getAttribute("selectedStoredId");
+        List<StockQuantityDTO> allStock = productService.stockQuantityList(null,-1, storeId);
         return allStock.stream()
                 .filter(p -> p.getStockQuantity() != null && p.getStockQuantity() < 20)
                 .collect(Collectors.toList());

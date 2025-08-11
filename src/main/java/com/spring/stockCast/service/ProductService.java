@@ -9,9 +9,6 @@ import com.spring.stockCast.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.YearMonth;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -69,17 +66,17 @@ public class ProductService {
         return productRepository.findByCategoryId(categoryId);
     }
 
-    public List<StockQuantityDTO> stockQuantityList(String keyword, int month) {
+    public List<StockQuantityDTO> stockQuantityList(String keyword, int month, int storeId) {
         if (keyword != null && !keyword.trim().isEmpty()) {
             if (month > 0)
             {
-                return productRepository.findStockQuantityByKeywordAndMonth("%" + keyword + "%", month);
+                return productRepository.findStockQuantityByKeywordAndMonth("%" + keyword + "%", month,storeId);
             }
-            return productRepository.findStockQuantityByKeyword("%" + keyword + "%");
+            return productRepository.findStockQuantityByKeyword("%" + keyword + "%",storeId);
         } else if (month > 0) {
-            return productRepository.findStockQuantityByMonth(month);
+            return productRepository.findStockQuantityByMonth(month,storeId);
         }
-        return productRepository.stockQuantityList();
+        return productRepository.stockQuantityList(storeId);
     }
 
     public List<ProductDTO> findProductsByCategoryId(int parentId) {

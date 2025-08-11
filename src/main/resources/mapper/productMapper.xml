@@ -103,17 +103,19 @@
         ORDER BY p.productName
     </select>
 
-    <select id="stockQuantityList" resultType="StockQuantity">
-        SELECT * FROM product_summary_view;
+    <select id="stockQuantityList" parameterType="int" resultType="StockQuantity">
+        SELECT * FROM product_summary_view
+        WHERE storeId = #{storeId};
     </select>
 
 
-    <select id="findStockQuantityByKeyword" parameterType="String" resultType="StockQuantity">
+    <select id="findStockQuantityByKeyword" parameterType="map" resultType="StockQuantity">
         SELECT *
         FROM product_summary_view
-        WHERE topLevelCategoryName LIKE #{keyword}
+        WHERE storeId = #{storeId}
+        AND (topLevelCategoryName LIKE #{keyword}
         OR categoryName LIKE #{keyword}
-        OR productName LIKE #{keyword}
+        OR productName LIKE #{keyword})
     </select>
 
     <select id="findStockQuantityByKeywordAndMonth" parameterType="map" resultType="StockQuantity">
@@ -124,23 +126,25 @@
         FROM productinitstock
         WHERE MONTH(initialStockDate) = #{month}
         )
+        AND (storeId = #{storeId}
         AND (
         topLevelCategoryName LIKE CONCAT('%', #{keyword}, '%')
         OR categoryName LIKE CONCAT('%', #{keyword}, '%')
         OR productName LIKE CONCAT('%', #{keyword}, '%')
-        )
+        ))
         ORDER BY productId ASC
     </select>
 
 
-    <select id="findStockQuantityByMonth" parameterType="int" resultType="StockQuantity">
+    <select id="findStockQuantityByMonth" parameterType="map" resultType="StockQuantity">
         SELECT *
         FROM product_summary_view
-        WHERE productId IN (
+        WHERE (productId IN (
         SELECT productId
         FROM productinitstock
         WHERE MONTH(initialStockDate) = #{month}
-        )
+        ))
+        AND storeId = #{storeId}
         ORDER BY productId ASC
     </select>
 
