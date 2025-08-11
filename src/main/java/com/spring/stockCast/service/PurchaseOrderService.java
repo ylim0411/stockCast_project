@@ -1,7 +1,5 @@
 package com.spring.stockCast.service;
 
-
-
 import com.spring.stockCast.dto.PurchaseOrderDTO;
 import com.spring.stockCast.repository.PurchaseOrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,27 +15,42 @@ public class PurchaseOrderService {
 
     private final PurchaseOrderRepository purchaseOrderRepository;
 
-
     // 발주 상세 저장
-    public void saveOrderDetail(int orderId, int productId, int purchasePrice, int purchaseQty, Integer qty) {
-        purchaseOrderRepository.insertOrderDetail(orderId, productId, purchasePrice, purchaseQty);
-    }
-    // 상태 완료 변경시 발주로 인한 재고, 회계 연동
-    public void linkAccounting(int orderId, int productId, int purchasePrice, int purchaseQty, int qty){
+    public void saveOrderDetail(int storeId, int orderId, int productId, int purchasePrice, int purchaseQty) {
         Map<String, Object> param = new HashMap<>();
+        param.put("storeId", storeId);
+        param.put("orderId", orderId);
+        param.put("productId", productId);
+        param.put("purchasePrice", purchasePrice);
+        param.put("purchaseQty", purchaseQty);
+        purchaseOrderRepository.insertOrderDetail(param);
+    }
+
+    // 상태 완료 연동(회계+재고)
+    public void linkAccounting(int storeId, int orderId, int productId, int purchasePrice, int purchaseQty){
+        Map<String, Object> param = new HashMap<>();
+        param.put("storeId", storeId);
         param.put("orderId", orderId);
         param.put("productId", productId);
         param.put("purchasePrice", purchasePrice);
         param.put("purchaseQty", purchaseQty);
         purchaseOrderRepository.linkAccounting(param);
     }
+
     // 발주 상세 목록 조회
-    public List<PurchaseOrderDTO> findByOrderId(int orderId, int id) {
-        return purchaseOrderRepository.findByOrderId(orderId);
+    public List<PurchaseOrderDTO> findByOrderId(int storeId, int orderId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("storeId", storeId);
+        param.put("orderId", orderId);
+        return purchaseOrderRepository.findByOrderId(param);
     }
 
-    public void deleteByOrderId(int orderId, int id) {
-        purchaseOrderRepository.deleteByOrderId(orderId);
+    // 발주 상세 전체 삭제
+    public void deleteByOrderId(int storeId, int orderId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("storeId", storeId);
+        param.put("orderId", orderId);
+        purchaseOrderRepository.deleteByOrderId(param);
     }
 }
 
