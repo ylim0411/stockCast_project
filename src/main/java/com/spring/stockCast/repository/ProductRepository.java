@@ -1,13 +1,11 @@
 package com.spring.stockCast.repository;
 
-import com.spring.stockCast.dto.ProductCategoryDTO;
 import com.spring.stockCast.dto.ProductDTO;
 import com.spring.stockCast.dto.StockQuantityDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,21 +54,29 @@ public class ProductRepository {
         return sql.selectList("Product.findByCategoryId", categoryId);
     }
   
-    public List<StockQuantityDTO> stockQuantityList() {
-        return sql.selectList("Product.stockQuantityList");
+    public List<StockQuantityDTO> stockQuantityList(int storeId) {
+        return sql.selectList("Product.stockQuantityList",storeId);
     }
-    public List<StockQuantityDTO> findStockQuantityByKeyword(String keyword) {
-        return sql.selectList("Product.findStockQuantityByKeyword", keyword);
+    public List<StockQuantityDTO> findStockQuantityByKeyword(String keyword, int storeId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("keyword", keyword);
+        params.put("storeId", storeId);
+        return sql.selectList("Product.findStockQuantityByKeyword", params);
     }
-    public List<StockQuantityDTO> findStockQuantityByKeywordAndMonth(String keyword, int month) {
+    public List<StockQuantityDTO> findStockQuantityByKeywordAndMonth(String keyword, int month, int storeId) {
         Map<String, Object> params = new HashMap<>();
         params.put("keyword", keyword);
         params.put("month", month);
+        params.put("storeId", storeId);
 
         return sql.selectList("Product.findStockQuantityByKeywordAndMonth", params);
     }
-    public List<StockQuantityDTO> findStockQuantityByMonth(int month) {
-        return sql.selectList("Product.findStockQuantityByMonth", month);
+    public List<StockQuantityDTO> findStockQuantityByMonth(int month, int storeId) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("month", month);
+        params.put("storeId", storeId);
+
+        return sql.selectList("Product.findStockQuantityByMonth", params);
     }
 
     public void addCategory(ProductDTO productDTO) {
