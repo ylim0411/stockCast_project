@@ -20,9 +20,13 @@ public class AdminController {
     private final AdminService adminService;
     @GetMapping("login")
     public String loginForm(HttpServletRequest request, HttpServletResponse response) {
-        clearSession(request, response);
+        HttpSession session = request.getSession(false);
+        if (session != null && session.getAttribute("loginedAdminDTO") != null) {
+            return "redirect:/main";
+        }
         return "login";
     }
+
 
     // 실제 게시글을 DB에 저장
     @PostMapping("/login")
@@ -67,14 +71,16 @@ public class AdminController {
     }
 
     @GetMapping("/logout")
-    public String logout() {
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        clearSession(request, response);
         return "redirect:/admin/login";
     }
     @PostMapping("/delete")
     public String deleteAdmin(
             @RequestParam("adminId") int adminId,
             HttpSession session,
-            RedirectAttributes redirectAttributes) {
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request, HttpServletResponse response) {
 
         // 세션에서 로그인된 관리자 확인
         AdminDTO loginedAdmin = (AdminDTO) session.getAttribute("loginedAdminDTO");
@@ -92,7 +98,7 @@ public class AdminController {
         }
 
         // 로그인 페이지로 리디렉션
-        return logout();
+        return logout(request, response);
     }
     private void clearSession(HttpServletRequest request, HttpServletResponse response)
     {
