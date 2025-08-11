@@ -31,15 +31,7 @@
               </div>
             <form action="/accounting/accountingList" method="get" class="form-container" name="accountingForm">
                 <div class="dateForm">
-                    <input type="date" name="startDate" id="startDate"/>
-                    <span>~<span>
-                    <input type="date" name="endDate" id="endDate"/>
-                    <button type="submit" class="btn btn-blue">조회</button>
-                    <button type="submit" class="btn btn-blue" name="action" value="load">불러오기</button>
-                    <button type="submit" class="btn btn-blue" name="action" value="store">점포매출</button>
-                </div>
-                <div class="searchForm">
-                    <select style="width:120px;" name="year" class="saleYear-select" onchange="this.form.submit()">
+                <select style="width:120px;" name="year" class="saleYear-select" onchange="this.form.submit()">
                             <option value="" selected>${selectedYear}</option>
                             <c:forEach var="yearOption" items="${accountYear}">
                                 <c:if test="${yearOption != selectedYear}">
@@ -56,6 +48,10 @@
                         <button name="btn" value="first" class="btn ${param.btn eq 'first' ? 'btn-blue-b' : 'btn-blue'}">상반기</button>
                         <button name="btn" value="second" class="btn ${param.btn eq 'second' ? 'btn-blue-b' : 'btn-blue'}">하반기</button>
                     </div>
+                </div>
+                <div class="searchForm">
+                    <button type="submit" class="btn btn-blue" name="action" value="load">불러오기</button>
+                    <button type="submit" class="btn btn-blue" name="action" value="store">점포매출</button>
                 </div>
             </form>
 
