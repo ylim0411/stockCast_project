@@ -17,7 +17,7 @@ uri="http://java.sun.com/jsp/jstl/core" %>
         <div class="login-text">
           <form action="/admin/login" method="post">
             <input type="text" name="loginId" placeholder="아이디" />
-            <input type="text" name="loginPw" placeholder="비밀번호" />
+            <input type="password" name="loginPw" placeholder="비밀번호" />
             <input type="submit" value="로그인" class="btn submit-btn" />
           </form>
           <div>

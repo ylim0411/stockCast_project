@@ -112,6 +112,34 @@
         OR productName LIKE #{keyword}
     </select>
 
+    <select id="findStockQuantityByKeywordAndMonth" parameterType="map" resultType="StockQuantity">
+        SELECT *
+        FROM product_summary_view
+        WHERE productId IN (
+        SELECT productId
+        FROM productinitstock
+        WHERE MONTH(initialStockDate)
+        )
+        AND (
+        topLevelCategoryName LIKE CONCAT('%', #{keyword}, '%')
+        OR categoryName LIKE CONCAT('%', #{keyword}, '%')
+        OR productName LIKE CONCAT('%', #{keyword}, '%')
+        )
+        ORDER BY productId ASC
+    </select>
+
+
+    <select id="findStockQuantityByMonth" parameterType="int" resultType="StockQuantity">
+        SELECT *
+        FROM product_summary_view
+        WHERE productId IN (
+        SELECT productId
+        FROM productinitstock
+        WHERE MONTH(initialStockDate)
+        )
+        ORDER BY productId ASC
+    </select>
+
     <insert id="addCategory" parameterType="Product">
         INSERT INTO product (storeId, categoryId, productName, price, stockQuantity)
         VALUES (#{storeId}, #{categoryId}, #{productName}, #{price}, #{stockQuantity});
