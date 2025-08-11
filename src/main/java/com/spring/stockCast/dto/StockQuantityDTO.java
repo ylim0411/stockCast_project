@@ -9,6 +9,7 @@ public class StockQuantityDTO {
     // 상품 정보
     private Integer productId;
     private String productName;
+    private int storeId;
 
     // 카테고리 정보
     private Integer parentId;

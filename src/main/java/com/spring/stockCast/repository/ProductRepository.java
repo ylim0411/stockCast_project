@@ -26,8 +26,11 @@ public class ProductRepository {
         return sql.selectList("Product.getAllProducts");
     }
 
-    public List<ProductDTO> selectProductsByCategoryId(int categoryId) {
-        return sql.selectList("Product.selectProductsByCategoryId", categoryId);
+    public List<ProductDTO> selectProductsByCategoryId(int categoryId, int storeId) {
+        java.util.Map<String, Object> paramMap = new java.util.HashMap<>();
+        paramMap.put("categoryId", categoryId);
+        paramMap.put("storeId", storeId);
+        return sql.selectList("Product.selectProductsByCategoryId", paramMap);
     }
 
     public List<ProductDTO> findProductList() {

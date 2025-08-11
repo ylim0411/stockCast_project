@@ -38,8 +38,8 @@
         ORDER BY productName ASC
     </select>
 
-    <select id="selectProductsByCategoryId" parameterType="int" resultType="Product">
-        SELECT * FROM product WHERE categoryId = #{categoryId};
+    <select id="selectProductsByCategoryId" parameterType="map" resultType="Product">
+        SELECT * FROM product WHERE categoryId = #{categoryId} AND storeId = #{storeId};
     </select>
 
     <select id="findProductList" resultType="Product">

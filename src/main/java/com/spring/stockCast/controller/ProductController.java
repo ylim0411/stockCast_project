@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import javax.servlet.http.HttpSession;
 import java.util.stream.Collectors;
 
 import java.time.LocalDate;
@@ -32,8 +34,9 @@ public class ProductController {
     }
 
     @GetMapping("/list")
-    public String productList(Model model) {
-        List<ProductCategoryDTO> categoryList = productCategoryService.categorySelect();
+    public String productList(Model model, HttpSession session) {
+        int storeId = (int) session.getAttribute("selectedStoredId");
+        List<ProductCategoryDTO> categoryList = productCategoryService.categorySelect(storeId);
         model.addAttribute("categoryList", categoryList);
 
         return "product";
@@ -75,9 +78,11 @@ public class ProductController {
     }
 
     @GetMapping("/search")
-    public String searchProduct(@RequestParam("productName") String productName, Model model){
+    public String searchProduct(@RequestParam("productName") String productName, Model model, HttpSession session){
+        int storeId = (int) session.getAttribute("selectedStoredId");
+
         List<ProductDTO> searchResult = productService.findProductByName(productName);
-        List<ProductCategoryDTO> productCategory = productCategoryService.categorySelect();
+        List<ProductCategoryDTO> productCategory = productCategoryService.categorySelect(storeId);
 
         model.addAttribute("searchResult", searchResult);
         model.addAttribute("categoryList", productCategory);
