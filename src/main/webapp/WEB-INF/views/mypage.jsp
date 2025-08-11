@@ -49,92 +49,91 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       </div>
     <div class="section-wrap85">
       <!-- 관리자 정보 -->
-      <div class="section-box ">
-        <div class="section-header" style="text-align: center;">관리자 정보</div>
-
-        <form action="/admin/update" method="post">
-          <div class="section-body">
-
-            <div class="row" style="display:flex; gap:10px;">
-              <div class="col" style="flex:1; max-width:50%;">
-                <p class="label">이름</p>
-                <p class="value">
-                  <input
-                    type="text"
-                    name="adminName"
-                    placeholder="이름"
-                    value="${sessionScope.loginedAdminDTO.adminName}"
-                    required
-                    style="width:100%; "
-                  />
-                </p>
-              </div>
-
-              <div class="col" style="flex:1; max-width:50%;">
-                <p class="label">아이디</p>
-                <p class="value">
-                  <input
-                    type="text"
-                    name="loginId"
-                    placeholder="아이디"
-                    value="${sessionScope.loginedAdminDTO.loginId}"
-                    required
-                    style="width:100%;"
-                  />
-                </p>
-              </div>
-            </div>
-
-            <div class="row" style="display:flex; gap:10px; margin-top:10px;">
-              <div class="col" style="flex:1; max-width:50%;">
-                <p class="label">비밀번호</p>
-                <p class="value" style="position:relative;">
-                  <input
-                    type="password"
-                    id="loginPw"
-                    name="loginPw"
-                    placeholder="비밀번호"
-                    value="${sessionScope.loginedAdminDTO.loginPw}"
-                    required
-                    style="width:100%; padding-right:32px; border:none; text-align:center; height:30px"
-                  />
-                  <button
-                    type="button"
-                    onclick="togglePassword()"
-                    id="togglePwBtn"
-                    style="position:absolute; right:6px; top:50%; transform:translateY(-50%);
-                          background:none; border:none; font-size:16px; cursor:pointer; z-index:1;"
-                    aria-label="비밀번호 표시 전환"
-                  >👁️</button>
-                  <div id="pwErrorMsg" class="error-msg" style="display:none;"></div>
-                </p>
-              </div>
-
-              <div class="col" style="flex:1; max-width:50%;">
-                <p class="label">사업자 등록번호</p>
-                <p class="value">
-                  <input
-                    type="text"
-                    name="businessNumber"
-                    placeholder="사업자 등록번호"
-                    value="${sessionScope.loginedAdminDTO.businessNumber}"
-                    required
-                    style="width:100%;"
-                  />
-                </p>
-              </div>
-            </div>
-          </div>
-           <div class="btn-box" style="margin-top:10px;">
-        <input type="submit" value="수정하기" class="btn btn-blue" />
-        <button type="button" class="btn btn-red" onclick="submitDelete()">탈퇴하기</button>
+      <div>
+        <div class="title" style="font-size: 18px">관리자 정보</div>
       </div>
-        </form>
-      </div>
-       
-
-
-
+      <form action="/admin/update" method="post">
+        <table class="orderItems" style="width: 60%; margin-bottom: 40px">
+          <tr>
+            <th>이름</th>
+            <td>
+              <input
+                type="text"
+                name="adminName"
+                placeholder="이름"
+                value="${sessionScope.loginedAdminDTO.adminName}"readonly
+                required
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>아이디</th>
+            <td>
+              <input
+                type="text"
+                name="loginId"
+                placeholder="아이디"
+                value="${sessionScope.loginedAdminDTO.loginId}"readonly
+                required
+              />
+            </td>
+          </tr>
+          <tr>
+            <th>비밀번호</th>
+            <td style="position: relative">
+              <div>
+                <input
+                  style="border: none; text-align: center"
+                  type="password"
+                  id="loginPw"
+                  name="loginPw"
+                  placeholder="비밀번호"
+                  value="${sessionScope.loginedAdminDTO.loginPw}"readonly
+                  required
+                />
+                <button
+                  type="button"
+                  onclick="togglePassword()"
+                  id="togglePwBtn"
+                  style="
+                    position: relative;
+                    right: 25px;
+                    top: 0px;
+                    transform: translateY(-50%);
+                    background: none;
+                    border: none;
+                    cursor: pointer;
+                    z-index: 9999;
+                  "
+                >
+                    <img id="togglePwIcon" src="${pageContext.request.contextPath}/static/images/eye-gray.png" alt="보기" style="width:20px;height:20px;">
+                </button>
+              </div>
+              <div
+                id="pwErrorMsg"
+                class="error-msg"
+                style="display: none"
+              ></div>
+            </td>
+          </tr>
+          <tr>
+            <th>사업자 등록번호</th>
+            <td>
+              <input
+                type="text"
+                name="businessNumber"
+                placeholder="사업자 등록번호"
+                value="${sessionScope.loginedAdminDTO.businessNumber}"readonly
+                required
+              />
+            </td>
+          </tr>
+        </table>
+        <input type="button" id="adminEditBtn" value="수정하기" class="btn btn-blue" />
+        <button type="button" class="btn btn-red" onclick="submitDelete()">
+          탈퇴하기
+        </button>
+      </form>
       <!-- 관리 점포 목록 -->
       <div class="title-box" style="height: 10%;">
         <div class="title" style="font-size: 18px">관리 점포 목록</div>
@@ -318,6 +317,29 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       </div>
       </div>
     <script>
+    $(document).ready(function () {
+      let adminEditMode = false; // 수정 모드 여부
+
+      $("#adminEditBtn").click(function () {
+        if (!adminEditMode) {
+          // 수정 모드로 전환
+          $("form[action='/admin/update']").find("input").each(function () {
+            const name = $(this).attr("name");
+            if (name !== "adminId") { // adminId는 수정 불가
+              $(this).prop("readonly", false);
+              $(this).data("original-value", $(this).val());
+            }
+          });
+
+          adminEditMode = true;
+          $(this).val("적용하기");
+
+        } else {
+          // 적용하기 → 폼 제출
+          $("form[action='/admin/update']")[0].submit();
+        }
+      });
+    });
       const pwInput = document.getElementById("loginPw");
       const pwErrorMsg = document.getElementById("pwErrorMsg");
 
@@ -423,16 +445,20 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       });
       function togglePassword() {
         const pwField = document.getElementById("loginPw");
-        const toggleBtn = document.getElementById("togglePwBtn");
+        const icon = document.getElementById("togglePwIcon");
 
         if (pwField.type === "password") {
           pwField.type = "text";
-          toggleBtn.textContent = "🙈"; // 보기 중 → 눈 가린 이모지
+          icon.src = `${pageContext.request.contextPath}/static/images/eye-blue.png`; // 열린 눈
+
+          icon.alt = "숨기기";
         } else {
           pwField.type = "password";
-          toggleBtn.textContent = "👁️"; // 보기 전 → 눈 뜬 이모지
+          icon.src = `${pageContext.request.contextPath}/static/images/eye-gray.png`; // 닫힌 눈
+          icon.alt = "보기";
         }
       }
+
       function submitDelete() {
         if (!confirm("정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.")) {
           return;
