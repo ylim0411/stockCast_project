@@ -4,28 +4,40 @@
 
 <mapper namespace="PurchaseOrder">
     <!-- 발주번호와 일치하는 거래명세서 내역 가져오기 ho -->
-    <select id="findBySaleId" parameterType="int" resultType="AccoList">
-        SELECT o.orderId, o.orderDate, p.productName, s.purchaseQty, s.purchasePrice FROM  orderStmt o
+    <select id="findBySaleId" parameterType="map" resultType="AccoList">
+        SELECT
+        o.orderId,
+        o.orderDate,
+        p.productName,
+        s.purchaseQty,
+        s.purchasePrice
+        FROM orderStmt o
         JOIN purchaseOrder s ON s.orderId = o.orderId
-        JOIN product p ON s.productId = p.productId
-        WHERE o.orderId = ${id}
+        JOIN product p ON p.productId = s.productId
+        WHERE o.orderId = #{orderId}
+        AND o.storeId = #{storeId}
     </select>
 
-
     <!-- 발주 상세 조회 -->
-    <select id="findByOrderId" parameterType="int" resultType="PurchaseOrder">
+    <select id="findByOrderId" parameterType="map" resultType="PurchaseOrder">
         SELECT
-        po.*,
-        p.productName,  <!-- 상품명 꼭 포함 -->
+        po.orderId,
+        po.productId,
+        po.purchasePrice,
+        po.purchaseQty,
+        p.productName,
         top.categoryId AS topCategoryId,
         sub.categoryId AS subCategoryId
         FROM purchaseOrder po
-        LEFT JOIN product p ON po.productId = p.productId
+        JOIN orderStmt os
+        ON os.orderId = po.orderId
+        AND os.storeId = #{storeId}
+        LEFT JOIN product p           ON po.productId = p.productId
         LEFT JOIN productCategory sub ON p.categoryId = sub.categoryId
         LEFT JOIN productCategory top ON sub.parentId = top.categoryId
         WHERE po.orderId = #{orderId}
+        ORDER BY po.productId
     </select>
-
 
     <!-- 발주 상세 등록 -->
     <insert id="insertOrderDetail" parameterType="map">
@@ -34,7 +46,8 @@
     </insert>
 
     <!-- 발주 상세 삭제 -->
-    <delete id="deleteByOrderId" parameterType="int">
-        DELETE FROM purchaseOrder WHERE orderId = #{orderId}
+    <delete id="deleteByOrderId" parameterType="map">
+        DELETE FROM purchaseOrder
+        WHERE orderId = #{orderId}
     </delete>
 </mapper>
