@@ -127,36 +127,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
             </div>
           </div>
-        </form>
-              <div
-                id="pwErrorMsg"
-                class="error-msg"
-                style="display: none"
-              ></div>
-            </td>
-          </tr>
-          <tr>
-            <th>사업자 등록번호</th>
-            <td>
-              <input
-                type="number"
-                name="businessNumber"
-                placeholder="사업자 등록번호"
-                value="${sessionScope.loginedAdminDTO.businessNumber}"readonly
-                required
-              />
-            </td>
-          </tr>
-        </table>
-        <input type="button" id="adminEditBtn" value="수정하기" class="btn btn-blue" />
-        <button type="button" class="btn btn-red" onclick="submitDelete()">
-          탈퇴하기
-        </button>
       </form>
-      <!-- 관리 점포 목록 -->
-      <div class="title-box" style="height: 10%;">
-        <div class="title" style="font-size: 18px">관리 점포 목록</div>
-      </div>
+    
 
         <!-- 점포 등록 버튼 -->
         <div class="btn-box">
