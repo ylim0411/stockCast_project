@@ -12,7 +12,7 @@ import java.util.List;
 public class CustomerRepository {
     private final SqlSessionTemplate sql;
     // 구매자 전부를 가져오기
-    public List<CustomerDTO> findAll() {
-        return sql.selectList("Customer.findAll");
+    public List<CustomerDTO> findAll(String storeId) {
+        return sql.selectList("Customer.findAll",storeId);
     }
 }

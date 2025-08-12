@@ -6,6 +6,7 @@
     <!-- 구매자 정보 가져오는 쿼리 ho -->
     <select id="findAll" resultType="Customer">
         SELECT * FROM customer
+        WHERE storeId = #{storeId}
     </select>
     <!-- 구매자 등록 -->
     <insert id="insertCustomer" parameterType="map">

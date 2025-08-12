@@ -123,7 +123,8 @@ prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> <%@ include file="/W
               var val   = Number(ds.data[idx] || 0);
               var total = ds.data.reduce(function(a,b){ return Number(a||0)+Number(b||0); },0);
               var pct   = total>0 ? (val/total*100).toFixed(1) : 0;
-
+                console.log("idx"+idx);
+                console.log("label"+label);
               return pct + '% (' + label + ')';
             }
               }
