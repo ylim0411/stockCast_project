@@ -17,29 +17,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       rel="stylesheet"
       href="${pageContext.request.contextPath}/static/css/modal.css"
     />
-    <style>
-      .error-msg {
-        color: red;
-        font-size: 12px;
-        margin-top: 5px;
-        position: relative;
-        background: #fee;
-        border: 1px solid red;
-        padding: 5px 10px;
-        border-radius: 4px;
-        max-width: 1000px;
-      }
-
-      .error-msg::before {
-        content: "";
-        position: absolute;
-        top: -6px;
-        left: 10px;
-        border-width: 6px;
-        border-style: solid;
-        border-color: transparent transparent #fee transparent;
-      }
-    </style>
   </head>
   <body>
     <div class="container">
@@ -137,7 +114,18 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       />
                     </button>
                   </p>
+                  <p
+                    id="pwErrorMsg"
+                    class="error-msg"
+                    style="
+                      display: none;
+                      position: relative;
+                      top: 17px;
+                      left: 0px;
+                    "
+                  ></p>
                 </div>
+
                 <div class="col">
                   <p class="label">사업자 등록번호</p>
                   <p class="value">
@@ -158,7 +146,20 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         <!-- 점포 등록 버튼 -->
         <div class="btn-box">
           <!-- 점포등록 조회 넣어주세요~! -->
-
+          <div class="form-container">
+            <form
+              method="get"
+              action="${pageContext.request.contextPath}/mypage/"
+            >
+              <input
+                type="text"
+                name="searchKeyword"
+                placeholder="검색어 입력"
+                value="${searchKeyword}"
+              />
+              <button type="submit" class="btn btn-blue-b">검색</button>
+            </form>
+          </div>
           <button type="button" class="btn submit-btn">점포 등록</button>
         </div>
 
@@ -219,7 +220,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       type="text"
                       name="storePhone"
                       value="${store.storePhone}"
-                      pattern="^(01[0-9]-?\\d{3,4}-?\\d{4}|0\\d{1,2}-?\\d{3,4}-?\\d{4})$"
+                      pattern="^(01[0-9]-?\d{3,4}-?\d{4}|0\d{1,2}-?\d{3,4}-?\d{4})$"
                       title="휴대폰(예: 010-1234-5678 또는 01012345678), 집전화(예: 02-123-4567 또는 021234567) 형식으로 입력하세요"
                       readonly
                     />
@@ -355,6 +356,22 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     </div>
   </body>
   <script>
+    const pwInput = document.getElementById("loginPw");
+    const pwErrorMsg = document.getElementById("pwErrorMsg");
+
+    pwInput.addEventListener("input", () => {
+      const value = pwInput.value;
+      const pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
+
+      if (!pattern.test(value)) {
+        pwErrorMsg.style.display = "block";
+        pwErrorMsg.textContent =
+          "비밀번호는 영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.";
+      } else {
+        pwErrorMsg.style.display = "none";
+        pwErrorMsg.textContent = "";
+      }
+    });
     var CTX = "${pageContext.request.contextPath}";
 
     // 관리자 정보: 수정/적용 토글
@@ -368,7 +385,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             .find("input")
             .each(function () {
               var name = $(this).attr("name");
-              if (name !== "adminId") {
+              if (
+                name !== "adminId" &&
+                name !== "loginId" &&
+                name !== "businessNumber"
+              ) {
                 $(this)
                   .prop("readonly", false)
                   .data("original-value", $(this).val());

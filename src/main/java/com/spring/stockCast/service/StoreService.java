@@ -25,11 +25,11 @@ public class StoreService {
         storeRepository.save(storeDTO);
     }
 
-    public int countByAdminId(int adminId) {
-        return storeRepository.countByAdminId(adminId);
+    public int countByAdminId(int adminId, String searchKeyword) {
+        return storeRepository.countByAdminId(adminId,searchKeyword);
     }
 
-    public List<StoreDTO> selectPageByAdminId(int adminId, int offset, int limit) {
-        return storeRepository.selectPageByAdminId(adminId, offset, limit);
+    public List<StoreDTO> selectPageByAdminId(int adminId, int offset, int limit, String searchKeyword) {
+        return storeRepository.selectPageByAdminId(adminId, offset, limit, searchKeyword);
     }
 }

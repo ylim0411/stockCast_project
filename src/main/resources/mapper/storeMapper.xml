@@ -37,12 +37,20 @@
 
     <select id="countByAdminId" resultType="int">
         SELECT COUNT(*) FROM store WHERE adminId = #{adminId}
+        AND (
+        storeName LIKE CONCAT('%', #{searchKeyword}, '%')
+        OR storeAddress LIKE CONCAT('%', #{searchKeyword}, '%')
+        )
     </select>
 
     <!-- 페이징된 점포 목록 -->
     <select id="selectPageByAdminId" resultType="com.spring.stockCast.dto.StoreDTO">
         SELECT * FROM store
         WHERE adminId = #{adminId}
+        AND (
+        storeName LIKE CONCAT('%', #{searchKeyword}, '%')
+        OR storeAddress LIKE CONCAT('%', #{searchKeyword}, '%')
+        )
         ORDER BY storeId ASC
         LIMIT #{limit} OFFSET #{offset}
     </select>
