@@ -73,6 +73,7 @@
     <insert id="insert" parameterType="Client">
         INSERT INTO client (
         adminId,
+        storeId,
         clientName,
         businessNumber,
         ceoName,
@@ -89,6 +90,7 @@
         deletedAt
         ) VALUES (
         #{adminId},
+        #{storeId},
         #{clientName},
         #{businessNumber},
         #{ceoName},
@@ -120,7 +122,7 @@
 
     <select id="searchClientsWithPaging" parameterType="map" resultType="Client">
         SELECT * FROM client
-        WHERE adminId = #{adminId}
+        WHERE storeId = #{storeId}
         AND (
         clientName LIKE CONCAT('%', #{keyword}, '%')
         OR ceoName LIKE CONCAT('%', #{keyword}, '%')
@@ -132,7 +134,7 @@
 
     <select id="countClientsByKeyword" parameterType="map" resultType="int">
         SELECT COUNT(*) FROM client
-        WHERE adminId = #{adminId}
+        WHERE storeId = #{storeId}
         AND (
         clientName LIKE CONCAT('%', #{keyword}, '%')
         OR ceoName LIKE CONCAT('%', #{keyword}, '%')
