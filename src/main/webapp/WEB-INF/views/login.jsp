@@ -69,7 +69,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             </div>
 
             <div class="login-links">
-              <a href="#" class="forgot">비밀번호를 잊으셨나요?</a>
+              <!-- <a href="#" class="forgot">비밀번호를 잊으셨나요?</a> -->
               <p>
                 계정이 없으신가요?
                 <a href="#" class="join" onclick="join()">가입하기</a>
