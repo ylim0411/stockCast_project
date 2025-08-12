@@ -38,12 +38,12 @@
           <tr>
             <th>대분류</th>
             <th>중분류</th>
-            <th></th>
+            <!-- <th></th> -->
             <th>상품코드</th>
             <th>상품명</th>
             <th>상품가격</th>
             <th>재고수량</th>
-            <th>등록일시</th>
+            <th>등록일자</th>
             <th>수정</th>
             <th>저장</th>
           </tr>
@@ -77,12 +77,16 @@
                       </c:forEach>
                     </select>
                   </td>
-                  <td><input type="hidden" name="storeId" value="${product.storeId}" readonly /></td>
+                  <%-- <td><input type="hidden" name="storeId" value="${product.storeId}" readonly /></td> --%>
                   <td><input type="text" name="productId" value="${product.productId}" readonly /></td>
                   <td><input type="text" name="productName" value="${product.productName}" readonly /></td>
                   <td><input type="number" name="price" value="${product.price}" readonly /></td>
                   <td><input type="number" name="stockQuantity" value="${product.stockQuantity}" readonly /></td>
-                  <td><input type="text" name="createdAt" value="${product.createdAt}" readonly /></td>
+                  <td>
+                    <input type="text" name="createdAt"
+                           value="${product.createdAt != null ? fn:substring(product.createdAt, 0, 10) : ''}"
+                           readonly />
+                  </td>
                   <td><button type="button" onclick="updateFn(this)">수정</button></td>
                   <td><button type="submit" class="saveBtn" style="display:none;">저장</button></td>
                 </form>
@@ -120,12 +124,16 @@
                               </c:forEach>
                             </select>
                           </td>
-                          <td><input type="hidden" name="storeId" value="${product.storeId}" readonly /></td>
+                          <%-- <td><input type="hidden" name="storeId" value="${product.storeId}" readonly /></td> --%>
                           <td><input type="text" name="productId" value="${product.productId}" readonly /></td>
                           <td><input type="text" name="productName" value="${product.productName}" readonly /></td>
                           <td><input type="number" name="price" value="${product.price}" readonly /></td>
                           <td><input type="number" name="stockQuantity" value="${product.stockQuantity}" readonly /></td>
-                          <td><input type="text" name="createdAt" value="${product.createdAt}" readonly /></td>
+                          <td>
+                            <input type="text" name="createdAt"
+                                   value="${product.createdAt != null ? fn:substring(product.createdAt, 0, 10) : ''}"
+                                   readonly />
+                           </td>
                           <td><button type="button" onclick="updateFn(this)">수정</button></td>
                           <td><button type="submit" class="saveBtn" style="display:none;">저장</button></td>
                         </form>
@@ -153,12 +161,16 @@
                 <option value="">중분류를 선택하세요.</option>
               </select>
             </td>
-            <td><input type="hidden" name="addStoreId" form="addForm-template" /></td>
+            <!-- <td><input type="hidden" name="addStoreId" form="addForm-template" /></td> -->
             <td><input type="text"   name="addProductId" form="addForm-template" readonly /></td>
             <td><input type="text"   name="addProductName" form="addForm-template" required /></td>
             <td><input type="number" name="addPrice" form="addForm-template" required /></td>
             <td><input type="number" name="addStockQuantity" form="addForm-template" required /></td>
-            <td><input type="text"   name="addCreatedAt" form="addForm-template" readonly /></td>
+            <td>
+                <input type="text" name="createdAt"
+                       value="${product.createdAt != null ? fn:substring(product.createdAt, 0, 10) : ''}"
+                       readonly />
+            </td>
             <td><button type="submit" class="addBtn" form="addForm-template">등록</button></td>
           </tr>
         </tbody>
@@ -192,28 +204,83 @@
 
   $(document).ready(function () {
 
-    window.updateFn = (btn) => {
-      const row = btn.closest("tr");
-      const inputs = row.querySelectorAll("input, select");
-      const saveBtn = row.querySelector(".saveBtn");
-      const isEditing = row.classList.toggle("editing");
+        window.updateFn = (btn) => {
+          const row = btn.closest("tr");
+          const inputs = row.querySelectorAll("input, select");
+          const saveBtn = row.querySelector(".saveBtn");
+          const isEditing = row.classList.toggle("editing");
 
-      inputs.forEach(input => {
-        if (!input.name.includes("productId") && !input.name.includes("createdAt")) {
-          if(input.tagName.toLowerCase() === "select"){
-            input.disabled = !isEditing;
+          if (isEditing) {
+            // 편집 진입: 원본 저장 + enable
+            inputs.forEach(el => {
+              const tag = el.tagName.toLowerCase();
+              if (tag === "select" || ["text","number"].includes(el.type)) {
+                el.dataset.orig = el.value;
+              }
+              if (!el.name?.includes("productId") && !el.name?.includes("createdAt")) {
+                if (tag === "select") el.disabled = false;
+                else el.readOnly = false;
+              }
+            });
+            if (saveBtn) saveBtn.style.display = "inline-block";
+            btn.textContent = "취소";
+
+            // 첫 번째 편집 가능 요소 포커스
+            const editableList = [...inputs].filter(el => {
+              if (el.name?.includes("productId") || el.name?.includes("createdAt")) return false;
+              const tag = el.tagName.toLowerCase();
+              if (tag === "select") return el.disabled === false;
+              if (["text","number"].includes(el.type)) return el.readOnly === false;
+              return false;
+            });
+            const first = editableList[0];
+            if (first) {
+              setTimeout(() => {
+                first.focus();
+                if (typeof first.select === "function") { try { first.select(); } catch {} }
+                if (typeof first.setSelectionRange === "function" && first.value) {
+                  try { const len = first.value.length; first.setSelectionRange(len, len); } catch {}
+                }
+                if (first.scrollIntoView) first.scrollIntoView({ block: "nearest", inline: "nearest" });
+              }, 0);
+            }
+
           } else {
-            input.readOnly = !isEditing;
+            // 취소: 원본 값으로 복원 (너가 올린 블록 그대로)
+            const parentSel = row.querySelector("select[name='parentCategoryId']");
+            const middleSel = row.querySelector("select[name='middleCategoryId']");
+            const origParent = parentSel?.dataset.orig;
+            const origMiddle = middleSel?.dataset.orig;
+
+            // 1) 대분류 복원 + change로 중분류 옵션 재생성
+            if (parentSel && origParent !== undefined) {
+              parentSel.value = origParent;
+              $(parentSel).trigger("change");
+            }
+            // 2) 중분류 값 복원 (옵션 없으면 임시 추가 후 선택)
+            if (middleSel && origMiddle !== undefined) {
+              const hasOption = [...middleSel.options].some(o => o.value == origMiddle);
+              if (!hasOption) middleSel.append(new Option("(복원)", origMiddle));
+              middleSel.value = origMiddle;
+            }
+
+            // 3) 나머지 인풋 복원 + 비활성화
+            inputs.forEach(el => {
+              if (el.dataset.orig !== undefined) el.value = el.dataset.orig;
+              if (!el.name?.includes("productId") && !el.name?.includes("createdAt")) {
+                if (el.tagName.toLowerCase() === "select") el.disabled = true;
+                else el.readOnly = true;
+              }
+              // 옵션: 데이터 정리
+              delete el.dataset.orig;
+            });
+
+            if (saveBtn) saveBtn.style.display = "none";
+            btn.textContent = "수정";
           }
-        }
-      });
+        };
 
-      if (saveBtn) {
-        saveBtn.style.display = isEditing ? "inline-block" : "none";
-      }
 
-      btn.textContent = isEditing ? "취소" : "수정";
-    };
 
     $(".addRow").click(function () {
       const $templateRow = $(".productAdd").first();

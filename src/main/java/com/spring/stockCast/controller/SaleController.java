@@ -24,10 +24,10 @@ public class SaleController {
     @GetMapping("/saleList")
     public String find(@RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate startDate,
                        @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate endDate,
-                       @RequestParam(required = false) String year,
+                       @RequestParam(required = false) String year, HttpSession session,
                        Model model){
         // 서비스 제일아래에 모든내용 있음
-        model.addAllAttributes(saleService.saleController(startDate,endDate,year));
+        model.addAllAttributes(saleService.saleController(startDate,endDate,year,session));
         return "sale";
     }
 
@@ -59,7 +59,8 @@ public class SaleController {
         if (productName != null && !productName.isEmpty() && purchaseQty != null && !purchaseQty.isEmpty()) {
             // 주문번호에 의한 목록 등록 (이 코드가 루프 밖에 있어야 함)
             String storeId = session.getAttribute("selectedStoredId").toString(); // StoreController 에서 저장한 id 받아오기
-            saleService.saleCreateStmt(saleId,storeId, today);
+            int subnum = saleService.findStoreSubNum(storeId);
+            saleService.saleCreateStmt(saleId,storeId, today,subnum);
             // 상품과 수량 리스트를 한 번의 루프로 처리
             for (int i = 0; i < productName.size(); i++) {
                 // NullPointerException 방지를 위해 인덱스 유효성 검사 추가

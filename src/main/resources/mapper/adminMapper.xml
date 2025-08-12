@@ -40,4 +40,13 @@
         FROM admin
         WHERE adminId = #{adminId}
     </select>
+
+    <select id="getStoredId" parameterType="int" resultType="Store">
+        SELECT
+        storeId
+        FROM store
+        WHERE adminId = #{adminId}
+        ORDER BY storeId ASC
+        LIMIT 1
+    </select>
 </mapper>

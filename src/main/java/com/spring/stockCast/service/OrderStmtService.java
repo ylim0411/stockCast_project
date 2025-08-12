@@ -179,8 +179,11 @@ public class OrderStmtService {
     }
 
     // 이번달 발주내역 가져오기
-    public List<OrderStmtDTO> findByMonth(String currentMonth) {
-        return orderStmtRepository.findByMonth(currentMonth);
+    public List<OrderStmtDTO> findByMonth(String currentMonth, String storeId) {
+        Map<String,Object> param = new HashMap<>();
+        param.put("currentMonth", currentMonth);
+        param.put("storeId",storeId);
+        return orderStmtRepository.findByMonth(param);
     }
     // 발주번호 제일 큰거 가져오기
     public int findLastOrderId() {

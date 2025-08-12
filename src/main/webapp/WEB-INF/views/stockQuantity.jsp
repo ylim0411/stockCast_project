@@ -24,15 +24,12 @@
     <div class="section-wrap">
       <div class="form-container">
         <div class="btn-box">
-          <form id="searchForm" method="get" action="${pageContext.request.contextPath}/product/stockQuantity">
-              <input
-                type="text"
-                name="keyword"
-                placeholder="상품명 검색"
-                value="${param.keyword != null ? param.keyword : ''}"
-              />
-        
-              <select name="month" style="width: 150px;">
+
+            <form id="searchForm" method="get" action="${pageContext.request.contextPath}/product/stockQuantity">
+              <input type="text" name="keyword" placeholder="상품명 검색"
+                     value="${param.keyword != null ? param.keyword : ''}" />
+              <button type="submit" class="btn btn-blue">검색</button>
+              <select name="month" style="width:150px;" onchange="this.form.submit()">
                 <option value="">월간 전체</option>
                 <c:forEach var="m" begin="1" end="12">
                   <option value="${m}" <c:if test="${param.month != null && param.month == m}">selected</c:if>>
@@ -40,8 +37,8 @@
                   </option>
                 </c:forEach>
               </select>
-              <button type="submit" class="btn btn-blue">검색</button>
-          </form>
+            </form>
+
         </div>
         <button type="button" id="btnCloseMonth" class="btn btn-red">마감</button>
       </div>

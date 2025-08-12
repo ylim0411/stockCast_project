@@ -13,6 +13,7 @@ public class ClientDTO {
     private int clientId;
     private int productId;
     private int adminId;
+    private int storeId;
     private String clientName;
     private String businessNumber;
     private String ceoName;

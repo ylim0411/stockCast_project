@@ -40,4 +40,8 @@ public class AdminService {
     public AdminDTO findById(int adminId) {
         return adminRepository.findById(adminId);
     }
+
+    public int getStoredId(int adminId) {
+        return adminRepository.getStoredId(adminId);
+    }
 }

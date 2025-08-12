@@ -51,8 +51,6 @@ public class ProductController {
                                 @RequestParam("middleCategoryId") int middleCategoryId,
                                 HttpSession session) {
 
-        System.out.println("update 컨트롤러 위");
-
         int storeId = (int) session.getAttribute("selectedStoredId");
         
         ProductDTO product = new ProductDTO();
@@ -64,8 +62,6 @@ public class ProductController {
         product.setCategoryId(middleCategoryId); // ← 여기에 중분류 ID 넣는 게 핵심
 
         productService.updateProduct(product);
-
-        System.out.println("update 컨트롤러 아래: " + product);
 
         return "redirect:/product/list";
     }
