@@ -48,8 +48,7 @@ img {
   --font-size-xl: 24px; /* 큰 제목 */
 
   /* 폰트 */
-  --font-family-default: "Noto Sans KR", "Segoe UI", Tahoma, Geneva, Verdana,
-    sans-serif;
+  --font-family-default: 'Noto Sans KR', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 
   /* 기타 */
   --border-radius-base20: 20px;
@@ -64,6 +63,47 @@ body {
   color: var(--color-black);
   background-color: var(--color-bg);
   font-family: var(--font-family-default);
+}
+
+/* 공통 input/textarea/select 기본 스타일 */
+input[type='text'],
+input[type='password'],
+input[type='email'],
+textarea,
+select {
+  border: 1px solid var(--color-border, #ccc);
+  transition: none;
+}
+
+input[readonly],
+textarea[readonly],
+select[readonly] {
+  cursor: pointer;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  caret-color: transparent;
+  border-color: transparent;
+}
+
+input[readonly]:focus,
+textarea[readonly]:focus,
+select[readonly]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: var(--font-size-md, 16px) !important;
+}
+
+.no-anim * {
+  transition: none !important;
+  animation: none !important;
 }
 
 /* Desktop ------------------------------------------ */
@@ -163,10 +203,10 @@ ul li.difultImg img {
   gap: 15px;
 }
 
-.login input[type="text"],
-.login input[type="password"],
-.join-container input[type="text"],
-.join-container input[type="password"] {
+.login input[type='text'],
+.login input[type='password'],
+.join-container input[type='text'],
+.join-container input[type='password'] {
   width: 100%;
   height: 52px;
   padding: 25px 20px;
@@ -186,8 +226,8 @@ ul li.difultImg img {
   font-size: var(--font-size-md);
 }
 
-input[type="text"]:focus:not([readonly]),
-input[type="password"]:focus:not([readonly]),
+input[type='text']:focus:not([readonly]),
+input[type='password']:focus:not([readonly]),
 textarea:focus {
   border-color: var(--color-primary);
   outline: none;
@@ -203,7 +243,7 @@ textarea:focus {
 
 .login-divider::before,
 .login-divider::after {
-  content: "";
+  content: '';
   flex: 1;
   height: 1px;
   background: var(--color-gray);
@@ -419,9 +459,8 @@ header .admin .alert img {
 }
 
 header .admin .alert:hover img {
-  filter: drop-shadow(0 0 5px #42a5f5) drop-shadow(0 0 10px #42a5f5)
-    drop-shadow(0 0 15px #1976d2) drop-shadow(0 0 20px #42a5f5)
-    drop-shadow(0 0 25px #1565c0);
+  filter: drop-shadow(0 0 5px #42a5f5) drop-shadow(0 0 10px #42a5f5) drop-shadow(0 0 15px #1976d2)
+    drop-shadow(0 0 20px #42a5f5) drop-shadow(0 0 25px #1565c0);
 }
 
 header nav {
@@ -509,6 +548,13 @@ header .userContext .on {
   overflow-y: auto;
 }
 
+/* @media (max-width: 1450px) {
+  .container,
+  .containerAuto {
+    padding: 30px 40px;
+  }
+} */
+
 /* button ------------------------------------------------- */
 .btn {
   padding: 5px 10px;
@@ -520,10 +566,10 @@ header .userContext .on {
   transition: 0.35s;
 }
 .submit-btn {
-  padding: 10px 20px;
+  padding: 7px 12px;
   background-color: var(--color-secondary);
   color: var(--color-white);
-  margin: 10px;
+  /* margin: 10px; */
   transition: background-color 0.35s ease;
 }
 
@@ -1058,9 +1104,9 @@ th {
   gap: 5px;
 }
 
-input[type="date"],
-input[type="text"],
-input[type="number"],
+input[type='date'],
+input[type='text'],
+input[type='number'],
 input[readonly],
 select {
   font-size: var(--font-size-md);
@@ -1074,15 +1120,15 @@ select {
 }
 
 /* 달력 인풋 & 텍스트 인풋 ------------------------------------------------- */
-.form-container input[type="date"],
-.form-container input[type="text"] {
+.form-container input[type='date'],
+.form-container input[type='text'] {
   padding: 5px;
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-base5);
   font-size: var(--font-size-base);
 }
 
-.form-container input[type="date"] {
+.form-container input[type='date'] {
   padding: 5px 20px;
 }
 
@@ -1228,8 +1274,8 @@ table.orderItems td {
   cursor: pointer;
 }
 
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -1310,10 +1356,28 @@ input[type="number"]::-webkit-outer-spin-button {
   margin-bottom: 20px;
 }
 
-/* 발주서, 거래명세서 아래 표 */
+/* 발주서, 거래명세서, 마이페이지 아래 표 */
 .order-item.header,
-.sale-item.header {
+.sale-item.header,
+.mypage-item.header {
   font-weight: 500;
+}
+
+.order-items,
+.sale-items {
+  overflow: hidden;
+  height: calc(100% - 63px);
+  overflow-y: auto;
+  padding: 10px 20px;
+}
+
+.mypage-items {
+  overflow: hidden;
+  height: calc(100% - 63px);
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
 }
 
 .order-item {
@@ -1334,20 +1398,45 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: var(--font-size-md);
 }
 
+.mypage-item {
+  display: grid;
+  grid-template-columns:
+    minmax(70px, 0.5fr)
+    minmax(140px, 1fr)
+    minmax(420px, 1.9fr)
+    minmax(160px, 1fr)
+    minmax(220px, 1fr)
+    minmax(90px, 0.6fr);
+  padding: 12px;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+  font-size: var(--font-size-md);
+  cursor: pointer;
+}
+
+.mypage-item input[type='text'],
+.mypage-item input[type='email'] {
+  width: 100%;
+  min-width: 0;
+}
+
 .order-item:last-child,
-.sale-item:last-child {
+.sale-item:last-child,
+.mypage-item:last-child {
   border-bottom: none;
 }
 
-.order-items,
-.sale-items {
-  overflow: hidden;
-  /* height: calc(300px - 63px); */
-  height: calc(100% - 63px);
-  overflow-y: auto;
-  padding: 10px 20px;
-  /* table-layout: fixed !important; */
+.store-focus input {
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+  border-radius: var(--border-radius-base5);
 }
+
+.mypage-item {
+  cursor: pointer;
+}
+
+/* 발주서 작성 ----------------------------------------- */
 
 /* 체크박스 */
 .orderItems th:nth-child(1),
@@ -1388,7 +1477,7 @@ input[type="number"]::-webkit-outer-spin-button {
   max-width: 150px;
 }
 
-/* scrollbar ------------------------------------------------------------------------------ */
+/* scrollbar -------------------------------------------------------------------- */
 ::-webkit-scrollbar {
   width: 10px;
 }

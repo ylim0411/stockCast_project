@@ -30,7 +30,7 @@ public class MypageController {
             return "redirect:/admin/login"; // 로그인 안 되어 있으면 로그인 페이지로
         }
 
-        int pageSize = 5; // 한 페이지에 보여줄 점포 수
+        int pageSize = 4; // 한 페이지에 보여줄 점포 수
         int totalCount = storeService.countByAdminId(adminDTO.getAdminId());
         int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 
