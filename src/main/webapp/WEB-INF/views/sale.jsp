@@ -113,7 +113,7 @@ prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> <%@ include file="/W
             legend:{ display:false },
             title:{ display:false },
             tooltips:{
-               bodyFontSize: 16,
+               bodyFontSize: 14,
               callbacks:{
                 label:function(tooltipItem, data){
               var idx   = tooltipItem.index;
@@ -170,7 +170,7 @@ prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> <%@ include file="/W
             legend: { display: false }, // 커스텀 도트 범례만 사용
             title: { display: false },
             tooltips: {
-              bodyFontSize: 16,
+              bodyFontSize: 14,
               callbacks: {
                 label: function (tooltipItem) {
                   var v = Number(tooltipItem.yLabel || 0);

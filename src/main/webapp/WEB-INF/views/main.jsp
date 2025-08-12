@@ -74,12 +74,16 @@
         <!-- section1 -->
 
         <div class="section2">
-          <div class="sales-chart-box">
-            <p class="title">수익/비용 통계</p>
-           <div class="chart-box">
-             <canvas id="moneyChart"></canvas>
-           </div>
+        <div class="sales-chart-box">
+          <p class="title">수익/비용 통계</p>
+          <div class="chart-box">
+            <canvas id="moneyChart"></canvas>
           </div>
+          <div class="chart-legend">
+            <span><span class="dot revenue"></span> 수익</span>
+            <span><span class="dot expense"></span> 비용</span>
+          </div>
+        </div>
           <div class="ranking-box">
              <p class="title">판매실적 순위</p>
             <ul class="ranking">
@@ -133,81 +137,92 @@
      });
    });
   </script>
- <script>
-     // JSP에서 JSTL을 사용하여 동적으로 데이터 생성
+   <script>
+   (function(){
      var salesLabels = [];
      var salesData = [];
-     var expensesData = []; // 비용 데이터를 위한 새로운 배열
+     var expensesData = [];
 
-     // 수익 데이터
      <c:forEach items="${monthPrice}" var="entry">
-         salesLabels.push('${entry.key}');
-         salesData.push(${entry.value});
+       salesLabels.push('${entry.key}');
+       salesData.push(${entry.value});
      </c:forEach>
 
-     // 비용 데이터를 가져오는 JSTL (예시)
-     // Controller에서 비용 데이터를 monthExpenses 같은 이름으로 전달해야 합니다.
      <c:forEach items="${monthExpenses}" var="entry">
-         expensesData.push(${entry.value});
+       expensesData.push(${entry.value});
      </c:forEach>
 
-     var salesCtx = document.getElementById("moneyChart").getContext("2d");
-     var salesChart = new Chart(salesCtx, {
+     var ctx = document.getElementById("moneyChart").getContext("2d");
+
+     // 파랑 그라디언트 (수익)
+     var gradRevenue = ctx.createLinearGradient(0,0,0,260);
+     gradRevenue.addColorStop(0, "rgba(25,118,210,0.25)"); // #1976d2
+     gradRevenue.addColorStop(1, "rgba(25,118,210,0.02)");
+
+     // 빨강 그라디언트 (비용)
+     var gradExpense = ctx.createLinearGradient(0,0,0,260);
+     gradExpense.addColorStop(0, "rgba(216,40,40,0.25)"); // #d82828
+     gradExpense.addColorStop(1, "rgba(216,40,40,0.02)");
+
+     new Chart(ctx, {
        type: "line",
        data: {
          labels: salesLabels,
          datasets: [
            {
-             label: "수익", // 첫 번째 데이터셋: 수익
+             label: "수익",
              data: salesData,
-             backgroundColor: "rgba(54, 162, 235, 0.2)", // 수익 라인 색상
-             borderColor: "rgba(54, 162, 235, 1)",
+             backgroundColor: gradRevenue,
+             borderColor: "#1976d2", /* 파랑 */
              borderWidth: 2,
-             fill: true,
-             tension: 0.3,
-             pointBackgroundColor: "rgba(54, 162, 235, 1)",
+             pointBackgroundColor: "#1976d2",
              pointBorderColor: "#fff",
-             pointHoverBackgroundColor: "#fff",
-             pointHoverBorderColor: "rgba(54, 162, 235, 1)",
+             pointRadius: 3,
+             lineTension: 0.3,
+             fill: true
            },
            {
-             label: "비용", // 두 번째 데이터셋: 비용
+             label: "비용",
              data: expensesData,
-             backgroundColor: "rgba(255, 99, 132, 0.2)", // 비용 라인 색상
-             borderColor: "rgba(255, 99, 132, 1)",
+             backgroundColor: gradExpense,
+             borderColor: "#d82828", /* 빨강 */
              borderWidth: 2,
-             fill: true,
-             tension: 0.3,
-             pointBackgroundColor: "rgba(255, 99, 132, 1)",
+             pointBackgroundColor: "#d82828",
              pointBorderColor: "#fff",
-             pointHoverBackgroundColor: "#fff",
-             pointHoverBorderColor: "rgba(255, 99, 132, 1)",
+             pointRadius: 3,
+             lineTension: 0.3,
+             fill: true
            }
-         ],
+         ]
        },
        options: {
          responsive: true,
-         maintainAspectRatio: false,
-         scales: {
-           xAxes: [{
-             scaleLabel: {
-               display: false
+           maintainAspectRatio: false,
+           legend: { display: false },
+         tooltips: {
+           bodyFontSize: 14,
+           callbacks: {
+             label: function(tooltipItem, data){
+               var ds = data.datasets[tooltipItem.datasetIndex];
+               var v  = Number(tooltipItem.yLabel || 0);
+               return ds.label + ": " + v.toLocaleString('ko-KR') + "원";
              }
-           }],
+           }
+         },
+         scales: {
+           xAxes: [{ gridLines: { color: "rgba(0,0,0,0.05)" } }],
            yAxes: [{
+             gridLines: { color: "rgba(0,0,0,0.06)" },
              ticks: {
-               beginAtZero: true
-             },
-             scaleLabel: {
-               display: false
+               beginAtZero: true,
+               callback: function(v){ return Number(v).toLocaleString('ko-KR'); }
              }
            }]
-         },
-         legend: {
-           display: true, // 범례를 다시 보이도록 설정하여 수익/비용 라인을 구분
-           position: 'bottom',
-         },
-       },
+         }
+       }
      });
+   })();
    </script>
+
+
 </html>
