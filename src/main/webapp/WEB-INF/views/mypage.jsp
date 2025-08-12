@@ -1,5 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %> <%@ taglib prefix="c"
-uri="http://java.sun.com/jsp/jstl/core" %> <%@ include file="/WEB-INF/views/header.jsp" %> <%@ taglib prefix="fmt"
+<%@ page contentType="text/html;charset=UTF-8" language="java" %> <%@ taglib
+prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ include
+file="/WEB-INF/views/header.jsp" %> <%@ taglib prefix="fmt"
 uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
@@ -8,8 +9,14 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     <meta charset="UTF-8" />
     <title>마이페이지</title>
     <script src="${pageContext.request.contextPath}/static/js/jquery-3.7.1.min.js"></script>
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css" />
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/modal.css" />
+    <link
+      rel="stylesheet"
+      href="${pageContext.request.contextPath}/static/css/style.css"
+    />
+    <link
+      rel="stylesheet"
+      href="${pageContext.request.contextPath}/static/css/modal.css"
+    />
   </head>
   <body>
     <div class="container">
@@ -17,7 +24,10 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         <p class="sub-title"></p>
         <h2 class="title">마이 페이지</h2>
       </div>
-      <div class="section-wrap85" style="display: flex; flex-direction: column; gap: 15px">
+      <div
+        class="section-wrap85"
+        style="display: flex; flex-direction: column; gap: 15px"
+      >
         <!-- section-box1 관리자 정보 -->
         <form action="/admin/update" method="post">
           <div class="btn-box" style="margin-bottom: 10px">
@@ -28,10 +38,15 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               class="btn btn-blue"
               style="font-size: 14px !important"
             />
-            <button type="button" class="btn btn-red" onclick="submitDelete()">탈퇴하기</button>
+            <button type="button" class="btn btn-red" onclick="submitDelete()">
+              탈퇴하기
+            </button>
           </div>
 
-          <div class="section-box section-box1" style="height: 200px; min-height: 220px; margin: 0">
+          <div
+            class="section-box section-box1"
+            style="height: 200px; min-height: 220px; margin: 0"
+          >
             <div class="section-header">관리자 정보</div>
             <div class="section-body adminInfo">
               <div class="row">
@@ -98,7 +113,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                   <p
                     id="pwErrorMsg"
                     class="error-msg"
-                    style="display: none; position: relative; top: 17px; left: 0px"
+                    style="
+                      display: none;
+                      position: relative;
+                      top: 17px;
+                      left: 0px;
+                    "
                   ></p>
                 </div>
 
@@ -120,9 +140,20 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         </form>
 
         <!-- 점포검색 조회 및 점포 등록 버튼 -->
-        <div class="form-container" style="justify-content: end; gap: 8px; margin: 0">
-          <form method="get" action="${pageContext.request.contextPath}/mypage/">
-            <input type="text" name="searchKeyword" placeholder="점포 검색" value="${searchKeyword}" />
+        <div
+          class="form-container"
+          style="justify-content: end; gap: 8px; margin: 0"
+        >
+          <form
+            method="get"
+            action="${pageContext.request.contextPath}/mypage/"
+          >
+            <input
+              type="text"
+              name="searchKeyword"
+              placeholder="점포 검색"
+              value="${searchKeyword}"
+            />
             <button type="submit" class="btn btn-blue">검색</button>
           </form>
           <button type="button" class="btn submit-btn">점포 등록</button>
@@ -145,13 +176,31 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
             <!-- 아이템 -->
             <c:forEach var="store" items="${storeList}" varStatus="status">
-              <form method="post" action="${pageContext.request.contextPath}/store/update" class="store-form">
+              <form
+                method="post"
+                action="${pageContext.request.contextPath}/store/update"
+                class="store-form"
+              >
                 <!-- 관리자 ID(hidden) -->
                 <input type="hidden" name="adminId" value="${store.adminId}" />
-                <input type="hidden" name="storeId" value="${store.storeId}" readonly />
+                <input
+                  type="hidden"
+                  name="storeId"
+                  value="${store.storeId}"
+                  readonly
+                />
                 <div class="mypage-item">
                   <!-- 점포 ID -->
-                  <div>${status.index + 1}</div>
+                  <div
+                    class="<c:if test='${store.storeId == sessionScope.selectedStoredId}'>store-focus</c:if>"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    ${status.index + 1}
+                  </div>
                   <!-- 점포명 -->
                   <div>
                     <input
@@ -159,7 +208,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       name="storeName"
                       value="${store.storeName}"
                       readonly
-                      style="text-align: center; height: 30px; width: 80%; font-size: 16px"
+                      style="
+                        text-align: center;
+                        height: 30px;
+                        width: 80%;
+                        font-size: 16px;
+                      "
                     />
                   </div>
                   <!-- 주소 -->
@@ -169,7 +223,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       name="storeAddress"
                       value="${store.storeAddress}"
                       readonly
-                      style="text-align: center; height: 30px; width: 80%; font-size: 16px"
+                      style="
+                        text-align: center;
+                        height: 30px;
+                        width: 80%;
+                        font-size: 16px;
+                      "
                     />
                   </div>
                   <!-- 전화번호 -->
@@ -181,7 +240,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       pattern="^(01[0-9]-?\d{3,4}-?\d{4}|0\d{1,2}-?\d{3,4}-?\d{4})$"
                       title="휴대폰(예: 010-1234-5678 또는 01012345678), 집전화(예: 02-123-4567 또는 021234567) 형식으로 입력하세요"
                       readonly
-                      style="text-align: center; height: 30px; width: 80%; font-size: 16px"
+                      style="
+                        text-align: center;
+                        height: 30px;
+                        width: 80%;
+                        font-size: 16px;
+                      "
                     />
                   </div>
                   <!-- 이메일 -->
@@ -191,14 +255,33 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       name="storeEmail"
                       value="${store.storeEmail}"
                       readonly
-                      style="text-align: center; height: 30px; width: 80%; font-size: 16px"
+                      style="
+                        text-align: center;
+                        height: 30px;
+                        width: 80%;
+                        font-size: 16px;
+                      "
                     />
                   </div>
                   <!-- 액션 -->
                   <div class="actions" style="text-align: left">
-                    <button type="button" class="btn btn-blue editBtn">수정</button>
-                    <button type="submit" class="btn btn-blue saveBtn" style="display: none">저장</button>
-                    <button type="button" class="btn btn-red cancelBtn" style="display: none">취소</button>
+                    <button type="button" class="btn btn-blue editBtn">
+                      수정
+                    </button>
+                    <button
+                      type="submit"
+                      class="btn btn-blue saveBtn"
+                      style="display: none"
+                    >
+                      저장
+                    </button>
+                    <button
+                      type="button"
+                      class="btn btn-red cancelBtn"
+                      style="display: none"
+                    >
+                      취소
+                    </button>
                   </div>
                 </div>
               </form>
@@ -216,11 +299,17 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               <span>&lt;</span>
             </c:when>
             <c:otherwise>
-              <a href="?page=${paging.page - 1}&searchKeyword=${searchKeyword}">&lt;</a>
+              <a href="?page=${paging.page - 1}&searchKeyword=${searchKeyword}"
+                >&lt;</a
+              >
             </c:otherwise>
           </c:choose>
 
-          <c:forEach var="i" begin="${paging.startPage}" end="${paging.endPage}">
+          <c:forEach
+            var="i"
+            begin="${paging.startPage}"
+            end="${paging.endPage}"
+          >
             <c:choose>
               <c:when test="${i == paging.page}">
                 <span class="page">${i}</span>
@@ -236,7 +325,9 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               <span>&gt;</span>
             </c:when>
             <c:otherwise>
-              <a href="?page=${paging.page + 1}&searchKeyword=${searchKeyword}">&gt;</a>
+              <a href="?page=${paging.page + 1}&searchKeyword=${searchKeyword}"
+                >&gt;</a
+              >
             </c:otherwise>
           </c:choose>
         </div>
@@ -245,20 +336,38 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         <div id="storeModal" class="modal hidden">
           <div class="modal-content">
             <h2>점포 등록</h2>
-            <form id="storeForm" action="${pageContext.request.contextPath}/store/save" method="post">
+            <form
+              id="storeForm"
+              action="${pageContext.request.contextPath}/store/save"
+              method="post"
+            >
               <!-- 현재 로그인한 관리자 ID 숨김 필드 -->
-              <input type="hidden" name="adminId" value="${sessionScope.loginedAdminDTO.adminId}" />
+              <input
+                type="hidden"
+                name="adminId"
+                value="${sessionScope.loginedAdminDTO.adminId}"
+              />
 
               <!-- 1줄: 점포명 -->
               <div style="margin-bottom: 15px">
                 <label>점포명</label>
-                <input type="text" name="storeName" required style="width: 100%" />
+                <input
+                  type="text"
+                  name="storeName"
+                  required
+                  style="width: 100%"
+                />
               </div>
 
               <!-- 2줄: 주소 -->
               <div style="margin-bottom: 15px">
                 <label>주소</label>
-                <input type="text" name="storeAddress" required style="width: 100%" />
+                <input
+                  type="text"
+                  name="storeAddress"
+                  required
+                  style="width: 100%"
+                />
               </div>
 
               <!-- 3줄: 전화번호 -->
@@ -277,13 +386,27 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               <!-- 4줄: 이메일 -->
               <div style="margin-bottom: 15px">
                 <label>이메일</label>
-                <input type="email" name="storeEmail" required style="width: 100%; text-align: center;" />
+                <input
+                  type="email"
+                  name="storeEmail"
+                  required
+                  style="width: 100%; text-align: center"
+                />
               </div>
 
               <!-- 버튼 -->
               <div class="btn-box">
-                <button type="submit" class="btn submit-btn" style="width: 50%">등록</button>
-                <button type="button" id="closeModal" class="btn cencle-btn" style="width: 50%">닫기</button>
+                <button type="submit" class="btn submit-btn" style="width: 50%">
+                  등록
+                </button>
+                <button
+                  type="button"
+                  id="closeModal"
+                  class="btn cencle-btn"
+                  style="width: 50%"
+                >
+                  닫기
+                </button>
               </div>
             </form>
           </div>
@@ -292,9 +415,9 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     </div>
   </body>
   <script>
-    $('.saveBtn').click(function (e) {
+    $(".saveBtn").click(function (e) {
       e.preventDefault();
-      const $form = $(this).closest('form');
+      const $form = $(this).closest("form");
 
       validateAndCheckUnique($form).then((valid) => {
         if (valid) {
@@ -303,75 +426,93 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       });
     });
     function validateAndCheckUnique($form) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         const storeName = $form.find("input[name='storeName']").val().trim();
+        const originalName =
+          $form.find("input[name='storeName']").data("original-value") || "";
+
         if (!storeName) {
-          alert('매장 이름을 입력해주세요.');
+          alert("매장 이름을 입력해주세요.");
           resolve(false);
+          return;
+        }
+
+        // 변경 안 됐으면 중복 체크 없이 바로 통과
+        if (storeName === originalName) {
+          resolve(true);
           return;
         }
 
         // 중복 체크 Ajax
         $.ajax({
-          url: '/store/isUnique',
-          method: 'post',
+          url: "/store/isUnique",
+          method: "post",
           data: { storeName: storeName },
-          dataType: 'json',
+          dataType: "json",
           success: function (isUnique) {
             console.log(isUnique);
-            if (isUnique === true || isUnique === 'true') {
+            if (isUnique === true || isUnique === "true") {
               resolve(true);
             } else {
-              alert('이미 사용 중인 매장 이름입니다. 다른 이름을 입력해주세요.');
+              alert(
+                "이미 사용 중인 매장 이름입니다. 다른 이름을 입력해주세요."
+              );
               resolve(false);
             }
           },
           error: function (jqXHR, textStatus, errorThrown) {
-            console.log('jqXHR:', jqXHR);
-            console.log('textStatus:', textStatus);
-            console.log('errorThrown:', errorThrown);
-            console.log('responseText:', jqXHR.responseText);
-            alert('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+            console.log("jqXHR:", jqXHR);
+            console.log("textStatus:", textStatus);
+            console.log("errorThrown:", errorThrown);
+            console.log("responseText:", jqXHR.responseText);
+            alert("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
             resolve(false);
           },
         });
       });
     }
 
-    const pwInput = document.getElementById('loginPw');
-    const pwErrorMsg = document.getElementById('pwErrorMsg');
+    const pwInput = document.getElementById("loginPw");
+    const pwErrorMsg = document.getElementById("pwErrorMsg");
 
-    pwInput.addEventListener('input', () => {
+    pwInput.addEventListener("input", () => {
       const value = pwInput.value;
       const pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
 
       if (!pattern.test(value)) {
-        pwErrorMsg.style.display = 'block';
-        pwErrorMsg.textContent = '비밀번호는 영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.';
+        pwErrorMsg.style.display = "block";
+        pwErrorMsg.textContent =
+          "비밀번호는 영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.";
       } else {
-        pwErrorMsg.style.display = 'none';
-        pwErrorMsg.textContent = '';
+        pwErrorMsg.style.display = "none";
+        pwErrorMsg.textContent = "";
       }
     });
-    var CTX = '${pageContext.request.contextPath}';
+    var CTX = "${pageContext.request.contextPath}";
 
     // 관리자 정보: 수정/적용 토글
     $(document).ready(function () {
       var adminEditMode = false;
 
-      $('#adminEditBtn').on('click', function () {
+      $("#adminEditBtn").on("click", function () {
         if (!adminEditMode) {
           // 읽기전용 해제 (adminId 제외)
           $("form[action='/admin/update']")
-            .find('input')
+            .find("input")
             .each(function () {
-              var name = $(this).attr('name');
-              if (name !== 'adminId' && name !== 'loginId' && name !== 'businessNumber') {
-                $(this).prop('readonly', false).data('original-value', $(this).val());
+              var name = $(this).attr("name");
+              if (
+                name !== "adminId" &&
+                name !== "loginId" &&
+                name !== "businessNumber"
+              ) {
+                $(this)
+                  .prop("readonly", false)
+                  .data("original-value", $(this).val());
               }
             });
           adminEditMode = true;
-          $(this).val('적용하기');
+          $(this).val("적용하기");
         } else {
           // 폼 제출
           $("form[action='/admin/update']")[0].submit();
@@ -381,122 +522,137 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
     // 비밀번호 보이기/숨기기
     function togglePassword() {
-      var pwField = document.getElementById('loginPw');
-      var icon = document.getElementById('togglePwIcon');
+      var pwField = document.getElementById("loginPw");
+      var icon = document.getElementById("togglePwIcon");
       if (!pwField || !icon) return;
 
-      if (pwField.type === 'password') {
-        pwField.type = 'text';
-        icon.src = CTX + '/static/images/eye-open.png';
-        icon.alt = '숨기기';
+      if (pwField.type === "password") {
+        pwField.type = "text";
+        icon.src = CTX + "/static/images/eye-open.png";
+        icon.alt = "숨기기";
       } else {
-        pwField.type = 'password';
-        icon.src = CTX + '/static/images/eye-close.png';
-        icon.alt = '보기';
+        pwField.type = "password";
+        icon.src = CTX + "/static/images/eye-close.png";
+        icon.alt = "보기";
       }
     }
 
     // 비밀번호 유효성 검사(한 번만 바인딩)
     (function attachPwValidation() {
-      var pwInput = document.getElementById('loginPw');
-      var pwErrorMsg = document.getElementById('pwErrorMsg');
+      var pwInput = document.getElementById("loginPw");
+      var pwErrorMsg = document.getElementById("pwErrorMsg");
       if (!pwInput || !pwErrorMsg) return;
 
-      pwInput.addEventListener('input', function () {
+      pwInput.addEventListener("input", function () {
         var value = pwInput.value;
         var pattern = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+=-]).{8,}$/;
         if (!pattern.test(value)) {
-          pwErrorMsg.style.display = 'block';
-          pwErrorMsg.textContent = '비밀번호는 영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.';
+          pwErrorMsg.style.display = "block";
+          pwErrorMsg.textContent =
+            "비밀번호는 영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.";
         } else {
-          pwErrorMsg.style.display = 'none';
-          pwErrorMsg.textContent = '';
+          pwErrorMsg.style.display = "none";
+          pwErrorMsg.textContent = "";
         }
       });
     })();
 
     // 점포 목록: 수정/취소
     // 수정
-    $(document).on('click', '.editBtn', function () {
-      var $form = $(this).closest('.store-form');
+    $(document).on("click", ".editBtn", function () {
+      var $form = $(this).closest(".store-form");
 
       // 수정 가능 필드만 해제
       $form
-        .find('input[name="storeName"], input[name="storeAddress"], input[name="storePhone"], input[name="storeEmail"]')
+        .find(
+          'input[name="storeName"], input[name="storeAddress"], input[name="storePhone"], input[name="storeEmail"]'
+        )
         .each(function () {
           $(this)
-            .prop('readonly', false)
-            .css('cursor', 'text') // 수정 모드: text 커서
-            .data('original-value', $(this).val());
+            .prop("readonly", false)
+            .css("cursor", "text") // 수정 모드: text 커서
+            .data("original-value", $(this).val());
         });
 
-      $form.find('.editBtn').hide();
-      $form.find('.saveBtn, .cancelBtn').show();
+      $form.find(".editBtn").hide();
+      $form.find(".saveBtn, .cancelBtn").show();
     });
 
     // 취소
-    $(document).on('click', '.cancelBtn', function () {
-      var $form = $(this).closest('.store-form');
+    $(document).on("click", ".cancelBtn", function () {
+      var $form = $(this).closest(".store-form");
 
       $form
-        .find('input[name="storeName"], input[name="storeAddress"], input[name="storePhone"], input[name="storeEmail"]')
+        .find(
+          'input[name="storeName"], input[name="storeAddress"], input[name="storePhone"], input[name="storeEmail"]'
+        )
         .each(function () {
           $(this)
-            .val($(this).data('original-value') || '')
-            .prop('readonly', true)
-            .css('cursor', 'pointer'); // 다시 pointer로 복원
+            .val($(this).data("original-value") || "")
+            .prop("readonly", true)
+            .css("cursor", "pointer"); // 다시 pointer로 복원
         });
 
-      $form.find('.saveBtn, .cancelBtn').hide();
-      $form.find('.editBtn').show();
+      $form.find(".saveBtn, .cancelBtn").hide();
+      $form.find(".editBtn").show();
     });
 
     // 초기에는 모든 readonly 인풋 커서를 pointer로
     $(document).ready(function () {
-      $('input[readonly]').css('cursor', 'pointer');
+      $("input[readonly]").css("cursor", "pointer");
     });
     // 행 클릭 하이라이트 + 선택 저장
-    $(document).on('click', '.store-form .mypage-item', function (e) {
-      if ($(e.target).closest('.actions').length) return;
+    $(document).on("click", ".store-form .mypage-item", function (e) {
+      if ($(e.target).closest(".actions").length) return;
 
-      if ($(e.target).is('input, textarea, select') && !$(e.target).prop('readonly')) return;
+      if (
+        $(e.target).is("input, textarea, select") &&
+        !$(e.target).prop("readonly")
+      )
+        return;
 
-      $('.store-form .mypage-item > div:first-child').removeClass('store-focus');
+      $(".store-form .mypage-item > div:first-child").removeClass(
+        "store-focus"
+      );
 
-      $(this).children('div:first-child').addClass('store-focus');
+      $(this).children("div:first-child").addClass("store-focus");
 
-      var storeId = $(this).closest('.store-form').find('input[name="storeId"]').val();
+      var storeId = $(this)
+        .closest(".store-form")
+        .find('input[name="storeId"]')
+        .val();
       if (storeId) {
         $.ajax({
-          type: 'POST',
-          url: CTX + '/store/setSelectedStoreId',
+          type: "POST",
+          url: CTX + "/store/setSelectedStoreId",
           data: { storeId: storeId },
         });
       }
     });
 
     // 점포 등록 버튼 클릭 시 모달 열기
-    $('.submit-btn').on('click', function () {
-      $('#storeModal').css('display', 'flex');
+    $(".submit-btn").on("click", function () {
+      $("#storeModal").css("display", "flex");
     });
 
     // 모달 닫기 버튼 클릭 시 모달 닫기
-    $('#closeModal').on('click', function () {
-      $('#storeModal').css('display', 'none');
+    $("#closeModal").on("click", function () {
+      $("#storeModal").css("display", "none");
     });
 
     // 회원 탈퇴
     function submitDelete() {
-      if (!confirm('정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
+      if (!confirm("정말 탈퇴하시겠습니까? 이 작업은 되돌릴 수 없습니다."))
+        return;
 
-      var form = document.createElement('form');
-      form.method = 'post';
-      form.action = CTX + '/admin/delete';
+      var form = document.createElement("form");
+      form.method = "post";
+      form.action = CTX + "/admin/delete";
 
-      var input = document.createElement('input');
-      input.type = 'hidden';
-      input.name = 'adminId';
-      input.value = '${sessionScope.loginedAdminDTO.adminId}';
+      var input = document.createElement("input");
+      input.type = "hidden";
+      input.name = "adminId";
+      input.value = "${sessionScope.loginedAdminDTO.adminId}";
       form.appendChild(input);
 
       document.body.appendChild(form);
