@@ -27,7 +27,7 @@
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
       </form>
       <div class="table-container">
-      <table class="productTable">
+      <table class="productTable product-table">
         <thead>
           <tr>
             <th>거래처선택</th>
@@ -38,8 +38,7 @@
             <th>상품가격</th>
             <th>재고수량</th>
             <th>등록일자</th>
-            <th>수정</th>
-            <th>저장</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -142,8 +141,10 @@
                                    value="${product.createdAt != null ? fn:substring(product.createdAt, 0, 10) : ''}"
                                    readonly />
                            </td>
-                          <td><button type="button" onclick="updateFn(this)">수정</button></td>
-                          <td><button type="submit" class="saveBtn" style="display:none;">저장</button></td>
+                          <td>
+                          <button type="button" onclick="updateFn(this)">수정</button>
+                          <button type="submit" class="saveBtn" style="display:none;">저장</button>
+                          </td>
                         </form>
                       </tr>
                     </c:forEach>
