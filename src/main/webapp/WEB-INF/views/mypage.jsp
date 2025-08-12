@@ -367,11 +367,20 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       });
     });
     function validateAndCheckUnique($form) {
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         const storeName = $form.find("input[name='storeName']").val().trim();
+        const originalName =
+          $form.find("input[name='storeName']").data("original-value") || "";
+
         if (!storeName) {
           alert("매장 이름을 입력해주세요.");
           resolve(false);
+          return;
+        }
+
+        // 변경 안 됐으면 중복 체크 없이 바로 통과
+        if (storeName === originalName) {
+          resolve(true);
           return;
         }
 
@@ -382,7 +391,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           data: { storeName: storeName },
           dataType: "json",
           success: function (isUnique) {
-            console.log(isUnique);
             if (isUnique === true || isUnique === "true") {
               resolve(true);
             } else {
