@@ -108,6 +108,20 @@
         )
     </insert>
 
+    <update id="updateProductAndClient" parameterType="map">
+        UPDATE client_product SET clientId = #{clientId} WHERE productId = #{productId}
+    </update>
+
+    <insert id="addProductWithClient" parameterType="map">
+        INSERT IGNORE INTO client_product (clientId, productId)
+        SELECT #{clientId}, p.productId
+        FROM product p
+        WHERE p.productName = #{productName}
+        ORDER BY p.productId
+        LIMIT 1
+    </insert>
+
+
     <select id="selectPagingByAdminId" parameterType="map" resultType="Client">
         SELECT * FROM client
         WHERE adminId = #{adminId}

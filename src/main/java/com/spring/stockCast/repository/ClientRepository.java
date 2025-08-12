@@ -64,4 +64,20 @@ public class ClientRepository {
         return sql.selectOne("Client.countClientsByKeyword", param);
     }
 
+    // 거래처&상품 연동 update
+    public void updateProductAndClient(int clientId, int productId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("clientId", clientId);
+        param.put("productId", productId);
+        sql.insert("Client.updateProductAndClient", param);
+    }
+
+    public void addProductWithClient(int clientId, String productName, int storeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("clientId", clientId);
+        param.put("productName", productName);
+        param.put("storeId", storeId);
+        sql.insert("Client.addProductWithClient", param);
+
+    }
 }
