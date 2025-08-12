@@ -143,7 +143,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </div>
               <div style="flex: 1">
                 <label>담당자 이메일</label>
-                <input type="email" name="managerEmail" readonly style="text-align: center; height: 30px; width: 100%;
+                <input type="email" name="managerEmail" readonly style="text-align: center; width: 100%;
                 font-size: 16px"//>
               </div>
             </div>
@@ -168,7 +168,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </div>
               <div style="flex: 1">
                 <label>거래처 상태</label>
-                <select name="status" required disabled>
+                <select name="status" required disabled style="height:34px; margin-top:5px; border-radius: 5px; width: 100%; border: 1px solid #e0e0e0;">
                   <option value="정상">정상</option>
                   <option value="중지">중지</option>
                 </select>
@@ -179,8 +179,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             <div style="display: flex; gap: 20px">
               <div style="flex: 1">
                 <label>거래처 이메일</label>
-                <input type="email" name="email" readonly style="text-align: center; height: 30px; width: 100%;
-                font-size: 16px"//>
+                <input type="email" name="email" readonly style="text-align: center; width: 100%;
+                font-size: 16px">
               </div>
               <div style="flex: 1"></div>
             </div>
@@ -240,7 +240,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </div>
               <div style="flex: 1">
                 <label>담당자 이메일</label>
-                <input type="email" name="managerEmail" style="text-align: center; height: 30px; width: 100%; font-size:
+                <input type="email" name="managerEmail" style="text-align: center; width: 100%; font-size:
                 16px"//>
               </div>
             </div>
@@ -276,7 +276,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </div>
               <div style="flex: 1">
                 <label>거래처 상태</label>
-                <select name="status" required>
+                <select name="status" required style="height:34px; margin-top:5px; border-radius: 5px; width: 100%; border: 1px solid #e0e0e0;">
                   <option value="정상">정상</option>
                   <option value="중지">중지</option>
                 </select>
@@ -287,8 +287,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             <div style="display: flex; gap: 20px">
               <div style="flex: 1">
                 <label>거래처 이메일</label>
-                <input type="email" name="email" required style="text-align: center; height: 30px; width: 100%;
-                font-size: 16px"//>
+                <input type="email" name="email" required style="text-align: center; width: 100%;
+                font-size: 16px">
               </div>
               <div style="flex: 1"></div>
             </div>
@@ -357,7 +357,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <input
                   type="email"
                   name="managerEmail"
-                  style="text-align: center; height: 30px; width: 100%; font-size: 16px"
+                  style="text-align: center; width: 100%; font-size: 16px"
                 />
               </div>
             </div>
@@ -393,7 +393,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </div>
               <div style="flex: 1">
                 <label>거래처 상태</label>
-                <select name="status" required>
+                <select name="status" required style="height:34px; margin-top:5px; border-radius: 5px; width: 100%; border: 1px solid #e0e0e0;">
                   <option value="정상" selected>정상</option>
                   <option value="중지">중지</option>
                 </select>
@@ -408,7 +408,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                   type="email"
                   name="email"
                   required
-                  style="text-align: center; height: 30px; width: 100%; font-size: 16px"
+                  style="text-align: center;  width: 100%; font-size: 16px"
                 />
               </div>
               <div style="flex: 1"></div>
