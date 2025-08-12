@@ -8,14 +8,6 @@
 <head>
     <title>회계 관리</title>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css"/>
-    <style>
-        /* Flexbox 컨테이너 스타일 */
-        .account-tables-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 1px;
-        }
-    </style>
 </head>
 <body>
     <div class="containerAuto">
@@ -24,7 +16,7 @@
             <h2 class="title">회계 관리</h2>
         </div>
         <div class="section-wrap">
-        <div class="search-period-info">
+        <div class="search-period-info" style="margin-bottom:10px;">
                 <c:if test="${not empty findDate}">
                   <p>${findDate} 회계 내역 입니다.</p>
                 </c:if>
@@ -50,12 +42,12 @@
                     </div>
                 </div>
                 <div class="searchForm">
-                    <button type="submit" class="btn btn-blue" name="action" value="load">불러오기</button>
                     <button type="submit" class="btn btn-blue" name="action" value="store">점포매출</button>
+                    <button type="submit" class="btn submit-btn" name="action" value="load">불러오기</button>
                 </div>
             </form>
 
-            <div class="account-tables-container">
+            <div class="account-tables-container" style="display: flex; justify-content: space-between;  gap: 1px;">
                 <table>
                     <thead>
                         <tr>
@@ -78,7 +70,7 @@
                             </tr>
                         <c:set var="totalAssets" value="${totalAssets + (empty accountValues[account.name] ? 0 : accountValues[account.name])}"/>
                         </c:forEach>
-                        <tr>
+                        <tr class="ac-point">
                             <td>자산 총계</td>
                             <td><p><fmt:formatNumber value="${totalAssets}" pattern="#,###"/></p></td>
                         </tr>
@@ -105,7 +97,7 @@
                                 </tr>
                             </c:forEach>
                         </c:if>
-                        <tr>
+                        <tr class="ac-point">
                             <td>비용 총계</td>
                             <td><p><fmt:formatNumber value="${totalExpenses}" pattern="#,###"/></p></td>
                         </tr>
@@ -150,7 +142,7 @@
                             <td></td>
                             <td></td>
                         </tr>
-                        <tr>
+                        <tr class="ac-point">
                             <td>자본 총계</td>
                             <td><p><fmt:formatNumber value="${totalCapital+totalLiabilities}" pattern="#,###"/></p></td>
                         </tr>
@@ -177,7 +169,7 @@
                                 </tr>
                             </c:forEach>
                         </c:if>
-                        <tr>
+                        <tr class="ac-point">
                             <td>수익 총계</td>
                             <td><p><fmt:formatNumber value="${totalIncome}" pattern="#,###"/></p></td>
                         </tr>
