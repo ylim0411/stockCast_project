@@ -195,7 +195,16 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 />
                 <div class="mypage-item">
                   <!-- 점포 ID -->
-                  <div>${status.index + 1}</div>
+                  <div
+                    class="<c:if test='${store.storeId == sessionScope.selectedStoredId}'>store-focus</c:if>"
+                    style="
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    "
+                  >
+                    ${status.index + 1}
+                  </div>
                   <!-- 점포명 -->
                   <div>
                     <input
