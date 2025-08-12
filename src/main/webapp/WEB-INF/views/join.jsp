@@ -75,6 +75,9 @@
 
               submit.disabled = false;
             }
+            else {
+                alert("등록되지 않은 사업자 번호입니다");
+            }
           },
           error: function (result) {
             console.log(result.responseText); //responseText의 에러메세지 확인
