@@ -30,9 +30,13 @@ public class ProductController {
     }
 
     @GetMapping("/list")
-    public String productList(Model model, HttpSession session) {
+    public String productList(Model model, HttpSession session,@RequestParam(value = "productName", required = false) String productName) {
         int storeId = (int) session.getAttribute("selectedStoredId");
-        List<ProductCategoryDTO> categoryList = productCategoryService.categorySelect(storeId, "");
+        if (productName == null)
+        {
+            productName= "";
+        }
+        List<ProductCategoryDTO> categoryList = productCategoryService.categorySelect(storeId, productName);
         model.addAttribute("categoryList", categoryList);
 
         return "product";

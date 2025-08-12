@@ -16,13 +16,13 @@
 
 </head>
 <body>
-  <div id="product" class="container">
+  <div id="product" class="containerAuto">
     <div class="title-box">
         <p class="sub-title">상품 관리</p>
         <h2 class="title">전체 상품 목록</h2>
     </div>
     <div class="section-wrap">
-      <form action="/product/search" method="get">
+      <form action="/product/list" method="get">
         <div class="form-container"> 
           <div class="btn-box">
             <input type="text" name="productName" placeholder="상품명 검색" value="${param.productName}"/>
@@ -204,7 +204,7 @@
       // 행 안 모든 컨트롤에 form 속성 세팅
       $newRow.find("input, select, button").attr("form", formId);
 
-      $("table tbody").append($newRow);
+      $("table tbody").prepend($newRow);
     });
 
 
