@@ -33,7 +33,7 @@ prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> <%@ include file="/W
             <button type="submit" class="btn btn-blue">조회</button>
           </div>
           <div class="searchForm">
-            <select style="width: 120px" name="year" class="saleYear-select" onchange="this.form.submit()">
+            <select style="width: 120px" name="year" class="Year-select" onchange="this.form.submit()">
               <option value="" selected>${selectedYear}</option>
               <c:forEach var="year" items="${saleYear}">
                 <c:if test="${year != selectedYear}">
@@ -123,7 +123,8 @@ prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> <%@ include file="/W
               var val   = Number(ds.data[idx] || 0);
               var total = ds.data.reduce(function(a,b){ return Number(a||0)+Number(b||0); },0);
               var pct   = total>0 ? (val/total*100).toFixed(1) : 0;
-
+                console.log("idx"+idx);
+                console.log("label"+label);
               return pct + '% (' + label + ')';
             }
               }

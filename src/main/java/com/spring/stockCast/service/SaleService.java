@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,14 +54,24 @@ public class SaleService {
     public int findProductStock(String storeId, String productName) { return saleRepository.findProductStock(storeId, productName); }
     // 전체 판매내역의 카테고리 리스트 가져오기(도넛차트 구성용)
     public Map<String, Integer> findCategory(List<SaleDTO> saleList) {
+        // 1. 데이터를 집계하여 categorySales 맵 생성
         Map<String, Integer> categorySales = new HashMap<>();
         for (SaleDTO sale : saleList) {
             String categoryName = sale.getCategoryName();
             int saleQty = sale.getSaleQty();
-
             categorySales.put(categoryName, categorySales.getOrDefault(categoryName, 0) + saleQty);
         }
-        return categorySales;
+        // 2. Stream API를 사용하여 value가 높은 순으로 정렬된 새로운 맵 반환
+        return categorySales.entrySet().stream()
+                // Map.Entry의 value를 기준으로 내림차순 정렬
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                // 정렬된 결과를 LinkedHashMap으로 수집 (순서 보장)
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue,
+                        LinkedHashMap::new
+                ));
     }
     // 점포별 주문번호 가져오기
     public int findStoreSubNum(String storeId){
@@ -124,7 +135,7 @@ public class SaleService {
         }
         // 날짜 필터가 있을 때만 검색
         if (startDate != null && endDate != null) {
-            sales = findByDate(startDate, endDate,storeId); // 기간 판매내역 불러오기
+            sales = findByDate(startDate, endDate, storeId); // 기간 판매내역 불러오기
             findDate = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"~"+endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }
         // 연도 선택시에만 검색
@@ -162,8 +173,8 @@ public class SaleService {
     }
 
     // 판매상품을 등록할 수 있는 목록 생성
-    public void saleCreateStmt(String saleId, String storeId, LocalDate today, int subnum) {
-        saleRepository.saleCreateStmt(saleId,storeId,today,subnum);
+    public void saleCreateStmt(String storeId, LocalDate today, int subnum) {
+        saleRepository.saleCreateStmt(storeId,today,subnum);
     }
 
     // 판매상품 DB에 저장

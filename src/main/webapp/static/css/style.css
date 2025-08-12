@@ -87,6 +87,19 @@ select[readonly] {
   border-color: transparent;
 }
 
+input,
+textarea,
+select {
+  border: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  box-shadow: none;
+}
+
 input[readonly]:focus,
 textarea[readonly]:focus,
 select[readonly]:focus {
@@ -94,19 +107,10 @@ select[readonly]:focus {
   box-shadow: none !important;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
-  outline: none !important;
-  box-shadow: none !important;
-  font-size: var(--font-size-md, 16px) !important;
-}
-
 .no-anim * {
   transition: none !important;
   animation: none !important;
 }
-
 /* Desktop ------------------------------------------ */
 
 .Desktop {
@@ -228,6 +232,7 @@ ul li.difultImg img {
 }
 
 input[type="text"]:focus:not([readonly]),
+input[type="email"]:focus:not([readonly]),
 input[type="password"]:focus:not([readonly]),
 textarea:focus {
   border-color: var(--color-primary);
@@ -325,7 +330,7 @@ textarea:focus {
   left: 50%;
   transform: translateX(-50%);
   background: #fff;
-  width: 400px;
+  width: 450px;
   padding: 20px;
   /* margin: 100px auto; */
   border-radius: var(--border-radius-base10);
@@ -348,6 +353,17 @@ textarea:focus {
   transform: translateY(-50%);
   right: 70px; */
   object-fit: cover;
+}
+
+.modal-content .low-stock-name {
+  width: 40%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.modal-content .stock-count {
+  width: 55%;
 }
 
 .modal-content .closeBtn {
@@ -550,13 +566,6 @@ header .userContext .on {
   overflow-y: auto;
 }
 
-/* @media (max-width: 1450px) {
-  .container,
-  .containerAuto {
-    padding: 30px 40px;
-  }
-} */
-
 /* button ------------------------------------------------- */
 .btn {
   padding: 5px 10px;
@@ -564,15 +573,17 @@ header .userContext .on {
   background-color: transparent;
   border: none;
   border-radius: var(--border-radius-base5);
-  cursor: pointer;
+  cursor: pointer !important;
   transition: 0.35s;
+  /* height: 30.5px; */
 }
+
 .submit-btn {
   padding: 7px 12px;
   background-color: var(--color-secondary);
   color: var(--color-white);
-  /* margin: 10px; */
   transition: background-color 0.35s ease;
+  border: none;
 }
 
 .submit-btn:hover {
@@ -836,8 +847,9 @@ ul.ranking li:nth-child(3) span {
   width: 100%;
 }
 .sales-chart-box #moneyChart {
+  margin-top: 20px;
   width: 100% !important;
-  height: 360px !important;
+  height: 240px !important;
 }
 
 .sales-chart-box .chart-legend {
@@ -918,41 +930,52 @@ th {
   font-weight: bold;
 }
 
-/* 상품  테이블 ------------------------------------------------- */
+/* 상품 테이블 ------------------------------------------------- */
 .product-table th:nth-child(1),
 .product-table td:nth-child(1),
 .product-table th:nth-child(2),
 .product-table td:nth-child(2),
-.product-table th:nth-child(4),
-.product-table td:nth-child(4) {
-  width: 10%;
-  max-width: 100px;
-}
-
 .product-table th:nth-child(3),
-.product-table td:nth-child(3),
-.product-table th:nth-child(6),
-.product-table td:nth-child(6) {
-  width: 7%;
-  max-width: 70px;
-}
-
-.product-table th:nth-child(5),
-.product-table td:nth-child(5) {
+.product-table td:nth-child(3) {
   width: 12%;
   max-width: 120px;
 }
 
+.product-table th:nth-child(4),
+.product-table td:nth-child(4),
 .product-table th:nth-child(7),
 .product-table td:nth-child(7) {
-  width: 25%;
-  max-width: 250px;
+  width: 3%;
+  max-width: 30px;
+  border: 1px solid #f00;
 }
 
+.product-table th:nth-child(5),
+.product-table td:nth-child(5),
 .product-table th:nth-child(8),
 .product-table td:nth-child(8) {
-  width: 7%;
-  max-width: 70px;
+  width: 20%;
+  max-width: 200px;
+}
+
+.product-table th:nth-child(6),
+.product-table td:nth-child(6),
+.product-table th:nth-child(9),
+.product-table td:nth-child(9) {
+  width: 16%;
+  max-width: 160px;
+}
+
+/* 상품 카테고리 테이블 ------------------------------------------------- */
+.productCategory-table th:nth-child(1),
+.productCategory-table td:nth-child(1),
+.productCategory-table th:nth-child(2),
+.productCategory-table td:nth-child(2),
+.productCategory-table th:nth-child(3),
+.productCategory-table td:nth-child(3) {
+  width: 33.33%;
+  min-width: 70px;
+  word-break: keep-all;
 }
 
 /* 재고현황 목록 테이블 ------------------------------------------------- */
@@ -1017,7 +1040,6 @@ th {
 }
 
 /* 발주 현황 테이블 ------------------------------------------------- */
-/* 발주현황 테이블 반응형 폭 지정 */
 .orderStmt-table th:nth-child(1),
 .orderStmt-table td:nth-child(1) {
   width: 8%; /* 발주번호 */
@@ -1091,6 +1113,55 @@ th {
   width: 10%;
 }
 
+/* 거래처관리 테이블 ------------------------------------------------- */
+.client-table th:nth-child(1),
+.client-table td:nth-child(1) {
+  width: 6%;
+  max-width: 60px;
+}
+
+.client-table th:nth-child(2),
+.client-table td:nth-child(2) {
+  width: 12%;
+  max-width: 120px;
+}
+
+.client-table th:nth-child(3),
+.client-table td:nth-child(3) {
+  width: 15%;
+  max-width: 150px;
+}
+
+.client-table th:nth-child(4),
+.client-table td:nth-child(4) {
+  width: 6%;
+  max-width: 60px;
+}
+
+.client-table th:nth-child(5),
+.client-table td:nth-child(5) {
+  width: 15%;
+  max-width: 150px;
+}
+
+.client-table th:nth-child(6),
+.client-table td:nth-child(6) {
+  width: 12%;
+  max-width: 120px;
+}
+
+.client-table th:nth-child(7),
+.client-table td:nth-child(7) {
+  width: 12%;
+  max-width: 120px;
+}
+
+.client-table th:nth-child(8),
+.client-table td:nth-child(8) {
+  width: 15%;
+  max-width: 150px;
+}
+
 /* form 태그 ------------------------------------------------- */
 .form-container {
   display: flex;
@@ -1113,12 +1184,17 @@ input[readonly],
 select {
   font-size: var(--font-size-md);
   text-align: center;
-  border: none;
-  outline: none;
-  background-color: transparent;
   color: var(--color-black);
   background-color: var(--color-white);
-  height: 30px;
+  outline: none;
+  box-shadow: none;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 /* 달력 인풋 & 텍스트 인풋 ------------------------------------------------- */
@@ -1511,7 +1587,7 @@ select {
 
 /* 판매 실적 그래프  ---------------------------------------------------------------------------------------- */
 /* ho */
-.saleYear-select {
+.Year-select {
   padding: 5px;
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-base5);
@@ -1580,6 +1656,11 @@ select {
   background: rgba(25, 118, 210, 1);
 }
 
+/*  회계 관리  ---------------------------------------------------------------------------------------- */
+.ac-point {
+  font-weight: 500;
+}
+
 /* 고객 분석  ---------------------------------------------------------------------------------------- */
 .chart-box {
   height: 100%;
@@ -1592,7 +1673,7 @@ select {
 .chart-card {
   width: 50%;
   min-width: 500px;
-  height: 90%;
+  height: 100%;
   background-color: var(--color-white);
   border-radius: var(--border-radius-base20);
   display: flex;

@@ -42,16 +42,15 @@
         <!-- 카테고리 등록 버튼 -->
         <div class="form-container">
           <div class="btn-box">
-            <button id="middle" class="btn btn-blue">중분류 <span class="arrow rotate-up">&#10095;</span></button>
-            <button id="child" class="btn btn-blue">소분류 <span class="arrow rotate-up">&#10095;</span></button>
-          </div>
+            <button id="middle" class="btn btn-blue" style="display: flex; gap: 10px; align-items: center;" >중분류 <span class="arrow rotate" >&#8250;</span></button>
+            <button id="child" class="btn btn-blue" style="display: flex; gap: 10px; align-items: center;">소분류 <span class="arrow rotate">&#8250;</span></button>          </div>
           <button class="btn btn-blue-b">카테고리 등록</button>
         </div>
 
         <c:set var="prevTop" value="" />
         <c:set var="prevMiddle" value="" />
 
-        <table>
+        <table class="productCategory-table">
           <thead>
             <tr>
               <th>카테고리 레벨</th>

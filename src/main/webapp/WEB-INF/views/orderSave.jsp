@@ -26,7 +26,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
           <!-- 저장 -->
           <div class="btn-box">
-            <input type="submit" id="save-order" class="btn submit-btn" value="작성" />
+            <input type="submit" id="save-order" class="btn submit-btn" value="작성완료" style="font-size:14px !important;"/>
           </div>
 
           <!-- 거래처 -->

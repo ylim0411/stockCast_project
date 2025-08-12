@@ -31,7 +31,7 @@ public class ProductRepository {
         paramMap.put("keyword", keyword);
         return sql.selectList("Product.selectProductsByCategoryId", paramMap);
     }
-
+    // ho
     public List<ProductDTO> findProductList() {
         return sql.selectList("Product.findProductList");
     }
@@ -98,6 +98,7 @@ public class ProductRepository {
     public List<ProductDTO> findProductSaleAll(String storeId) {
         return sql.selectList("Product.findProductSaleAll",storeId);
     }
+
 
 
 //    public List<StockQuantityDTO> stockList(LocalDate startDate, LocalDate endDate, String productName) {

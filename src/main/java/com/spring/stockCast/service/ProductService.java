@@ -3,6 +3,7 @@ package com.spring.stockCast.service;
 
 import com.spring.stockCast.dto.ProductCategoryDTO;
 import com.spring.stockCast.dto.ProductDTO;
+import com.spring.stockCast.repository.ClientRepository;
 import com.spring.stockCast.repository.ProductCategoryRepository;
 import com.spring.stockCast.dto.StockQuantityDTO;
 import com.spring.stockCast.repository.ProductRepository;
@@ -17,6 +18,7 @@ import java.util.Map;
 public class ProductService {
     private final ProductRepository productRepository;
     private final ProductCategoryRepository productCategoryRepository;
+    private final ClientRepository clientRepository;
 
     // 거래처 ID로 상품 목록 조회
     public List<Map<String, Object>> getProductsByClientId(int clientId) {
@@ -75,7 +77,7 @@ public class ProductService {
         }
         return productRepository.stockQuantityList(storeId);
     }
-
+    // ho
     public List<ProductDTO> findProductsByCategoryId(int parentId) {
         return productRepository.findProductsByCategoryId(parentId);
     }
@@ -84,22 +86,16 @@ public class ProductService {
         productRepository.updateProductName(productId, newName);
     }
 
+    public void addProductWithClient(ProductDTO product, int clientId) {
+        clientRepository.addProductWithClient(clientId, product.getProductName(), product.getStoreId());
+    }
+
+    public void updateProductAndClient(ProductDTO product, int clientId) {
+        productRepository.updateProduct(product);
+        clientRepository.updateProductAndClient(clientId, product.getProductId());
+    }
 
 
-    // 재고 현황 조회 (기간 및 상품명으로 필터링)
-//    public List<StockQuantityDTO> getStockQuantityList(LocalDate startDate, LocalDate endDate, String productName) {
-//        // ProductRepository의 stockList 메서드를 호출합니다.
-//        return productRepository.stockList(startDate, endDate, productName);
-//    }
-//
-//    /**
-//     * 재고 마감 처리를 수행합니다.
-//     * 현재 상품 재고를 다음 달의 기초 재고로 설정합니다.
-//     *
-//     * @param closeDate 마감 처리 기준 날짜 (다음달 1일)
-//     */
-//    public void closeStockByDate(LocalDate closeDate) {
-//        productRepository.closeStock(closeDate);
-//    }
+
 
 }

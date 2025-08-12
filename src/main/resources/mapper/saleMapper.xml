@@ -31,8 +31,8 @@
     </select>
     <!-- sale 항목 db에 추가 ho -->
     <insert id="saleCreateStmt" parameterType="map">
-        INSERT INTO sale(saleId,storeId,saleDate,saleSubnum)
-        VALUES (#{saleId},#{storeId},#{today},#{subnum})
+        INSERT INTO sale(storeId,saleDate,saleSubnum)
+        VALUES (#{storeId},#{today},#{subnum})
     </insert>
     <!-- 위에서 등록한 sale 항목에 구매상품 등록 ho -->
     <insert id="saleSave" parameterType="map">
@@ -82,7 +82,10 @@
     <select id="findTop5" parameterType="String" resultType="String">
         SELECT p.productName FROM sale_product sp
         JOIN product p ON p.productId = sp.productId
-        WHERE p.storeId = #{storeId}
+        JOIN sale s ON s.saleId = sp.saleId
+        WHERE s.storeId = #{storeId}
+        AND s.saleDate >= DATE_FORMAT(CURDATE(), '%Y-%m-01')
+        AND s.saleDate &lt; DATE_FORMAT(CURDATE() + INTERVAL 1 MONTH, '%Y-%m-01')
         GROUP BY p.productId
         ORDER BY SUM(sp.saleQty) DESC
         LIMIT 5;

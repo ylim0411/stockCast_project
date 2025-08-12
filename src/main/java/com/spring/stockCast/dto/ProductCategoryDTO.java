@@ -13,6 +13,7 @@ public class ProductCategoryDTO {
     private Long parentId;
     private int categoryLevel;
     private Timestamp createdAt;
+    private String clientId;
 
     private List<ProductCategoryDTO> categoryList;
     private List<ProductDTO> productList;

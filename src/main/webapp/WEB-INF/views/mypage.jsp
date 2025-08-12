@@ -26,7 +26,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       </div>
       <div
         class="section-wrap85"
-        style="display: flex; flex-direction: column; gap: 10px"
+        style="display: flex; flex-direction: column; gap: 15px"
       >
         <!-- section-box1 관리자 정보 -->
         <form action="/admin/update" method="post">
@@ -36,6 +36,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               id="adminEditBtn"
               value="수정하기"
               class="btn btn-blue"
+              style="font-size: 14px !important"
             />
             <button type="button" class="btn btn-red" onclick="submitDelete()">
               탈퇴하기
@@ -44,10 +45,10 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
           <div
             class="section-box section-box1"
-            style="height: 200px; min-height: 200px; margin: 0"
+            style="height: 200px; min-height: 220px; margin: 0"
           >
             <div class="section-header">관리자 정보</div>
-            <div class="section-body">
+            <div class="section-body adminInfo">
               <div class="row">
                 <div class="col">
                   <p class="label">이름</p>
@@ -58,6 +59,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       value="${sessionScope.loginedAdminDTO.adminName}"
                       readonly
                       required
+                      style="text-align: center; width: 100%; font-size: 16px"
                     />
                   </p>
                 </div>
@@ -70,6 +72,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       value="${sessionScope.loginedAdminDTO.loginId}"
                       readonly
                       required
+                      style="text-align: center; width: 100%"
                     />
                   </p>
                 </div>
@@ -83,14 +86,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       value="${sessionScope.loginedAdminDTO.loginPw}"
                       readonly
                       required
-                      style="
-                        text-align: center;
-                        height: 30px;
-                        outline: none;
-                        width: 80%;
-                        border: none;
-                        font-size: 16px;
-                      "
+                      style="text-align: center; width: 100%; font-size: 16px"
                     />
                     <button
                       type="button"
@@ -143,23 +139,23 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           </div>
         </form>
 
-        <!-- 점포 등록 버튼 -->
-        <div class="btn-box">
-          <!-- 점포등록 조회 넣어주세요~! -->
-          <div class="form-container">
-            <form
-              method="get"
-              action="${pageContext.request.contextPath}/mypage/"
-            >
-              <input
-                type="text"
-                name="searchKeyword"
-                placeholder="검색어 입력"
-                value="${searchKeyword}"
-              />
-              <button type="submit" class="btn btn-blue-b">검색</button>
-            </form>
-          </div>
+        <!-- 점포검색 조회 및 점포 등록 버튼 -->
+        <div
+          class="form-container"
+          style="justify-content: end; gap: 8px; margin: 0"
+        >
+          <form
+            method="get"
+            action="${pageContext.request.contextPath}/mypage/"
+          >
+            <input
+              type="text"
+              name="searchKeyword"
+              placeholder="점포 검색"
+              value="${searchKeyword}"
+            />
+            <button type="submit" class="btn btn-blue">검색</button>
+          </form>
           <button type="button" class="btn submit-btn">점포 등록</button>
         </div>
 
@@ -212,6 +208,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       name="storeName"
                       value="${store.storeName}"
                       readonly
+                      style="
+                        text-align: center;
+                        height: 30px;
+                        width: 80%;
+                        font-size: 16px;
+                      "
                     />
                   </div>
                   <!-- 주소 -->
@@ -221,6 +223,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       name="storeAddress"
                       value="${store.storeAddress}"
                       readonly
+                      style="
+                        text-align: center;
+                        height: 30px;
+                        width: 80%;
+                        font-size: 16px;
+                      "
                     />
                   </div>
                   <!-- 전화번호 -->
@@ -232,6 +240,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       pattern="^(01[0-9]-?\d{3,4}-?\d{4}|0\d{1,2}-?\d{3,4}-?\d{4})$"
                       title="휴대폰(예: 010-1234-5678 또는 01012345678), 집전화(예: 02-123-4567 또는 021234567) 형식으로 입력하세요"
                       readonly
+                      style="
+                        text-align: center;
+                        height: 30px;
+                        width: 80%;
+                        font-size: 16px;
+                      "
                     />
                   </div>
                   <!-- 이메일 -->
@@ -244,9 +258,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       style="
                         text-align: center;
                         height: 30px;
-                        outline: none;
                         width: 80%;
-                        border: none;
                         font-size: 16px;
                       "
                     />
@@ -329,34 +341,72 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               action="${pageContext.request.contextPath}/store/save"
               method="post"
             >
-              <!-- 현재 로그인한 관리자 ID 숨김 필드로 넘기기 -->
+              <!-- 현재 로그인한 관리자 ID 숨김 필드 -->
               <input
                 type="hidden"
                 name="adminId"
                 value="${sessionScope.loginedAdminDTO.adminId}"
               />
 
-              <label>점포명</label>
-              <input type="text" name="storeName" required />
+              <!-- 1줄: 점포명 -->
+              <div style="margin-bottom: 15px">
+                <label>점포명</label>
+                <input
+                  type="text"
+                  name="storeName"
+                  required
+                  style="width: 100%"
+                />
+              </div>
 
-              <label>주소</label>
-              <input type="text" name="storeAddress" required />
+              <!-- 2줄: 주소 -->
+              <div style="margin-bottom: 15px">
+                <label>주소</label>
+                <input
+                  type="text"
+                  name="storeAddress"
+                  required
+                  style="width: 100%"
+                />
+              </div>
 
-              <label>전화번호</label>
-              <input
-                type="text"
-                name="storePhone"
-                required
-                pattern="^(01[0-9]-?\d{3,4}-?\d{4}|0\d{1,2}-?\d{3,4}-?\d{4})$"
-                title="휴대폰(예: 010-1234-5678 또는 01012345678), 집전화(예: 02-123-4567 또는 021234567) 형식으로 입력하세요"
-              />
+              <!-- 3줄: 전화번호 -->
+              <div style="margin-bottom: 15px">
+                <label>전화번호</label>
+                <input
+                  type="text"
+                  name="storePhone"
+                  required
+                  style="width: 100%"
+                  pattern="^(01[0-9]-?\d{3,4}-?\d{4}|0\d{1,2}-?\d{3,4}-?\d{4})$"
+                  title="휴대폰(예: 010-1234-5678 또는 01012345678), 집전화(예: 02-123-4567 또는 021234567) 형식으로 입력하세요"
+                />
+              </div>
 
-              <label>이메일</label>
-              <input type="email" name="storeEmail" required />
+              <!-- 4줄: 이메일 -->
+              <div style="margin-bottom: 15px">
+                <label>이메일</label>
+                <input
+                  type="email"
+                  name="storeEmail"
+                  required
+                  style="width: 100%; text-align: center"
+                />
+              </div>
 
-              <div style="margin-top: 15px; text-align: right">
-                <button type="submit" class="btn btn-blue">등록</button>
-                <button type="button" id="closeModal" class="btn">닫기</button>
+              <!-- 버튼 -->
+              <div class="btn-box">
+                <button type="submit" class="btn submit-btn" style="width: 50%">
+                  등록
+                </button>
+                <button
+                  type="button"
+                  id="closeModal"
+                  class="btn cencle-btn"
+                  style="width: 50%"
+                >
+                  닫기
+                </button>
               </div>
             </form>
           </div>
@@ -400,6 +450,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           data: { storeName: storeName },
           dataType: "json",
           success: function (isUnique) {
+            console.log(isUnique);
             if (isUnique === true || isUnique === "true") {
               resolve(true);
             } else {
@@ -612,13 +663,13 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     window.togglePassword = togglePassword;
     window.submitDelete = submitDelete;
   </script>
-  <script>
-    // 1) iOS 자동줌/튀는 애니메이션 방지: 폼 컨트롤에 전부 16px + transition 제거
+  <!-- <script>
+    // 1) iOS 자동줌/튀는 애니메이션 방지: 폼 컨트롤에 전부 14px + transition 제거
     function setBaseFormStyles(ctx = document) {
-      const nodes = ctx.querySelectorAll("input, textarea, select, button");
+      const nodes = ctx.querySelectorAll('input, textarea, select, button');
       nodes.forEach((el) => {
-        el.style.fontSize = "16px"; // iOS 확대 방지 핵심
-        el.style.transition = "none"; // 눌렀을 때 커졌다/작아짐 제거
+        el.style.fontSize = '16px'; // iOS 확대 방지 핵심
+        el.style.transition = 'none'; // 눌렀을 때 커졌다/작아짐 제거
       });
     }
     setBaseFormStyles();
@@ -627,39 +678,35 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     (function fixViewport() {
       let meta = document.querySelector('meta[name="viewport"]');
       if (!meta) {
-        meta = document.createElement("meta");
-        meta.name = "viewport";
+        meta = document.createElement('meta');
+        meta.name = 'viewport';
         document.head.appendChild(meta);
       }
       // 확대 방지
-      meta.content = "width=device-width, initial-scale=1, maximum-scale=1";
+      meta.content = 'width=device-width, initial-scale=1, maximum-scale=1';
     })();
 
     // 2) readonly 입력들은 클릭해도 편집 안 되게 + 포인터 커서 + 보더/포커스 라인 제거
     function styleReadonlyInputs(ctx = document) {
-      ctx
-        .querySelectorAll(
-          "input[readonly], textarea[readonly], select[readonly]"
-        )
-        .forEach((el) => {
-          el.style.cursor = "pointer";
-          el.style.pointerEvents = "none";
-          el.style.userSelect = "none";
-          el.style.webkitUserSelect = "none";
-          el.style.caretColor = "transparent";
-          el.style.outline = "none";
-          el.style.boxShadow = "none";
-          el.style.border = "none"; // 포커스 보더/라인 제거
-        });
+      ctx.querySelectorAll('input[readonly], textarea[readonly], select[readonly]').forEach((el) => {
+        el.style.cursor = 'pointer';
+        el.style.pointerEvents = 'none';
+        el.style.userSelect = 'none';
+        el.style.webkitUserSelect = 'none';
+        el.style.caretColor = 'transparent';
+        el.style.outline = 'none';
+        el.style.boxShadow = 'none';
+        el.style.border = 'none'; // 포커스 보더/라인 제거
+      });
     }
     styleReadonlyInputs();
 
     // 3) 수정 버튼 누른 폼만 편집 가능하게(커서 text, 포인터 이벤트 활성화, 보더 그대로 none)
     //    기존 .editBtn / .cancelBtn 핸들러가 있다면 그대로 두고, 아래가 스타일만 보강
-    document.addEventListener("click", function (e) {
-      const editBtn = e.target.closest(".editBtn");
+    document.addEventListener('click', function (e) {
+      const editBtn = e.target.closest('.editBtn');
       if (editBtn) {
-        const form = editBtn.closest(".store-form");
+        const form = editBtn.closest('.store-form');
         if (!form) return;
         form
           .querySelectorAll(
@@ -667,18 +714,18 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           )
           .forEach((el) => {
             el.readOnly = false;
-            el.style.pointerEvents = "auto";
-            el.style.cursor = "text"; // 편집 시 텍스트 커서
-            el.style.border = "none"; // 포커스 보더 생기는 것 방지
-            el.style.outline = "none";
-            el.style.boxShadow = "none";
-            el.style.fontSize = "16px";
+            el.style.pointerEvents = 'auto';
+            el.style.cursor = 'text'; // 편집 시 텍스트 커서
+            el.style.border = 'none'; // 포커스 보더 생기는 것 방지
+            el.style.outline = 'none';
+            el.style.boxShadow = 'none';
+            el.style.fontSize = '16px';
           });
       }
 
-      const cancelBtn = e.target.closest(".cancelBtn");
+      const cancelBtn = e.target.closest('.cancelBtn');
       if (cancelBtn) {
-        const form = cancelBtn.closest(".store-form");
+        const form = cancelBtn.closest('.store-form');
         if (!form) return;
         form
           .querySelectorAll(
@@ -687,15 +734,15 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           .forEach((el) => {
             el.readOnly = true;
             // 다시 읽기전용 스타일 복원
-            el.style.cursor = "pointer";
-            el.style.pointerEvents = "none";
-            el.style.userSelect = "none";
-            el.style.webkitUserSelect = "none";
-            el.style.caretColor = "transparent";
-            el.style.outline = "none";
-            el.style.boxShadow = "none";
-            el.style.border = "none";
-            el.style.fontSize = "16px";
+            el.style.cursor = 'pointer';
+            el.style.pointerEvents = 'none';
+            el.style.userSelect = 'none';
+            el.style.webkitUserSelect = 'none';
+            el.style.caretColor = 'transparent';
+            el.style.outline = 'none';
+            el.style.boxShadow = 'none';
+            el.style.border = 'none';
+            el.style.fontSize = '16px';
           });
       }
     });
@@ -703,37 +750,33 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     // 4) 동적으로 바뀐 readonly 속성도 자동 반영(감시)
     const roObserver = new MutationObserver((muts) => {
       muts.forEach((m) => {
-        if (
-          m.type === "attributes" &&
-          m.attributeName === "readonly" &&
-          m.target instanceof HTMLElement
-        ) {
+        if (m.type === 'attributes' && m.attributeName === 'readonly' && m.target instanceof HTMLElement) {
           const el = m.target;
-          if (el.hasAttribute("readonly")) {
+          if (el.hasAttribute('readonly')) {
             // readonly로 바뀐 경우
-            el.style.cursor = "pointer";
-            el.style.pointerEvents = "none";
-            el.style.userSelect = "none";
-            el.style.webkitUserSelect = "none";
-            el.style.caretColor = "transparent";
-            el.style.outline = "none";
-            el.style.boxShadow = "none";
-            el.style.border = "none";
-            el.style.fontSize = "16px";
+            el.style.cursor = 'pointer';
+            el.style.pointerEvents = 'none';
+            el.style.userSelect = 'none';
+            el.style.webkitUserSelect = 'none';
+            el.style.caretColor = 'transparent';
+            el.style.outline = 'none';
+            el.style.boxShadow = 'none';
+            el.style.border = 'none';
+            el.style.fontSize = '16px';
           } else {
             // 편집 가능으로 바뀐 경우
-            el.style.pointerEvents = "auto";
-            el.style.cursor = "text";
-            el.style.border = "none";
-            el.style.outline = "none";
-            el.style.boxShadow = "none";
-            el.style.fontSize = "16px";
+            el.style.pointerEvents = 'auto';
+            el.style.cursor = 'text';
+            el.style.border = 'none';
+            el.style.outline = 'none';
+            el.style.boxShadow = 'none';
+            el.style.fontSize = '16px';
           }
         }
       });
     });
-    document.querySelectorAll("input, textarea, select").forEach((el) => {
+    document.querySelectorAll('input, textarea, select').forEach((el) => {
       roObserver.observe(el, { attributes: true });
     });
-  </script>
+  </script> -->
 </html>
