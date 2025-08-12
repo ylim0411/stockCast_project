@@ -834,8 +834,9 @@ ul.ranking li:nth-child(3) span {
   width: 100%;
 }
 .sales-chart-box #moneyChart {
+  margin-top: 20px;
   width: 100% !important;
-  height: 360px !important;
+  height: 240px !important;
 }
 
 .sales-chart-box .chart-legend {
