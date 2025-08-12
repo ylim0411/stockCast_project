@@ -30,7 +30,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           <div class="searchForm">
             <input type="text" name="orderStmtId" placeholder="발주번호 검색" />
             <button type="submit" class="btn btn-blue">검색</button>
-            <button type="button" class="btn btn-blue" onclick="goOrderSave()">발주서 작성</button>
+            <button type="button" class="btn submit-btn" onclick="goOrderSave()">발주서 작성</button>
           </div>
         </form>
 

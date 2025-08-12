@@ -20,17 +20,23 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         <!-- 검색/등록 영역 -->
         <div class="form-container">
           <form method="get" action="${pageContext.request.contextPath}/client/">
-            <input type="text" name="searchKeyword" placeholder="검색어 입력" value="${searchKeyword}" />
-            <button type="submit" class="btn btn-blue-b">검색</button>
+            <input
+              type="text"
+              name="searchKeyword"
+              placeholder="검색어 입력"
+              value="${searchKeyword}"
+              style="font-size: 14px !important"
+            />
+            <button type="submit" class="btn btn-blue">검색</button>
           </form>
           <div>
-            <button class="btn btn-blue openAddModal">거래처 등록</button>
+            <button class="btn submit-btn openAddModal" style="margin:0;">거래처 등록</button>
           </div>
         </div>
 
         <div class="table-container">
           <!-- 거래처 테이블 -->
-          <table>
+          <table class="client-table" >
             <thead>
               <tr>
                 <th>번호</th>
@@ -40,7 +46,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                 <th>등록일자</th>
                 <th>수정일시</th>
                 <th>중지일시</th>
-                <th></th>
                 <th></th>
               </tr>
             </thead>
@@ -74,9 +79,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                     >
                       상세 보기
                     </button>
-                  </td>
-                  <td>
-                    <button
+                     <button
                       class="btn btn-blue openEditModal"
                       data-client-id="${client.clientId}"
                       data-client-name="${client.clientName}"
@@ -140,7 +143,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </div>
               <div style="flex: 1">
                 <label>담당자 이메일</label>
-                <input type="email" name="managerEmail" readonly  style="text-align: center; height: 30px; width: 100%; font-size: 16px"//>
+                <input type="email" name="managerEmail" readonly style="text-align: center; height: 30px; width: 100%;
+                font-size: 16px"//>
               </div>
             </div>
 
@@ -175,7 +179,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             <div style="display: flex; gap: 20px">
               <div style="flex: 1">
                 <label>거래처 이메일</label>
-                <input type="email" name="email" readonly  style="text-align: center; height: 30px; width: 100%; font-size: 16px"//>
+                <input type="email" name="email" readonly style="text-align: center; height: 30px; width: 100%;
+                font-size: 16px"//>
               </div>
               <div style="flex: 1"></div>
             </div>
@@ -235,7 +240,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </div>
               <div style="flex: 1">
                 <label>담당자 이메일</label>
-                <input type="email" name="managerEmail"  style="text-align: center; height: 30px; width: 100%; font-size: 16px"//>
+                <input type="email" name="managerEmail" style="text-align: center; height: 30px; width: 100%; font-size:
+                16px"//>
               </div>
             </div>
 
@@ -281,7 +287,8 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             <div style="display: flex; gap: 20px">
               <div style="flex: 1">
                 <label>거래처 이메일</label>
-                <input type="email" name="email" required  style="text-align: center; height: 30px; width: 100%; font-size: 16px"//>
+                <input type="email" name="email" required style="text-align: center; height: 30px; width: 100%;
+                font-size: 16px"//>
               </div>
               <div style="flex: 1"></div>
             </div>
@@ -347,7 +354,11 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               </div>
               <div style="flex: 1">
                 <label>담당자 이메일</label>
-                <input type="email" name="managerEmail" style="text-align: center; height: 30px; width: 100%; font-size: 16px"/>
+                <input
+                  type="email"
+                  name="managerEmail"
+                  style="text-align: center; height: 30px; width: 100%; font-size: 16px"
+                />
               </div>
             </div>
 
@@ -393,7 +404,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             <div style="display: flex; gap: 20px">
               <div style="flex: 1">
                 <label>거래처 이메일</label>
-                <input type="email" name="email" required  style="text-align: center; height: 30px; width: 100%; font-size: 16px"//>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  style="text-align: center; height: 30px; width: 100%; font-size: 16px"
+                />
               </div>
               <div style="flex: 1"></div>
             </div>

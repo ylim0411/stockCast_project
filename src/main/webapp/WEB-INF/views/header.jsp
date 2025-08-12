@@ -129,13 +129,6 @@
       </div>
       <div class="lowStockList-box">
       <ul id="lowStockList" class="stock-card-list">
-
-        <!-- 재고 부족 상품 카드들이 여기 들어감
-         <li>
-          <p>아이스크림</p>
-          <p>현재 2개 / <span>필요 5개</span></p>
-        </li>
-        -->
       </ul>
       </div>
     </div>
@@ -288,7 +281,7 @@
               var html =
                 '<li class="low-stock-item" data-product-id="' + it.id + '">' +
                   '<p class="low-stock-name">' + name + '</p>' +
-                  '<p>현재재고 ' + qty + '개 / <span>재고부족 ' + (20-qty) +'개</span></p>' +
+                  '<p class="stock-count">현재재고 ' + qty + '개 / <span>재고부족 ' + (20-qty) +'개</span></p>' +
                 '</li>';
               $list.append(html);
             });
