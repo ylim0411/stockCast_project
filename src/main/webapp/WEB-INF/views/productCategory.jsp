@@ -1,5 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %> <%@ include file="/WEB-INF/views/header.jsp" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,7 +42,7 @@
             <tr>
               <th>카테고리 레벨</th>
               <th>카테고리/상품명</th>
-              <th>카테고리 등록일시</th>
+              <th>카테고리 등록일자</th>
             </tr>
           </thead>
           <tbody>
@@ -49,7 +51,7 @@
                 <tr class="parentLevel" data-id="${item.topLevelCategoryName}">
                   <td>대분류</td>
                   <td>${item.topLevelCategoryName}</td>
-                  <td>${item.categoryCreatedAt}</td>
+                  <td>${fn:substring(item.categoryCreatedAt, 0, 10)}</td>
                 </tr>
                 <c:set var="prevTop" value="${item.topLevelCategoryName}" />
                 <c:set var="prevMiddle" value="" />
@@ -59,7 +61,7 @@
                 <tr class="middleLevel" data-id="${item.categoryName}" data-parent="${item.topLevelCategoryName}">
                   <td>중분류</td>
                   <td>${item.categoryName}</td>
-                  <td>${item.categoryCreatedAt}</td>
+                  <td>${fn:substring(item.categoryCreatedAt, 0, 10)}</td>
                 </tr>
                 <c:set var="prevMiddle" value="${item.categoryName}" />
               </c:if>
@@ -67,7 +69,7 @@
               <tr class="childLevel" data-parent="${item.categoryName}">
                 <td>소분류</td>
                 <td>${item.productName}</td>
-                <td>${item.productCreatedAt}</td>
+                <td>${fn:substring(item.productCreatedAt, 0, 10)}</td>
               </tr>
             </c:forEach>
           </tbody>

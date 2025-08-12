@@ -43,7 +43,7 @@
             <th>상품명</th>
             <th>상품가격</th>
             <th>재고수량</th>
-            <th>등록일시</th>
+            <th>등록일자</th>
             <th>수정</th>
             <th>저장</th>
           </tr>
@@ -82,7 +82,11 @@
                   <td><input type="text" name="productName" value="${product.productName}" readonly /></td>
                   <td><input type="number" name="price" value="${product.price}" readonly /></td>
                   <td><input type="number" name="stockQuantity" value="${product.stockQuantity}" readonly /></td>
-                  <td><input type="text" name="createdAt" value="${product.createdAt}" readonly /></td>
+                  <td>
+                    <input type="text" name="createdAt"
+                           value="${product.createdAt != null ? fn:substring(product.createdAt, 0, 10) : ''}"
+                           readonly />
+                  </td>
                   <td><button type="button" onclick="updateFn(this)">수정</button></td>
                   <td><button type="submit" class="saveBtn" style="display:none;">저장</button></td>
                 </form>
@@ -125,7 +129,11 @@
                           <td><input type="text" name="productName" value="${product.productName}" readonly /></td>
                           <td><input type="number" name="price" value="${product.price}" readonly /></td>
                           <td><input type="number" name="stockQuantity" value="${product.stockQuantity}" readonly /></td>
-                          <td><input type="text" name="createdAt" value="${product.createdAt}" readonly /></td>
+                          <td>
+                            <input type="text" name="createdAt"
+                                   value="${product.createdAt != null ? fn:substring(product.createdAt, 0, 10) : ''}"
+                                   readonly />
+                           </td>
                           <td><button type="button" onclick="updateFn(this)">수정</button></td>
                           <td><button type="submit" class="saveBtn" style="display:none;">저장</button></td>
                         </form>
@@ -158,7 +166,11 @@
             <td><input type="text"   name="addProductName" form="addForm-template" required /></td>
             <td><input type="number" name="addPrice" form="addForm-template" required /></td>
             <td><input type="number" name="addStockQuantity" form="addForm-template" required /></td>
-            <td><input type="text"   name="addCreatedAt" form="addForm-template" readonly /></td>
+            <td>
+                <input type="text" name="createdAt"
+                       value="${product.createdAt != null ? fn:substring(product.createdAt, 0, 10) : ''}"
+                       readonly />
+            </td>
             <td><button type="submit" class="addBtn" form="addForm-template">등록</button></td>
           </tr>
         </tbody>
