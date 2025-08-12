@@ -23,7 +23,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
       <div class="section-wrap">
         <form id="saleSave" action="saleOrder" method="post">
-          <input type="hidden" name="saleId" value="${maxSaleId}" />
           <input type="hidden" name="today" value="${today}" />
           <div class="btn-box">
             <input

@@ -34,7 +34,7 @@ public class SaleRepository {
         Map<String, Object> param = new HashMap<>();
         param.put("startDate", startDate);
         param.put("endDate", endDate);
-        param.put("stordId", storeId);
+        param.put("storeId", storeId);
         return sql.selectList("Sale.findByDateBetween", param);
     }
     // 판매내역 중 제일 큰 id 가져오기(주문번호 표시용)
@@ -42,9 +42,8 @@ public class SaleRepository {
         return sql.selectOne("Sale.findMaxSaleId");
     }
     // 판매상품을 등록할 수 있는 목록 생성
-    public void saleCreateStmt(String saleId, String storeId, LocalDate today, int subnum) {
+    public void saleCreateStmt(String storeId, LocalDate today, int subnum) {
         Map<String,Object> param = new HashMap<>();
-        param.put("saleId",saleId);
         param.put("today",today);
         param.put("storeId",storeId);
         param.put("subnum",subnum);
