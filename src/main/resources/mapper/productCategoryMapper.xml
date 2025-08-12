@@ -56,7 +56,6 @@
 
     <!-- 발주 중분류 (대분류 + 거래처별) young -->
     <select id="findSubCategoriesByParentIdAndClientId" parameterType="map" resultType="ProductCategory">
-        -- 1) 상품이 중분류에 직접 연결된 경우
         SELECT DISTINCT sub.*
         FROM productCategory sub
         JOIN product p ON p.categoryId = sub.categoryId
@@ -66,10 +65,65 @@
 
         UNION
 
-        -- 2) 상품이 대분류에 연결되었지만, 그 대분류의 하위 중분류 가져오기
         SELECT DISTINCT sub.*
         FROM productCategory sub
         WHERE sub.parentId = #{parentId}
+    </select>
+
+    <!-- 카테고리 + 하위카테고리 + 상품리스트를 한 번에 구성하는 ResultMap -->
+    <resultMap id="CategoryWithProductsMap" type="com.spring.stockCast.dto.ProductCategoryDTO">
+        <id     property="categoryId"    column="categoryId"/>
+        <result property="storeId"       column="storeId"/>
+        <result property="categoryName"  column="categoryName"/>
+        <result property="parentId"      column="parentId"/>
+        <result property="categoryLevel" column="categoryLevel"/>
+
+        <!-- 하위 카테고리 -->
+        <collection property="categoryList"
+                    ofType="com.spring.stockCast.dto.ProductCategoryDTO"
+                    select="pc_findChildren" column="categoryId"/>
+
+        <!-- 이 카테고리의 상품 목록 -->
+        <collection property="productList"
+                    ofType="com.spring.stockCast.dto.ProductDTO"
+                    select="pc_findProductsWithClient" column="categoryId"/>
+    </resultMap>
+
+    <!-- 루트(대분류) 카테고리: productName 필터는 선택사항 -->
+    <select id="pc_findTopByStore" parameterType="map" resultMap="CategoryWithProductsMap">
+        SELECT categoryId, storeId, categoryName, parentId, categoryLevel
+        FROM erp_db.productCategory
+        WHERE storeId = #{storeId}
+        AND categoryLevel = 1
+        ORDER BY categoryName
+    </select>
+
+    <!-- 자식 카테고리(중분류) -->
+    <select id="pc_findChildren" parameterType="int" resultMap="CategoryWithProductsMap">
+        SELECT categoryId, storeId, categoryName, parentId, categoryLevel
+        FROM erp_db.productCategory
+        WHERE parentId = #{categoryId}
+        ORDER BY categoryName
+    </select>
+
+    <!-- ★핵심: 해당 카테고리의 상품 + clientId 동시 조회 -->
+    <select id="pc_findProductsWithClient" parameterType="int"
+            resultType="com.spring.stockCast.dto.ProductDTO">
+        SELECT
+        p.productId,
+        p.storeId,
+        p.productName,
+        p.categoryId,
+        p.price,
+        p.stockQuantity,
+        p.description,
+        p.createdAt,
+        cp.clientId       AS clientId   -- ★ clientId 채워줌
+        FROM erp_db.product p
+        LEFT JOIN erp_db.client_product cp
+        ON cp.productId = p.productId    -- ★ 다:다 매핑 중 한 건이 잡혀도 clientId가 채워짐
+        WHERE p.categoryId = #{categoryId}
+        ORDER BY p.productName
     </select>
 
 </mapper>

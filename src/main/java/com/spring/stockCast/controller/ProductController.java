@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.stream.Collectors;
-
 import java.util.List;
 import java.util.Map;
 
@@ -32,65 +31,77 @@ public class ProductController {
     }
 
     @GetMapping("/list")
-    public String productList(Model model, HttpSession session,@RequestParam(value = "productName", required = false) String productName) {
+    public String productList(Model model, HttpSession session,
+                              @RequestParam(value = "productName", required = false) String productName) {
         int storeId = (int) session.getAttribute("selectedStoredId");
-        if (productName == null)
-        {
-            productName= "";
-        }
-        List<ProductCategoryDTO> categoryList = productCategoryService.categorySelect(storeId, productName);
-        model.addAttribute("categoryList", categoryList);
-        model.addAttribute("clients",clientService.findByStoreId(storeId));
+        if (productName == null) productName = "";
 
+        List<ProductCategoryDTO> categoryList = productCategoryService.categorySelect(storeId, productName);
+
+        model.addAttribute("categoryList", categoryList);
+        model.addAttribute("clients", clientService.findByStoreId(storeId));
+        System.out.println("storeId=" + storeId + " clients=" + clientService.findByStoreId(storeId));
         return "product";
     }
 
-
     @PostMapping("/update")
-    public String updateProduct(@RequestParam("productId") int productId,
+    public String updateProduct(@RequestParam("productId") Integer productId,
                                 @RequestParam("productName") String productName,
-                                @RequestParam("price") int price,
-                                @RequestParam("stockQuantity") int stockQuantity,
-                                @RequestParam("middleCategoryId") int middleCategoryId,
-                                @RequestParam("clientId") int clientId,
+                                @RequestParam("price") Integer price,
+                                @RequestParam("stockQuantity") Integer stockQuantity,
+                                @RequestParam("middleCategoryId") Integer middleCategoryId,
+                                @RequestParam("clientId") Integer clientId,
                                 HttpSession session) {
 
+        // 서버 측 기본값/검증 (빈 문자열 -> null 로 들어온 경우 방어)
+        if (productId == null || productName == null || productName.trim().isEmpty()
+                || price == null || stockQuantity == null
+                || middleCategoryId == null || clientId == null) {
+            // 잘못된 요청은 목록으로 되돌리되, 필요 시 에러 파라미터를 추가할 수 있습니다.
+            return "redirect:/product/list";
+        }
+
         int storeId = (int) session.getAttribute("selectedStoredId");
-        
+
         ProductDTO product = new ProductDTO();
         product.setProductId(productId);
-        product.setStoreId(storeId); // 수정중
-        product.setProductName(productName);
+        product.setStoreId(storeId);
+        product.setProductName(productName.trim());
         product.setPrice(price);
         product.setStockQuantity(stockQuantity);
         product.setCategoryId(middleCategoryId);
 
+        // 한 번만 업데이트(중복 호출 제거)
         productService.updateProductAndClient(product, clientId);
-        productService.updateProduct(product);
 
         return "redirect:/product/list";
     }
 
     @PostMapping("/add")
     public String addProduct(@RequestParam("addProductName") String productName,
-                             @RequestParam("addPrice") int price,
-                             @RequestParam("addStockQuantity") int stockQuantity,
-                             @RequestParam("addMiddleCategoryId") int middleCategoryId,
-                             @RequestParam("clientId") int clientId,
+                             @RequestParam("addPrice") Integer price,
+                             @RequestParam("addStockQuantity") Integer stockQuantity,
+                             @RequestParam("addMiddleCategoryId") Integer middleCategoryId,
+                             @RequestParam("clientId") Integer clientId,
                              HttpSession session) {
+
+        if (productName == null || productName.trim().isEmpty()
+                || price == null || stockQuantity == null
+                || middleCategoryId == null || clientId == null) {
+            return "redirect:/product/list";
+        }
 
         int storeId = (int) session.getAttribute("selectedStoredId");
 
         ProductDTO product = new ProductDTO();
-        product.setStoreId(storeId); // 수정중
-        product.setProductName(productName);
+        product.setStoreId(storeId);
+        product.setProductName(productName.trim());
         product.setPrice(price);
         product.setStockQuantity(stockQuantity);
-        product.setCategoryId(middleCategoryId); // ← 여기에 중분류 ID 넣는 게 핵심
+        product.setCategoryId(middleCategoryId);
 
         productService.addProduct(product);
         productService.addProductWithClient(product, clientId);
-
 
         return "redirect:/product/list";
     }
@@ -98,97 +109,38 @@ public class ProductController {
     @GetMapping("/search")
     public String searchProduct(@RequestParam("productName") String productName, Model model, HttpSession session){
         int storeId = (int) session.getAttribute("selectedStoredId");
-
         List<ProductCategoryDTO> productCategory = productCategoryService.categorySelect(storeId, productName);
-
         model.addAttribute("categoryList", productCategory);
         return "product";
     }
 
-
-    // 발주 카테고리별 상품 조회 young
     @GetMapping("/byCategory/{categoryId}")
     @ResponseBody
     public List<ProductDTO> getProductsByCategory(@PathVariable int categoryId) {
         return productService.findByCategoryId(categoryId);
     }
 
-    // 재고현황
     @GetMapping("/stockQuantity")
     public String stockQuantity(@RequestParam(value = "keyword", required = false) String keyword,
-                                @RequestParam(value = "month", required = false) Integer  month,
-                                Model model,
-                                HttpSession session) {
+                                @RequestParam(value = "month", required = false) Integer month,
+                                Model model, HttpSession session) {
         int storeId = (int) session.getAttribute("selectedStoredId");
-        if (month == null)
-        {
-            month = 0;
-        }
-        List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList(keyword, month,storeId);
+        if (month == null) month = 0;
+        List<StockQuantityDTO> stockQuantityList = productService.stockQuantityList(keyword, month, storeId);
 
         model.addAttribute("stockQuantityList", stockQuantityList);
         model.addAttribute("keyword", keyword);
         model.addAttribute("month", month);
-
         return "stockQuantity";
     }
-
-
-//    // 재고 현황 페이지
-//    @GetMapping("/stockQuantity")
-//    public String stockStatus(@RequestParam(required = false) Integer month,
-//                              @RequestParam(required = false) String productName,
-//                              Model model) {
-//
-//        // 월이 선택되지 않았을 경우, 현재 월을 기준으로 설정
-//        if (month == null) {
-//            month = LocalDate.now().getMonthValue();
-//        }
-//
-//        // 조회 기간 설정
-//        YearMonth yearMonth = YearMonth.now();
-//        if (month != null) {
-//            yearMonth = YearMonth.of(LocalDate.now().getYear(), month);
-//        }
-//        LocalDate startDate = yearMonth.atDay(1);
-//        LocalDate endDate = yearMonth.atEndOfMonth();
-//
-//        List<StockQuantityDTO> stockList = productService.getStockQuantityList(startDate, endDate, productName);
-//        model.addAttribute("stockList", stockList);
-//        model.addAttribute("selectedMonth", month);
-//        model.addAttribute("searchProductName", productName);
-//        return "stockQuantity"; // JSP 파일명을 stockQuantity로 통일
-//    }
-//
-//    // 재고 마감 처리 (POST 요청으로 변경)
-//    @PostMapping("/closeStock")
-//    @ResponseBody
-//    public String closeStock() {
-//        // 마감일은 다음달 1일로 설정
-//        LocalDate closeDate = LocalDate.now().plusMonths(1).withDayOfMonth(1);
-//
-//        try {
-//            // 마감 처리 로직 실행
-//            productService.closeStockByDate(closeDate);
-//            return "success";
-//        } catch (Exception e) {
-//            // 에러 발생 시 로그 기록 및 실패 반환
-//            return "failure";
-//        }
-//    }
-
-
 
     @GetMapping("/lowStock")
     @ResponseBody
     public List<StockQuantityDTO> getLowStockProducts(HttpSession session) {
         int storeId = (int) session.getAttribute("selectedStoredId");
-        List<StockQuantityDTO> allStock = productService.stockQuantityList(null,-1, storeId);
+        List<StockQuantityDTO> allStock = productService.stockQuantityList(null, -1, storeId);
         return allStock.stream()
                 .filter(p -> p.getStockQuantity() != null && p.getStockQuantity() < 20)
                 .collect(Collectors.toList());
     }
-
-
 }
-

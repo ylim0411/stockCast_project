@@ -39,10 +39,14 @@
     </select>
 
     <select id="selectProductsByCategoryId" parameterType="map" resultType="Product">
-        SELECT * FROM product
-        WHERE categoryId = #{categoryId}
-        AND storeId = #{storeId}
-        AND productName LIKE #{keyword};
+        SELECT
+        p.*,
+        cp.clientId AS clientId      <!-- 이 줄 중요 -->
+        FROM product p
+        LEFT JOIN client_product cp ON cp.productId = p.productId
+        WHERE p.categoryId = #{categoryId}
+        AND p.storeId   = #{storeId}
+        AND p.productName LIKE #{keyword}
     </select>
 
     <select id="findProductList" resultType="Product">
@@ -68,13 +72,10 @@
     <select id="findProductByName" parameterType="String" resultType="Product">
         SELECT
         p.*,
-        cp.clientId
-        FROM
-        product p
-        LEFT JOIN
-        client_product cp ON p.productId = cp.productId
-        WHERE
-        p.productName LIKE #{productName};
+        cp.clientId AS clientId
+        FROM erp_db.product p
+        LEFT JOIN erp_db.client_product cp ON p.productId = cp.productId
+        WHERE p.productName LIKE #{productName}
     </select>
 
     <!-- 발주 카테고리별 상품 조회 young -->
@@ -107,12 +108,14 @@
     <!-- 카테고리별 상품 조회 young -->
     <select id="findByCategoryId" parameterType="int" resultType="Product">
         SELECT
-        p.productId AS productId,
-        p.productName AS productName,
-        p.price,
-        p.stockQuantity AS stockQuantity,
-        p.categoryId AS categoryId
-        FROM product p
+        p.productId       AS productId,
+        p.productName     AS productName,
+        p.price           AS price,
+        p.stockQuantity   AS stockQuantity,
+        p.categoryId      AS categoryId,
+        cp.clientId       AS clientId
+        FROM erp_db.product p
+        LEFT JOIN erp_db.client_product cp ON cp.productId = p.productId
         WHERE p.categoryId = #{categoryId}
         ORDER BY p.productName
     </select>

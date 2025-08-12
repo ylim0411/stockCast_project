@@ -1,6 +1,5 @@
 package com.spring.stockCast.service;
 
-
 import com.spring.stockCast.dto.ProductCategoryDTO;
 import com.spring.stockCast.dto.ProductDTO;
 import com.spring.stockCast.repository.ClientRepository;
@@ -20,7 +19,6 @@ public class ProductService {
     private final ProductCategoryRepository productCategoryRepository;
     private final ClientRepository clientRepository;
 
-    // 거래처 ID로 상품 목록 조회
     public List<Map<String, Object>> getProductsByClientId(int clientId) {
         return productRepository.findProductsByClientId(clientId);
     }
@@ -33,7 +31,6 @@ public class ProductService {
         return productRepository.findProductList();
     }
 
-
     public void updateProduct(ProductDTO product) {
         productRepository.updateProduct(product);
     }
@@ -44,40 +41,35 @@ public class ProductService {
 
     public List<ProductDTO> findProductByName(String productName) {
         if (productName == null || productName.trim().isEmpty()) {
-            return productRepository.findProductList(); // 전체 조회
+            return productRepository.findProductList();
         }
         return productRepository.findProductByName("%" + productName + "%");
     }
 
-
-    // 발주 카테고리별 상품 조회 young
     public List<ProductCategoryDTO> findTopCategoriesByClientId(int clientId) {
         return productCategoryRepository.findTopCategoriesByClient(clientId);
     }
 
-    // 거래처별 대분류 조회 young
     public List<ProductCategoryDTO> findSubCategoriesByParentIdAndClientId(int parentId, int clientId) {
         return productCategoryRepository.findSubCategoriesByParentIdAndClientId(parentId, clientId);
     }
 
-    // 발주 카테고리별 상품 조회 young
     public List<ProductDTO> findByCategoryId(int categoryId) {
         return productRepository.findByCategoryId(categoryId);
     }
 
     public List<StockQuantityDTO> stockQuantityList(String keyword, int month, int storeId) {
         if (keyword != null && !keyword.trim().isEmpty()) {
-            if (month > 0)
-            {
-                return productRepository.findStockQuantityByKeywordAndMonth("%" + keyword + "%", month,storeId);
+            if (month > 0) {
+                return productRepository.findStockQuantityByKeywordAndMonth("%" + keyword + "%", month, storeId);
             }
-            return productRepository.findStockQuantityByKeyword("%" + keyword + "%",storeId);
+            return productRepository.findStockQuantityByKeyword("%" + keyword + "%", storeId);
         } else if (month > 0) {
-            return productRepository.findStockQuantityByMonth(month,storeId);
+            return productRepository.findStockQuantityByMonth(month, storeId);
         }
         return productRepository.stockQuantityList(storeId);
     }
-    // ho
+
     public List<ProductDTO> findProductsByCategoryId(int parentId) {
         return productRepository.findProductsByCategoryId(parentId);
     }
@@ -94,8 +86,4 @@ public class ProductService {
         productRepository.updateProduct(product);
         clientRepository.updateProductAndClient(clientId, product.getProductId());
     }
-
-
-
-
 }

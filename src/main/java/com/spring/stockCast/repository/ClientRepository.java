@@ -23,6 +23,7 @@ public class ClientRepository {
         return sql.selectList("Client.selectByStoreId", storeId);
     }
 
+
     // 해당 clientId가 존재하는지 여부 조회 young
     public int countByStoreIdAndClientId(int storeId, int clientId) {
         Map<String, Object> p = new HashMap<>();
@@ -80,4 +81,8 @@ public class ClientRepository {
         sql.insert("Client.addProductWithClient", param);
 
     }
+
+
+
+
 }
