@@ -61,7 +61,7 @@ public class GoogleController {
             return "redirect:/main";
         }
 
-
+        model.addAttribute("joinError", "회원가입 페이지로 넘어갑니다");
         model.addAttribute("email", userInfo.getEmail());
         model.addAttribute("name", userInfo.getName());
 

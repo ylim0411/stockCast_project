@@ -6,10 +6,7 @@ import com.spring.stockCast.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -43,5 +40,16 @@ public class StoreController {
         } catch (NumberFormatException e) {
             // 적절히 예외 처리 or 무시
         }
+    }
+    @PostMapping("/isUnique")
+    @ResponseBody
+    public boolean setSelectedStore(@RequestParam("storeName") String storeName) {
+        boolean isUnique = false;
+        try {
+            isUnique = storeService.isUnique(storeName);
+        } catch (NumberFormatException e) {
+            // 적절히 예외 처리 or 무시
+        }
+        return isUnique;
     }
 }

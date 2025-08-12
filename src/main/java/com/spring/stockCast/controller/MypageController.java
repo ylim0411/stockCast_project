@@ -21,9 +21,13 @@ public class MypageController {
 
     @GetMapping("/")
     public String mypageForm(
+            @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
             @RequestParam(value = "page", defaultValue = "1") int page,
             HttpSession session,
             Model model) {
+        if (searchKeyword == null) {
+            searchKeyword = "";
+        }
 
         AdminDTO adminDTO = (AdminDTO) session.getAttribute("loginedAdminDTO");
         if (adminDTO == null) {
@@ -31,7 +35,7 @@ public class MypageController {
         }
 
         int pageSize = 4; // 한 페이지에 보여줄 점포 수
-        int totalCount = storeService.countByAdminId(adminDTO.getAdminId());
+        int totalCount = storeService.countByAdminId(adminDTO.getAdminId(),searchKeyword);
         int totalPages = (int) Math.ceil((double) totalCount / pageSize);
 
         if (page > totalPages)
@@ -45,7 +49,7 @@ public class MypageController {
 
         int offset = (page - 1) * pageSize;
 
-        List<StoreDTO> storeList = storeService.selectPageByAdminId(adminDTO.getAdminId(), offset, pageSize);
+        List<StoreDTO> storeList = storeService.selectPageByAdminId(adminDTO.getAdminId(), offset, pageSize, searchKeyword);
 
         // 페이징 정보 생성
         PageDTO paging = new PageDTO();
@@ -56,6 +60,7 @@ public class MypageController {
 
         model.addAttribute("storeList", storeList);
         model.addAttribute("paging", paging);
+        model.addAttribute("searchKeyword", searchKeyword);
 
         return "mypage";
     }
