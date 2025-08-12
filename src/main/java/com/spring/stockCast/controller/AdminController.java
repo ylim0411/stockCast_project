@@ -34,7 +34,14 @@ public class AdminController {
         AdminDTO loginedAdminDTO = adminService.login(adminDTO);
         if (loginedAdminDTO == null)
         {
-            model.addAttribute("loginError", "로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
+            if(!adminService.checkId(adminDTO.getLoginId()))
+            {
+                model.addAttribute("loginError", "로그인에 실패했습니다. 비밀번호를 확인하세요.");
+            }
+            else
+            {
+                model.addAttribute("loginError", "로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
+            }
             return "login";
         }
         int selectedStoredId = adminService.getStoredId(loginedAdminDTO.getAdminId());

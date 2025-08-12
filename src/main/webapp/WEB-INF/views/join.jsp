@@ -1,6 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %> <%@ taglib
+prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <%@ taglib prefix="fn"
+uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -19,7 +19,6 @@
     />
   </head>
   <body>
-
     <div class="container">
       <div class="join-container">
         <div class="logo">
@@ -57,12 +56,13 @@
             <p id="pwErrorMsg" class="error-msg" style="display: none"></p>
             <div style="display: flex; justify-content: space-between">
               <input
-                type="number"
-                required
+                type="text"
+                id="businessNumber"
                 name="businessNumber"
                 placeholder="사업자 등록번호"
-                style="width: 68%; margin-top: 5px"
+                maxlength="12"
                 required
+                style="width: 68%; margin-top: 5px"
               />
               <button
                 type="button"
@@ -74,6 +74,10 @@
                 사업자 확인
               </button>
             </div>
+            <div
+              id="msg"
+              style="color: red; font-size: 12px; margin-top: 2px"
+            ></div>
             <input
               type="submit"
               disabled
@@ -86,6 +90,35 @@
       </div>
     </div>
     <script>
+      const input = document.getElementById("businessNumber");
+      const msg = document.getElementById("msg");
+      const pattern = /^\d{3}-\d{2}-\d{5}$/;
+
+      input.addEventListener("input", () => {
+        let val = input.value;
+
+        // 숫자와 하이픈만 남기기
+        val = val.replace(/[^0-9]/g, "");
+
+        // 하이픈 자동 삽입 (3자리-2자리-5자리)
+        if (val.length > 3 && val.length <= 5) {
+          val = val.slice(0, 3) + "-" + val.slice(3);
+        } else if (val.length > 5) {
+          val =
+            val.slice(0, 3) + "-" + val.slice(3, 5) + "-" + val.slice(5, 10);
+        }
+
+        input.value = val;
+
+        // 유효성 검사
+        if (pattern.test(val)) {
+          msg.textContent = "";
+          input.setCustomValidity("");
+        } else {
+          msg.textContent = "형식에 맞게 입력하세요: 123-45-67890";
+          input.setCustomValidity("형식에 맞게 입력하세요: 123-45-67890");
+        }
+      });
       // <c:if test="${not empty joinError}">alert('${joinError}')</c:if>;
       const pwInput = document.getElementById("loginPw");
       const pwErrorMsg = document.getElementById("pwErrorMsg");
@@ -108,10 +141,8 @@
         const submit = document.getElementById("submit");
         const business = document.getElementsByName("businessNumber")[0];
         var data = {
-          b_no: [business.value], // 사업자번호 "xxxxxxx" 로 조회 시,
+          b_no: [business.value.replace(/-/g, "")], // "123-45-67890" → "1234567890"
         };
-
-        console.log(business);
 
         $.ajax({
           url:
