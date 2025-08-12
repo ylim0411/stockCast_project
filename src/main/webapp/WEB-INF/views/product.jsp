@@ -39,6 +39,7 @@
             <th>대분류</th>
             <th>중분류</th>
             <!-- <th></th> -->
+            <th>거래처선택</th>
             <th>상품코드</th>
             <th>상품명</th>
             <th>상품가격</th>
@@ -78,6 +79,14 @@
                     </select>
                   </td>
                   <%-- <td><input type="hidden" name="storeId" value="${product.storeId}" readonly /></td> --%>
+                  <td>
+                    <select id="clientSelect" name="clientId" class="client-select" disabled>
+                      <option value="">거래처를 선택하세요</option>
+                      <c:forEach var="c" items="${clients}">
+                        <option value="${c.clientId}">${c.clientName}</option>
+                      </c:forEach>
+                    </select>
+                  </td>
                   <td><input type="text" name="productId" value="${product.productId}" readonly /></td>
                   <td><input type="text" name="productName" value="${product.productName}" readonly /></td>
                   <td><input type="number" name="price" value="${product.price}" readonly /></td>
@@ -125,6 +134,14 @@
                             </select>
                           </td>
                           <%-- <td><input type="hidden" name="storeId" value="${product.storeId}" readonly /></td> --%>
+                          <td>
+                            <select id="clientSelect" name="clientId" class="client-select" disabled>
+                              <option value="">거래처를 선택하세요</option>
+                              <c:forEach var="c" items="${clients}">
+                                <option value="${c.clientId}">${c.clientName}</option>
+                              </c:forEach>
+                            </select>
+                          </td>
                           <td><input type="text" name="productId" value="${product.productId}" readonly /></td>
                           <td><input type="text" name="productName" value="${product.productName}" readonly /></td>
                           <td><input type="number" name="price" value="${product.price}" readonly /></td>
@@ -162,6 +179,14 @@
               </select>
             </td>
             <!-- <td><input type="hidden" name="addStoreId" form="addForm-template" /></td> -->
+            <td>
+              <select id="clientSelect" name="clientId" class="client-select">
+                <option value="">거래처를 선택하세요</option>
+                <c:forEach var="c" items="${clients}">
+                  <option value="${c.clientId}">${c.clientName}</option>
+                </c:forEach>
+              </select>
+            </td>
             <td><input type="text"   name="addProductId" form="addForm-template" readonly /></td>
             <td><input type="text"   name="addProductName" form="addForm-template" required /></td>
             <td><input type="number" name="addPrice" form="addForm-template" required /></td>

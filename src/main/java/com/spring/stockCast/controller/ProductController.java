@@ -3,6 +3,7 @@ package com.spring.stockCast.controller;
 import com.spring.stockCast.dto.ProductCategoryDTO;
 import com.spring.stockCast.dto.ProductDTO;
 import com.spring.stockCast.dto.StockQuantityDTO;
+import com.spring.stockCast.service.ClientService;
 import com.spring.stockCast.service.ProductCategoryService;
 import com.spring.stockCast.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.util.Map;
 public class ProductController {
     private final ProductService productService;
     private final ProductCategoryService productCategoryService;
+    private final ClientService clientService;
 
     @GetMapping("/byClient")
     @ResponseBody
@@ -38,6 +40,7 @@ public class ProductController {
         }
         List<ProductCategoryDTO> categoryList = productCategoryService.categorySelect(storeId, productName);
         model.addAttribute("categoryList", categoryList);
+        model.addAttribute("clients",clientService.findByStoreId(storeId));
 
         return "product";
     }
@@ -49,6 +52,7 @@ public class ProductController {
                                 @RequestParam("price") int price,
                                 @RequestParam("stockQuantity") int stockQuantity,
                                 @RequestParam("middleCategoryId") int middleCategoryId,
+                                @RequestParam("clientId") int clientId,
                                 HttpSession session) {
 
         int storeId = (int) session.getAttribute("selectedStoredId");
@@ -59,8 +63,9 @@ public class ProductController {
         product.setProductName(productName);
         product.setPrice(price);
         product.setStockQuantity(stockQuantity);
-        product.setCategoryId(middleCategoryId); // ← 여기에 중분류 ID 넣는 게 핵심
+        product.setCategoryId(middleCategoryId);
 
+        productService.updateProductAndClient(product, clientId);
         productService.updateProduct(product);
 
         return "redirect:/product/list";
@@ -71,6 +76,7 @@ public class ProductController {
                              @RequestParam("addPrice") int price,
                              @RequestParam("addStockQuantity") int stockQuantity,
                              @RequestParam("addMiddleCategoryId") int middleCategoryId,
+                             @RequestParam("clientId") int clientId,
                              HttpSession session) {
 
         int storeId = (int) session.getAttribute("selectedStoredId");
@@ -83,6 +89,8 @@ public class ProductController {
         product.setCategoryId(middleCategoryId); // ← 여기에 중분류 ID 넣는 게 핵심
 
         productService.addProduct(product);
+        productService.addProductWithClient(product, clientId);
+
 
         return "redirect:/product/list";
     }

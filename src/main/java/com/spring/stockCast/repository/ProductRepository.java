@@ -100,6 +100,7 @@ public class ProductRepository {
     }
 
 
+
 //    public List<StockQuantityDTO> stockList(LocalDate startDate, LocalDate endDate, String productName) {
 //        Map<String, Object> param = new HashMap<>();
 //        param.put("startDate", startDate);
