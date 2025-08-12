@@ -227,6 +227,7 @@ ul li.difultImg img {
 }
 
 input[type='text']:focus:not([readonly]),
+input[type='email']:focus:not([readonly]),
 input[type='password']:focus:not([readonly]),
 textarea:focus {
   border-color: var(--color-primary);
@@ -564,12 +565,12 @@ header .userContext .on {
   border-radius: var(--border-radius-base5);
   cursor: pointer;
   transition: 0.35s;
+  /* height: 30.5px; */
 }
 .submit-btn {
   padding: 7px 12px;
   background-color: var(--color-secondary);
   color: var(--color-white);
-  /* margin: 10px; */
   transition: background-color 0.35s ease;
 }
 
@@ -1577,6 +1578,11 @@ select {
 
 .line-main {
   background: rgba(25, 118, 210, 1);
+}
+
+/*  회계 관리  ---------------------------------------------------------------------------------------- */
+.ac-point {
+  font-weight: 500;
 }
 
 /* 고객 분석  ---------------------------------------------------------------------------------------- */
