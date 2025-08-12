@@ -1,8 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <c:if test="${joinError != null && fn:trim(joinError) != ''}">
+      <script>
+        alert('<c:out value="${joinError}" escapeXml="true" />');
+      </script>
+    </c:if>
     <meta charset="UTF-8" />
     <title>save</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
@@ -12,11 +19,7 @@
     />
   </head>
   <body>
-    <c:if test="${not empty joinError}">
-        <script>
-            alert("${joinError}");
-        </script>
-    </c:if>
+
     <div class="container">
       <div class="join-container">
         <div class="logo">
