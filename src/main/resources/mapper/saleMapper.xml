@@ -9,7 +9,8 @@
         JOIN sale_product sp ON s.saleId = sp.saleId
         JOIN product p ON p.productId = sp.productId
         JOIN productcategory pc ON pc.categoryId = p.categoryId
-        WHERE s.saleDate BETWEEN #{startDate} AND #{endDate};
+        WHERE s.saleDate BETWEEN #{startDate} AND #{endDate}
+        AND s.storeId = #{storeId};
     </select>
     <!-- 선택한 년도에 해당하는 판매목록 표시 ho -->
     <select id="findByYear" parameterType="String" resultType="Sale">
@@ -17,7 +18,7 @@
         JOIN sale_product sp ON s.saleId = sp.saleId
         JOIN product p ON p.productId = sp.productId
         JOIN productcategory pc ON pc.categoryId = p.categoryId
-        WHERE SUBSTR(s.saleDate,1,4) = #{year}
+        WHERE SUBSTR(s.saleDate,1,4) = #{year} AND s.storeId = #{storeId}
         ORDER BY s.saleDate;
     </select>
     <!-- 판매기록이 있는 년도만 조회 ho -->
@@ -30,8 +31,8 @@
     </select>
     <!-- sale 항목 db에 추가 ho -->
     <insert id="saleCreateStmt" parameterType="map">
-        INSERT INTO sale(saleId,storeId,saleDate)
-        VALUES (#{saleId},#{storeId},#{today})
+        INSERT INTO sale(saleId,storeId,saleDate,saleSubnum)
+        VALUES (#{saleId},#{storeId},#{today},#{subnum})
     </insert>
     <!-- 위에서 등록한 sale 항목에 구매상품 등록 ho -->
     <insert id="saleSave" parameterType="map">
@@ -90,7 +91,12 @@
     <select id="findByMonth" parameterType="String" resultType="Sale">
         SELECT s.saleDate, sp.salePrice, sp.saleQty FROM sale s
         JOIN sale_product sp ON sp.saleId = s.saleId
-        WHERE SUBSTR(s.saleDate,6,2) = #{currentMonth}
+        WHERE SUBSTR(s.saleDate,1,7) = #{currentMonth}
         AND s.storeId = #{storeId}
+    </select>
+    <!-- 점포별 주문번호 최대값 조회 -->
+    <select id="findStoreSubNum" parameterType="String" resultType="int">
+        SELECT IFNULL(MAX(saleSubnum), 0) FROM sale
+        WHERE storeId = #{storeId}
     </select>
 </mapper>

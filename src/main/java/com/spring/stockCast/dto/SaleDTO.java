@@ -12,4 +12,5 @@ public class SaleDTO {
     private int salePrice;
     private int saleQty;
     private String categoryName;
+    private int saleSubnum;
 }
