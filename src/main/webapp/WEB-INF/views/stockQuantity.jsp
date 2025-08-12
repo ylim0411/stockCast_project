@@ -29,7 +29,7 @@
               <input type="text" name="keyword" placeholder="상품명 검색"
                      value="${param.keyword != null ? param.keyword : ''}" />
               <button type="submit" class="btn btn-blue">검색</button>
-              <select name="month" style="width:150px;" onchange="this.form.submit()">
+              <select name="month" style="width:150px;" onchange="onMonthChange()">
                 <option value="">월간 전체</option>
                 <c:forEach var="m" begin="1" end="12">
                   <option value="${m}" <c:if test="${param.month != null && param.month == m}">selected</c:if>>
@@ -99,31 +99,15 @@
         </table>
       </div>
     </div>
-   
+
   </div>
-
   <script>
-    $(function () {
-      $("#btnCloseMonth").click(function () {
-        const selectedMonth = $("select[name='month']").val();
-
-        // 서버에 마감 요청 전송 (POST)
-        $.ajax({
-          url: "${pageContext.request.contextPath}/product/close",
-          method: "POST",
-          contentType: "application/json",
-          data: JSON.stringify({ month: selectedMonth }),
-          success: function (response) {
-            alert("마감 처리 완료되었습니다.");
-            // 마감 후 새로고침 또는 목록 다시 불러오기
-            location.reload();
-          },
-          error: function () {
-            alert("마감 처리 중 오류가 발생했습니다.");
-          },
-        });
-      });
-    });
+    function onMonthChange() {
+      const form = document.getElementById('searchForm');
+      const kw = form.querySelector("input[name='keyword']");
+      kw.value = "";
+      form.submit();
+    }
   </script>
 </body>
 </html>
