@@ -110,14 +110,9 @@
       $("#btnCloseMonth").click(function () {
         const selectedMonth = $("select[name='month']").val();
 
-        if (!selectedMonth) {
-          alert("마감할 월을 선택하세요.");
-          return;
-        }
-
         // 서버에 마감 요청 전송 (POST)
         $.ajax({
-          url: "${pageContext.request.contextPath}/stock/close",
+          url: "${pageContext.request.contextPath}/product/close",
           method: "POST",
           contentType: "application/json",
           data: JSON.stringify({ month: selectedMonth }),
