@@ -33,13 +33,14 @@ prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> <%@ include file="/W
             <button type="submit" class="btn btn-blue">조회</button>
           </div>
           <div class="searchForm">
-            <select style="width: 120px" name="year" class="saleYear-select">
-              <option value="">조회년도</option>
+            <select style="width: 120px" name="year" class="saleYear-select" onchange="this.form.submit()">
+              <option value="" selected>${selectedYear}</option>
               <c:forEach var="year" items="${saleYear}">
-                <option value="${year}">${year}</option>
+                <c:if test="${year != selectedYear}">
+                 <option value="${year}">${year}</option>
+                </c:if>
               </c:forEach>
             </select>
-            <button type="submit" class="btn btn-blue">검색</button>
           </div>
         </form>
 

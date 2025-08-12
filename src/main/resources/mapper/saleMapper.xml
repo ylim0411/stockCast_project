@@ -91,5 +91,6 @@
         SELECT s.saleDate, sp.salePrice, sp.saleQty FROM sale s
         JOIN sale_product sp ON sp.saleId = s.saleId
         WHERE SUBSTR(s.saleDate,6,2) = #{currentMonth}
+        AND s.storeId = #{storeId}
     </select>
 </mapper>
