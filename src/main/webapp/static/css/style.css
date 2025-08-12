@@ -1585,7 +1585,7 @@ select {
 
 /* 판매 실적 그래프  ---------------------------------------------------------------------------------------- */
 /* ho */
-.saleYear-select {
+.Year-select {
   padding: 5px;
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-base5);
@@ -1671,7 +1671,7 @@ select {
 .chart-card {
   width: 50%;
   min-width: 500px;
-  height: 90%;
+  height: 100%;
   background-color: var(--color-white);
   border-radius: var(--border-radius-base20);
   display: flex;
