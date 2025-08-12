@@ -37,8 +37,10 @@ public class AdminController {
             model.addAttribute("loginError", "로그인에 실패했습니다. 아이디와 비밀번호를 확인하세요.");
             return "login";
         }
+        int selectedStoredId = adminService.getStoredId(loginedAdminDTO.getAdminId());
         session.setAttribute("loginedAdminDTO", loginedAdminDTO);
-        session.setAttribute("selectedStoredId", 1);
+
+        session.setAttribute("selectedStoredId", selectedStoredId);
         return "redirect:/main";
 
     }

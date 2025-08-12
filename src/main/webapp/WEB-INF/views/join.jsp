@@ -74,6 +74,7 @@
               business.readOnly = true;
 
               submit.disabled = false;
+              alert("사업자 번호가 인증 되었습니다");
             }
             else {
                 alert("등록되지 않은 사업자 번호입니다");
