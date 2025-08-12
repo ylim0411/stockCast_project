@@ -16,6 +16,20 @@
       .hidden {
         display: none;
       }
+
+      .arrow {
+        display: inline-block;
+        transition: transform 0.3s ease;
+      }
+
+      .arrow.rotate {
+        transform: rotate(90deg); /* 오른쪽 화살표 -> 아래로 */
+      }
+
+      .arrow.rotate-up {
+        transform: rotate(-90deg); /* 오른쪽 화살표 -> 위로 */
+      }
+
     </style>
   </head>
   <body>
@@ -28,8 +42,8 @@
         <!-- 카테고리 등록 버튼 -->
         <div class="form-container">
           <div class="btn-box">
-            <button id="middle" class="btn btn-blue">중분류<span>&#10095;</span></button>
-            <button id="child" class="btn btn-blue">소분류<span>&#10095;</span></button>
+            <button id="middle" class="btn btn-blue">중분류 <span class="arrow rotate-up">&#10095;</span></button>
+            <button id="child" class="btn btn-blue">소분류 <span class="arrow rotate-up">&#10095;</span></button>
           </div>
           <button class="btn btn-blue-b">카테고리 등록</button>
         </div>
@@ -77,19 +91,19 @@
 
         <!-- 카테고리 등록 모달창 -->
         <div id="categoryModal" class="modal hidden">
-          <div class="modal-content" style="width: 880px; display: flex; flex-direction: column; gap: 20px">
+          <div class="modal-content">
             <h2>상품 카테고리 편집</h2>
 
-            <div style="display: flex; gap: 12px; justify-content: space-between">
+            <div>
               <!-- 대분류 -->
-              <div style="flex: 1">
+              <div>
                 <h4>대분류(<span id="topCount">0</span>)</h4>
                 <ul id="topCategoryList" class="category-list"></ul>
                 <input type="text" id="topInput" class="category-input" placeholder="대분류 입력 후 Enter" />
               </div>
 
               <!-- 중분류 -->
-              <div style="flex: 1">
+              <div>
                 <h4>중분류(<span id="middleCount">0</span>)</h4>
                 <ul id="middleCategoryList" class="category-list"></ul>
                 <input
@@ -102,7 +116,7 @@
               </div>
 
               <!-- 소분류 -->
-              <div style="flex: 1">
+              <div>
                 <h4>소분류(<span id="childCount">0</span>)</h4>
                 <ul id="childCategoryList" class="category-list"></ul>
                 <input type="text" id="childInput" class="category-input" placeholder="소분류 입력 후 Enter" disabled />
@@ -119,7 +133,7 @@
               <input type="hidden" id="editId" />
               <input type="hidden" id="editType" />
               <input type="text" id="categoryEditInput" class="category-input" placeholder="카테고리명 수정" disabled />
-              <div style="margin-top: 8px; text-align: right">
+              <div>
                 <button type="button" class="btn btn-blue" id="saveEditBtn" disabled>저장</button>
                 <button type="button" class="btn btn-red" id="cancelEditBtn" disabled>취소</button>
               </div>
@@ -161,25 +175,29 @@
         $('#middle').click(function () {
           const middleRows = $('.middleLevel');
           const childRows = $('.childLevel');
+          const arrow = $(this).find('.arrow');
           const isHidden = middleRows.first().hasClass('hidden');
+
           if (isHidden) {
             middleRows.removeClass('hidden');
-            $(this).text('중분류 모두 접기');
+            arrow.removeClass('rotate-up').addClass('rotate'); // 아래 방향
           } else {
             middleRows.addClass('hidden');
             childRows.addClass('hidden');
-            $(this).text('중분류 모두 펼치기');
+            arrow.removeClass('rotate').addClass('rotate-up'); // 위 방향
           }
         });
+
         $('#child').click(function () {
           const childRows = $('.childLevel');
           const isHidden = childRows.first().hasClass('hidden');
+          const arrow = $(this).find('.arrow');
           if (isHidden) {
             childRows.removeClass('hidden');
-            $(this).text('소분류 모두 접기');
+            arrow.removeClass('rotate-up').addClass('rotate'); // 아래 방향
           } else {
             childRows.addClass('hidden');
-            $(this).text('소분류 모두 펼치기');
+            arrow.removeClass('rotate').addClass('rotate-up'); // 위 방향
           }
         });
 
