@@ -7,6 +7,7 @@ import com.spring.stockCast.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,14 +18,15 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
 
     // 고객정보 조회 ho
-    public List<CustomerDTO> findAll() {
-        return customerRepository.findAll();
+    public List<CustomerDTO> findAll(String storeId) {
+        return customerRepository.findAll(storeId);
     }
 
     // 고객 성별 및 연령대 반환 ho
-    public Map<String,Integer> findCustomer(){
+    public Map<String,Integer> findCustomer(HttpSession session){
+        String storeId = session.getAttribute("selectedStoredId").toString(); // StoreController 에서 저장한 id 받아오기
         Map<String,Integer> result = new HashMap<>();
-        List<CustomerDTO> customers = findAll();
+        List<CustomerDTO> customers = findAll(storeId);
         int man=0,woman =0,etc=0;
         int age_10=0,age_20=0,age_30=0,age_40=0,ageEtc=0;
         for (CustomerDTO customer : customers){

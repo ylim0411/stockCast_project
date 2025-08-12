@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -53,14 +54,24 @@ public class SaleService {
     public int findProductStock(String storeId, String productName) { return saleRepository.findProductStock(storeId, productName); }
     // 전체 판매내역의 카테고리 리스트 가져오기(도넛차트 구성용)
     public Map<String, Integer> findCategory(List<SaleDTO> saleList) {
+        // 1. 데이터를 집계하여 categorySales 맵 생성
         Map<String, Integer> categorySales = new HashMap<>();
         for (SaleDTO sale : saleList) {
             String categoryName = sale.getCategoryName();
             int saleQty = sale.getSaleQty();
-
             categorySales.put(categoryName, categorySales.getOrDefault(categoryName, 0) + saleQty);
         }
-        return categorySales;
+        // 2. Stream API를 사용하여 value가 높은 순으로 정렬된 새로운 맵 반환
+        return categorySales.entrySet().stream()
+                // Map.Entry의 value를 기준으로 내림차순 정렬
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                // 정렬된 결과를 LinkedHashMap으로 수집 (순서 보장)
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue,
+                        LinkedHashMap::new
+                ));
     }
     // 점포별 주문번호 가져오기
     public int findStoreSubNum(String storeId){
