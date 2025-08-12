@@ -21,16 +21,20 @@ public class SaleRepository {
         return sql.selectList("Sale.findSaleYear");
     }
     // 해당 년도에 해당하는 판매내역 불러오기
-    public List<SaleDTO> findByYear(String year) {
-        return sql.selectList("Sale.findByYear",year);
+    public List<SaleDTO> findByYear(String year, String storeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("year", year);
+        param.put("storeId", storeId);
+        return sql.selectList("Sale.findByYear",param);
     }
     // 이번달 판매목록 불러오기
     public List<SaleDTO> findByMonth(Map<String, Object> param) { return sql.selectList("Sale.findByMonth", param); }
     // 기간 판매내역 불러오기
-    public List<SaleDTO> findByDate(LocalDate startDate, LocalDate endDate) {
+    public List<SaleDTO> findByDate(LocalDate startDate, LocalDate endDate, String storeId) {
         Map<String, Object> param = new HashMap<>();
         param.put("startDate", startDate);
         param.put("endDate", endDate);
+        param.put("stordId", storeId);
         return sql.selectList("Sale.findByDateBetween", param);
     }
     // 판매내역 중 제일 큰 id 가져오기(주문번호 표시용)
@@ -38,11 +42,12 @@ public class SaleRepository {
         return sql.selectOne("Sale.findMaxSaleId");
     }
     // 판매상품을 등록할 수 있는 목록 생성
-    public void saleCreateStmt(String saleId, String storeId, LocalDate today) {
+    public void saleCreateStmt(String saleId, String storeId, LocalDate today, int subnum) {
         Map<String,Object> param = new HashMap<>();
         param.put("saleId",saleId);
         param.put("today",today);
         param.put("storeId",storeId);
+        param.put("subnum",subnum);
         sql.insert("saleCreateStmt",param);
     }
     // 판매상품 DB에 저장
@@ -80,5 +85,9 @@ public class SaleRepository {
     // 구매자 등록
     public void insertCustomer(Map<String, Object> param) {
         sql.insert("Customer.insertCustomer",param);
+    }
+    // 점포별 주문번호 가져오기
+    public int findStoreSubNum(String storeId) {
+        return sql.selectOne("Sale.findStoreSubNum",storeId);
     }
 }

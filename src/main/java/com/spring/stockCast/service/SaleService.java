@@ -25,7 +25,7 @@ public class SaleService {
         return saleRepository.findSaleYear();
     }
     // 해당 년도에 해당하는 판매내역 불러오기
-    public List<SaleDTO> findByYear(String year) { return saleRepository.findByYear(year); }
+    public List<SaleDTO> findByYear(String year, String storeId) { return saleRepository.findByYear(year,storeId); }
     // 이번달 판매목록 불러오기
     public List<SaleDTO> findByMonth(String currentMonth, String storeId) {
         Map<String,Object> param = new HashMap<>();
@@ -34,7 +34,7 @@ public class SaleService {
         return saleRepository.findByMonth(param);
     }
     // 기간 판매내역 불러오기
-    public List<SaleDTO> findByDate(LocalDate startDate, LocalDate endDate) { return saleRepository.findByDate(startDate,endDate); }
+    public List<SaleDTO> findByDate(LocalDate startDate, LocalDate endDate, String storeId) { return saleRepository.findByDate(startDate,endDate,storeId); }
     // 점포 아이디에 맞는 상품목록 가져오기
     public List<ProductDTO> findProductSaleAll(String storeId){ return productRepository.findProductSaleAll(storeId);};
     // 판매내역 중 제일 최신의 saleId 가져오기
@@ -61,6 +61,10 @@ public class SaleService {
             categorySales.put(categoryName, categorySales.getOrDefault(categoryName, 0) + saleQty);
         }
         return categorySales;
+    }
+    // 점포별 주문번호 가져오기
+    public int findStoreSubNum(String storeId){
+        return (saleRepository.findStoreSubNum(storeId)+1);
     }
     // 연도별 매출액 일별 조회(꺾은선 그래프 구성용)
     public Map<String, Integer> saleDay(List<SaleDTO> saleList) {
@@ -106,6 +110,7 @@ public class SaleService {
         String findDate="";
         List<SaleDTO> sales;
         String sessionYear = (String) session.getAttribute("selectedYear"); // 당월, 분기 등 선택시 적용
+        String storeId = session.getAttribute("selectedStoredId").toString(); // StoreController 에서 저장한 id 받아오기
         // 세션에 year 있으면 가져와서 적용
         if (year != null && !year.isEmpty()) {
             session.setAttribute("selectedYear", year);
@@ -119,17 +124,17 @@ public class SaleService {
         }
         // 날짜 필터가 있을 때만 검색
         if (startDate != null && endDate != null) {
-            sales = findByDate(startDate, endDate); // 기간 판매내역 불러오기
+            sales = findByDate(startDate, endDate,storeId); // 기간 판매내역 불러오기
             findDate = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"~"+endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }
         // 연도 선택시에만 검색
         else if(year != null && !year.isEmpty()){
-            sales = findByYear(year); // 해당 년도에 해당하는 판매내역 불러오기
+            sales = findByYear(year,storeId); // 해당 년도에 해당하는 판매내역 불러오기
             findDate = year;
         }else {
             LocalDate today = LocalDate.now(); // 오늘날짜 불러오기
             String currentYear = String.valueOf(today.getYear()); // 오늘날짜의 연도 추출
-            sales = findByYear(currentYear); // 올해 거래내역 불러오기
+            sales = findByYear(currentYear,storeId); // 올해 거래내역 불러오기
         }
         Map<String,Object> result = new HashMap<>();
         result.put("findDate",findDate); // 화면에 표시될 선택된 날짜
@@ -145,21 +150,20 @@ public class SaleService {
 
         String storeId = session.getAttribute("selectedStoredId").toString(); // StoreController 에서 저장한 id 받아오기
         List<ProductDTO> products = findProductSaleAll(storeId); // 점포 id를 통해 점포 상품들 불러오기
-
         Map<String,Object> result = new HashMap<>();
         for(ProductDTO dto : products){
             result.put(dto.getProductName(),dto.getPrice()); // 상품명(key), 가격(value) 입력
         }
         result.put("today",LocalDate.now()); // 오늘날짜 전달
         result.put("products",products); // 점포 id를 통해 점포 상품들 불러오기
-        result.put("maxSaleId",(findMaxSaleId()+1)); // 주문번호 표시
+        result.put("maxSaleId",findStoreSubNum(storeId)); // 주문번호 표시
         result.put("storeName",findStoreName(storeId)); // 점포이름 전달
         return result;
     }
 
     // 판매상품을 등록할 수 있는 목록 생성
-    public void saleCreateStmt(String saleId, String storeId, LocalDate today) {
-        saleRepository.saleCreateStmt(saleId,storeId,today);
+    public void saleCreateStmt(String saleId, String storeId, LocalDate today, int subnum) {
+        saleRepository.saleCreateStmt(saleId,storeId,today,subnum);
     }
 
     // 판매상품 DB에 저장

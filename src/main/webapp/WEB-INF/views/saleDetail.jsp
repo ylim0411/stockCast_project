@@ -51,10 +51,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           </div>
         </div>
 
-        <!-- <div class="accountNum">
-         <p>입금 계좌번호 : 933502 - 00 - 541827 (국민-예금주 : ${client.ceoName})</p>
-        </div> -->
-
         <div class="section-box section-box2 items-section">
           <div class="section-header">거래 품목</div>
           <div class="sale-items">
