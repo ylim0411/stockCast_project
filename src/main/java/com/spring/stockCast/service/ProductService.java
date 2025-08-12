@@ -77,7 +77,7 @@ public class ProductService {
         }
         return productRepository.stockQuantityList(storeId);
     }
-
+    // ho
     public List<ProductDTO> findProductsByCategoryId(int parentId) {
         return productRepository.findProductsByCategoryId(parentId);
     }
