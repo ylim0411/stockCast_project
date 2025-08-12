@@ -769,6 +769,53 @@ ul.ranking li:nth-child(3) span {
   color: var(--color-white);
 }
 
+/* 수익. 비용 통계 차트  -------------------------------------*/
+.sales-chart-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sales-chart-box .chart-title {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.sales-chart-box .chart-box {
+  width: 100%;
+}
+.sales-chart-box #moneyChart {
+  width: 100% !important;
+  height: 360px !important;
+}
+
+.sales-chart-box .chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.sales-chart-box .chart-legend .dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.sales-chart-box .chart-legend .revenue {
+  background-color: var(--color-primary);
+}
+
+.sales-chart-box .chart-legend .expense {
+  background-color: var(--color-red);
+}
+
 /* 아래 영역(검색+테이블+페이징) -------------------------------------*/
 .section-wrap {
   height: auto;
