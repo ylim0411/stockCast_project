@@ -1428,7 +1428,7 @@ select {
 }
 
 .search-period-info {
-  text-align: right;
+  text-align: left;
   height: 20px;
   font-size: var(--font-size-base);
   color: var(--color-black);

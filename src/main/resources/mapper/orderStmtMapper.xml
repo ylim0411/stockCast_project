@@ -171,6 +171,7 @@
         FROM orderStmt o
         JOIN purchaseOrder p ON p.orderId = o.orderId
         WHERE SUBSTR(o.orderDate, 6, 2) = #{currentMonth}
+        AND o.storeId = #{storeId}
     </select>
 
 </mapper>
