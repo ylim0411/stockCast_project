@@ -13,5 +13,5 @@ public class ProductDTO {
     private int stockQuantity;
     private String description;
     private Timestamp createdAt;
-    private String clientId;
+    private Integer clientId;
 }

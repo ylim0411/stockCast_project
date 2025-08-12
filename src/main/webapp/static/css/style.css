@@ -929,39 +929,66 @@ th {
 }
 
 /* 상품 테이블 ------------------------------------------------- */
+.product-table th input,
+.product-table td input,
+.product-table td select {
+  width: 100% !important;
+  text-align: center;
+}
+
 .product-table th:nth-child(1),
-.product-table td:nth-child(1),
+.product-table td:nth-child(1) {
+  width: 15%;
+  max-width: 150px;
+}
+
 .product-table th:nth-child(2),
-.product-table td:nth-child(2),
+.product-table td:nth-child(2) {
+  width: 13%;
+  max-width: 130px;
+}
+
 .product-table th:nth-child(3),
 .product-table td:nth-child(3) {
-  width: 12%;
-  max-width: 120px;
+  width: 13%;
+  max-width: 130px;
 }
 
 .product-table th:nth-child(4),
-.product-table td:nth-child(4),
-.product-table th:nth-child(7),
-.product-table td:nth-child(7) {
-  width: 3%;
-  max-width: 30px;
-  border: 1px solid #f00;
+.product-table td:nth-child(4) {
+  width: 5%; 
+  max-width: 50px;
 }
 
 .product-table th:nth-child(5),
-.product-table td:nth-child(5),
-.product-table th:nth-child(8),
-.product-table td:nth-child(8) {
-  width: 20%;
-  max-width: 200px;
+.product-table td:nth-child(5) {
+  width: 18%;
+  max-width: 180px;
 }
 
 .product-table th:nth-child(6),
-.product-table td:nth-child(6),
+.product-table td:nth-child(6) {
+  width: 10%;
+  max-width: 100px;
+}
+
+.product-table th:nth-child(7),
+.product-table td:nth-child(7) {
+  width: 5%;
+  max-width: 50px;
+}
+
+.product-table th:nth-child(8),
+.product-table td:nth-child(8) {
+  width: 10%;
+  max-width: 100px;
+}
+
+/* 아홉 번째 열: 관리 */
 .product-table th:nth-child(9),
 .product-table td:nth-child(9) {
-  width: 16%;
-  max-width: 160px;
+  width: 11%;
+  max-width: 110px;
 }
 
 /* 상품 카테고리 테이블 ------------------------------------------------- */

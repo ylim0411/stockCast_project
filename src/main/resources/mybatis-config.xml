@@ -8,7 +8,7 @@
         <typeAlias type="com.spring.stockCast.dto.AccountingDTO" alias="Accounting"/>
         <typeAlias type="com.spring.stockCast.dto.AdminDTO" alias="Admin"/>
         <typeAlias type="com.spring.stockCast.dto.ClientDTO" alias="Client"/>
-        <typeAlias type="com.spring.stockCast.dto.ClientProductDTO" alias="ClientProduct"/> <!-- 추가 -->
+        <typeAlias type="com.spring.stockCast.dto.ClientProductDTO" alias="ClientProduct"/>
         <typeAlias type="com.spring.stockCast.dto.CustomerDTO" alias="Customer"/>
         <typeAlias type="com.spring.stockCast.dto.PurchaseOrderDTO" alias="PurchaseOrder"/>
         <typeAlias type="com.spring.stockCast.dto.OrderStmtDTO" alias="OrderStmt"/>
