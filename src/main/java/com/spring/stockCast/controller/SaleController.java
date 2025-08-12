@@ -49,7 +49,6 @@ public class SaleController {
     @PostMapping("/saleOrder")
     public String saleOrder(
             @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate today,
-            @RequestParam(required = false) String saleId,
             @RequestParam(value = "productName[]", required = false) List<String> productName,
             @RequestParam(value = "purchaseQty[]", required = false) List<Integer> purchaseQty,
             @RequestParam(required = false) String gender,
@@ -60,7 +59,8 @@ public class SaleController {
             // 주문번호에 의한 목록 등록 (이 코드가 루프 밖에 있어야 함)
             String storeId = session.getAttribute("selectedStoredId").toString(); // StoreController 에서 저장한 id 받아오기
             int subnum = saleService.findStoreSubNum(storeId);
-            saleService.saleCreateStmt(saleId,storeId, today,subnum);
+            saleService.saleCreateStmt(storeId, today,subnum);
+            String saleId = String.valueOf(saleService.findMaxSaleId());
             // 상품과 수량 리스트를 한 번의 루프로 처리
             for (int i = 0; i < productName.size(); i++) {
                 // NullPointerException 방지를 위해 인덱스 유효성 검사 추가

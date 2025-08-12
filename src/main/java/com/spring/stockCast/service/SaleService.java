@@ -124,7 +124,7 @@ public class SaleService {
         }
         // 날짜 필터가 있을 때만 검색
         if (startDate != null && endDate != null) {
-            sales = findByDate(startDate, endDate,storeId); // 기간 판매내역 불러오기
+            sales = findByDate(startDate, endDate, storeId); // 기간 판매내역 불러오기
             findDate = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))+"~"+endDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
         }
         // 연도 선택시에만 검색
@@ -162,8 +162,8 @@ public class SaleService {
     }
 
     // 판매상품을 등록할 수 있는 목록 생성
-    public void saleCreateStmt(String saleId, String storeId, LocalDate today, int subnum) {
-        saleRepository.saleCreateStmt(saleId,storeId,today,subnum);
+    public void saleCreateStmt(String storeId, LocalDate today, int subnum) {
+        saleRepository.saleCreateStmt(storeId,today,subnum);
     }
 
     // 판매상품 DB에 저장
