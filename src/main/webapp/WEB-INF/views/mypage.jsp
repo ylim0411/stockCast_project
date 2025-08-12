@@ -356,6 +356,54 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     </div>
   </body>
   <script>
+    $(".saveBtn").click(function (e) {
+      e.preventDefault();
+      const $form = $(this).closest("form");
+
+      validateAndCheckUnique($form).then((valid) => {
+        if (valid) {
+          $form.submit();
+        }
+      });
+    });
+    function validateAndCheckUnique($form) {
+      return new Promise((resolve, reject) => {
+        const storeName = $form.find("input[name='storeName']").val().trim();
+        if (!storeName) {
+          alert("매장 이름을 입력해주세요.");
+          resolve(false);
+          return;
+        }
+
+        // 중복 체크 Ajax
+        $.ajax({
+          url: "/store/isUnique",
+          method: "post",
+          data: { storeName: storeName },
+          dataType: "json",
+          success: function (isUnique) {
+            console.log(isUnique);
+            if (isUnique === true || isUnique === "true") {
+              resolve(true);
+            } else {
+              alert(
+                "이미 사용 중인 매장 이름입니다. 다른 이름을 입력해주세요."
+              );
+              resolve(false);
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.log("jqXHR:", jqXHR);
+            console.log("textStatus:", textStatus);
+            console.log("errorThrown:", errorThrown);
+            console.log("responseText:", jqXHR.responseText);
+            alert("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+            resolve(false);
+          },
+        });
+      });
+    }
+
     const pwInput = document.getElementById("loginPw");
     const pwErrorMsg = document.getElementById("pwErrorMsg");
 

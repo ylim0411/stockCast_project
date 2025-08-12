@@ -38,4 +38,13 @@ public class StoreRepository {
         paramMap.put("searchKeyword", searchKeyword);
         return sql.selectList("Store.selectPageByAdminId", paramMap);
     }
+
+    public boolean isUnique(String storeName) {
+        List<StoreDTO> aa = sql.selectList("Store.isUnique", storeName);
+        if (sql.selectList("Store.isUnique", storeName).size() == 0)
+        {
+            return true;
+        }
+        return false;
+    }
 }

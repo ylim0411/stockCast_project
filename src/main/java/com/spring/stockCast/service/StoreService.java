@@ -32,4 +32,8 @@ public class StoreService {
     public List<StoreDTO> selectPageByAdminId(int adminId, int offset, int limit, String searchKeyword) {
         return storeRepository.selectPageByAdminId(adminId, offset, limit, searchKeyword);
     }
+
+    public boolean isUnique(String storeName) {
+        return storeRepository.isUnique(storeName);
+    }
 }

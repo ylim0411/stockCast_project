@@ -44,7 +44,7 @@
     </select>
 
     <!-- 페이징된 점포 목록 -->
-    <select id="selectPageByAdminId" resultType="com.spring.stockCast.dto.StoreDTO">
+    <select id="selectPageByAdminId" resultType="Store">
         SELECT * FROM store
         WHERE adminId = #{adminId}
         AND (
@@ -53,5 +53,10 @@
         )
         ORDER BY storeId ASC
         LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="isUnique" resultType="Store">
+        SELECT * FROM store
+        WHERE storeName = #{storeName}
     </select>
 </mapper>
