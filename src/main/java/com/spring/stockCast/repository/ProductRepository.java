@@ -31,7 +31,7 @@ public class ProductRepository {
         paramMap.put("keyword", keyword);
         return sql.selectList("Product.selectProductsByCategoryId", paramMap);
     }
-
+    // ho
     public List<ProductDTO> findProductList() {
         return sql.selectList("Product.findProductList");
     }
