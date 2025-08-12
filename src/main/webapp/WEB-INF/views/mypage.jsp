@@ -106,7 +106,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                     z-index: 9999;
                   "
                 >
-                    <img id="togglePwIcon" src="${pageContext.request.contextPath}/static/images/eye-gray.png" alt="보기" style="width:20px;height:20px;">
+                    <img id="togglePwIcon" src="${pageContext.request.contextPath}/static/images/eye-close.png" alt="보기" style="width:20px;height:20px;">
                 </button>
               </div>
               <div
@@ -148,8 +148,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         <colgroup>
           <col style="width: 6%" />
           <!-- storeId -->
-          <col style="width: 8%" />
-          <!-- adminId -->
           <col style="width: 15%" />
           <!-- storeName -->
           <col style="width: 30%" />
@@ -164,7 +162,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         <thead>
           <tr>
             <th>점포 ID</th>
-            <th>관리자 ID</th>
+            <th style="display:none;">관리자 ID</th>
             <th>점포명</th>
             <th>주소</th>
             <th>전화번호</th>
@@ -187,7 +185,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                     readonly
                   />
                 </td>
-                <td>
+                <td style="display:none;">
                   <input
                     type="text"
                     name="adminId"
@@ -216,12 +214,14 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                     type="text"
                     name="storePhone"
                     value="${store.storePhone}"
+                    pattern="^(01[0-9]-?\d{3,4}-?\d{4}|0\d{1,2}-?\d{3,4}-?\d{4})$"
+                    title="휴대폰(예: 010-1234-5678 또는 01012345678), 집전화(예: 02-123-4567 또는 021234567) 형식으로 입력하세요"
                     readonly
                   />
                 </td>
                 <td>
                   <input
-                    type="text"
+                    type="email"
                     name="storeEmail"
                     value="${store.storeEmail}"
                     readonly
@@ -449,12 +449,12 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
 
         if (pwField.type === "password") {
           pwField.type = "text";
-          icon.src = `${pageContext.request.contextPath}/static/images/eye-blue.png`; // 열린 눈
+          icon.src = `${pageContext.request.contextPath}/static/images/eye-open.png`; // 열린 눈
 
           icon.alt = "숨기기";
         } else {
           pwField.type = "password";
-          icon.src = `${pageContext.request.contextPath}/static/images/eye-gray.png`; // 닫힌 눈
+          icon.src = `${pageContext.request.contextPath}/static/images/eye-close.png`; // 닫힌 눈
           icon.alt = "보기";
         }
       }

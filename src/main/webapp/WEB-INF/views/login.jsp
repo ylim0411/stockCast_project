@@ -46,7 +46,7 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
             >
               <img
                 id="togglePwIcon"
-                src="${pageContext.request.contextPath}/static/images/eye-gray.png"
+                src="${pageContext.request.contextPath}/static/images/eye-close.png"
                 alt="보기"
                 style="width: 20px; height: 20px"
               />
@@ -87,12 +87,12 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
         if (pwField.type === "password") {
           pwField.type = "text";
-          icon.src = `${pageContext.request.contextPath}/static/images/eye-blue.png`; // 열린 눈
+          icon.src = `${pageContext.request.contextPath}/static/images/eye-open.png`; // 열린 눈
 
           icon.alt = "숨기기";
         } else {
           pwField.type = "password";
-          icon.src = `${pageContext.request.contextPath}/static/images/eye-gray.png`; // 닫힌 눈
+          icon.src = `${pageContext.request.contextPath}/static/images/eye-close.png`; // 닫힌 눈
           icon.alt = "보기";
         }
       }
