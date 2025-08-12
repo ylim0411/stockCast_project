@@ -246,7 +246,7 @@
             }
 
           } else {
-            // 취소: 원본 값으로 복원 (너가 올린 블록 그대로)
+
             const parentSel = row.querySelector("select[name='parentCategoryId']");
             const middleSel = row.querySelector("select[name='middleCategoryId']");
             const origParent = parentSel?.dataset.orig;
