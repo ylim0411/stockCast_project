@@ -13,10 +13,6 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
       rel="stylesheet"
       href="${pageContext.request.contextPath}/static/css/style.css"
     />
-    <link
-      rel="stylesheet"
-      href="${pageContext.request.contextPath}/static/css/modal.css"
-    />
   </head>
   <body>
     <div class="container">
@@ -415,6 +411,70 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     </div>
   </body>
   <script>
+    $(document).on("keydown", "input[name='storePhone']", function (e) {
+      const input = this;
+      const val = input.value;
+      const cursorPos = input.selectionStart;
+
+      // 백스페이스 키 처리
+      if (e.key === "Backspace" && cursorPos > 0) {
+        if (val[cursorPos - 1] === "-") {
+          e.preventDefault();
+
+          // 하이픈 앞 문자까지 같이 삭제 (커서 위치 2칸 뒤로 이동)
+          const newVal = val.slice(0, cursorPos - 2) + val.slice(cursorPos);
+          input.value = newVal;
+
+          // 커서 위치 재설정
+          input.setSelectionRange(cursorPos - 2, cursorPos - 2);
+
+          // 포맷팅 함수 호출 (아래에 구현하세요)
+          formatPhoneNumber(input);
+        }
+      }
+    });
+
+    $(document).on("input", "input[name='storePhone']", function () {
+      formatPhoneNumber(this);
+    });
+
+    function formatPhoneNumber(input) {
+      let val = input.value;
+
+      // 숫자만 추출
+      val = val.replace(/\D/g, "");
+
+      let formatted = "";
+
+      if (val.startsWith("02")) {
+        if (val.length < 3) {
+          formatted = val;
+        } else if (val.length < 6) {
+          formatted = val.substr(0, 2) + "-" + val.substr(2);
+        } else if (val.length < 10) {
+          formatted =
+            val.substr(0, 2) + "-" + val.substr(2, 3) + "-" + val.substr(5);
+        } else {
+          formatted =
+            val.substr(0, 2) + "-" + val.substr(2, 4) + "-" + val.substr(6, 4);
+        }
+      } else {
+        if (val.length < 4) {
+          formatted = val;
+        } else if (val.length < 7) {
+          formatted = val.substr(0, 3) + "-" + val.substr(3);
+        } else if (val.length < 11) {
+          formatted =
+            val.substr(0, 3) + "-" + val.substr(3, 4) + "-" + val.substr(7);
+        } else {
+          formatted =
+            val.substr(0, 3) + "-" + val.substr(3, 4) + "-" + val.substr(7, 4);
+        }
+      }
+
+      input.value = formatted;
+    }
+
     $(".saveBtn").click(function (e) {
       e.preventDefault();
       const $form = $(this).closest("form");
@@ -427,6 +487,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
     });
     function validateAndCheckUnique($form) {
       return new Promise((resolve) => {
+        // 1. 매장명 유효성 검사
         const storeName = $form.find("input[name='storeName']").val().trim();
         const originalName =
           $form.find("input[name='storeName']").data("original-value") || "";
@@ -437,20 +498,28 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
           return;
         }
 
-        // 변경 안 됐으면 중복 체크 없이 바로 통과
+        // 2. 이메일 유효성 검사 (HTML5 기본 검증)
+        const emailInput = $form.find("input[name='storeEmail']")[0];
+        if (!emailInput.checkValidity()) {
+          alert("올바른 이메일 주소를 입력해주세요.");
+          emailInput.focus();
+          resolve(false);
+          return;
+        }
+
+        // 3. 매장명 변경 없으면 중복 검사 스킵
         if (storeName === originalName) {
           resolve(true);
           return;
         }
 
-        // 중복 체크 Ajax
+        // 4. 중복 체크 Ajax
         $.ajax({
           url: "/store/isUnique",
           method: "post",
           data: { storeName: storeName },
           dataType: "json",
           success: function (isUnique) {
-            console.log(isUnique);
             if (isUnique === true || isUnique === "true") {
               resolve(true);
             } else {
@@ -460,11 +529,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               resolve(false);
             }
           },
-          error: function (jqXHR, textStatus, errorThrown) {
-            console.log("jqXHR:", jqXHR);
-            console.log("textStatus:", textStatus);
-            console.log("errorThrown:", errorThrown);
-            console.log("responseText:", jqXHR.responseText);
+          error: function () {
             alert("서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
             resolve(false);
           },
@@ -483,7 +548,9 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
         pwErrorMsg.style.display = "block";
         pwErrorMsg.textContent =
           "비밀번호는 영문, 숫자, 특수문자를 포함하여 8자 이상이어야 합니다.";
+        document.getElementById("adminEditBtn").disabled = true;
       } else {
+        document.getElementById("adminEditBtn").disabled = false;
         pwErrorMsg.style.display = "none";
         pwErrorMsg.textContent = "";
       }
