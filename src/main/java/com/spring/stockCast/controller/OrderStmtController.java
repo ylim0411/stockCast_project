@@ -170,7 +170,6 @@ public class OrderStmtController {
         var orderInfo = orderStmtService.findById(storeId, id);
         model.addAttribute("orderInfo", orderInfo);
         model.addAttribute("orderItems", purchaseOrderService.findByOrderId(storeId, id));
-        //model.addAttribute("clients", clientService.getAllClients());
         model.addAttribute("clients", clientService.findByStoreId(storeId));
         return "orderUpdate";
     }

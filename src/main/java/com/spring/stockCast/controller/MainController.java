@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -26,9 +27,9 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String mainPage(Model model) {
-        List<String> topSales = saleService.findTop5();
-
+    public String mainPage(Model model, HttpSession session) {
+        String storeId = session.getAttribute("selectedStoredId").toString(); // StoreController 에서 저장한 id 받아오기
+        List<String> topSales = saleService.findTop5(storeId);
         LocalDate today = LocalDate.now(); // 오늘날짜 불러오기
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM");
         String currentMonth = today.format(formatter); // 오늘날짜의 월 추출 String

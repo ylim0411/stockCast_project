@@ -39,9 +39,9 @@
         VALUES (#{saleId},#{productId},(SELECT price FROM product WHERE productId = #{productId}),#{qty})
     </insert>
     <!-- 상품이름으로 상품아이디 찾기 ho -->
-    <select id="findProductId" parameterType="String" resultType="int">
+    <select id="findProductId" parameterType="map" resultType="int">
         SELECT productId FROM product
-        WHERE productName = #{pName}
+        WHERE productName = #{pName} AND storeId = #{storeId}
     </select>
     <!-- 회계에서 판매시 연동 accounting 추가 ho -->
     <insert id="insertOrder" parameterType="map">
@@ -78,9 +78,10 @@
         WHERE storeId = #{storeId}
     </select>
     <!-- 판매율 상위 5개 품목 가져오기 -->
-    <select id="findTop5" resultType="String">
+    <select id="findTop5" parameterType="String" resultType="String">
         SELECT p.productName FROM sale_product sp
         JOIN product p ON p.productId = sp.productId
+        WHERE p.storeId = #{storeId}
         GROUP BY p.productId
         ORDER BY SUM(sp.saleQty) DESC
         LIMIT 5;

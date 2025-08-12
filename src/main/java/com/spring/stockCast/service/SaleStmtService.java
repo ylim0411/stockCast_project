@@ -6,6 +6,7 @@ import com.spring.stockCast.repository.SaleStmtRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +21,7 @@ public class SaleStmtService {
     private final int blockLimit = 5;  // 페이지 번호 블록 수
 
     // 날짜 검색 + 페이징
-    public List<SaleListDTO> findByDatePaging(LocalDate startDate, LocalDate endDate, int page) {
+    public List<SaleListDTO> findByDatePaging(LocalDate startDate, LocalDate endDate, int page, Integer storeId) {
         int pagingStart = (page - 1) * pageLimit;
 
         Map<String, Object> param = new HashMap<>();
@@ -28,51 +29,59 @@ public class SaleStmtService {
         param.put("endDate", endDate);
         param.put("start", pagingStart);
         param.put("limit", pageLimit);
+        param.put("storeId",storeId);
 
         List<SaleListDTO> list = saleStmtRepository.findByDatePaging(param);
         return list;
     }
 
     // 발주번호 검색 + 페이징
-    public List<SaleListDTO> findByNoPaging(String orderNumber, int page) {
+    public List<SaleListDTO> findByNoPaging(String orderNumber, int page,Integer storeId) {
         int pagingStart = (page - 1) * pageLimit;
 
         Map<String, Object> param = new HashMap<>();
         param.put("orderNumber", orderNumber);
         param.put("start", pagingStart);
         param.put("limit", pageLimit);
+        param.put("storeId",storeId);
 
         List<SaleListDTO> list = saleStmtRepository.findByNoPaging(param);
         return list;
     }
     // 전체 목록 페이징
-    public List<SaleListDTO> pagingList(int page) {
+    public List<SaleListDTO> pagingList(int page, Integer storeId) {
         int pagingStart = (page - 1) * pageLimit;
 
         Map<String, Integer> pagingParams = new HashMap<>();
         pagingParams.put("start", pagingStart);
         pagingParams.put("limit", pageLimit);
+        pagingParams.put("storeId",storeId);
+
 
         List<SaleListDTO> list = saleStmtRepository.pagingList(pagingParams);
         return list;
     }
 
     // 전체 수(페이징)
-    public int countAll() {
-        return saleStmtRepository.saleCount();
+    public int countAll(Integer storeId) {
+        return saleStmtRepository.saleCount(storeId);
     }
 
     // 날짜 검색 수
-    public int countByDate(LocalDate startDate, LocalDate endDate) {
+    public int countByDate(LocalDate startDate, LocalDate endDate, Integer storeId) {
         Map<String, Object> param = new HashMap<>();
         param.put("startDate", startDate);
         param.put("endDate", endDate);
+        param.put("storeId",storeId);
         return saleStmtRepository.countByDate(param);
     }
 
     // 발주번호 검색 수
-    public int countByNo(String orderNumber) {
-        return saleStmtRepository.countByNo(orderNumber);
+    public int countByNo(String orderNumber, Integer storeId) {
+        Map<String, Object> param = new HashMap<>();
+        param.put("orderNumber",orderNumber);
+        param.put("storeId",storeId);
+        return saleStmtRepository.countByNo(param);
     }
 
     // 거래명세서 상세보기
@@ -81,22 +90,22 @@ public class SaleStmtService {
     }
 
     // 컨트롤러
-    public Map<String,Object> controller(LocalDate startDate, LocalDate endDate, String orderNumber, int page) {
-
+    public Map<String,Object> controller(LocalDate startDate, LocalDate endDate, String orderNumber, int page, HttpSession session) {
+        Integer storeId = (Integer) session.getAttribute("selectedStoredId");
         List<SaleListDTO> sales;
         int totalCount;
         // 날짜 필터가 있을 때만 검색
         if (startDate != null && endDate != null) {
-            sales = findByDatePaging(startDate, endDate, page);
-            totalCount = countByDate(startDate, endDate);
+            sales = findByDatePaging(startDate, endDate, page, storeId);
+            totalCount = countByDate(startDate, endDate,storeId);
         } else if (orderNumber != null && !orderNumber.isEmpty()) {
             // 발주번호 검색
-            sales = findByNoPaging(orderNumber, page);
-            totalCount = countByNo(orderNumber);
+            sales = findByNoPaging(orderNumber, page,storeId);
+            totalCount = countByNo(orderNumber,storeId);
         } else {
             // 전체조회
-            sales = pagingList(page);
-            totalCount = countAll();
+            sales = pagingList(page,storeId);
+            totalCount = countAll(storeId);
         }
         // 페이징 정보
         PageDTO pageDTO = orderStmtService.pagingParamWithSearch(page, totalCount);

@@ -48,7 +48,8 @@ img {
   --font-size-xl: 24px; /* 큰 제목 */
 
   /* 폰트 */
-  --font-family-default: 'Noto Sans KR', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  --font-family-default: "Noto Sans KR", "Segoe UI", Tahoma, Geneva, Verdana,
+    sans-serif;
 
   /* 기타 */
   --border-radius-base20: 20px;
@@ -162,10 +163,10 @@ ul li.difultImg img {
   gap: 15px;
 }
 
-.login input[type='text'],
-.login input[type='password'],
-.join-container input[type='text'],
-.join-container input[type='password'] {
+.login input[type="text"],
+.login input[type="password"],
+.join-container input[type="text"],
+.join-container input[type="password"] {
   width: 100%;
   height: 52px;
   padding: 25px 20px;
@@ -185,8 +186,8 @@ ul li.difultImg img {
   font-size: var(--font-size-md);
 }
 
-input[type='text']:focus:not([readonly]),
-input[type='password']:focus:not([readonly]),
+input[type="text"]:focus:not([readonly]),
+input[type="password"]:focus:not([readonly]),
 textarea:focus {
   border-color: var(--color-primary);
   outline: none;
@@ -202,7 +203,7 @@ textarea:focus {
 
 .login-divider::before,
 .login-divider::after {
-  content: '';
+  content: "";
   flex: 1;
   height: 1px;
   background: var(--color-gray);
@@ -418,8 +419,9 @@ header .admin .alert img {
 }
 
 header .admin .alert:hover img {
-  filter: drop-shadow(0 0 5px #42a5f5) drop-shadow(0 0 10px #42a5f5) drop-shadow(0 0 15px #1976d2)
-    drop-shadow(0 0 20px #42a5f5) drop-shadow(0 0 25px #1565c0);
+  filter: drop-shadow(0 0 5px #42a5f5) drop-shadow(0 0 10px #42a5f5)
+    drop-shadow(0 0 15px #1976d2) drop-shadow(0 0 20px #42a5f5)
+    drop-shadow(0 0 25px #1565c0);
 }
 
 header nav {
@@ -767,6 +769,53 @@ ul.ranking li:nth-child(3) span {
   color: var(--color-white);
 }
 
+/* 수익. 비용 통계 차트  -------------------------------------*/
+.sales-chart-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sales-chart-box .chart-title {
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.sales-chart-box .chart-box {
+  width: 100%;
+}
+.sales-chart-box #moneyChart {
+  width: 100% !important;
+  height: 360px !important;
+}
+
+.sales-chart-box .chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.sales-chart-box .chart-legend .dot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 6px;
+}
+
+.sales-chart-box .chart-legend .revenue {
+  background-color: var(--color-primary);
+}
+
+.sales-chart-box .chart-legend .expense {
+  background-color: var(--color-red);
+}
+
 /* 아래 영역(검색+테이블+페이징) -------------------------------------*/
 .section-wrap {
   height: auto;
@@ -994,9 +1043,6 @@ th {
   width: 10%;
 }
 
-
-
-
 /* form 태그 ------------------------------------------------- */
 .form-container {
   display: flex;
@@ -1012,9 +1058,9 @@ th {
   gap: 5px;
 }
 
-input[type='date'],
-input[type='text'],
-input[type='number'],
+input[type="date"],
+input[type="text"],
+input[type="number"],
 input[readonly],
 select {
   font-size: var(--font-size-md);
@@ -1028,15 +1074,15 @@ select {
 }
 
 /* 달력 인풋 & 텍스트 인풋 ------------------------------------------------- */
-.form-container input[type='date'],
-.form-container input[type='text'] {
+.form-container input[type="date"],
+.form-container input[type="text"] {
   padding: 5px;
   border: 1px solid var(--color-border);
   border-radius: var(--border-radius-base5);
   font-size: var(--font-size-base);
 }
 
-.form-container input[type='date'] {
+.form-container input[type="date"] {
   padding: 5px 20px;
 }
 
@@ -1182,8 +1228,8 @@ table.orderItems td {
   cursor: pointer;
 }
 
-input[type='number']::-webkit-inner-spin-button,
-input[type='number']::-webkit-outer-spin-button {
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
@@ -1260,13 +1306,13 @@ input[type='number']::-webkit-outer-spin-button {
   border-radius: 5px;
 }
 
-.accountNum{
+.accountNum {
   margin-bottom: 20px;
 }
 
 /* 발주서, 거래명세서 아래 표 */
 .order-item.header,
-.sale-item.header{
+.sale-item.header {
   font-weight: 500;
 }
 
@@ -1289,12 +1335,12 @@ input[type='number']::-webkit-outer-spin-button {
 }
 
 .order-item:last-child,
-.sale-item:last-child{
+.sale-item:last-child {
   border-bottom: none;
 }
 
 .order-items,
-.sale-items{
+.sale-items {
   overflow: hidden;
   /* height: calc(300px - 63px); */
   height: calc(100% - 63px);
@@ -1360,22 +1406,6 @@ input[type='number']::-webkit-outer-spin-button {
   cursor: pointer;
 }
 
-/* ho */
-.saleYear-select {
-  padding: 5px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-base5);
-  font-size: var(--font-size-base);
-}
-
-.search-period-info {
-  text-align: right;
-  margin-bottom: 10px;
-  font-size: 14px;
-  color: var(--color-black);
-}
-/* ho */
-
 /* select 디자인 ----------------------------------------------------------------------------------- */
 select {
   -webkit-appearance: none;
@@ -1386,6 +1416,77 @@ select {
   background-position: right 10px center;
   background-size: 10px;
   cursor: pointer;
+}
+
+/* 판매 실적 그래프  ---------------------------------------------------------------------------------------- */
+/* ho */
+.saleYear-select {
+  padding: 5px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--border-radius-base5);
+  font-size: var(--font-size-base);
+}
+
+.search-period-info {
+  text-align: right;
+  height: 20px;
+  font-size: var(--font-size-base);
+  color: var(--color-black);
+}
+
+.chart-container {
+  display: flex;
+  justify-content: center; /* 가로 중앙 */
+  align-items: center; /* 세로 중앙 */
+  gap: 20px;
+  height: 90%;
+}
+
+.chart-card canvas {
+  height: 80%;
+  width: auto !important;
+  max-height: 350px !important;
+}
+
+.chart-legend {
+  /* height: 20%; */
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  font-size: var(--font-size-lg);
+  justify-content: center;
+}
+
+.dot-0 {
+  background: rgba(25, 118, 210, 0.85);
+}
+.dot-1 {
+  background: rgba(40, 126, 216, 0.85);
+}
+.dot-2 {
+  background: rgba(66, 165, 245, 0.85);
+}
+.dot-3 {
+  background: rgba(100, 181, 246, 0.85);
+}
+.dot-4 {
+  background: rgba(144, 202, 249, 0.85);
+}
+.dot-5 {
+  background: rgba(179, 229, 252, 0.85);
+}
+.dot-6 {
+  background: rgba(2, 136, 209, 0.85);
+}
+.dot-7 {
+  background: rgba(3, 155, 229, 0.85);
+}
+.dot-8 {
+  background: rgba(21, 101, 192, 0.85);
+}
+
+.line-main {
+  background: rgba(25, 118, 210, 1);
 }
 
 /* 고객 분석  ---------------------------------------------------------------------------------------- */
@@ -1399,6 +1500,7 @@ select {
 
 .chart-card {
   width: 50%;
+  min-width: 500px;
   height: 90%;
   background-color: var(--color-white);
   border-radius: var(--border-radius-base20);
@@ -1406,19 +1508,20 @@ select {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 40px;
+  padding: 10px;
+  gap: 20px;
   box-shadow: var(--box-shadow);
 }
 
 .chart-title {
   font-size: var(--font-size-xl);
   font-weight: 500;
-  margin-bottom: 10px;
+  height: 10%;
 }
 
 .chart-legend {
   display: flex;
-  gap: 20px;
+  gap: 10px;
   margin-top: 15px;
   font-size: var(--font-size-lg);
 }
@@ -1432,8 +1535,8 @@ select {
 }
 
 .chart-card canvas {
-  width: 55% !important;
-  height: auto !important;
+  width: auto !important;
+  max-height: 350px !important;
 }
 
 /* 색상 매칭 */

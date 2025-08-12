@@ -55,8 +55,8 @@
     </update>
 
     <insert id="add" parameterType="Product">
-        INSERT INTO product (categoryId, productName, price, stockQuantity)
-        VALUES (#{categoryId}, #{productName}, #{price}, #{stockQuantity});
+        INSERT INTO product (categoryId, storeId, productName, price, stockQuantity)
+        VALUES (#{categoryId}, #{storeId}, #{productName}, #{price}, #{stockQuantity});
     </insert>
 
     <select id="findProductByName" parameterType="String" resultType="Product">
@@ -187,19 +187,6 @@
         WHERE storeId = #{storeId}
     </select>
 
-<!--    &lt;!&ndash; 재고20개 알림창 수정 you &ndash;&gt;-->
-<!--    <select id="findLowStock" resultType="StockQuantity">-->
-<!--        SELECT-->
-<!--        psv.productId            AS productId,-->
-<!--        psv.productName          AS productName,-->
-<!--        psv.categoryName         AS categoryName,-->
-<!--        psv.topLevelCategoryName AS topLevelCategoryName,-->
-<!--        psv.price                AS price,-->
-<!--        psv.stockQuantity        AS stockQuantity-->
-<!--        FROM product_summary_view psv-->
-<!--        WHERE psv.stockQuantity <= 20-->
-<!--        ORDER BY psv.stockQuantity ASC, psv.productName ASC-->
-<!--    </select>-->
 
 <!--    <select id="stockList" parameterType="map" resultType="StockQuantityDTO">-->
 <!--        SELECT-->

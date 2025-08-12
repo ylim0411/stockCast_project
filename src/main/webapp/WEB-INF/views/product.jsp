@@ -31,6 +31,9 @@
           <button class="addRow btn btn-blue" type="button">상품 등록</button>
         </div>
       </form>
+      <form id="addForm-template" method="post" action="${pageContext.request.contextPath}/product/add">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+      </form>
       <div class="table-container">
       <table class="productTable">
         <thead>
@@ -112,32 +115,30 @@
                 </c:if>
               </c:forEach>
             </c:if>
-            <tr class="productAdd" style="display: none;">
-              <form method="post" action="${pageContext.request.contextPath}/product/add">
+              <tr class="productAdd" style="display:none;">
                 <td>
-                  <select name="addParentCategoryId">
-                    <option>대분류를 선택하세요.</option>
-                      <c:forEach items="${categoryList}" var="parent">
-                        <c:if test="${parent.categoryLevel == 1}">
-                          <option value="${parent.categoryId}">${parent.categoryName}</option>
-                        </c:if>
-                      </c:forEach>
+                  <select name="addParentCategoryId" form="addForm-template" required>
+                    <option value="">대분류를 선택하세요.</option>
+                    <c:forEach items="${categoryList}" var="parent">
+                      <c:if test="${parent.categoryLevel == 1 && parent.storeId == sessionScope.selectedStoredId}">
+                        <option value="${parent.categoryId}">${parent.categoryName}</option>
+                      </c:if>
+                    </c:forEach>
                   </select>
                 </td>
                 <td>
-                  <select name="addMiddleCategoryId">
+                  <select name="addMiddleCategoryId" form="addForm-template" required>
                     <option value="">중분류를 선택하세요.</option>
                   </select>
                 </td>
-                <td><input type="hidden" name="addStoreId" readonly /></td>
-                <td><input type="text" name="addProductId" readonly /></td>
-                <td><input type="text" name="addProductName" /></td>
-                <td><input type="number" name="addPrice" /></td>
-                <td><input type="number" name="addStockQuantity" /></td>
-                <td><input type="text" name="addCreatedAt" readonly /></td>
-                <td><button type="button" class="addBtn">등록</button></td>
-              </form>
-            </tr>
+                <td><input type="hidden" name="addStoreId" form="addForm-template" /></td>
+                <td><input type="text"   name="addProductId" form="addForm-template" readonly /></td>
+                <td><input type="text"   name="addProductName" form="addForm-template" required /></td>
+                <td><input type="number" name="addPrice" form="addForm-template" required /></td>
+                <td><input type="number" name="addStockQuantity" form="addForm-template" required /></td>
+                <td><input type="text"   name="addCreatedAt" form="addForm-template" readonly /></td>
+                <td><button type="submit" class="addBtn" form="addForm-template">등록</button></td>
+              </tr>
         </tbody>
       </table>
       </div>
@@ -188,14 +189,24 @@
     };
 
     $(".addRow").click(function () {
-        let $templateRow = $(".productAdd").first();
-        let $newRow = $templateRow.clone(true);
-        $newRow.removeClass("productAdd");
-        $newRow.removeAttr("style");
-        $newRow.find("input").val("");
+      const $templateRow = $(".productAdd").first();
+      const $newRow = $templateRow.clone(true);
+      $newRow.removeClass("productAdd").removeAttr("style");
+      $newRow.find("input").val("");
 
-        $("table tbody").append($newRow);
+      // 유니크 폼 생성: 템플릿 복제 -> id만 교체
+      const uid = Date.now();
+      const formId = `addForm-${uid}`;
+      const $newForm = $("#addForm-template").clone(true);
+      $newForm.attr("id", formId);
+      $("body").append($newForm); // CSRF 포함된 폼 추가
+
+      // 행 안 모든 컨트롤에 form 속성 세팅
+      $newRow.find("input, select, button").attr("form", formId);
+
+      $("table tbody").append($newRow);
     });
+
 
     $(document).on("change", "select[name='addParentCategoryId']", function () {
       const selectParentId = parseInt($(this).val());
