@@ -114,9 +114,9 @@
             <div class="userContext">
                 <a href="${pageContext.request.contextPath}/mypage/"
                    class="${fn:contains(uri, '/mypage') ? 'on' : ''}">마이페이지</a>
-                <a href="${pageContext.request.contextPath}/admin/logout">로그아웃</a>
                 <a href="${pageContext.request.contextPath}/sales/saleOrder"
                    class="${fn:contains(uri, '/saleOrder') ? 'on' : ''}">모의판매</a>
+                 <a href="${pageContext.request.contextPath}/admin/logout">로그아웃</a>
             </div>
         </c:if>
       </header>
