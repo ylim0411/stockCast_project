@@ -21,7 +21,7 @@
             <input id="loginPw" type="password" required name="loginPw" placeholder="비밀번호" />
             <p id="pwErrorMsg" class="error-msg" style="display:none"></p>
             <div style="display: flex; justify-content: space-between;">
-            <input type="text" required name="businessNumber" placeholder="사업자 등록번호" style="width: 68%; margin-top: 5px;"/>
+            <input type="number" required name="businessNumber" placeholder="사업자 등록번호" style="width: 68%; margin-top: 5px;"/>
             <button type="button" id="businessCheck" onclick="businessNumberCheck()" class="btn submit-btn" style="width: 30%; height: 52px; margin-top: 5px;">사업자 확인</button>
             </div>
             <input type="submit" disabled id="submit" value="회원가입"  class="btn submit-btn" />
@@ -74,6 +74,10 @@
               business.readOnly = true;
 
               submit.disabled = false;
+              alert("사업자 번호가 인증 되었습니다");
+            }
+            else {
+                alert("등록되지 않은 사업자 번호입니다");
             }
           },
           error: function (result) {

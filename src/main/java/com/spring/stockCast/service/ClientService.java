@@ -79,9 +79,9 @@ public class ClientService {
     public int countByAdminId(int adminId) {
         return clientRepository.countByAdminId(adminId);
     }
-    public List<ClientDTO> searchClientsWithPaging(int adminId, String keyword, int start, int limit) {
+    public List<ClientDTO> searchClientsWithPaging(int storeId, String keyword, int start, int limit) {
         Map<String, Object> param = new HashMap<>();
-        param.put("adminId", adminId);
+        param.put("storeId", storeId);
         param.put("keyword", "%" + keyword + "%");
         param.put("start", start);
         param.put("limit", limit);
@@ -89,9 +89,9 @@ public class ClientService {
     }
 
     // 검색 키워드 기반 거래처 총 개수 조회
-    public int countClientsByKeyword(int adminId, String keyword) {
+    public int countClientsByKeyword(int storeId, String keyword) {
         Map<String, Object> param = new HashMap<>();
-        param.put("adminId", adminId);
+        param.put("storeId", storeId);
         param.put("keyword", "%" + keyword + "%");
         return clientRepository.countClientsByKeyword(param);
     }

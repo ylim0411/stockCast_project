@@ -1,6 +1,7 @@
 package com.spring.stockCast.repository;
 
 import com.spring.stockCast.dto.AdminDTO;
+import com.spring.stockCast.dto.StoreDTO;
 import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -37,5 +38,14 @@ public class AdminRepository {
 
     public AdminDTO findById(int adminId) {
         return sql.selectOne("Admin.findById", adminId);
+    }
+
+    public int getStoredId(int adminId) {
+        StoreDTO storeDTO = sql.selectOne("Admin.getStoredId", adminId);
+        if (storeDTO == null)
+        {
+            return 0;
+        }
+        return storeDTO.getStoreId();
     }
 }

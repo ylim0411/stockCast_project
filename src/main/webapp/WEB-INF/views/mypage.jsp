@@ -120,7 +120,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
             <th>사업자 등록번호</th>
             <td>
               <input
-                type="text"
+                type="number"
                 name="businessNumber"
                 placeholder="사업자 등록번호"
                 value="${sessionScope.loginedAdminDTO.businessNumber}"readonly
