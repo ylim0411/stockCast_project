@@ -27,7 +27,12 @@ public class SaleService {
     // 해당 년도에 해당하는 판매내역 불러오기
     public List<SaleDTO> findByYear(String year) { return saleRepository.findByYear(year); }
     // 이번달 판매목록 불러오기
-    public List<SaleDTO> findByMonth(String currentMonth) { return saleRepository.findByMonth(currentMonth); }
+    public List<SaleDTO> findByMonth(String currentMonth, String storeId) {
+        Map<String,Object> param = new HashMap<>();
+        param.put("currentMonth", currentMonth);
+        param.put("storeId",storeId);
+        return saleRepository.findByMonth(param);
+    }
     // 기간 판매내역 불러오기
     public List<SaleDTO> findByDate(LocalDate startDate, LocalDate endDate) { return saleRepository.findByDate(startDate,endDate); }
     // 점포 아이디에 맞는 상품목록 가져오기
@@ -40,10 +45,10 @@ public class SaleService {
     public List<String> findTop5(String storeId){ return saleRepository.findTop5(storeId);}
     // 상품이름으로 상품아이디 찾기
     public int findProductId(String pName, String storeId) {
-        Map<String,Object> result = new HashMap<>();
-        result.put("pName", pName);
-        result.put("storeId",storeId);
-        return saleRepository.findProductId(result); }
+        Map<String,Object> param = new HashMap<>();
+        param.put("pName", pName);
+        param.put("storeId",storeId);
+        return saleRepository.findProductId(param); }
     // 재고 적을시 수량 반환
     public int findProductStock(String storeId, String productName) { return saleRepository.findProductStock(storeId, productName); }
     // 전체 판매내역의 카테고리 리스트 가져오기(도넛차트 구성용)
@@ -97,9 +102,21 @@ public class SaleService {
         return monthPrice;
     }
     // 판매실적 컨트롤러
-    public Map<String,Object> saleController(LocalDate startDate, LocalDate endDate, String year) {
+    public Map<String,Object> saleController(LocalDate startDate, LocalDate endDate, String year, HttpSession session) {
         String findDate="";
         List<SaleDTO> sales;
+        String sessionYear = (String) session.getAttribute("selectedYear"); // 당월, 분기 등 선택시 적용
+        // 세션에 year 있으면 가져와서 적용
+        if (year != null && !year.isEmpty()) {
+            session.setAttribute("selectedYear", year);
+        }
+        else if (sessionYear == null) {
+            year = String.valueOf(LocalDate.now().getYear());
+            session.setAttribute("selectedYear", year);
+        }
+        else {
+            year = sessionYear;
+        }
         // 날짜 필터가 있을 때만 검색
         if (startDate != null && endDate != null) {
             sales = findByDate(startDate, endDate); // 기간 판매내역 불러오기

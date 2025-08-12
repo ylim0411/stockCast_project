@@ -75,8 +75,8 @@ public class OrderStmtRepository {
     }
 
     // 이번달 발주내역 불러오기 ho
-    public List<OrderStmtDTO> findByMonth(String currentMonth) {
-        return sql.selectList("Orders.findByMonth", currentMonth);
+    public List<OrderStmtDTO> findByMonth(Map<String, Object> param) {
+        return sql.selectList("Orders.findByMonth", param);
     }
     // orderId 최상위 불러오기
     public int findLastOrderId() {

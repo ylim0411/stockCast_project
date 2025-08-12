@@ -25,7 +25,7 @@ public class SaleRepository {
         return sql.selectList("Sale.findByYear",year);
     }
     // 이번달 판매목록 불러오기
-    public List<SaleDTO> findByMonth(String currentMonth) { return sql.selectList("Sale.findByMonth", currentMonth); }
+    public List<SaleDTO> findByMonth(Map<String, Object> param) { return sql.selectList("Sale.findByMonth", param); }
     // 기간 판매내역 불러오기
     public List<SaleDTO> findByDate(LocalDate startDate, LocalDate endDate) {
         Map<String, Object> param = new HashMap<>();

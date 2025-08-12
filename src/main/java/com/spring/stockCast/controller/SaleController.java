@@ -24,10 +24,10 @@ public class SaleController {
     @GetMapping("/saleList")
     public String find(@RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate startDate,
                        @RequestParam(required = false) @DateTimeFormat(pattern =  "yyyy-MM-dd") LocalDate endDate,
-                       @RequestParam(required = false) String year,
+                       @RequestParam(required = false) String year, HttpSession session,
                        Model model){
         // 서비스 제일아래에 모든내용 있음
-        model.addAllAttributes(saleService.saleController(startDate,endDate,year));
+        model.addAllAttributes(saleService.saleController(startDate,endDate,year,session));
         return "sale";
     }
 

@@ -24,15 +24,12 @@
     <div class="section-wrap">
       <div class="form-container">
         <div class="btn-box">
-          <form id="searchForm" method="get" action="${pageContext.request.contextPath}/product/stockQuantity">
-              <input
-                type="text"
-                name="keyword"
-                placeholder="상품명 검색"
-                value="${param.keyword != null ? param.keyword : ''}"
-              />
-        
-              <select name="month" style="width: 150px;">
+
+            <form id="searchForm" method="get" action="${pageContext.request.contextPath}/product/stockQuantity">
+              <input type="text" name="keyword" placeholder="상품명 검색"
+                     value="${param.keyword != null ? param.keyword : ''}" />
+              <button type="submit" class="btn btn-blue">검색</button>
+              <select name="month" style="width:150px;" onchange="this.form.submit()">
                 <option value="">월간 전체</option>
                 <c:forEach var="m" begin="1" end="12">
                   <option value="${m}" <c:if test="${param.month != null && param.month == m}">selected</c:if>>
@@ -40,8 +37,8 @@
                   </option>
                 </c:forEach>
               </select>
-              <button type="submit" class="btn btn-blue">검색</button>
-          </form>
+            </form>
+
         </div>
         <button type="button" id="btnCloseMonth" class="btn btn-red">마감</button>
       </div>
@@ -110,14 +107,9 @@
       $("#btnCloseMonth").click(function () {
         const selectedMonth = $("select[name='month']").val();
 
-        if (!selectedMonth) {
-          alert("마감할 월을 선택하세요.");
-          return;
-        }
-
         // 서버에 마감 요청 전송 (POST)
         $.ajax({
-          url: "${pageContext.request.contextPath}/stock/close",
+          url: "${pageContext.request.contextPath}/product/close",
           method: "POST",
           contentType: "application/json",
           data: JSON.stringify({ month: selectedMonth }),
