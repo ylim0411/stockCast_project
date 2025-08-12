@@ -37,7 +37,6 @@ public class ProductRepository {
     }
 
     public void updateProduct(ProductDTO product) {
-        System.out.println("updateProduct 리");
         sql.update("Product.update", product);
     }
 
