@@ -24,7 +24,7 @@ public class ClientController {
 
     @GetMapping("/")
     public String clientForm(@RequestParam(value = "searchKeyword", required = false) String searchKeyword,
-                             @RequestParam(value = "page", defaultValue = "1") int page,
+                             @RequestParam(value = "page", required = false, defaultValue = "1") int page,
                              HttpSession session,
                              Model model) {
         AdminDTO adminDTO = (AdminDTO) session.getAttribute("loginedAdminDTO");
@@ -68,13 +68,7 @@ public class ClientController {
         }
 
         System.out.println(clientDTO);
-        if (clientService.insert(clientDTO))
-        {
-            List<ClientDTO> tmpClientDTOs = clientService.selectByAdminId(adminDTO.getAdminId());
-            model.addAttribute("clientList", tmpClientDTOs);
-            System.out.println(tmpClientDTOs);
-            return "client";
-        }
+        clientService.insert(clientDTO);
         return "redirect:/client/";
     }
 
@@ -92,14 +86,7 @@ public class ClientController {
         }
 
         System.out.println(clientDTO);
-        if (clientService.update(clientDTO))
-        {
-            AdminDTO adminDTO = (AdminDTO) session.getAttribute("loginedAdminDTO");
-            List<ClientDTO> tmpClientDTOs = clientService.selectByAdminId(adminDTO.getAdminId());
-            model.addAttribute("clientList", tmpClientDTOs);
-            System.out.println(tmpClientDTOs);
-            return "client";
-        }
+        clientService.update(clientDTO);
         return "redirect:/client/";
     }
 }
