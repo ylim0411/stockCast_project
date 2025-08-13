@@ -61,7 +61,7 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
               <th>카테고리 등록일자</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="categoryTbody">
             <c:set var="prevTop" value="" />
             <c:set var="prevMiddle" value="" />
 
@@ -192,6 +192,12 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
 
     <script>
       $(document).ready(function () {
+        function refreshCategoryTable() {
+          const base = '${pageContext.request.contextPath}';
+          $('#categoryTbody').load(`${base}/productCategory/list #productCategory .productCategory-table tbody > *`);
+        }
+
+
         $.ajaxSetup({ cache: false });
 
         // 응답 판정 헬퍼
@@ -462,46 +468,20 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
             url: '/productCategory/save',
             method: 'POST',
             data: { categoryName: name, categoryLevel: level, parentId: parentId },
-            // 2xx면 우선 성공 처리, 응답이 명시적 실패 문자열이면 그때만 실패
             success: function (res) {
-              if (looksLikeFailure(res)) {
-                alert('등록 실패');
-                return;
-              }
+              if (looksLikeFailure(res)) { alert('등록 실패'); return; }
 
-              const createdAt = (res && res.createdAt ? String(res.createdAt) : new Date().toISOString()).substring(
-                0,
-                10
-              );
-              const nameVal = res && (res.name || res.categoryName) ? res.name || res.categoryName : name;
-              const tbody = $('.productCategory-table tbody');
+              // 모달 리스트 갱신
+              if (level === 1) { loadTopCategories(); $('#topInput').val(''); }
+              if (level === 2) { loadMiddleCategories(selectedTopId, true); $('#middleInput').val(''); }
 
-              if (level === 1) {
-                const tr = `<tr class="parentLevel" data-id="${nameVal}">
-                          <td>대분류</td><td>${nameVal}</td><td>${createdAt}</td>
-                        </tr>`;
-                tbody.append(tr);
-                loadTopCategories();
-                $('#topInput').val('');
-              }
-
-              if (level === 2) {
-                const topName = $('#topCategoryList li.active').find('.name').text();
-                if (topName) {
-                  const tr = `<tr class="middleLevel" data-id="${nameVal}" data-parent="${topName}">
-                            <td>중분류</td><td>${nameVal}</td><td>${createdAt}</td>
-                          </tr>`;
-                  tbody.append(tr);
-                }
-                loadMiddleCategories(selectedTopId, true);
-                $('#middleInput').val('');
-              }
+              // ✅ 메인 테이블을 서버 렌더로 부분 리로드
+              refreshCategoryTable();
             },
-            error: function () {
-              alert('등록 실패');
-            },
+            error: function () { alert('등록 실패'); }
           });
         }
+
 
         // 대/중분류 엔터 등록
         $('#topInput').on('keypress', function (e) {
@@ -535,12 +515,12 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
             method: 'POST',
             data: { categoryId: selectedMiddleId, productName: name, storeId: selectedStoreId },
             success: function (res) {
-              if (looksLikeFailure(res)) {
-                alert('소분류 등록 실패');
-                return;
-              }
+              if (looksLikeFailure(res)) { alert('소분류 등록 실패'); return; }
               $('#childInput').val('');
               loadChildCategories(selectedMiddleId, { highlightName: name });
+
+              // ✅ 메인 테이블 리로드 (소분류 행이 즉시 나타남)
+              refreshCategoryTable();
             },
             error: function () {
               alert('소분류 등록 실패');
@@ -553,42 +533,37 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
           const type = $('#editType').val();
           const id = $('#editId').val();
           const newName = $('#categoryEditInput').val().trim();
-          if (!newName) {
-            alert('이름을 입력해주세요');
-            return;
-          }
-          if (!id && type !== 'top') {
-            alert('수정 대상이 없습니다.');
-            return;
-          }
+          if (!newName) { alert('이름을 입력해주세요'); return; }
+          if (!id && type !== 'top') { alert('수정 대상이 없습니다.'); return; }
 
           $.ajax({
             url: '/productCategory/updateCategoryName',
             method: 'POST',
-            data: { id: id, type: type, newName: newName },
+            data: { id, type, newName },
             success: function (res) {
-              if (looksLikeFailure(res)) {
-                alert('수정 실패');
-                return;
-              }
+              if (looksLikeFailure(res)) { alert('수정 실패'); return; }
               alert('수정 완료');
+
               if (type === 'top') {
                 loadTopCategories();
               } else if (type === 'middle') {
-                if (selectedTopId) loadMiddleCategories(selectedTopId, true);
-                else loadTopCategories();
+                selectedTopId ? loadMiddleCategories(selectedTopId, true) : loadTopCategories();
               } else if (type === 'product') {
-                if (selectedMiddleId) loadChildCategories(selectedMiddleId, { highlightName: newName });
-                else if (selectedTopId) loadMiddleCategories(selectedTopId, true);
+                selectedMiddleId
+                  ? loadChildCategories(selectedMiddleId, { highlightName: newName })
+                  : (selectedTopId && loadMiddleCategories(selectedTopId, true));
               }
+
+              // ✅ 테이블 부분 리로드
+              refreshCategoryTable();
+
               $('#categoryEditInput').prop('disabled', true);
               $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
             },
-            error: function () {
-              alert('서버 오류');
-            },
+            error: function () { alert('서버 오류'); }
           });
         });
+
 
         $('#cancelEditBtn').on('click', function () {
           const type = $('#editType').val();
