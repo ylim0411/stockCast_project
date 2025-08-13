@@ -330,7 +330,7 @@ textarea:focus {
   left: 50%;
   transform: translateX(-50%);
   background: #fff;
-  width: 450px;
+  width: 480px;
   padding: 20px;
   /* margin: 100px auto; */
   border-radius: var(--border-radius-base10);
@@ -396,6 +396,7 @@ ul.stock-card-list li {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor:pointer;
 }
 
 ul.stock-card-list li p:nth-child(1) {
@@ -1763,24 +1764,24 @@ select {
   position: relative;
 }
 
-.client-container .modal-content {
+.modal-content {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.client-container .modal-content h2 {
+.modal-content h2 {
   margin-top: 0;
   margin-bottom: 15px;
   font-size: 22px;
 }
 
-.client-container .modal-content label {
+.modal-content label {
   display: block;
   margin-top: 10px;
 }
 
-.client-container .modal-content input {
+.modal-content input {
   width: 100%;
   padding: 7px 8px;
   margin-top: 5px;

@@ -68,7 +68,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                       value="${sessionScope.loginedAdminDTO.loginId}"
                       readonly
                       required
-                      style="text-align: center; width: 100%"
+                      style="text-align: center; width: 100% "
                     />
                   </p>
                 </div>
@@ -336,6 +336,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               id="storeForm"
               action="${pageContext.request.contextPath}/store/save"
               method="post"
+              style="flex-direction: column; gap: 20px; max-width: 800px; margin: 0 auto"
             >
               <!-- 현재 로그인한 관리자 ID 숨김 필드 -->
               <input
