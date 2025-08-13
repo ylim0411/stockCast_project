@@ -1764,24 +1764,24 @@ select {
   position: relative;
 }
 
-.client-container .modal-content {
+.modal-content {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.client-container .modal-content h2 {
+.modal-content h2 {
   margin-top: 0;
   margin-bottom: 15px;
   font-size: 22px;
 }
 
-.client-container .modal-content label {
+.modal-content label {
   display: block;
   margin-top: 10px;
 }
 
-.client-container .modal-content input {
+.modal-content input {
   width: 100%;
   padding: 7px 8px;
   margin-top: 5px;
