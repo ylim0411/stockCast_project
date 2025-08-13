@@ -197,67 +197,78 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
               },
               error: function () {
                 $currentRow.find('.product-price').text('0');
-                $currentRow.find('.count-input').val(0);
+                $currentRow.find('.count-input').val("");
                 calculateRowTotal($currentRow.find('.count-input'));
               },
             });
           } else {
             $currentRow.find('.product-price').text('0');
-            $currentRow.find('.count-input').val(0);
+            $currentRow.find('.count-input').val("");
             calculateRowTotal($currentRow.find('.count-input'));
           }
         });
 
         // 수량 입력 시 총 금액 및 재고 업데이트
-        $(document).on('keyup change', '.count-input', function () {
-          const $this = $(this);
-          const quantity = parseInt($this.val());
-          if (quantity < 0 || isNaN(quantity)) {
-            $this.val(0);
-          }
-          checkStockAndCalculate($this.closest('tr'));
-        });
+                $(document).on('keyup change', '.count-input', function () {
+                    const $this = $(this);
+                    const quantity = parseInt($this.val());
 
-        // 재고 확인 및 총 금액 계산 함수
-        function checkStockAndCalculate($row) {
-          let selectedProductName = $row.find('.product-select').val();
-          let enteredQuantity = parseInt($row.find('.count-input').val()) || 0;
+                    // 수정된 부분: 수량이 유효한 값(0 이상)일 때만 로직 실행
+                    if (!isNaN(quantity) && quantity >= 0) {
+                        checkStockAndCalculate($this.closest('tr'));
+                    } else {
+                        // 수량이 빈 값이나 유효하지 않은 값일 경우
+                        $this.val('');
+                        calculateRowTotal($this); // 총 금액을 초기화
+                    }
+                });
 
-          if (selectedProductName && enteredQuantity > 0) {
-            $.ajax({
-              url: '/sales/getStock',
-              type: 'post',
-              data: { productName: selectedProductName },
-              success: function (availableStock) {
-                if (enteredQuantity > availableStock) {
-                  alert('재고가 부족합니다. 남은 재고: ' + availableStock + '개');
-                  $row.find('.count-input').val(availableStock);
-                  enteredQuantity = availableStock;
+                // 재고 확인 및 총 금액 계산 함수
+                function checkStockAndCalculate($row) {
+                    let selectedProductName = $row.find('.product-select').val();
+                    let enteredQuantity = parseInt($row.find('.count-input').val()) || 0;
+
+                    if (selectedProductName && enteredQuantity > 0) {
+                        $.ajax({
+                            url: '/sales/getStock',
+                            type: 'post',
+                            data: { productName: selectedProductName },
+                            success: function (availableStock) {
+                                if (enteredQuantity > availableStock) {
+                                    alert('재고가 부족합니다. 남은 재고: ' + availableStock + '개');
+                                    $row.find('.count-input').val(availableStock);
+                                    enteredQuantity = availableStock;
+                                }
+                                calculateRowTotal($row.find('.count-input'));
+                            },
+                            error: function () {
+                                alert('재고 정보를 가져오는 데 실패했습니다.');
+                                calculateRowTotal($row.find('.count-input'));
+                            },
+                        });
+                    } else {
+                        calculateRowTotal($row.find('.count-input'));
+                    }
                 }
-                calculateRowTotal($row.find('.count-input'));
-              },
-              error: function () {
-                alert('재고 정보를 가져오는 데 실패했습니다.');
-                calculateRowTotal($row.find('.count-input'));
-              },
-            });
-          } else {
-            calculateRowTotal($row.find('.count-input'));
-          }
-        }
 
-        // 행별 총 금액 계산 함수
-        function calculateRowTotal(quantityInput) {
-          let $row = quantityInput.closest('tr');
-          let priceText = $row.find('.product-price').text();
-          let price = priceText ? parseFloat(priceText.replace(/,/g, '')) : 0;
-          let quantity = parseInt(quantityInput.val()) || 0;
-          let total = price * quantity;
+                // 행별 총 금액 계산 함수
+                function calculateRowTotal(quantityInput) {
+                    let $row = quantityInput.closest('tr');
+                    let priceText = $row.find('.product-price').text();
+                    let price = priceText ? parseFloat(priceText.replace(/,/g, '')) : 0;
+                    let quantity = parseInt(quantityInput.val());
 
-          $row.find('.total-display').val(total.toLocaleString());
-          $row.find('.qty-hidden').val(quantity);
-          calcSummary();
-        }
+                    // 수정된 부분: 수량이 NaN이거나 0보다 작을 경우 총 금액을 빈칸으로 설정
+                    if (isNaN(quantity) || quantity < 0) {
+                        $row.find('.total-display').val('');
+                        $row.find('.qty-hidden').val('');
+                    } else {
+                        let total = price * quantity;
+                        $row.find('.total-display').val(total.toLocaleString());
+                        $row.find('.qty-hidden').val(quantity);
+                    }
+                    calcSummary();
+                }
 
         // 전체 요약 (총 수량, 총 금액) 계산 함수
         function calcSummary() {
