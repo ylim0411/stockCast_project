@@ -278,7 +278,13 @@
             }
 
             data.forEach((item) => {
-              const li = $('<li>').addClass('category-button').text(item.categoryName).data('id', item.categoryId);
+              // li에만 화살표 › 추가 (모달 전용)
+              const li = $('<li>')
+                .addClass('category-button')
+                .data('id', item.categoryId)
+                .append($('<span>').addClass('name').text(item.categoryName))
+                .append($('<span>').addClass('arrow').html('&#8250;'));
+
               li.click(function () {
                 selectedTopId = $(this).data('id');
                 selectedMiddleId = null;
@@ -291,10 +297,10 @@
 
                 loadMiddleCategories(selectedTopId, true);
 
-                // 선택 시 편집 input 비활성 및 값 세팅
+                // 선택 시 편집 input 비활성 및 값 세팅 (이름만)
                 $('#editId').val(selectedTopId);
                 $('#editType').val('top');
-                $('#categoryEditInput').val($(this).text());
+                $('#categoryEditInput').val($(this).find('.name').text());
                 $('#categoryEditInput').prop('disabled', true);
                 $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
               });
@@ -326,7 +332,13 @@
             }
 
             data.forEach((item) => {
-              const li = $('<li>').addClass('category-button').text(item.categoryName).data('id', item.categoryId);
+              // li에만 화살표 › 추가 (모달 전용)
+              const li = $('<li>')
+                .addClass('category-button')
+                .data('id', item.categoryId)
+                .append($('<span>').addClass('name').text(item.categoryName))
+                .append($('<span>').addClass('arrow').html('&#8250;'));
+
               li.click(function () {
                 selectedMiddleId = $(this).data('id');
                 $('#middleCategoryList li').removeClass('active');
@@ -336,10 +348,10 @@
 
                 loadChildCategories(selectedMiddleId);
 
-                // 선택 시 편집 input 비활성 및 값 세팅
+                // 선택 시 편집 input 비활성 및 값 세팅 (이름만)
                 $('#editId').val(selectedMiddleId);
                 $('#editType').val('middle');
-                $('#categoryEditInput').val($(this).text());
+                $('#categoryEditInput').val($(this).find('.name').text());
                 $('#categoryEditInput').prop('disabled', true);
                 $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
               });
@@ -369,16 +381,22 @@
               return;
             }
             data.forEach((item) => {
-              const li = $('<li>').addClass('category-button').text(item.productName).data('id', item.productId);
+              // li에만 화살표 › 추가 (모달 전용)
+              const li = $('<li>')
+                .addClass('category-button')
+                .data('id', item.productId)
+                .append($('<span>').addClass('name').text(item.productName))
+                .append($('<span>').addClass('arrow').html('&#8250;'));
+
               li.click(function () {
                 selectedChildId = $(this).data('id');
                 $('#childCategoryList li').removeClass('active');
                 $(this).addClass('active');
 
-                // 선택 시 편집 input 비활성 및 값 세팅
+                // 선택 시 편집 input 비활성 및 값 세팅 (이름만)
                 $('#editId').val(selectedChildId);
                 $('#editType').val('product');
-                $('#categoryEditInput').val($(this).text());
+                $('#categoryEditInput').val($(this).find('.name').text());
                 $('#categoryEditInput').prop('disabled', true);
                 $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
               });
@@ -387,76 +405,73 @@
           });
         }
 
-          // --- 등록 ---
-          function registerCategory(name, level, parentId = null) {
-            $.post(
-              '/productCategory/save',
-              { categoryName: name, categoryLevel: level, parentId: parentId },
-              function (res) {
-                if (!res || !res.success) {
-                  alert(res && res.message ? res.message : '등록 실패');
-                  return;
-                }
+        // --- 등록 ---
+        function registerCategory(name, level, parentId = null) {
+          $.post(
+            '/productCategory/save',
+            { categoryName: name, categoryLevel: level, parentId: parentId },
+            function (res) {
+              if (!res || !res.success) {
+                alert(res && res.message ? res.message : '등록 실패');
+                return;
+              }
 
-                // createdAt 없으면 오늘 날짜로 표시
-                const createdAt = (res.createdAt ? String(res.createdAt) : new Date().toISOString()).substring(0,10);
-                const tbody = $('.productCategory-table tbody');
+              // createdAt 없으면 오늘 날짜로 표시
+              const createdAt = (res.createdAt ? String(res.createdAt) : new Date().toISOString()).substring(0,10);
+              const tbody = $('.productCategory-table tbody');
 
-                if (level === 1) {
-                  // 대분류 행 즉시 추가
+              if (level === 1) {
+                // 대분류 행 즉시 추가
+                const tr =
+                  `<tr class="parentLevel" data-id="${res.name}">
+                     <td>대분류</td>
+                     <td>${res.name}</td>
+                     <td>${createdAt}</td>
+                   </tr>`;
+                tbody.append(tr);
+
+                // 모달 목록도 새로고침
+                loadTopCategories();
+              }
+
+              if (level === 2) {
+                // 현재 모달에서 선택된 대분류의 '이름'을 data-parent로 써서 붙임 (화살표 제외)
+                const topName = $('#topCategoryList li.active').find('.name').text();
+                if (topName) {
                   const tr =
-                    `<tr class="parentLevel" data-id="${res.name}">
-                       <td>대분류</td>
-                       <td>${res.name}</td>
+                    `<tr class="middleLevel" data-id="${name}" data-parent="${topName}">
+                       <td>중분류</td>
+                       <td>${name}</td>
                        <td>${createdAt}</td>
                      </tr>`;
-                  // 대분류는 표 맨 아래에 붙여도 무방 (정렬 필요하면 위치 계산)
                   tbody.append(tr);
-
-                  // 모달 목록도 새로고침
-                  loadTopCategories();
                 }
+                loadMiddleCategories(selectedTopId, true);
+              }
 
-                if (level === 2) {
-                  // 현재 모달에서 선택된 대분류의 '이름'을 data-parent로 써서 붙임
-                  const topName = $('#topCategoryList li.active').text();
-                  if (topName) {
-                    const tr =
-                      `<tr class="middleLevel" data-id="${name}" data-parent="${topName}">
-                         <td>중분류</td>
-                         <td>${name}</td>
-                         <td>${createdAt}</td>
-                       </tr>`;
-                    // 해당 대분류 아래에 끼워넣고 싶으면, parentLevel 후속 위치를 계산해서 insert 하세요.
-                    // 간단히는 마지막에 append:
-                    tbody.append(tr);
-                  }
-                  loadMiddleCategories(selectedTopId, true);
+              if (level === 3) {
+                // 현재 모달에서 선택된 중분류의 '이름'을 data-parent로 써서 붙임 (화살표 제외)
+                const middleName = $('#middleCategoryList li.active').find('.name').text();
+                if (middleName) {
+                  const tr =
+                    `<tr class="childLevel" data-parent="${middleName}">
+                       <td>소분류</td>
+                       <td>${name}</td>
+                       <td>${createdAt}</td>
+                     </tr>`;
+                  tbody.append(tr);
                 }
+                loadChildCategories(selectedMiddleId);
+              }
 
-                if (level === 3) {
-                  // 현재 모달에서 선택된 중분류의 '이름'을 data-parent로 써서 붙임
-                  const middleName = $('#middleCategoryList li.active').text();
-                  if (middleName) {
-                    const tr =
-                      `<tr class="childLevel" data-parent="${middleName}">
-                         <td>소분류</td>
-                         <td>${name}</td>
-                         <td>${createdAt}</td>
-                       </tr>`;
-                    tbody.append(tr);
-                  }
-                  loadChildCategories(selectedMiddleId);
-                }
-
-                // 입력창 비우기
-                if (level === 1) $('#topInput').val('');
-                if (level === 2) $('#middleInput').val('');
-                if (level === 3) $('#childInput').val('');
-              },
-              'json'
-            );
-          }
+              // 입력창 비우기
+              if (level === 1) $('#topInput').val('');
+              if (level === 2) $('#middleInput').val('');
+              if (level === 3) $('#childInput').val('');
+            },
+            'json'
+          );
+        }
 
         // Enter 등록 이벤트
         $('#topInput').keypress(function (e) {
@@ -545,11 +560,11 @@
         $('#cancelEditBtn').click(function () {
           const type = $('#editType').val();
           if (type === 'top' && selectedTopId) {
-            $('#categoryEditInput').val($('#topCategoryList li.active').text() || '');
+            $('#categoryEditInput').val($('#topCategoryList li.active').find('.name').text() || '');
           } else if (type === 'middle' && selectedMiddleId) {
-            $('#categoryEditInput').val($('#middleCategoryList li.active').text() || '');
+            $('#categoryEditInput').val($('#middleCategoryList li.active').find('.name').text() || '');
           } else if (type === 'product' && selectedChildId) {
-            $('#categoryEditInput').val($('#childCategoryList li.active').text() || '');
+            $('#categoryEditInput').val($('#childCategoryList li.active').find('.name').text() || '');
           } else {
             $('#categoryEditInput').val('');
           }
@@ -575,5 +590,6 @@
         }
       });
     </script>
+
   </body>
 </html>

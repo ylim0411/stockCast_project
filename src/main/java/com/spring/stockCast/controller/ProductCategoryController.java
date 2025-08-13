@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -155,5 +157,75 @@ public class ProductCategoryController {
     public List<ProductCategoryDTO> getSubCategories(@RequestParam int parentId, @RequestParam int clientId) {
         return productCategoryService.findSubCategoriesByParentIdAndClientId(parentId, clientId);
     }
+
+
+    // ProductCategoryController.java
+
+    @PostMapping("/saveAjax")
+    @ResponseBody
+    public Map<String, Object> saveAjax(@RequestParam("categoryLevel") int categoryLevel,
+                                        @RequestParam("categoryName") String categoryName,
+                                        @RequestParam(value = "parentId", required = false) Integer parentId,
+                                        HttpSession session) {
+        int storeId = (int) session.getAttribute("selectedStoredId");
+        Map<String, Object> res = new HashMap<>();
+        try {
+            if (categoryLevel == 3) {
+                // 소분류(상품)은 별도 엔드포인트 사용 (아래 saveProductAjax)
+                res.put("success", false);
+                res.put("message", "Use /productCategory/saveProductAjax for level=3");
+                return res;
+            }
+
+            ProductCategoryDTO dto = new ProductCategoryDTO();
+            dto.setStoreId(storeId);
+            dto.setCategoryName(categoryName);
+            dto.setCategoryLevel(categoryLevel);
+            if (parentId != null) dto.setParentId(Long.valueOf(parentId));
+
+            // 저장 시 keyProperty(categoryId)가 채워지도록 서비스/매퍼 설정 필요
+            productCategoryService.saveCategory(dto);
+
+            res.put("success", true);
+            res.put("id", dto.getCategoryId());   // auto-increment id
+            res.put("name", dto.getCategoryName());
+            res.put("createdAt", dto.getCreatedAt()); // 없으면 프론트에서 오늘날짜 사용
+            return res;
+        } catch (Exception e) {
+            res.put("success", false);
+            res.put("message", "카테고리 저장 실패");
+            return res;
+        }
+    }
+
+    @PostMapping("/saveProductAjax")
+    @ResponseBody
+    public Map<String, Object> saveProductAjax(@RequestParam("categoryId") int categoryId,
+                                               @RequestParam("productName") String productName,
+                                               HttpSession session) {
+        int storeId = (int) session.getAttribute("selectedStoredId");
+        Map<String, Object> res = new HashMap<>();
+        try {
+            ProductDTO p = new ProductDTO();
+            p.setStoreId(storeId);
+            p.setCategoryId(categoryId);
+            p.setProductName(productName);
+            p.setPrice(0);
+            p.setStockQuantity(0);
+
+            productCategoryService.saveProduct(p); // keyProperty(productId) 세팅되도록
+
+            res.put("success", true);
+            res.put("id", p.getProductId());
+            res.put("name", p.getProductName());
+            res.put("createdAt", p.getCreatedAt());
+            return res;
+        } catch (Exception e) {
+            res.put("success", false);
+            res.put("message", "상품 저장 실패");
+            return res;
+        }
+    }
+
 
 }
