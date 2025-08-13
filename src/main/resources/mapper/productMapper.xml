@@ -64,10 +64,17 @@
         WHERE productId = #{productId};
     </update>
 
-    <insert id="add" parameterType="Product">
+<!--    <insert id="add" parameterType="Product">-->
+<!--        INSERT INTO product (categoryId, storeId, productName, price, stockQuantity)-->
+<!--        VALUES (#{categoryId}, #{storeId}, #{productName}, #{price}, #{stockQuantity});-->
+<!--    </insert>-->
+    <!-- Product.xml (또는 ProductMapper.xml): 상품 저장도 생성키 반환 -->
+    <insert id="add" parameterType="Product"
+            useGeneratedKeys="true" keyProperty="productId">
         INSERT INTO product (categoryId, storeId, productName, price, stockQuantity)
         VALUES (#{categoryId}, #{storeId}, #{productName}, #{price}, #{stockQuantity});
     </insert>
+
 
     <select id="findProductByName" parameterType="String" resultType="Product">
         SELECT
