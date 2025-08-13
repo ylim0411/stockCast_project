@@ -11,7 +11,8 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
       </script>
     </c:if>
     <meta charset="UTF-8" />
-    <title>save</title>
+    <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
+    <title>회원가입</title>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link
       rel="stylesheet"

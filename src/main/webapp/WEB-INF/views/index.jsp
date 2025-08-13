@@ -4,7 +4,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>StockCast Login</title>
+    <title>바탕화면</title>
 
     <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png" />
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css" />

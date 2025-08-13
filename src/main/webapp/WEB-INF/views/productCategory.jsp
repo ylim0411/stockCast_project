@@ -1,13 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %> <%@ include file="/WEB-INF/views/header.jsp" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%> <%@ taglib prefix="fn"
+uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>index</title>
+    <title>상품 카테고리<</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/static/css/style.css" />
@@ -29,7 +28,6 @@
       .arrow.rotate-up {
         transform: rotate(-90deg); /* 오른쪽 화살표 -> 위로 */
       }
-
     </style>
   </head>
   <body>
@@ -42,8 +40,13 @@
         <!-- 카테고리 등록 버튼 -->
         <div class="form-container">
           <div class="btn-box">
-            <button id="middle" class="btn btn-blue" style="display: flex; gap: 10px; align-items: center;" >중분류 <span class="arrow rotate" >&#8250;</span></button>
-            <button id="child" class="btn btn-blue" style="display: flex; gap: 10px; align-items: center;">소분류 <span class="arrow rotate">&#8250;</span></button>          </div>
+            <button id="middle" class="btn btn-blue" style="display: flex; gap: 10px; align-items: center">
+              중분류 <span class="arrow rotate">&#8250;</span>
+            </button>
+            <button id="child" class="btn btn-blue" style="display: flex; gap: 10px; align-items: center">
+              소분류 <span class="arrow rotate">&#8250;</span>
+            </button>
+          </div>
           <button class="btn btn-blue-b">카테고리 등록</button>
         </div>
 
@@ -58,116 +61,129 @@
               <th>카테고리 등록일자</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody id="categoryTbody">
             <c:set var="prevTop" value="" />
             <c:set var="prevMiddle" value="" />
 
             <c:forEach items="${categoryList}" var="item">
-              <%-- 널 가드: 그냥 빈 문자열만 만들어두고, 빈 값이면 렌더링 자체를 생략 --%>
-              <c:set var="topName"  value="${item.topLevelCategoryName != null ? item.topLevelCategoryName : ''}" />
-              <c:set var="midName"  value="${item.categoryName != null ? item.categoryName : ''}" />
-              <c:set var="catDate"  value="${item.categoryCreatedAt}" />
+
+              <c:set var="topName" value="${item.topLevelCategoryName != null ? item.topLevelCategoryName : ''}" />
+              <c:set var="midName" value="${item.categoryName != null ? item.categoryName : ''}" />
+              <c:set var="catDate" value="${item.categoryCreatedAt}" />
               <c:set var="prodName" value="${item.productName != null ? item.productName : ''}" />
               <c:set var="prodDate" value="${item.productCreatedAt}" />
 
-              <%-- 대분류: 값이 있을 때만 한 번 렌더링 --%>
+              <%-- 대분류 값이 있을 때만 한 번 렌더링 --%>
               <c:if test="${not empty topName and prevTop != topName}">
                 <tr class="parentLevel" data-id="${topName}">
                   <td>대분류</td>
                   <td>${topName}</td>
                   <td>
-                    <c:if test="${not empty catDate}">
-                      ${fn:substring(catDate, 0, 10)}
-                    </c:if>
+                    <c:if test="${not empty catDate}"> ${fn:substring(catDate, 0, 10)} </c:if>
                   </td>
                 </tr>
                 <c:set var="prevTop" value="${topName}" />
                 <c:set var="prevMiddle" value="" />
               </c:if>
 
-              <%-- 중분류: 값이 있을 때만 렌더링 --%>
+              <%-- 중분류 값이 있을 때만 렌더링 --%>
               <c:if test="${not empty midName and prevMiddle != midName}">
                 <tr class="middleLevel" data-id="${midName}" data-parent="${topName}">
                   <td>중분류</td>
                   <td>${midName}</td>
                   <td>
-                    <c:if test="${not empty catDate}">
-                      ${fn:substring(catDate, 0, 10)}
-                    </c:if>
+                    <c:if test="${not empty catDate}"> ${fn:substring(catDate, 0, 10)} </c:if>
                   </td>
                 </tr>
                 <c:set var="prevMiddle" value="${midName}" />
               </c:if>
 
-              <%-- 소분류(상품): 값이 있을 때만 렌더링 --%>
+              <%-- 소분류 값이 있을 때만 렌더링 --%>
               <c:if test="${not empty prodName}">
                 <tr class="childLevel" data-parent="${midName}">
                   <td>소분류</td>
                   <td>${prodName}</td>
                   <td>
-                    <c:if test="${not empty prodDate}">
-                      ${fn:substring(prodDate, 0, 10)}
-                    </c:if>
+                    <c:if test="${not empty prodDate}"> ${fn:substring(prodDate, 0, 10)} </c:if>
                   </td>
                 </tr>
               </c:if>
-</c:forEach>
-
+            </c:forEach>
           </tbody>
         </table>
 
-        <!-- 카테고리 등록 모달창 -->
+        <!-- 카테고리 등록 모달 -->
         <div id="categoryModal" class="modal hidden">
-          <div class="modal-content">
-            <h2>상품 카테고리 편집</h2>
+          <!-- 공통 modal-content는 유지 + 고유 클래스 cat-modal 추가 -->
+          <div class="modal-content cat-modal">
+            <!-- 상단 타이틀 / 닫기 -->
+            <div class="cat-modal__title">
+              <h2>상품 카테고리 편집</h2>
+              <button type="button" class="cat-modal__close" id="closeModal">×</button>
+            </div>
 
-            <div>
+            <div class="cat-modal__columns">
               <!-- 대분류 -->
-              <div>
-                <h4>대분류(<span id="topCount">0</span>)</h4>
-                <ul id="topCategoryList" class="category-list"></ul>
-                <input type="text" id="topInput" class="category-input" placeholder="대분류 입력 후 Enter" />
-              </div>
+              <section class="cat-panel">
+                <div class="cat-panel__head">
+                  <span>대분류</span>
+                  <span class="cat-panel__count">(<span id="topCount">0</span>)</span>
+                </div>
+                <ul id="topCategoryList" class="category-list cat-panel__list"></ul>
+                <input
+                  type="text"
+                  id="topInput"
+                  class="category-input cat-panel__input"
+                  placeholder="+ Enter키로 대분류 추가"
+                />
+              </section>
 
               <!-- 중분류 -->
-              <div>
-                <h4>중분류(<span id="middleCount">0</span>)</h4>
-                <ul id="middleCategoryList" class="category-list"></ul>
+              <section class="cat-panel">
+                <div class="cat-panel__head">
+                  <span>중분류</span>
+                  <span class="cat-panel__count">(<span id="middleCount">0</span>)</span>
+                </div>
+                <ul id="middleCategoryList" class="category-list cat-panel__list"></ul>
                 <input
                   type="text"
                   id="middleInput"
-                  class="category-input"
-                  placeholder="중분류 입력 후 Enter"
+                  class="category-input cat-panel__input"
+                  placeholder="+ Enter키로 중분류 추가"
                   disabled
                 />
-              </div>
+              </section>
 
               <!-- 소분류 -->
-              <div>
-                <h4>소분류(<span id="childCount">0</span>)</h4>
-                <ul id="childCategoryList" class="category-list"></ul>
-                <input type="text" id="childInput" class="category-input" placeholder="소분류 입력 후 Enter" disabled />
-              </div>
+              <section class="cat-panel">
+                <div class="cat-panel__head">
+                  <span>소분류</span>
+                  <span class="cat-panel__count">(<span id="childCount">0</span>)</span>
+                </div>
+                <ul id="childCategoryList" class="category-list cat-panel__list"></ul>
+                <input
+                  type="text"
+                  id="childInput"
+                  class="category-input cat-panel__input"
+                  placeholder="+ Enter키로 소분류 추가"
+                  disabled
+                />
+              </section>
             </div>
 
-            <!-- 수정 시작 버튼 -->
-            <div>
-              <button type="button" id="startEditBtn" class="btn btn-blue">수정</button>
-            </div>
-
-            <!-- 수정 영역 항상 보이고 input은 기본 disabled -->
-            <div id="editSection">
+            <!-- 하단 선택/수정  -->
+            <div id="editSection" class="cat-modal__footer">
               <input type="hidden" id="editId" />
               <input type="hidden" id="editType" />
-              <input type="text" id="categoryEditInput" class="category-input" placeholder="카테고리명 수정" disabled />
-              <div>
-                <button type="button" class="btn btn-blue" id="saveEditBtn" disabled>저장</button>
-                <button type="button" class="btn btn-red" id="cancelEditBtn" disabled>취소</button>
-              </div>
-            </div>
 
-            <div class="btn btn-blue">
-              <button type="button" class="btn" id="closeModal">닫기</button>
+              <span class="cat-modal__selected-label">선택된 카테고리</span>
+              <input type="text" id="categoryEditInput" class="category-input" placeholder="카테고리명 수정" disabled />
+
+              <div class="cat-modal__actions">
+                <button type="button" id="startEditBtn" class="btn btn-blue">수정</button>
+                <button type="button" id="saveEditBtn" class="btn btn-blue" disabled>저장</button>
+                <button type="button" id="cancelEditBtn" class="btn btn-red" disabled>취소</button>
+              </div>
             </div>
           </div>
         </div>
@@ -176,14 +192,36 @@
 
     <script>
       $(document).ready(function () {
-        // 토글 관련 (기존 테이블 뷰)
-        $('.parentLevel').click(function () {
+        function refreshCategoryTable() {
+          const base = '${pageContext.request.contextPath}';
+          $('#categoryTbody').load(`${base}/productCategory/list #productCategory .productCategory-table tbody > *`);
+        }
+
+
+        $.ajaxSetup({ cache: false });
+
+        // 응답 판정 헬퍼
+        function looksLikeFailure(res) {
+          try {
+            if (res == null) return false;
+            if (typeof res === 'object') {
+              if (res.success === false || res.status === 'error' || res.result === 'fail' || res.error) return true;
+              return false;
+            }
+            const s = String(res).trim().toLowerCase();
+            return s === 'fail' || s === 'error' || s === 'false';
+          } catch (e) {
+            return false;
+          }
+        }
+
+        // =테이블 토글 (동적 행 대응: 위임)
+        $(document).on('click', '.parentLevel', function () {
           const parentId = $(this).data('id');
           const middleRows = $(`.middleLevel[data-parent='${parentId}']`);
           const isHidden = middleRows.first().hasClass('hidden');
-          if (isHidden) {
-            middleRows.removeClass('hidden');
-          } else {
+          if (isHidden) middleRows.removeClass('hidden');
+          else {
             middleRows.addClass('hidden');
             middleRows.each(function () {
               const middleId = $(this).data('id');
@@ -191,7 +229,8 @@
             });
           }
         });
-        $('.middleLevel').click(function () {
+
+        $(document).on('click', '.middleLevel', function () {
           const middleId = $(this).data('id');
           const childRows = $(`.childLevel[data-parent='${middleId}']`);
           const isHidden = childRows.first().hasClass('hidden');
@@ -199,7 +238,7 @@
           else childRows.addClass('hidden');
         });
 
-        $('#middle').click(function () {
+        $('#middle').on('click', function () {
           const middleRows = $('.middleLevel');
           const childRows = $('.childLevel');
           const arrow = $(this).find('.arrow');
@@ -207,357 +246,326 @@
 
           if (isHidden) {
             middleRows.removeClass('hidden');
-            arrow.removeClass('rotate-up').addClass('rotate'); // 아래 방향
+            arrow.removeClass('rotate-up').addClass('rotate');
           } else {
             middleRows.addClass('hidden');
             childRows.addClass('hidden');
-            arrow.removeClass('rotate').addClass('rotate-up'); // 위 방향
+            arrow.removeClass('rotate').addClass('rotate-up');
           }
         });
 
-        $('#child').click(function () {
+        $('#child').on('click', function () {
           const childRows = $('.childLevel');
           const isHidden = childRows.first().hasClass('hidden');
           const arrow = $(this).find('.arrow');
           if (isHidden) {
             childRows.removeClass('hidden');
-            arrow.removeClass('rotate-up').addClass('rotate'); // 아래 방향
+            arrow.removeClass('rotate-up').addClass('rotate');
           } else {
             childRows.addClass('hidden');
-            arrow.removeClass('rotate').addClass('rotate-up'); // 위 방향
+            arrow.removeClass('rotate').addClass('rotate-up');
           }
         });
 
-        // 선택 ID 변수
+        // 상태
         let selectedTopId = null;
         let selectedMiddleId = null;
         let selectedChildId = null;
 
-        // 모달 열기: 최상단 대분류 자동 선택 및 수정 input 비활성
-        $('.btn-blue-b').click(function () {
+        // 모달
+        $('.btn-blue-b').on('click', function () {
           $('#categoryModal').css('display', 'flex');
           resetInputs();
-          loadTopCategories(function (autoSelected) {
-            // 콜백 처리 필요시 여기에
-          });
+          loadTopCategories();
         });
-
-        // 모달 닫기
-        $('#closeModal').click(function () {
+        $('#closeModal').on('click', function () {
           $('#categoryModal').css('display', 'none');
         });
 
-        // 수정 시작 버튼 클릭 - 수정 input 활성화, 버튼 활성화
-        $('#startEditBtn').click(function () {
+        $('#startEditBtn').on('click', function () {
           if (!$('#editId').val()) {
             alert('먼저 카테고리를 선택하세요.');
             return;
           }
-          $('#categoryEditInput').prop('disabled', false);
-          $('#saveEditBtn').prop('disabled', false);
-          $('#cancelEditBtn').prop('disabled', false);
-          $('#categoryEditInput').focus();
+          $('#categoryEditInput').prop('disabled', false).focus();
+          $('#saveEditBtn, #cancelEditBtn').prop('disabled', false);
         });
 
-        // --- loadTopCategories: 첫 항목 자동 선택 ---
+        // 로드 함수
         function loadTopCategories(callback) {
-          $.get('/productCategory/topCategories', function (data) {
-            const list = $('#topCategoryList').empty();
-            $('#topCount').text(data.length);
-            if (!data || data.length === 0) {
-              // 리스트 없으면 편집 영역 초기화 및 input 비활성
-              $('#editId').val('');
-              $('#editType').val('top');
-              $('#categoryEditInput').val('');
-              $('#categoryEditInput').prop('disabled', true);
-              $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
-              $('#middleCategoryList, #childCategoryList').empty();
-              $('#middleCount, #childCount').text('0');
-              if (typeof callback === 'function') callback(false);
-              return;
-            }
+          $.ajax({
+            url: '/productCategory/topCategories',
+            data: { _: Date.now() },
+            dataType: 'json',
+            success: function (data) {
+              const list = $('#topCategoryList').empty();
+              $('#topCount').text(data ? data.length : 0);
 
-            data.forEach((item) => {
-              // li에만 화살표 › 추가 (모달 전용)
-              const li = $('<li>')
-                .addClass('category-button')
-                .data('id', item.categoryId)
-                .append($('<span>').addClass('name').text(item.categoryName))
-                .append($('<span>').addClass('arrow').html('&#8250;'));
-
-              li.click(function () {
-                selectedTopId = $(this).data('id');
-                selectedMiddleId = null;
-                selectedChildId = null;
-                $('#topCategoryList li').removeClass('active');
-                $(this).addClass('active');
-
-                $('#middleInput').prop('disabled', false);
-                $('#childInput').prop('disabled', true);
-
-                loadMiddleCategories(selectedTopId, true);
-
-                // 선택 시 편집 input 비활성 및 값 세팅 (이름만)
-                $('#editId').val(selectedTopId);
+              if (!data || data.length === 0) {
+                $('#editId').val('');
                 $('#editType').val('top');
-                $('#categoryEditInput').val($(this).find('.name').text());
-                $('#categoryEditInput').prop('disabled', true);
+                $('#categoryEditInput').val('').prop('disabled', true);
                 $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
-              });
-              list.append(li);
-            });
-
-            const firstLi = list.find('li').first();
-            if (firstLi.length) {
-              firstLi.trigger('click');
-              if (typeof callback === 'function') callback(true);
-            } else {
-              if (typeof callback === 'function') callback(false);
-            }
-          });
-        }
-
-        // --- loadMiddleCategories ---
-        function loadMiddleCategories(topId, autoSelectFirstMiddle = false) {
-          $.get('/productCategory/middleCategories', { parentId: topId }, function (data) {
-            const list = $('#middleCategoryList').empty();
-            $('#middleCount').text(data.length);
-            if (!data || data.length === 0) {
-              $('#middleCategoryList').empty();
-              $('#childCategoryList').empty();
-              $('#childCount').text('0');
-              $('#middleInput').prop('disabled', false);
-              $('#childInput').prop('disabled', true);
-              return;
-            }
-
-            data.forEach((item) => {
-              // li에만 화살표 › 추가 (모달 전용)
-              const li = $('<li>')
-                .addClass('category-button')
-                .data('id', item.categoryId)
-                .append($('<span>').addClass('name').text(item.categoryName))
-                .append($('<span>').addClass('arrow').html('&#8250;'));
-
-              li.click(function () {
-                selectedMiddleId = $(this).data('id');
-                $('#middleCategoryList li').removeClass('active');
-                $(this).addClass('active');
-
-                $('#childInput').prop('disabled', false);
-
-                loadChildCategories(selectedMiddleId);
-
-                // 선택 시 편집 input 비활성 및 값 세팅 (이름만)
-                $('#editId').val(selectedMiddleId);
-                $('#editType').val('middle');
-                $('#categoryEditInput').val($(this).find('.name').text());
-                $('#categoryEditInput').prop('disabled', true);
-                $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
-              });
-              list.append(li);
-            });
-
-            if (autoSelectFirstMiddle) {
-              const firstMiddle = list.find('li').first();
-              if (firstMiddle.length) {
-                firstMiddle.trigger('click');
-              } else {
-                $('#childCategoryList').empty();
-                $('#childCount').text('0');
-              }
-            }
-          });
-        }
-
-        // --- loadChildCategories ---
-        function loadChildCategories(middleId) {
-          $.get('/productCategory/childCategories', { parentId: middleId }, function (data) {
-            const list = $('#childCategoryList').empty();
-            $('#childCount').text(data.length);
-            if (!data || data.length === 0) {
-              $('#childCategoryList').empty();
-              $('#childCount').text('0');
-              return;
-            }
-            data.forEach((item) => {
-              // li에만 화살표 › 추가 (모달 전용)
-              const li = $('<li>')
-                .addClass('category-button')
-                .data('id', item.productId)
-                .append($('<span>').addClass('name').text(item.productName))
-                .append($('<span>').addClass('arrow').html('&#8250;'));
-
-              li.click(function () {
-                selectedChildId = $(this).data('id');
-                $('#childCategoryList li').removeClass('active');
-                $(this).addClass('active');
-
-                // 선택 시 편집 input 비활성 및 값 세팅 (이름만)
-                $('#editId').val(selectedChildId);
-                $('#editType').val('product');
-                $('#categoryEditInput').val($(this).find('.name').text());
-                $('#categoryEditInput').prop('disabled', true);
-                $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
-              });
-              list.append(li);
-            });
-          });
-        }
-
-        // --- 등록 ---
-        function registerCategory(name, level, parentId = null) {
-          $.post(
-            '/productCategory/save',
-            { categoryName: name, categoryLevel: level, parentId: parentId },
-            function (res) {
-              if (!res || !res.success) {
-                alert(res && res.message ? res.message : '등록 실패');
+                $('#middleCategoryList, #childCategoryList').empty();
+                $('#middleCount, #childCount').text('0');
+                if (typeof callback === 'function') callback(false);
                 return;
               }
 
-              // createdAt 없으면 오늘 날짜로 표시
-              const createdAt = (res.createdAt ? String(res.createdAt) : new Date().toISOString()).substring(0,10);
-              const tbody = $('.productCategory-table tbody');
+              data.forEach((item) => {
+                const li = $('<li>')
+                  .addClass('category-button')
+                  .data('id', item.categoryId)
+                  .append($('<span>').addClass('name').text(item.categoryName))
+                  .append($('<span>').addClass('arrow').html('&#8250;')); // 대/중만 화살표
 
-              if (level === 1) {
-                // 대분류 행 즉시 추가
-                const tr =
-                  `<tr class="parentLevel" data-id="${res.name}">
-                     <td>대분류</td>
-                     <td>${res.name}</td>
-                     <td>${createdAt}</td>
-                   </tr>`;
-                tbody.append(tr);
+                li.on('click', function () {
+                  selectedTopId = $(this).data('id');
+                  selectedMiddleId = null;
+                  selectedChildId = null;
 
-                // 모달 목록도 새로고침
-                loadTopCategories();
-              }
+                  $('#topCategoryList li').removeClass('active');
+                  $(this).addClass('active');
 
-              if (level === 2) {
-                // 현재 모달에서 선택된 대분류의 '이름'을 data-parent로 써서 붙임 (화살표 제외)
-                const topName = $('#topCategoryList li.active').find('.name').text();
-                if (topName) {
-                  const tr =
-                    `<tr class="middleLevel" data-id="${name}" data-parent="${topName}">
-                       <td>중분류</td>
-                       <td>${name}</td>
-                       <td>${createdAt}</td>
-                     </tr>`;
-                  tbody.append(tr);
-                }
-                loadMiddleCategories(selectedTopId, true);
-              }
+                  $('#middleInput').prop('disabled', false);
+                  $('#childInput').prop('disabled', true);
 
-              if (level === 3) {
-                // 현재 모달에서 선택된 중분류의 '이름'을 data-parent로 써서 붙임 (화살표 제외)
-                const middleName = $('#middleCategoryList li.active').find('.name').text();
-                if (middleName) {
-                  const tr =
-                    `<tr class="childLevel" data-parent="${middleName}">
-                       <td>소분류</td>
-                       <td>${name}</td>
-                       <td>${createdAt}</td>
-                     </tr>`;
-                  tbody.append(tr);
-                }
-                loadChildCategories(selectedMiddleId);
-              }
+                  loadMiddleCategories(selectedTopId, true);
 
-              // 입력창 비우기
-              if (level === 1) $('#topInput').val('');
-              if (level === 2) $('#middleInput').val('');
-              if (level === 3) $('#childInput').val('');
+                  $('#editId').val(selectedTopId);
+                  $('#editType').val('top');
+                  $('#categoryEditInput').val($(this).find('.name').text()).prop('disabled', true);
+                  $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
+                });
+
+                list.append(li);
+              });
+
+              const firstLi = list.find('li').first();
+              if (firstLi.length) firstLi.trigger('click');
+              if (typeof callback === 'function') callback(true);
             },
-            'json'
-          );
+          });
         }
 
-        // Enter 등록 이벤트
-        $('#topInput').keypress(function (e) {
+        function loadMiddleCategories(topId, autoSelectFirstMiddle = false) {
+          $.ajax({
+            url: '/productCategory/middleCategories',
+            data: { parentId: topId, _: Date.now() },
+            dataType: 'json',
+            success: function (data) {
+              const list = $('#middleCategoryList').empty();
+              $('#middleCount').text(data ? data.length : 0);
+
+              if (!data || data.length === 0) {
+                $('#childCategoryList').empty();
+                $('#childCount').text('0');
+                $('#middleInput').prop('disabled', false);
+                $('#childInput').prop('disabled', true);
+                return;
+              }
+
+              data.forEach((item) => {
+                const li = $('<li>')
+                  .addClass('category-button')
+                  .data('id', item.categoryId)
+                  .append($('<span>').addClass('name').text(item.categoryName))
+                  .append($('<span>').addClass('arrow').html('&#8250;')); // 대/중만 화살표
+
+                li.on('click', function () {
+                  selectedMiddleId = $(this).data('id');
+
+                  $('#middleCategoryList li').removeClass('active');
+                  $(this).addClass('active');
+
+                  $('#childInput').prop('disabled', false);
+
+                  loadChildCategories(selectedMiddleId);
+
+                  $('#editId').val(selectedMiddleId);
+                  $('#editType').val('middle');
+                  $('#categoryEditInput').val($(this).find('.name').text()).prop('disabled', true);
+                  $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
+                });
+
+                list.append(li);
+              });
+
+              if (autoSelectFirstMiddle) {
+                const firstMiddle = list.find('li').first();
+                if (firstMiddle.length) firstMiddle.trigger('click');
+                else {
+                  $('#childCategoryList').empty();
+                  $('#childCount').text('0');
+                }
+              }
+            },
+          });
+        }
+
+        function loadChildCategories(middleId, opts) {
+          opts = opts || {}; // { highlightName?: string }
+
+          $.ajax({
+            url: '/productCategory/childCategories',
+            data: { parentId: middleId, _: Date.now() },
+            dataType: 'json',
+            success: function (data) {
+              const list = $('#childCategoryList').empty();
+              $('#childCount').text(data ? data.length : 0);
+
+              if (!data || data.length === 0) return;
+
+              data.forEach(function (item) {
+                const li = $('<li>')
+                  .addClass('category-button')
+                  .data('id', item.productId)
+                  .append($('<span>').addClass('name').text(item.productName)); // 소분류 = 화살표 없음
+
+                li.on('click', function () {
+                  selectedChildId = $(this).data('id');
+                  $('#childCategoryList li').removeClass('active');
+                  $(this).addClass('active');
+
+                  $('#editId').val(selectedChildId);
+                  $('#editType').val('product');
+                  $('#categoryEditInput').val($(this).find('.name').text()).prop('disabled', true);
+                  $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
+                });
+
+                list.append(li);
+              });
+
+              if (opts.highlightName) {
+                const $t = list
+                  .find('li .name')
+                  .filter(function () {
+                    return $(this).text() === opts.highlightName;
+                  })
+                  .first()
+                  .closest('li');
+
+                if ($t.length) {
+                  list.find('li').removeClass('active');
+                  $t.addClass('active');
+                  const container = list.get(0);
+                  container.scrollTop = $t[0].offsetTop - 8;
+
+                  selectedChildId = $t.data('id');
+                  $('#editId').val(selectedChildId);
+                  $('#editType').val('product');
+                  $('#categoryEditInput').val(opts.highlightName).prop('disabled', true);
+                  $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
+                }
+              }
+            },
+          });
+        }
+
+        // 등록
+        function registerCategory(name, level, parentId = null) {
+          $.ajax({
+            url: '/productCategory/save',
+            method: 'POST',
+            data: { categoryName: name, categoryLevel: level, parentId: parentId },
+            success: function (res) {
+              if (looksLikeFailure(res)) { alert('등록 실패'); return; }
+
+              // 모달 리스트 갱신
+              if (level === 1) { loadTopCategories(); $('#topInput').val(''); }
+              if (level === 2) { loadMiddleCategories(selectedTopId, true); $('#middleInput').val(''); }
+
+              // ✅ 메인 테이블을 서버 렌더로 부분 리로드
+              refreshCategoryTable();
+            },
+            error: function () { alert('등록 실패'); }
+          });
+        }
+
+
+        // 대/중분류 엔터 등록
+        $('#topInput').on('keypress', function (e) {
           if (e.which === 13) {
             const v = $(this).val().trim();
             if (!v) return;
             registerCategory(v, 1);
-            $(this).val('');
           }
         });
-        $('#middleInput').keypress(function (e) {
+
+        $('#middleInput').on('keypress', function (e) {
           if (e.which === 13 && selectedTopId) {
             const v = $(this).val().trim();
             if (!v) return;
             registerCategory(v, 2, selectedTopId);
-            $(this).val('');
-          }
-        });
-        $('#childInput').keypress(function (e) {
-          if (e.which === 13 && selectedMiddleId) {
-            const name = $(this).val().trim();
-            if (!name) return;
-            const selectedStoreId = '${sessionScope.selectedStoredId}';
-            $.post(
-              '/productCategory/saveProduct',
-              {
-                categoryId: selectedMiddleId,
-                productName: name,
-                storeId: selectedStoreId,
-              },
-              function (res) {
-                if (res === 'success') {
-                  loadChildCategories(selectedMiddleId);
-                  $('#childInput').val('');
-                } else {
-                  alert('소분류 등록 실패' + res);
-                }
-              }
-            );
           }
         });
 
-        // --- 수정 저장 ---
-        $('#saveEditBtn').click(function () {
-          const type = $('#editType').val();
-          const id = $('#editId').val();
-          const newName = $('#categoryEditInput').val().trim();
-          if (!newName) {
-            alert('이름을 입력해주세요');
-            return;
-          }
-          if (!id && type !== 'top') {
-            alert('수정 대상이 없습니다.');
-            return;
-          }
+        // 소분류 엔터 등록: 성공 시 무조건 즉시 리로드 & 하이라이트
+        $('#childInput').on('keydown', function (e) {
+          if (e.key !== 'Enter' || !selectedMiddleId) return;
+          e.preventDefault();
+
+          const name = $(this).val().trim();
+          if (!name) return;
+
+          const selectedStoreId = '${sessionScope.selectedStoredId}';
+
           $.ajax({
-            url: '/productCategory/updateCategoryName',
+            url: '/productCategory/saveProduct',
             method: 'POST',
-            data: { id: id, type: type, newName: newName },
+            data: { categoryId: selectedMiddleId, productName: name, storeId: selectedStoreId },
             success: function (res) {
-              if (res === 'success') {
-                alert('수정 완료');
-                if (type === 'top') {
-                  loadTopCategories();
-                } else if (type === 'middle') {
-                  if (selectedTopId) loadMiddleCategories(selectedTopId, true);
-                  else loadTopCategories();
-                } else if (type === 'product') {
-                  if (selectedMiddleId) loadChildCategories(selectedMiddleId);
-                  else if (selectedTopId) loadMiddleCategories(selectedTopId, true);
-                }
-                // 수정 완료 후 편집 input 비활성화
-                $('#categoryEditInput').prop('disabled', true);
-                $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
-              } else {
-                alert('수정 실패');
-              }
+              if (looksLikeFailure(res)) { alert('소분류 등록 실패'); return; }
+              $('#childInput').val('');
+              loadChildCategories(selectedMiddleId, { highlightName: name });
+
+              // ✅ 메인 테이블 리로드 (소분류 행이 즉시 나타남)
+              refreshCategoryTable();
             },
             error: function () {
-              alert('서버 오류');
+              alert('소분류 등록 실패');
             },
           });
         });
 
-        // 취소: 편집 input 내용 원래 선택된 항목 이름으로 복원, input 비활성화
-        $('#cancelEditBtn').click(function () {
+        // 수정
+        $('#saveEditBtn').on('click', function () {
+          const type = $('#editType').val();
+          const id = $('#editId').val();
+          const newName = $('#categoryEditInput').val().trim();
+          if (!newName) { alert('이름을 입력해주세요'); return; }
+          if (!id && type !== 'top') { alert('수정 대상이 없습니다.'); return; }
+
+          $.ajax({
+            url: '/productCategory/updateCategoryName',
+            method: 'POST',
+            data: { id, type, newName },
+            success: function (res) {
+              if (looksLikeFailure(res)) { alert('수정 실패'); return; }
+              alert('수정 완료');
+
+              if (type === 'top') {
+                loadTopCategories();
+              } else if (type === 'middle') {
+                selectedTopId ? loadMiddleCategories(selectedTopId, true) : loadTopCategories();
+              } else if (type === 'product') {
+                selectedMiddleId
+                  ? loadChildCategories(selectedMiddleId, { highlightName: newName })
+                  : (selectedTopId && loadMiddleCategories(selectedTopId, true));
+              }
+
+              // ✅ 테이블 부분 리로드
+              refreshCategoryTable();
+
+              $('#categoryEditInput').prop('disabled', true);
+              $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
+            },
+            error: function () { alert('서버 오류'); }
+          });
+        });
+
+
+        $('#cancelEditBtn').on('click', function () {
           const type = $('#editType').val();
           if (type === 'top' && selectedTopId) {
             $('#categoryEditInput').val($('#topCategoryList li.active').find('.name').text() || '');
@@ -572,24 +580,23 @@
           $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
         });
 
-        // 초기화 함수
+        // 초기화
         function resetInputs() {
           $('#topInput, #middleInput, #childInput').val('');
           $('#middleInput, #childInput').prop('disabled', true);
           $('#topCategoryList, #middleCategoryList, #childCategoryList').empty();
           $('#topCount, #middleCount, #childCount').text('0');
+
           selectedTopId = null;
           selectedMiddleId = null;
           selectedChildId = null;
 
           $('#editId').val('');
           $('#editType').val('top');
-          $('#categoryEditInput').val('');
-          $('#categoryEditInput').prop('disabled', true); // 기본 disabled
+          $('#categoryEditInput').val('').prop('disabled', true);
           $('#saveEditBtn, #cancelEditBtn').prop('disabled', true);
         }
       });
     </script>
-
   </body>
 </html>
