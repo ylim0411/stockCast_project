@@ -5,7 +5,7 @@ prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> <%@ include file="/W
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
-    <title>판매실적</title>
+    <title>판매 실적</title>
     <script src="${pageContext.request.contextPath}/webjars/chartjs/2.9.4/Chart.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
@@ -15,7 +15,7 @@ prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %> <%@ include file="/W
     <div class="container">
       <div class="title-box">
         <p class="sub-title">매출 관리</p>
-        <h2 class="title">판매실적</h2>
+        <h2 class="title">판매 실적</h2>
       </div>
 
       <div class="section-wrap80">
