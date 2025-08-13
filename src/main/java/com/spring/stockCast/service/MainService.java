@@ -103,7 +103,7 @@ public class MainService {
         if ("4".equals(sky)) return "간식류 (쿠키, 스낵), 따뜻한 음료";
         if (temp <= 5) return "따뜻한 음료, 핫팩, 장갑";
         if (temp >= 30) return "할인 상품, 아이스크림 묶음 판매";
-        return "기본 상품군을 추천합니다.";
+        return "우산, 간식류 (쿠키, 스낵)";
     }
 
     // 유동인구 API 연동, 데이터
