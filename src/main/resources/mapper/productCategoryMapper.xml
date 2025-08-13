@@ -31,8 +31,31 @@
 
     <!-- 카테고리 분류 항목 출력  -->
     <select id="list" parameterType="int" resultType="StockQuantity">
-        SELECT * FROM product_summary_view WHERE storeId = #{storeId};
+        SELECT
+        t.categoryName                                 AS topLevelCategoryName,
+        m.categoryName                                 AS categoryName,
+        COALESCE(m.createdAt, t.createdAt)             AS categoryCreatedAt,
+        p.productName                                  AS productName,
+        p.createdAt                                    AS productCreatedAt,
+        t.categoryId                                   AS topCategoryId,
+        m.categoryId                                   AS middleCategoryId,
+        p.productId                                    AS productId
+        FROM productCategory t
+        LEFT JOIN productCategory m
+        ON m.parentId = t.categoryId
+        AND m.categoryLevel = 2
+        AND m.storeId = t.storeId
+        LEFT JOIN product p
+        ON p.categoryId = m.categoryId
+        AND p.storeId = t.storeId
+        WHERE t.categoryLevel = 1
+        AND t.storeId = #{_parameter}   -- 단일 int 파라미터면 이렇게!
+        ORDER BY
+        t.categoryName,
+        m.categoryName,
+        p.productName;
     </select>
+
 
     <!-- 발주 대분류 (거래처별) young -->
     <select id="findTopCategoriesByClientId" parameterType="int" resultType="ProductCategory">
