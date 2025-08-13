@@ -55,7 +55,7 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                   <td>${client.clientId}</td>
                   <td>${client.clientName}</td>
                   <td>${client.businessNumber}</td>
-                  <td>${client.ceoName}</td>
+                  <td>${client.managerName}</td>
                   <td>${client.createdAtFormatted}</td>
                   <td>${client.updatedAtFormatted}</td>
                   <td>${client.deletedAtFormatted}</td>
