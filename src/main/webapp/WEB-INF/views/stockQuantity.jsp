@@ -19,7 +19,7 @@
   <div id="stockQuantity" class="containerAuto">
     <div class="title-box">
         <p class="sub-title">상품 관리</p>
-        <h2 class="title">재고현황</h2>
+        <h2 class="title">재고 현황</h2>
     </div>
     <div class="section-wrap">
       <div class="form-container">

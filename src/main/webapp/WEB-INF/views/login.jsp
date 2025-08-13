@@ -5,11 +5,12 @@ prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>login</title>
+    <title>로그인</title>
     <link
       rel="stylesheet"
       href="${pageContext.request.contextPath}/static/css/style.css"
     />
+    <link rel="icon" href="${pageContext.request.contextPath}/static/images/favicon.png" type="image/png">
   </head>
   <body>
     <div class="container">
