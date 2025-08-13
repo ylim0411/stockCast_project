@@ -6,6 +6,7 @@ import lombok.Data;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Data
@@ -31,4 +32,21 @@ public class ClientDTO {
 
     private List<Integer> productIds;    // productId 리스트
     private List<String> productNames;   // productName 리스트
+
+    public String getCreatedAtFormatted() {
+        return createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
+
+    public String getUpdatedAtFormatted() {
+        return updatedAt != null
+                ? updatedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                : "-";
+    }
+
+    public String getDeletedAtFormatted() {
+        return deletedAt != null
+                ? deletedAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+                : "-";
+    }
+
 }

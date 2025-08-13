@@ -56,9 +56,9 @@ uri="http://java.sun.com/jsp/jstl/fmt" %>
                   <td>${client.clientName}</td>
                   <td>${client.businessNumber}</td>
                   <td>${client.ceoName}</td>
-                  <td>${client.createdAt}</td>
-                  <td>${client.updatedAt != null ? client.updatedAt : '-'}</td>
-                  <td>${client.deletedAt != null ? client.deletedAt : '-'}</td>
+                  <td>${client.createdAtFormatted}</td>
+                  <td>${client.updatedAtFormatted}</td>
+                  <td>${client.deletedAtFormatted}</td>
                   <td>
                     <button
                       class="btn btn-blue openDetailModal"
