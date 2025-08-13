@@ -59,32 +59,60 @@
             </tr>
           </thead>
           <tbody>
+            <c:set var="prevTop" value="" />
+            <c:set var="prevMiddle" value="" />
+
             <c:forEach items="${categoryList}" var="item">
-              <c:if test="${prevTop != item.topLevelCategoryName}">
-                <tr class="parentLevel" data-id="${item.topLevelCategoryName}">
+              <%-- 널 가드: 그냥 빈 문자열만 만들어두고, 빈 값이면 렌더링 자체를 생략 --%>
+              <c:set var="topName"  value="${item.topLevelCategoryName != null ? item.topLevelCategoryName : ''}" />
+              <c:set var="midName"  value="${item.categoryName != null ? item.categoryName : ''}" />
+              <c:set var="catDate"  value="${item.categoryCreatedAt}" />
+              <c:set var="prodName" value="${item.productName != null ? item.productName : ''}" />
+              <c:set var="prodDate" value="${item.productCreatedAt}" />
+
+              <%-- 대분류: 값이 있을 때만 한 번 렌더링 --%>
+              <c:if test="${not empty topName and prevTop != topName}">
+                <tr class="parentLevel" data-id="${topName}">
                   <td>대분류</td>
-                  <td>${item.topLevelCategoryName}</td>
-                  <td>${fn:substring(item.categoryCreatedAt, 0, 10)}</td>
+                  <td>${topName}</td>
+                  <td>
+                    <c:if test="${not empty catDate}">
+                      ${fn:substring(catDate, 0, 10)}
+                    </c:if>
+                  </td>
                 </tr>
-                <c:set var="prevTop" value="${item.topLevelCategoryName}" />
+                <c:set var="prevTop" value="${topName}" />
                 <c:set var="prevMiddle" value="" />
               </c:if>
 
-              <c:if test="${prevMiddle != item.categoryName}">
-                <tr class="middleLevel" data-id="${item.categoryName}" data-parent="${item.topLevelCategoryName}">
+              <%-- 중분류: 값이 있을 때만 렌더링 --%>
+              <c:if test="${not empty midName and prevMiddle != midName}">
+                <tr class="middleLevel" data-id="${midName}" data-parent="${topName}">
                   <td>중분류</td>
-                  <td>${item.categoryName}</td>
-                  <td>${fn:substring(item.categoryCreatedAt, 0, 10)}</td>
+                  <td>${midName}</td>
+                  <td>
+                    <c:if test="${not empty catDate}">
+                      ${fn:substring(catDate, 0, 10)}
+                    </c:if>
+                  </td>
                 </tr>
-                <c:set var="prevMiddle" value="${item.categoryName}" />
+                <c:set var="prevMiddle" value="${midName}" />
               </c:if>
 
-              <tr class="childLevel" data-parent="${item.categoryName}">
-                <td>소분류</td>
-                <td>${item.productName}</td>
-                <td>${fn:substring(item.productCreatedAt, 0, 10)}</td>
-              </tr>
-            </c:forEach>
+              <%-- 소분류(상품): 값이 있을 때만 렌더링 --%>
+              <c:if test="${not empty prodName}">
+                <tr class="childLevel" data-parent="${midName}">
+                  <td>소분류</td>
+                  <td>${prodName}</td>
+                  <td>
+                    <c:if test="${not empty prodDate}">
+                      ${fn:substring(prodDate, 0, 10)}
+                    </c:if>
+                  </td>
+                </tr>
+              </c:if>
+</c:forEach>
+
           </tbody>
         </table>
 
@@ -359,22 +387,76 @@
           });
         }
 
-        // --- 등록 ---
-        function registerCategory(name, level, parentId = null) {
-          $.post(
-            '/productCategory/save',
-            {
-              categoryName: name,
-              categoryLevel: level,
-              parentId: parentId,
-            },
-            function () {
-              if (level === 1) loadTopCategories();
-              if (level === 2) loadMiddleCategories(selectedTopId, true);
-              if (level === 3) loadChildCategories(selectedMiddleId);
-            }
-          );
-        }
+          // --- 등록 ---
+          function registerCategory(name, level, parentId = null) {
+            $.post(
+              '/productCategory/save',
+              { categoryName: name, categoryLevel: level, parentId: parentId },
+              function (res) {
+                if (!res || !res.success) {
+                  alert(res && res.message ? res.message : '등록 실패');
+                  return;
+                }
+
+                // createdAt 없으면 오늘 날짜로 표시
+                const createdAt = (res.createdAt ? String(res.createdAt) : new Date().toISOString()).substring(0,10);
+                const tbody = $('.productCategory-table tbody');
+
+                if (level === 1) {
+                  // 대분류 행 즉시 추가
+                  const tr =
+                    `<tr class="parentLevel" data-id="${res.name}">
+                       <td>대분류</td>
+                       <td>${res.name}</td>
+                       <td>${createdAt}</td>
+                     </tr>`;
+                  // 대분류는 표 맨 아래에 붙여도 무방 (정렬 필요하면 위치 계산)
+                  tbody.append(tr);
+
+                  // 모달 목록도 새로고침
+                  loadTopCategories();
+                }
+
+                if (level === 2) {
+                  // 현재 모달에서 선택된 대분류의 '이름'을 data-parent로 써서 붙임
+                  const topName = $('#topCategoryList li.active').text();
+                  if (topName) {
+                    const tr =
+                      `<tr class="middleLevel" data-id="${name}" data-parent="${topName}">
+                         <td>중분류</td>
+                         <td>${name}</td>
+                         <td>${createdAt}</td>
+                       </tr>`;
+                    // 해당 대분류 아래에 끼워넣고 싶으면, parentLevel 후속 위치를 계산해서 insert 하세요.
+                    // 간단히는 마지막에 append:
+                    tbody.append(tr);
+                  }
+                  loadMiddleCategories(selectedTopId, true);
+                }
+
+                if (level === 3) {
+                  // 현재 모달에서 선택된 중분류의 '이름'을 data-parent로 써서 붙임
+                  const middleName = $('#middleCategoryList li.active').text();
+                  if (middleName) {
+                    const tr =
+                      `<tr class="childLevel" data-parent="${middleName}">
+                         <td>소분류</td>
+                         <td>${name}</td>
+                         <td>${createdAt}</td>
+                       </tr>`;
+                    tbody.append(tr);
+                  }
+                  loadChildCategories(selectedMiddleId);
+                }
+
+                // 입력창 비우기
+                if (level === 1) $('#topInput').val('');
+                if (level === 2) $('#middleInput').val('');
+                if (level === 3) $('#childInput').val('');
+              },
+              'json'
+            );
+          }
 
         // Enter 등록 이벤트
         $('#topInput').keypress(function (e) {
