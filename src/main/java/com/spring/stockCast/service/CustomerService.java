@@ -1,6 +1,5 @@
 package com.spring.stockCast.service;
 
-
 import com.spring.stockCast.dto.CustomerDTO;
 import com.spring.stockCast.enums.Gender;
 import com.spring.stockCast.repository.CustomerRepository;

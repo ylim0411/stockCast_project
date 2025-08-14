@@ -4,7 +4,6 @@ import com.spring.stockCast.dto.ProductCategoryDTO;
 import com.spring.stockCast.dto.ProductDTO;
 import com.spring.stockCast.dto.StockQuantityDTO;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Param;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -43,20 +42,17 @@ public class ProductCategoryRepository {
         return sql.selectList("ProductCategory.list", storeId);
     }
 
-    // 카테고리 저장 (추가)
+    // 카테고리 저장
     public void save(ProductCategoryDTO categoryDTO) {
         sql.insert("ProductCategory.save", categoryDTO);
     }
 
-
-
-    // 모든 대분류 카테고리 조회 (추가)
+    // 모든 대분류 카테고리 조회
     public List<ProductCategoryDTO> findTopLevelCategories(int storeId) {
         return sql.selectList("ProductCategory.findTopLevelCategories", storeId);
     }
 
-
-    // 특정 대분류의 중분류 카테고리 조회 (추가)
+    // 특정 대분류의 중분류 카테고리 조회
     public List<ProductCategoryDTO> findMiddleLevelCategoriesByParentId(int parentId, int storeId) {
         Map<String, Object> param = new HashMap<>();
         param.put("parentId", parentId);

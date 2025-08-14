@@ -3,7 +3,6 @@ package com.spring.stockCast.controller;
 import com.spring.stockCast.dto.AdminDTO;
 import com.spring.stockCast.dto.ClientDTO;
 import com.spring.stockCast.dto.PageDTO;
-import com.spring.stockCast.dto.StoreDTO;
 import com.spring.stockCast.enums.ClientStatus;
 import com.spring.stockCast.service.ClientService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 

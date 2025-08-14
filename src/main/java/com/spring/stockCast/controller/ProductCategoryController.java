@@ -29,7 +29,6 @@ public class ProductCategoryController {
         int storeId = (int) session.getAttribute("selectedStoredId");
 
         List<StockQuantityDTO> categoryList = productCategoryService.categoryList(storeId);
-//        List<ProductCategoryDTO> topList = productCategoryService.findTopLevelCategories(storeId);
         List<ProductCategoryDTO> topList = productCategoryService.findTopLevelCategories(storeId);
 
         model.addAttribute("categoryList", categoryList);
@@ -72,7 +71,7 @@ public class ProductCategoryController {
         return "redirect:/productCategory/list";
     }
 
-    // 대분류 목록 조회 (모달용) (추가)
+    // 대분류 목록 조회
     @GetMapping("/topCategories")
     @ResponseBody
     public List<ProductCategoryDTO> getTopCategories(HttpSession session) {
@@ -82,7 +81,7 @@ public class ProductCategoryController {
 
 
 
-    // 중분류 목록 조회 (모달용) (추가)
+    // 중분류 목록 조회
     @GetMapping("/middleCategories")
     @ResponseBody
     public List<ProductCategoryDTO> getMiddleCategories(@RequestParam int parentId, HttpSession session) {
@@ -157,9 +156,6 @@ public class ProductCategoryController {
     public List<ProductCategoryDTO> getSubCategories(@RequestParam int parentId, @RequestParam int clientId) {
         return productCategoryService.findSubCategoriesByParentIdAndClientId(parentId, clientId);
     }
-
-
-    // ProductCategoryController.java
 
     @PostMapping("/saveAjax")
     @ResponseBody

@@ -4,7 +4,6 @@ package com.spring.stockCast.service;
 import com.spring.stockCast.dto.ClientDTO;
 import com.spring.stockCast.dto.PageDTO;
 import com.spring.stockCast.repository.ClientRepository;
-import com.spring.stockCast.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
