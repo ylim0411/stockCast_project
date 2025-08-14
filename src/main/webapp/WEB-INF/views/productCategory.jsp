@@ -475,7 +475,6 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
               if (level === 1) { loadTopCategories(); $('#topInput').val(''); }
               if (level === 2) { loadMiddleCategories(selectedTopId, true); $('#middleInput').val(''); }
 
-              // ✅ 메인 테이블을 서버 렌더로 부분 리로드
               refreshCategoryTable();
             },
             error: function () { alert('등록 실패'); }
@@ -519,7 +518,6 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
               $('#childInput').val('');
               loadChildCategories(selectedMiddleId, { highlightName: name });
 
-              // ✅ 메인 테이블 리로드 (소분류 행이 즉시 나타남)
               refreshCategoryTable();
             },
             error: function () {
@@ -554,7 +552,6 @@ uri="http://java.sun.com/jsp/jstl/functions" %>
                   : (selectedTopId && loadMiddleCategories(selectedTopId, true));
               }
 
-              // ✅ 테이블 부분 리로드
               refreshCategoryTable();
 
               $('#categoryEditInput').prop('disabled', true);
