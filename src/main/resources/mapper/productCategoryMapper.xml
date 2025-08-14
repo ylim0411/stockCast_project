@@ -4,16 +4,11 @@
 
 <mapper namespace="ProductCategory">
 
-<!--    <insert id="save" parameterType="ProductCategory">-->
-<!--        INSERT INTO productCategory (storeId, categoryName, parentId, categoryLevel)-->
-<!--        VALUES (#{storeId}, #{categoryName}, #{parentId}, #{categoryLevel});-->
-<!--    </insert>-->
     <insert id="save" parameterType="ProductCategory"
             useGeneratedKeys="true" keyProperty="categoryId">
         INSERT INTO productCategory (storeId, categoryName, parentId, categoryLevel)
         VALUES (#{storeId}, #{categoryName}, #{parentId}, #{categoryLevel});
     </insert>
-
 
     <select id="findTopLevelCategories" parameterType="int" resultType="ProductCategory">
         SELECT * FROM productcategory WHERE storeId = #{storeId} AND categoryLevel = 1;
@@ -61,7 +56,6 @@
         m.categoryName,
         p.productName;
     </select>
-
 
     <!-- 발주 대분류 (거래처별) young -->
     <select id="findTopCategoriesByClientId" parameterType="int" resultType="ProductCategory">

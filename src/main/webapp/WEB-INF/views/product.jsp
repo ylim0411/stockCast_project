@@ -282,18 +282,14 @@ $(document).ready(function () {
         const $el = $(this);
         const name = $el.attr('name');
 
-        // 원복용 백업
         $el.data('orig', $el.val());
 
-        // productId/createdAt 제외하고 편집 가능
         if (!/^(productId|createdAt)$/.test(name)) {
           $el.prop('disabled', false).prop('readonly', false);
         }
-        // 이 행의 폼으로 귀속
         $el.attr('form', formId);
       });
 
-      // 전송 보장용: productId만 hidden으로 유지
       if ($form.find('input[type="hidden"][name="productId"]').length === 0) {
         $('<input>', {
           type:'hidden', name:'productId',
@@ -305,7 +301,6 @@ $(document).ready(function () {
       $(this).text('취소');
 
     } else {
-      // 취소: 값 원복 + 비활성 + form 연결 해제
       $inputs.each(function () {
         const $el = $(this);
         const name = $el.attr('name');
@@ -319,7 +314,6 @@ $(document).ready(function () {
         $el.removeAttr('form');
       });
 
-      // 우리가 추가한 hidden만 제거(CSRF 유지)
       $form.find('input[type="hidden"][name]').each(function(){
         const n = this.name;
         if (['productId','clientId','middleCategoryId','productName','price','stockQuantity'].includes(n)) {
@@ -332,7 +326,6 @@ $(document).ready(function () {
     }
   });
 
-  // [추가] 제출 전 필수값 검증 + disabled 보강/중복 제거
   $(document).on('submit', '.updateForm', function(e){
     const $form = $(this);
     const $row = $form.closest('tr');

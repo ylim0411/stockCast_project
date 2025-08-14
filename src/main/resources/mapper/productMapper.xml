@@ -64,11 +64,6 @@
         WHERE productId = #{productId};
     </update>
 
-<!--    <insert id="add" parameterType="Product">-->
-<!--        INSERT INTO product (categoryId, storeId, productName, price, stockQuantity)-->
-<!--        VALUES (#{categoryId}, #{storeId}, #{productName}, #{price}, #{stockQuantity});-->
-<!--    </insert>-->
-    <!-- Product.xml (또는 ProductMapper.xml): 상품 저장도 생성키 반환 -->
     <insert id="add" parameterType="Product"
             useGeneratedKeys="true" keyProperty="productId">
         INSERT INTO product (categoryId, storeId, productName, price, stockQuantity)
@@ -159,7 +154,6 @@
         ORDER BY productId ASC
     </select>
 
-
     <select id="findStockQuantityByMonth" parameterType="map" resultType="StockQuantity">
         SELECT *
         FROM product_summary_view
@@ -177,7 +171,7 @@
         VALUES (#{storeId}, #{categoryId}, #{productName}, #{price}, #{stockQuantity});
     </insert>
 
-    <!-- 확인중 you -->
+    <!-- 카테고리ID로 상품 you -->
     <select id="findProductsByCategoryId" parameterType="int" resultType="Product">
         SELECT * FROM product WHERE categoryId = #{parentId};
     </select>
@@ -210,122 +204,5 @@
         SELECT * FROM product
         WHERE storeId = #{storeId}
     </select>
-
-
-<!--    <select id="stockList" parameterType="map" resultType="StockQuantityDTO">-->
-<!--        SELECT-->
-<!--        psv.productId,-->
-<!--        psv.productName,-->
-<!--        psv.categoryName,-->
-<!--        psv.topLevelCategoryName,-->
-<!--        &#45;&#45; 요청된 월의 기초 재고를 `productinitstock`에서 조회 (startDate에 해당하는 값)-->
-<!--        IFNULL(pis_monthly.initialStockQuantity, 0) AS initialStockQuantity,-->
-<!--        IFNULL(pis_monthly.initialUnitPrice, 0) AS initialUnitPrice,-->
-<!--        IFNULL((pis_monthly.initialStockQuantity * pis_monthly.initialUnitPrice), 0) AS totalInitialStockAmount,-->
-<!--        &#45;&#45; 요청된 월의 입고 수량 및 금액 계산 (`purchaseOrder` 테이블 사용)-->
-<!--        IFNULL(po_monthly.monthlyPurchaseQty, 0) AS purchaseQty,-->
-<!--        IFNULL(po_monthly.monthlyPurchasePrice, 0) AS purchasePrice,-->
-<!--        IFNULL(po_monthly.monthlyPurchaseAmount, 0) AS totalPurchase,-->
-<!--        &#45;&#45; 요청된 월의 출고 수량 및 금액 계산 (`sale_product` 테이블 사용)-->
-<!--        IFNULL(sp_monthly.monthlySaleQty, 0) AS saleQty,-->
-<!--        IFNULL(sp_monthly.monthlySalePrice, 0) AS salePrice,-->
-<!--        IFNULL(sp_monthly.monthlySaleAmount, 0) AS totalSale,-->
-<!--        &#45;&#45; 기말 재고 수량 계산: 월별 기초 + 월별 입고 - 월별 출고-->
-<!--        (-->
-<!--        IFNULL(pis_monthly.initialStockQuantity, 0) +-->
-<!--        IFNULL(po_monthly.monthlyPurchaseQty, 0) - -->
-<!--        IFNULL(sp_monthly.monthlySaleQty, 0)-->
-<!--        ) AS stockQuantity,-->
-<!--        psv.price AS price, &#45;&#45; 상품의 현재 판매 가격을 기말 재고 단가로 사용-->
-<!--        &#45;&#45; 기말 재고 금액 계산: 기말 재고 수량 * 현재 판매 가격-->
-<!--        (-->
-<!--        (IFNULL(pis_monthly.initialStockQuantity, 0) +-->
-<!--        IFNULL(po_monthly.monthlyPurchaseQty, 0) - -->
-<!--        IFNULL(sp_monthly.monthlySaleQty, 0)) * psv.price-->
-<!--        ) AS stockAmount-->
-<!--        FROM-->
-<!--        erp_db.product_summary_view psv &#45;&#45; 기존 뷰를 기본 정보 가져오는 데 사용-->
-<!--        LEFT JOIN-->
-<!--        ( &#45;&#45; 월별 기초 재고 조회 서브쿼리-->
-<!--        SELECT-->
-<!--        productId,-->
-<!--        initialStockQuantity,-->
-<!--        initialUnitPrice-->
-<!--        FROM-->
-<!--        erp_db.productinitstock-->
-<!--        WHERE-->
-<!--        initialStockDate = #{startDate}-->
-<!--        ) pis_monthly ON psv.productId = pis_monthly.productId-->
-<!--        LEFT JOIN-->
-<!--        ( &#45;&#45; 월별 입고 요약 서브쿼리 (orderStmt의 orderDate를 기준으로 필터링)-->
-<!--        SELECT-->
-<!--        po.productId,-->
-<!--        SUM(po.purchaseQty) AS monthlyPurchaseQty,-->
-<!--        &#45;&#45; 입고 단가는 해당 월의 평균 단가 또는 다른 기준을 사용할 수 있음.-->
-<!--        &#45;&#45; 현재는 총 금액 / 총 수량으로 단순 계산 (0으로 나누는 오류 방지)-->
-<!--        CASE-->
-<!--        WHEN SUM(po.purchaseQty) > 0 THEN SUM(po.purchaseQty * po.purchasePrice) / SUM(po.purchaseQty)-->
-<!--        ELSE 0-->
-<!--        END AS monthlyPurchasePrice,-->
-<!--        SUM(po.purchaseQty * po.purchasePrice) AS monthlyPurchaseAmount-->
-<!--        FROM-->
-<!--        erp_db.purchaseOrder po-->
-<!--        JOIN-->
-<!--        erp_db.orderStmt os ON po.orderId = os.orderId-->
-<!--        WHERE-->
-<!--        os.orderDate BETWEEN #{startDate} AND #{endDate}-->
-<!--        GROUP BY po.productId-->
-<!--        ) po_monthly ON psv.productId = po_monthly.productId-->
-<!--        LEFT JOIN-->
-<!--        ( &#45;&#45; 월별 출고 요약 서브쿼리 (sale의 saleDate를 기준으로 필터링)-->
-<!--        SELECT-->
-<!--        sp.productId,-->
-<!--        SUM(sp.saleQty) AS monthlySaleQty,-->
-<!--        &#45;&#45; 출고 단가도 위와 동일하게 계산-->
-<!--        CASE-->
-<!--        WHEN SUM(sp.saleQty) > 0 THEN SUM(sp.saleQty * sp.salePrice) / SUM(sp.saleQty)-->
-<!--        ELSE 0-->
-<!--        END AS monthlySalePrice,-->
-<!--        SUM(sp.saleQty * sp.salePrice) AS monthlySaleAmount-->
-<!--        FROM-->
-<!--        erp_db.sale_product sp-->
-<!--        JOIN-->
-<!--        erp_db.sale s ON sp.saleId = s.saleId-->
-<!--        WHERE-->
-<!--        s.saleDate BETWEEN #{startDate} AND #{endDate}-->
-<!--        GROUP BY sp.productId-->
-<!--        ) sp_monthly ON psv.productId = sp_monthly.productId-->
-<!--        <where>-->
-<!--            <if test="productName != null and !productName.isEmpty()">-->
-<!--                psv.productName LIKE CONCAT('%', #{productName}, '%')-->
-<!--            </if>-->
-<!--        </where>-->
-<!--        ORDER BY-->
-<!--        psv.topLevelCategoryName, psv.categoryName, psv.productName;-->
-<!--    </select>-->
-
-<!--    &lt;!&ndash;-->
-<!--        재고 마감 처리 (productinitstock 테이블에 storeId가 없으므로 해당 컬럼 제거)-->
-<!--        product 테이블의 stockQuantity와 price를 가져와 다음달 1일의 기초 재고로 저장합니다.-->
-<!--        PRIMARY KEY (productId, initialStockDate) 충돌 시 UPDATE 진행.-->
-<!--    &ndash;&gt;-->
-<!--    <insert id="closeStock" parameterType="map">-->
-<!--        INSERT INTO productinitstock (-->
-<!--        productId,-->
-<!--        initialStockQuantity,-->
-<!--        initialUnitPrice,-->
-<!--        initialStockDate-->
-<!--        )-->
-<!--        SELECT-->
-<!--        productId,-->
-<!--        stockQuantity,-->
-<!--        price,-->
-<!--        #{closeDate}-->
-<!--        FROM product-->
-<!--        ON DUPLICATE KEY UPDATE-->
-<!--        initialStockQuantity = VALUES(initialStockQuantity),-->
-<!--        initialUnitPrice = VALUES(initialUnitPrice);-->
-<!--    </insert>-->
-
 
 </mapper>
