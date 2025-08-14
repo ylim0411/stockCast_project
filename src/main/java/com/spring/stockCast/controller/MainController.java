@@ -1,10 +1,8 @@
 package com.spring.stockCast.controller;
 
 import com.spring.stockCast.dto.OrderStmtDTO;
-import com.spring.stockCast.dto.PurchaseOrderDTO;
 import com.spring.stockCast.dto.SaleDTO;
 import com.spring.stockCast.service.OrderStmtService;
-import com.spring.stockCast.service.PurchaseOrderService;
 import com.spring.stockCast.service.SaleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

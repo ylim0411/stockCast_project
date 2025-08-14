@@ -99,27 +99,4 @@ public class ProductRepository {
         return sql.selectList("Product.findProductSaleAll",storeId);
     }
 
-
-
-//    public List<StockQuantityDTO> stockList(LocalDate startDate, LocalDate endDate, String productName) {
-//        Map<String, Object> param = new HashMap<>();
-//        param.put("startDate", startDate);
-//        param.put("endDate", endDate);
-//        param.put("productName", productName);
-//        return sql.selectList("Product.stockList", param); // 매퍼 ID에 맞게 "Product.stockList" 호출
-//    }
-//
-//    /**
-//     * 월말 마감 처리: 현재 `product` 테이블의 재고 정보를
-//     * 지정된 `closeDate` (보통 다음달 1일)의 기초 재고로 `productinitstock`에 저장합니다.
-//     *
-//     * @param closeDate 마감 처리 기준 날짜 (다음달 1일)
-//     */
-//    public void closeStock(LocalDate closeDate) {
-//        Map<String, Object> param = new HashMap<>();
-//        param.put("closeDate", closeDate);
-//        sql.insert("Product.closeStock", param);
-//    }
-
-
 }

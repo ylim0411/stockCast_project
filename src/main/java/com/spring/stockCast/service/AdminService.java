@@ -1,7 +1,5 @@
 package com.spring.stockCast.service;
 
-
-
 import com.spring.stockCast.dto.AdminDTO;
 
 import com.spring.stockCast.repository.AdminRepository;
