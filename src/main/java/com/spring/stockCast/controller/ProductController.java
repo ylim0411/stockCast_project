@@ -53,11 +53,11 @@ public class ProductController {
                                 @RequestParam("clientId") Integer clientId,
                                 HttpSession session) {
 
-        // 서버 측 기본값/검증 (빈 문자열 -> null 로 들어온 경우 방어)
+        // 서버 측 기본값/검증
         if (productId == null || productName == null || productName.trim().isEmpty()
                 || price == null || stockQuantity == null
                 || middleCategoryId == null || clientId == null) {
-            // 잘못된 요청은 목록으로 되돌리되, 필요 시 에러 파라미터를 추가할 수 있습니다.
+
             return "redirect:/product/list";
         }
 
@@ -71,7 +71,7 @@ public class ProductController {
         product.setStockQuantity(stockQuantity);
         product.setCategoryId(middleCategoryId);
 
-        // 한 번만 업데이트(중복 호출 제거)
+        // 한 번만 업데이트
         productService.updateProductAndClient(product, clientId);
 
         return "redirect:/product/list";

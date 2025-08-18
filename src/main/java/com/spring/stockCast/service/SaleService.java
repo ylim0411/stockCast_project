@@ -1,6 +1,5 @@
 package com.spring.stockCast.service;
 
-
 import com.spring.stockCast.dto.ProductDTO;
 import com.spring.stockCast.dto.SaleDTO;
 import com.spring.stockCast.enums.Gender;
@@ -54,14 +53,14 @@ public class SaleService {
     public int findProductStock(String storeId, String productName) { return saleRepository.findProductStock(storeId, productName); }
     // 전체 판매내역의 카테고리 리스트 가져오기(도넛차트 구성용)
     public Map<String, Integer> findCategory(List<SaleDTO> saleList) {
-        // 1. 데이터를 집계하여 categorySales 맵 생성
+
         Map<String, Integer> categorySales = new HashMap<>();
         for (SaleDTO sale : saleList) {
             String categoryName = sale.getCategoryName();
             int saleQty = sale.getSaleQty();
             categorySales.put(categoryName, categorySales.getOrDefault(categoryName, 0) + saleQty);
         }
-        // 2. Stream API를 사용하여 value가 높은 순으로 정렬된 새로운 맵 반환
+
         return categorySales.entrySet().stream()
                 // Map.Entry의 value를 기준으로 내림차순 정렬
                 .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
@@ -77,19 +76,17 @@ public class SaleService {
     public int findStoreSubNum(String storeId){
         return (saleRepository.findStoreSubNum(storeId)+1);
     }
-    // 연도별 매출액 일별 조회(꺾은선 그래프 구성용)
+    // 연도별 매출액 일별 조회
     public Map<String, Integer> saleDay(List<SaleDTO> saleList) {
         Map<String, Integer> dayPrice = new LinkedHashMap<>();
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); // 날짜 포맷 지정
 
-        // saleList에 있는 판매 기록을 순회합니다.
         for (SaleDTO sale : saleList) {
             Date saleDate = sale.getSaleDate();
             int price = sale.getSalePrice();
             int quantity = sale.getSaleQty();
 
-            // Date 객체를 지정된 "yyyy-MM-dd" 형식의 문자열로 변환합니다.
             String dateKey = sdf.format(saleDate);
 
             int currentTotal = dayPrice.getOrDefault(dateKey, 0);
@@ -198,6 +195,7 @@ public class SaleService {
 
         saleRepository.linkAccounting(param);
     }
+
     // 구매자등록
     public void insertCustomer(String gender, String age, String storeId) {
         Map<String, Object> param = new HashMap<>();
