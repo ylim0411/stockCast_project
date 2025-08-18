@@ -1,6 +1,6 @@
-<video autoplay loop muted playsinline style="width:100%; height:auto;">
-  <source src="./static/images/git.mp4" type="video/mp4">
-</video>
+<p align="center">
+  <img src="./src/main/webapp/static/images/gitImg.png" alt="Stock Cast Demo" width="100%">
+</p>
 
 </br>
 
