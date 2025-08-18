@@ -1,4 +1,7 @@
-![Stock Cast Logo](/images/gitImg.gif)  
+<video autoplay loop muted playsinline style="width:100%; height:auto;">
+  <source src="./static/images/git.mp4" type="video/mp4">
+</video>
+
 </br>
 
 <h3 align="center">"무인점포 판매·재고 최적화를 위한 지능형 ERP 시스템"</h3>
