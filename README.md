@@ -81,7 +81,7 @@
 | **Frontend** | JSP, HTML/CSS, JavaScript, jQuery |
 | **Backend** | Java(Spring), MyBatis |
 | **Database** | MySQL |
-| **API** | 기상청 단기예보 API, 유동인구 API |
+| **API** | 기상청 단기예보 API, 유동인구 API, 사업자등록 확인 API, 구글 계정 연동 API |
 | **Deployment** | GitHub, AWS |
 
 </br>
