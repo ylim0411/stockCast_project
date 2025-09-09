@@ -11,11 +11,11 @@
     </insert>
 
     <select id="findTopLevelCategories" parameterType="int" resultType="ProductCategory">
-        SELECT * FROM productcategory WHERE storeId = #{storeId} AND categoryLevel = 1;
+        SELECT * FROM productCategory WHERE storeId = #{storeId} AND categoryLevel = 1;
     </select>
 
     <select id="findMiddleLevelCategoriesByParentId" parameterType="map" resultType="ProductCategory">
-        SELECT * FROM productcategory WHERE parentId = #{parentId} AND storeId = #{storeId} AND categoryLevel = 2;
+        SELECT * FROM productCategory WHERE parentId = #{parentId} AND storeId = #{storeId} AND categoryLevel = 2;
     </select>
 
     <select id="categorySelect" resultType="ProductCategory">
